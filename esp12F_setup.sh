@@ -1,6 +1,6 @@
 #* Setup of ESP sensors
 # Pawelo 20221111 first steps
-# Pawelo 20221112, created based on https://github.com/geerlingguy/pico-w-garage-door-sensor
+# Pawelo 20221112, created based on https://www.youtube.com/watch?v=a3iay-g1AsI, https://github.com/geerlingguy/pico-w-garage-door-sensor, https://github.com/nygma2004/esphome
 
 #######################
 #* Configure new network for sensors at home
@@ -30,12 +30,23 @@ pip3 install esphome
 esphome wizard name.yml
 
 # based on https://github.com/geerlingguy/pico-w-garage-door-sensor
-# 1. create secrets.yaml
+# 1. check/create secrets.yaml
 
-# 2. write config file
+# 2. write config file for ESP device
 
+# 3. compile and install over USB/OTA
+esphome run name.yml
+
+# 3a. compile and install over OTA directly to the IP
+esphome run name.yml --device 192.168.x.x
+
+######################
+# Alternative way
 # 3. compile code
 esphome compile name.yml
+
+# 4. copy generated firmware
+$ cp .esphome/build/esp01/.pioenvs/esp01/firmware.bin ./
 
 
 
