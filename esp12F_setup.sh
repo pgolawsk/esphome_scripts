@@ -40,6 +40,19 @@ esphome run name.yml
 # 3a. compile and install over OTA directly to the IP
 esphome run name.yml --device 192.168.x.x
 
+# 4. Configure MQTT acl on MQTT server
+sudo vi /etc/mosquitto/acl
+#------------------------- add following to entitle devide to log data under it's topic
+topic readwrite esp01/#
+#pattern readwrite %c/#
+#-------------------------
+sudo service mosquitto restart
+
+
+# read about mosquitto on http://www.steves-internet-guide.com/mosquitto_pub-sub-clients/
+# subscribe to all MQTT topics:
+mosquitto_sub -h localhost -t \# -d
+
 ######################
 # Alternative way
 # 3. compile code
