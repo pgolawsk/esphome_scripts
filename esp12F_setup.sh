@@ -53,13 +53,16 @@ sudo service mosquitto restart
 # subscribe to all MQTT topics:
 mosquitto_sub -h localhost -t \# -d
 
-######################
-# Alternative way
-# 3. compile code
-esphome compile name.yml
-
-# 4. copy generated firmware
-$ cp .esphome/build/esp01/.pioenvs/esp01/firmware.bin ./
 
 
+##########################
+#* Soldering the connections
+# for ESP-12F, based on https://sktechworks.ca/2017/03/28/esp-12f-and-breakout-board/
 
+# Minimum pinout to OPERATE
+# VCC - 3.3V DC
+# GND - GND
+# GPIO0 - 10K resistor to 3.3V DC
+# GPIO2 - 10K resistor to 3.3V DC - can be merged with GPIO0 if bootmode will not be enabled
+# GPIO15 - 10K resistor to GND
+# CH_PD/ED - 10K resistor to 3.3V DC
