@@ -1,4 +1,6 @@
 # Pawelo 20221112, created based on https://github.com/nygma2004/esphome
+# Pawelo 20221114, improved by adding secondary MQTT topic to each sensor (idea from https://community.home-assistant.io/t/publish-mqtt/324939)
+# Pawelo 20221114, added Material Design Icons for sensors, based on https://pictogrammers.github.io/@mdi/font/2.0.46/
 
 #! run with this command to ovveride sunstitutions
 # esphome -s devicename espXX -s room <Room name> -s mqtt_room <room> run esp01.yml --device 192.168.x.x
@@ -14,8 +16,12 @@ substitutions:
 
 esphome:
   name: $devicename
+  comment: $room ESP12F controller
   platform: ESP8266
   board: esp12e
+  project:
+    name: "pawelo.temp_hum"
+    version: "1.0.2"
 
 # Enable logging
 logger:
@@ -68,6 +74,7 @@ text_sensor:
     name: $room Uptime
     id: uptime_human
     icon: mdi:clock-start
+    internal: true
     state_topic: $devicename/uptime_text
     on_value:
       - mqtt.publish:
@@ -79,7 +86,9 @@ sensor:
   - platform: wifi_signal
     name: "$room WiFi Signal"
     id: wifi_rssi
+    icon: mdi:wifi
     update_interval: 30s
+    internal: true
     state_topic: $devicename/rssi
     on_value:
       - mqtt.publish:
@@ -110,6 +119,8 @@ sensor:
   - platform: uptime
     name: "$room Uptime Sensor"
     id: uptime_sensor
+    icon: mdi:clock-start
+    internal: true
     state_topic: $devicename/uptime
     on_value:
       - mqtt.publish:
