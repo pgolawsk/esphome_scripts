@@ -66,3 +66,7 @@ mosquitto_sub -h localhost -t \# -d
 # GPIO2 - 10K resistor to 3.3V DC - can be merged with GPIO0 if bootmode will not be enabled
 # GPIO15 - 10K resistor to GND
 # CH_PD/ED - 10K resistor to 3.3V DC
+
+#*! RUN those commmands to compile and deliver updates to temp/higro sensors only
+esphome -s devicename esp01 -s devicelocation Office run esp01.yml --device 192.168.10.10
+esphome -s devicename esp02 -s devicelocation Kitchen run esp01.yml --device 192.168.10.11

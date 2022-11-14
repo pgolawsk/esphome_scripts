@@ -1,7 +1,11 @@
 # Pawelo 20221112, created based on https://github.com/nygma2004/esphome
+
+#! run with this command to ovveride sunstitutions
+# esphome -s devicename espXX -s devicelocation KitchenXXXXXX run esp01.yml --device 192.168.x.x
+# heare are default values if those are not given via command line
 substitutions:
-  devicename: esp01
-  devicelocation: Office
+  devicename: espXX
+  devicelocation: Room
 
 esphome:
   name: $devicename
@@ -63,7 +67,7 @@ text_sensor:
 sensor:
   - platform: wifi_signal
     name: "$devicelocation WiFi Signal"
-    update_interval: 60s
+    update_interval: 30s
     state_topic: $devicename/rssi
   - platform: sht3xd
     temperature:
@@ -73,12 +77,12 @@ sensor:
       name: "$devicelocation Humidity"
       state_topic: $devicename/humidity
     address: 0x44
-    update_interval: 60s
+    update_interval: 30s
   - platform: uptime
     name: "$devicelocation Uptime Sensor"
     id: uptime_sensor
     state_topic: $devicename/uptime
-    update_interval: 60s
+    update_interval: 30s
     on_raw_value:
       then:
         - text_sensor.template.publish:
