@@ -68,5 +68,6 @@ mosquitto_sub -h localhost -t \# -d
 # CH_PD/ED - 10K resistor to 3.3V DC
 
 #*! RUN those commmands to compile and deliver updates to temp/higro sensors only
-esphome -s devicename esp01 -s devicelocation Office run esp01.yml --device 192.168.10.10
-esphome -s devicename esp02 -s devicelocation Kitchen run esp01.yml --device 192.168.10.11
+#? --device is optional - if not given and device name can be found by dns then it will be flashed OTA anyway:)
+esphome -s devicename esp01 -s room Office -s mqtt_room office run esp01.yml --device 192.168.10.10
+esphome -s devicename esp02 -s room Kitchen -s mqtt_room kitchen run esp01.yml --device 192.168.10.11
