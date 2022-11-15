@@ -1,6 +1,7 @@
 #* Setup of ESP sensors
 # Pawelo 20221111 first steps
 # Pawelo 20221112, created based on https://www.youtube.com/watch?v=a3iay-g1AsI, https://github.com/geerlingguy/pico-w-garage-door-sensor, https://github.com/nygma2004/esphome
+# Pawelo 20221115, added prometheus setup, based on https://esphome.io/components/prometheus.html
 
 #######################
 #* Configure new network for sensors at home
@@ -67,7 +68,36 @@ mosquitto_sub -h localhost -t \# -d
 # GPIO15 - 10K resistor to GND
 # CH_PD/ED - 10K resistor to 3.3V DC
 
+###########################
+#* Install the firmwares (wired or OTA)
 #*! RUN those commmands to compile and deliver updates to temp/higro sensors only
 #? --device is optional - if not given and device name can be found by dns then it will be flashed OTA anyway:)
 esphome -s devicename esp01 -s room Office -s mqtt_room office run esp12f_temp_hum.yml --device 192.168.10.10
 esphome -s devicename esp02 -s room Kitchen -s mqtt_room kitchen run esp12f_temp_hum.yml --device 192.168.10.11
+
+
+
+###########################
+#* Set up Prometheus scraping
+# open your prometheus.yaml config file and put there below lines
+sudo vi prometheus.yaml
+#---------------------------
+  - job_name: 'esphome'
+    static_configs:
+      - targets: ['esp01:80','esp02:80']
+        labels:
+          node: 'esp'
+#---------------------------
+
+#once done restart the prometheus
+docker-compose restart prometheus
+
+# see in the logs if scraping is in place
+docker-compose logs prometheus
+
+
+###########################
+#* Set up values display in Grafana
+# while using Prometheus datasource check if new measures are available - filter by label: node=esp
+
+#TODO Create dashboard for ESP values in Grafana
