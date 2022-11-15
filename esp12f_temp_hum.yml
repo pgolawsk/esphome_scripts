@@ -3,6 +3,7 @@
 # Pawelo 20221114, 1.0.1, improved by adding secondary MQTT topic to each sensor (idea from https://community.home-assistant.io/t/publish-mqtt/324939)
 # Pawelo 20221114, 1.0.3, added Material Design Icons for sensors, based on https://pictogrammers.github.io/@mdi/font/2.0.46/
 # Pawelo 20221114, 1.0.4, added prometheus setup, disabled OTA via web based on https://esphome.io/components/prometheus.html
+# Pawelo 20221115, 1.0.5, switched wifi to not internal sensor to make it visible in prometheus
 
 #! run with this command to ovveride sunstitutions
 # esphome -s devicename espXX -s room <Room name> -s mqtt_room <room> run esp12f_temp_hum.yml --device 192.168.x.x
@@ -23,7 +24,7 @@ esphome:
   board: esp12e
   project:
     name: "pawelo.temp_hum"
-    version: "1.0.4"
+    version: "1.0.5"
 
 # Enable logging
 logger:
@@ -90,7 +91,7 @@ sensor:
     id: wifi_rssi
     icon: mdi:signal
     update_interval: 30s
-    internal: true
+#    internal: true
     state_topic: $devicename/rssi
     on_value:
       - mqtt.publish:
@@ -159,3 +160,4 @@ web_server:
 
 # Activates prometheus /metrics endpoint
 prometheus:
+  include_internal: false
