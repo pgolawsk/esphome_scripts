@@ -69,5 +69,5 @@ mosquitto_sub -h localhost -t \# -d
 
 #*! RUN those commmands to compile and deliver updates to temp/higro sensors only
 #? --device is optional - if not given and device name can be found by dns then it will be flashed OTA anyway:)
-esphome -s devicename esp01 -s room Office -s mqtt_room office run esp01.yml --device 192.168.10.10
-esphome -s devicename esp02 -s room Kitchen -s mqtt_room kitchen run esp01.yml --device 192.168.10.11
+esphome -s devicename esp01 -s room Office -s mqtt_room office run esp12f_temp_hum.yml --device 192.168.10.10
+esphome -s devicename esp02 -s room Kitchen -s mqtt_room kitchen run esp12f_temp_hum.yml --device 192.168.10.11
