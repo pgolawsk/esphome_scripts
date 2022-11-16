@@ -5,6 +5,9 @@
 # Pawelo 20221114, 1.0.4, added prometheus setup, disabled OTA via web based on https://esphome.io/components/prometheus.html
 # Pawelo 20221115, 1.0.5, switched wifi to not internal sensor to make it visible in prometheus
 
+#TODO: make variable for update interval
+#TODO: change sensors for !include statement, so I have framework
+
 #! run with this command to ovveride sunstitutions
 # esphome -s devicename espXX -s room <Room name> -s mqtt_room <room> run esp12f_temp_hum.yml --device 192.168.x.x
 # heare are default values if those are not given via command line
