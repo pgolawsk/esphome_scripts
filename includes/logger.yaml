@@ -1,0 +1,8 @@
+---
+# Enable logging
+logger:
+#  level: NONE, ERROR, WARN, INFO, DEBUG (default), VERBOSE, VERY_VERBOSE
+  level: INFO
+  logs:
+    mqtt.component: INFO
+    mqtt.client: ERROR

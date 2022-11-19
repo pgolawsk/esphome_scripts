@@ -1,0 +1,45 @@
+---
+# ESP12F sensor board with temperature and humidity sensor SHTx30 and lux sensor BH1750
+# Pawelo 20221117, 1.0.0, created based on edp12f_temp_hum.yml
+# Pawelo 20221119, 1.0.1. added updates as parameter
+# Pawelo 20221119, 1.1.0. moved to framework with !include statements
+
+#! run with this command to ovveride sunstitutions
+# esphome -s devicename espXX -s updates 1min -s room <Room name> -s mqtt_room <room> run esp12f_temp_hum.yaml --device 192.168.x.x
+# heare are default values if those are not given via command line
+substitutions:
+  devicename: espXX
+  updates: "30s"
+  room: Room # friendly name of room to display in HA/Web
+  # this is ADDITIONAL topic and sub-topic for MQTT - it publishes under <topic>/<sub-topic>/<sensor>
+  # by default it's also published under <devicename>/<id_sensor>
+  mqtt_location: home
+  mqtt_room: room
+
+  project_name: "pawelo.temp_hum_lux"
+  version: "1.1.0"
+
+
+<<: !include includes/board_esp12f.yaml
+
+# reinclude MQTT as a bug in ESPHOME, see: https://github.com/esphome/issues/issues/2180, https://github.com/esphome/issues/issues/1487
+mqtt:
+  broker: !secret mqtt_ip
+  port: !secret mqtt_port
+#  username: $devicename
+  username: !secret mqtt_user
+  password: !secret mqtt_password
+  client_id: $devicename
+# id: $devicename
+
+text_sensor:
+  - !include sensors/text_uptime.yaml
+
+sensor:
+  - !include sensors/uptime.yaml
+  - !include sensors/wifi_signal.yaml
+
+  # Temperature and Humidity sensor
+  - !include sensors/temp_hum_sht3xd.yaml
+  # Illuminance sensor
+  - !include sensors/lux_bh1750.yaml

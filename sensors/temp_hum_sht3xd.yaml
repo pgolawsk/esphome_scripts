@@ -1,0 +1,22 @@
+---
+platform: sht3xd
+temperature:
+  name: "$room Temperature"
+  id: temp
+  state_topic: $devicename/temperature
+  on_value:
+    - mqtt.publish:
+        topic: "$mqtt_location/$mqtt_room/temperature"
+        payload: !lambda |-
+          return to_string(id(temp).state);
+humidity:
+  name: "$room Humidity"
+  id: hum
+  state_topic: $devicename/humidity
+  on_value:
+    - mqtt.publish:
+        topic: "$mqtt_location/$mqtt_room/humidity"
+        payload: !lambda |-
+          return to_string(id(hum).state);
+address: 0x44
+update_interval: $updates

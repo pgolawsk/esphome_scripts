@@ -1,0 +1,9 @@
+---
+mqtt:
+  broker: !secret mqtt_ip
+  port: !secret mqtt_port
+#  username: $devicename
+  username: !secret mqtt_user
+  password: !secret mqtt_password
+  client_id: $devicename
+ # id: $devicename

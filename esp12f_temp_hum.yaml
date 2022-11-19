@@ -1,0 +1,47 @@
+---
+# ESP12F sensor board with temperature and humidity sensor SHTx30
+# Pawelo 20221112, 1.0.0, created based on https://github.com/nygma2004/esphome
+# Pawelo 20221114, 1.0.1, improved by adding secondary MQTT topic to each sensor (idea from https://community.home-assistant.io/t/publish-mqtt/324939)
+# Pawelo 20221114, 1.0.3, added Material Design Icons for sensors, based on https://pictogrammers.github.io/@mdi/font/2.0.46/
+# Pawelo 20221114, 1.0.4, added prometheus setup, disabled OTA via web based on https://esphome.io/components/prometheus.html
+# Pawelo 20221115, 1.0.5, switched wifi to not internal sensor to make it visible in prometheus
+# Pawelo 20221119, 1.0.6. added updates as parameter
+# Pawelo 20221119, 1.1.0. moved to framework with !include statements
+
+#! run with this command to ovveride sunstitutions
+# esphome -s devicename espXX -s updates 1min -s room <Room name> -s mqtt_room <room> run esp12f_temp_hum.yaml --device 192.168.x.x
+# heare are default values if those are not given via command line
+substitutions:
+  devicename: espXX
+  updates: "30s"
+  room: Room # friendly name of room to display in HA/Web
+  # this is ADDITIONAL topic and sub-topic for MQTT - it publishes under <topic>/<sub-topic>/<sensor>
+  # by default it's also published under <devicename>/<id_sensor>
+  mqtt_location: home
+  mqtt_room: room
+
+  project_name: "pawelo.temp_hum"
+  version: "1.1.0"
+
+
+<<: !include includes/board_esp12f.yaml
+
+# reinclude MQTT as a bug in ESPHOME, see: https://github.com/esphome/issues/issues/2180, https://github.com/esphome/issues/issues/1487
+mqtt:
+  broker: !secret mqtt_ip
+  port: !secret mqtt_port
+#  username: $devicename
+  username: !secret mqtt_user
+  password: !secret mqtt_password
+  client_id: $devicename
+# id: $devicename
+
+text_sensor:
+  - !include sensors/text_uptime.yaml
+
+sensor:
+  - !include sensors/uptime.yaml
+  - !include sensors/wifi_signal.yaml
+
+  # Temperature and Humidity sensor
+  - !include sensors/temp_hum_sht3xd.yaml

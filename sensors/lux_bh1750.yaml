@@ -1,0 +1,13 @@
+---
+platform: bh1750
+name: "$room Illuminance"
+id: lux
+icon: mdi:mdi-decagram-outline
+state_topic: $devicename/illuminance
+on_value:
+  - mqtt.publish:
+      topic: "$mqtt_location/$mqtt_room/illuminance"
+      payload: !lambda |-
+        return to_string(id(hum).state);
+address: 0x23
+update_interval: $updates

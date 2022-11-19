@@ -1,0 +1,4 @@
+---
+# Activates prometheus /metrics endpoint
+prometheus:
+  include_internal: false

@@ -1,0 +1,4 @@
+---
+api:
+  reboot_timeout: 0s # 0s will disable HA
+  password: !secret api_password

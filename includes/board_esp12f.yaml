@@ -1,0 +1,26 @@
+---
+esphome:
+  name: $devicename
+  comment: $room ESP12F controller
+  platform: ESP8266
+  board: esp12e
+  project:
+    name: $project_name
+    version: $version
+
+<<: !include wifi.yaml
+<<: !include api.yaml
+<<: !include ota.yaml
+<<: !include logger.yaml
+<<: !include web_server.yaml
+<<: !include prometheus.yaml
+<<: !include mqtt.yaml
+
+# packages:
+#   network: !include mqtt.yaml
+
+i2c:
+  sda: 4
+  scl: 5
+  scan: true
+  id: bus_a

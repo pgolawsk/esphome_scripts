@@ -1,0 +1,14 @@
+---
+wifi:
+  ssid: !secret wifi_ssid
+  password: !secret wifi_password
+  domain: ""
+  fast_connect: true
+  reboot_timeout: 45min
+
+  # Enable fallback hotspot (captive portal) in case wifi connection fails
+  ap:
+    ssid: "$devicename $room Fallback Hotspot"
+    password: !secret wifi_fallback_password
+
+captive_portal:

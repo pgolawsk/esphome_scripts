@@ -1,0 +1,13 @@
+---
+platform: wifi_signal
+name: "$room WiFi Signal"
+id: wifi_rssi
+icon: mdi:signal
+update_interval: $updates
+#    internal: true
+state_topic: $devicename/rssi
+on_value:
+  - mqtt.publish:
+      topic: "$mqtt_location/$mqtt_room/rssi"
+      payload: !lambda |-
+        return to_string(id(wifi_rssi).state);
