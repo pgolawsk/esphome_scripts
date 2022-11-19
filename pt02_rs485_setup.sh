@@ -25,3 +25,5 @@ cd ~/ModBusMechanic
 
 # run from CLI
 sudo java -jar ModbusMechanic.jar
+
+#! NOT CONENCTED - probably the sensor communication is broken:(
