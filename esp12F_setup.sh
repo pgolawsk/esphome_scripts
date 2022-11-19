@@ -3,6 +3,8 @@
 # Pawelo 20221112, created based on https://www.youtube.com/watch?v=a3iay-g1AsI, https://github.com/geerlingguy/pico-w-garage-door-sensor, https://github.com/nygma2004/esphome
 # Pawelo 20221115, added prometheus setup, based on https://esphome.io/components/prometheus.html
 
+#TODO: Read more complicated AIQ measurement on https://github.com/nkitanov/iaq_board
+
 #######################
 #* Configure new network for sensors at home
 # based on: https://wiki.teltonika-networks.com/view/How_to_set_up_a_guest_WiFi_network_on_RUTX
@@ -54,6 +56,8 @@ sudo service mosquitto restart
 # subscribe to all MQTT topics:
 mosquitto_sub -h localhost -t \# -d
 
+# subscribe to home/xxxxxx/xxxx MQTT topics:
+mosquitto_sub -t home/# -d
 
 
 ##########################
