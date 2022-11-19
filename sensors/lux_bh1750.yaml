@@ -1,4 +1,6 @@
 ---
+#* Illuminance sensor BH1750 configuration
+# Pawelo, 20221119, created as my framework based on !include statements
 platform: bh1750
 name: "$room Illuminance"
 id: lux

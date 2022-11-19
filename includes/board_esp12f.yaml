@@ -1,4 +1,7 @@
 ---
+#* Base configuration for ESP-12F board
+# Pawelo, 20221119, created as my framework based on !include statements
+
 esphome:
   name: $devicename
   comment: $room ESP12F controller

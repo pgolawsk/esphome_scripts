@@ -3,6 +3,7 @@
 # Pawelo 20221117, 1.0.0, created based on edp12f_temp_hum.yml
 # Pawelo 20221119, 1.0.1. added updates as parameter
 # Pawelo 20221119, 1.1.0. moved to framework with !include statements
+# Pawelo 20221119, 1.1.1. added esp version and wifi info text sensors to publish on web
 
 #! run with this command to ovveride sunstitutions
 # esphome -s devicename espXX -s updates 1min -s room <Room name> -s mqtt_room <room> run esp12f_temp_hum.yaml --device 192.168.x.x
@@ -34,6 +35,9 @@ mqtt:
 
 text_sensor:
   - !include sensors/text_uptime.yaml
+  - !include sensors/text_version.yaml
+  - !include sensors/text_wifi_info.yaml
+
 
 sensor:
   - !include sensors/uptime.yaml

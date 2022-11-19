@@ -1,4 +1,6 @@
 ---
+#* Uptime (human readable) virtual sensor configuration
+# Pawelo, 20221119, created as my framework based on !include statements
 platform: template
 name: $room Uptime
 id: uptime_human

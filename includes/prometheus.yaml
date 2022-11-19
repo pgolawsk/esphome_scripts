@@ -1,4 +1,5 @@
 ---
-# Activates prometheus /metrics endpoint
+#* Activates prometheus /metrics endpoint
+# Pawelo, 20221119, created as my framework based on !include statements
 prometheus:
   include_internal: false

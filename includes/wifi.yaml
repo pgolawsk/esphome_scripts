@@ -1,4 +1,6 @@
 ---
+#* Enable WiFi, including falback hotspot
+# Pawelo, 20221119, created as my framework based on !include statements
 wifi:
   ssid: !secret wifi_ssid
   password: !secret wifi_password

@@ -1,4 +1,6 @@
 ---
+#* Uptime sensor configuration
+# Pawelo, 20221119, created as my framework based on !include statements
 platform: uptime
 name: "$room Uptime Sensor"
 id: uptime_sensor

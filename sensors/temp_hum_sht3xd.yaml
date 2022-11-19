@@ -1,4 +1,6 @@
 ---
+#* Temperature and Humidity sensor SHT30d configuration
+# Pawelo, 20221119, created as my framework based on !include statements
 platform: sht3xd
 temperature:
   name: "$room Temperature"

@@ -1,4 +1,6 @@
 ---
+#* Enable MQTT
+# Pawelo, 20221119, created as my framework based on !include statements
 mqtt:
   broker: !secret mqtt_ip
   port: !secret mqtt_port

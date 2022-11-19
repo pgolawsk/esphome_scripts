@@ -1,4 +1,6 @@
 ---
+#* WiFi signal strenght sensor configuration
+# Pawelo, 20221119, created as my framework based on !include statements
 platform: wifi_signal
 name: "$room WiFi Signal"
 id: wifi_rssi

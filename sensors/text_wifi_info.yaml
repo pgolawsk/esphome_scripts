@@ -1,0 +1,13 @@
+---
+#* WiFi information virtual sensor configuration
+# Pawelo, 20221119, created based on https://github.com/AlexMekkering/esphome-config/blob/master/common/text_sensors.yaml
+platform: wifi_info
+ip_address:
+  name: $room IP Address
+  internal: true
+ssid:
+  name: $room SSID
+  internal: true
+bssid:
+  name: $room BSSID
+  internal: true

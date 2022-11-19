@@ -1,4 +1,6 @@
 ---
+#* Enable OTA (Over The Air updates)
+# Pawelo, 20221119, created as my framework based on !include statements
 ota:
   safe_mode: true
   password: !secret ota_password
