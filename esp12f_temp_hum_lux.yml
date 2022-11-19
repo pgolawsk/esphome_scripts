@@ -1,8 +1,9 @@
 # ESP12F sensor board with temperature and humidity sensor SHTx30 and lux sensor BH1750
 # Pawelo 20221117, 1.0.0, created based on edp12f_temp_hum.yml
+# Pawelo 20221119, 1.0.1. added updates as parameter
 
 #! run with this command to ovveride sunstitutions
-# esphome -s devicename espXX -s room <Room name> -s mqtt_room <room> run esp12f_temp_hum_lux.yml --device 192.168.x.x
+# esphome -s devicename espXX -s updates 1m -s room <Room name> -s mqtt_room <room> run esp12f_temp_hum_lux.yml --device 192.168.x.x
 # heare are default values if those are not given via command line
 
 substitutions:
@@ -12,6 +13,7 @@ substitutions:
   # this is topic and sub-topic for MQTT - it publishes under <topic>/<sub-topic>/<sensor>
   mqtt_location: home
   mqtt_room: room
+  updates: "30s"
 
 esphome:
   name: $devicename
@@ -20,7 +22,7 @@ esphome:
   board: esp12e
   project:
     name: "pawelo.temp_hum_lux"
-    version: "1.0.0"
+    version: "1.0.1"
 
 # Enable logging
 logger:
@@ -86,7 +88,7 @@ sensor:
     name: "$room WiFi Signal"
     id: wifi_rssi
     icon: mdi:signal
-    update_interval: 30s
+    update_interval: $updates
 #    internal: true
     state_topic: $devicename/rssi
     on_value:
@@ -114,7 +116,7 @@ sensor:
             payload: !lambda |-
               return to_string(id(hum).state);
     address: 0x44
-    update_interval: 30s
+    update_interval: $updates
   - platform: bh1750
     name: "$room Illuminance"
     id: lux
@@ -126,7 +128,7 @@ sensor:
           payload: !lambda |-
             return to_string(id(hum).state);
     address: 0x23
-    update_interval: 30s
+    update_interval: $updates
   - platform: uptime
     name: "$room Uptime Sensor"
     id: uptime_sensor
@@ -138,7 +140,7 @@ sensor:
           topic: "$mqtt_location/$mqtt_room/uptime"
           payload: !lambda |-
             return to_string(id(uptime_sensor).state);
-    update_interval: 30s
+    update_interval: $updates
     on_raw_value:
       then:
         - text_sensor.template.publish:

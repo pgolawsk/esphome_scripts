@@ -4,17 +4,18 @@
 # Pawelo 20221114, 1.0.3, added Material Design Icons for sensors, based on https://pictogrammers.github.io/@mdi/font/2.0.46/
 # Pawelo 20221114, 1.0.4, added prometheus setup, disabled OTA via web based on https://esphome.io/components/prometheus.html
 # Pawelo 20221115, 1.0.5, switched wifi to not internal sensor to make it visible in prometheus
+# Pawelo 20221119, 1.0.6. added updates as parameter
 
-#TODO: make variable for update interval
 #TODO: change sensors for !include statement, so I have framework
 
 #! run with this command to ovveride sunstitutions
-# esphome -s devicename espXX -s room <Room name> -s mqtt_room <room> run esp12f_temp_hum.yml --device 192.168.x.x
+# esphome -s devicename espXX -s updates 1min -s room <Room name> -s mqtt_room <room> run esp12f_temp_hum.yml --device 192.168.x.x
 # heare are default values if those are not given via command line
 
 substitutions:
   devicename: espXX
-  # friendly name of room to display in HA/Web
+  updates: "30s"
+# friendly name of room to display in HA/Web
   room: Room
   # this is topic and sub-topic for MQTT - it publishes under <topic>/<sub-topic>/<sensor>
   mqtt_location: home
@@ -27,7 +28,7 @@ esphome:
   board: esp12e
   project:
     name: "pawelo.temp_hum"
-    version: "1.0.5"
+    version: "1.0.6"
 
 # Enable logging
 logger:
@@ -93,7 +94,7 @@ sensor:
     name: "$room WiFi Signal"
     id: wifi_rssi
     icon: mdi:signal
-    update_interval: 30s
+    update_interval: $updates
 #    internal: true
     state_topic: $devicename/rssi
     on_value:
@@ -121,7 +122,7 @@ sensor:
             payload: !lambda |-
               return to_string(id(hum).state);
     address: 0x44
-    update_interval: 30s
+    update_interval: $updates
   - platform: uptime
     name: "$room Uptime Sensor"
     id: uptime_sensor
@@ -133,7 +134,7 @@ sensor:
           topic: "$mqtt_location/$mqtt_room/uptime"
           payload: !lambda |-
             return to_string(id(uptime_sensor).state);
-    update_interval: 30s
+    update_interval: $updates
     on_raw_value:
       then:
         - text_sensor.template.publish:
