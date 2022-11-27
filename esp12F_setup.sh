@@ -70,6 +70,7 @@ mosquitto_sub -t home/# -d
 # for ESP-12F, based on https://sktechworks.ca/2017/03/28/esp-12f-and-breakout-board/
 
 # Minimum pinout to OPERATE
+#? See pinout there https://randomnerdtutorials.com/esp8266-pinout-reference-gpios/
 # VCC - 3.3V DC
 # GND - GND
 # GPIO0 - 10K resistor to 3.3V DC
