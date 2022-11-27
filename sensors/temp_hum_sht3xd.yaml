@@ -1,10 +1,12 @@
 ---
 #* Temperature and Humidity sensor SHT30d configuration
 # Pawelo, 20221119, created as my framework based on !include statements
+# Pawelo, 20221127, extended accuracy decimals to 2
 platform: sht3xd
 temperature:
   name: "$room Temperature"
   id: temp
+  accuracy_decimals: 2
   state_topic: $devicename/temperature
   on_value:
     - mqtt.publish:
@@ -14,6 +16,7 @@ temperature:
 humidity:
   name: "$room Humidity"
   id: hum
+  accuracy_decimals: 2
   state_topic: $devicename/humidity
   on_value:
     - mqtt.publish:

@@ -1,8 +1,10 @@
 ---
 #* Illuminance sensor BH1750 configuration
 # Pawelo, 20221119, created as my framework based on !include statements
+# Pawelo, 20221127, confirm accuracy decimals to 1
 platform: bh1750
 name: "$room Illuminance"
+accuracy_decimals: 1
 id: lux
 icon: mdi:mdi-decagram-outline
 state_topic: $devicename/illuminance
