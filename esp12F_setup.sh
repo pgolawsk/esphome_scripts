@@ -2,6 +2,7 @@
 # Pawelo 20221111 first steps
 # Pawelo 20221112, created based on https://www.youtube.com/watch?v=a3iay-g1AsI, https://github.com/geerlingguy/pico-w-garage-door-sensor, https://github.com/nygma2004/esphome
 # Pawelo 20221115, added prometheus setup, based on https://esphome.io/components/prometheus.html
+# Pawelo 20221127, changed prometheus/mosquitto setups, after renaming all devices from espXX to esp12f-XX
 
 #TODO: Read more complicated AIQ measurement on https://github.com/nkitanov/iaq_board
 #TODO: Read about speaker with PAM8403 (amplifier) connection to ESP826 on: https://www.instructables.com/MQTT-Audio-Notifier-for-ESP8266-Play-MP3-TTS-RTTL/
@@ -48,7 +49,8 @@ esphome run name.yml --device 192.168.x.x
 # 4. Configure MQTT acl on MQTT server
 sudo vi /etc/mosquitto/acl
 #------------------------- add following to entitle devide to log data under it's topic
-topic readwrite esp01/#
+topic readwrite esp12f-10/#
+#...
 #pattern readwrite %c/#
 #-------------------------
 sudo service mosquitto restart
@@ -78,8 +80,9 @@ mosquitto_sub -t home/# -d
 #* Install the firmwares (wired or OTA)
 #*! RUN those commmands to compile and deliver updates to temp/higro sensors only
 #? --device is optional - if not given and device name can be found by dns then it will be flashed OTA anyway:)
-esphome -s devicename esp01 -s room Office -s mqtt_room office run esp12f_temp_hum.yml --device 192.168.10.10
-esphome -s devicename esp02 -s room Kitchen -s mqtt_room kitchen run esp12f_temp_hum.yml --device 192.168.10.11
+esphome -s devicename esp12f-10 -s room Office -s mqtt_room office run esp12f_TH_S.yml --device 192.168.10.10
+esphome -s devicename esp12f-11 -s room Kitchen -s mqtt_room kitchen run esp12f_THI_SB.yml --device 192.168.10.11
+esphome -s devicename esp12f-12 -s room Test -s mqtt_room test run esp12f_TH2L_SA.yml --device 192.168.10.11
 
 
 

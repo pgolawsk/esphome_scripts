@@ -1,0 +1,8 @@
+---
+#* I2C on pins 4 and 5
+# Pawelo 20221127, created
+i2c:
+  sda: 4
+  scl: 5
+  scan: true
+  id: bus_a

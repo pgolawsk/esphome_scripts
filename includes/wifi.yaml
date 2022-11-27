@@ -1,6 +1,7 @@
 ---
 #* Enable WiFi, including falback hotspot
 # Pawelo, 20221119, created as my framework based on !include statements
+# Pawelo, 20221127, shortened WiFi SSID for fallback mode as it cannot be longer than 32 characters
 wifi:
   ssid: !secret wifi_ssid
   password: !secret wifi_password
@@ -10,7 +11,7 @@ wifi:
 
   # Enable fallback hotspot (captive portal) in case wifi connection fails
   ap:
-    ssid: "$devicename $room Fallback Hotspot"
+    ssid: "$devicename $room Recovery"
     password: !secret wifi_fallback_password
 
 captive_portal:

@@ -30,6 +30,7 @@
 # Pawelo 20221119, 1.1.1. added esp version and wifi info text sensors to publish on web
 # Pawelo 20221127, 1.1.2, renamed script to reflect sensors/switches and measures/manipulators
 # Pawelo 20221127, 1.1.3, added $devices variable to name configutation deployed
+# Pawelo 20221127, 1.1.4, moved i2c configuration to separate include file
 
 #! run with this command to override sunstitutions
 # esphome -s devicename espXX -s updates 1min -s room <Room name> -s mqtt_room <room> run esp12f_MMmm_SSss.yaml --device 192.168.x.x
@@ -37,7 +38,7 @@
 substitutions:
   devices: "Temperature and Humidity via SHTx30 and Illuminance via BH1750"
   project_name: "pgolawsk.esp_home_THI_SB"
-  version: "1.1.3"
+  version: "1.1.4"
 
   devicename: espXX
   updates: "30s"
@@ -48,6 +49,7 @@ substitutions:
   mqtt_room: room
 
 <<: !include includes/board_esp12f.yaml
+<<: !include includes/i2c_4_5.yaml
 
 # reinclude MQTT as a bug in ESPHOME, see: https://github.com/esphome/issues/issues/2180, https://github.com/esphome/issues/issues/1487
 mqtt:

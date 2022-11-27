@@ -1,0 +1,63 @@
+---
+#* Double Light Switch on AVT5713
+# Pawelo, 20221127, created as new based on https://esphome.io/cookbook/sonoff-t1-3#t2
+
+# platform: gpio
+# pin:
+#   number: GPIO12
+#   inverted: true
+# name: "$room Light 1"
+# id: light1
+# #icon: mdi:lightbulb
+# state_topic: $devicename/light1
+# on_value:
+#   - mqtt.publish:
+#       topic: "$mqtt_location/$mqtt_room/light1"
+#       payload: !lambda |-
+#         return to_string(id(hum).state);
+
+
+binary_sensor:
+  - platform: gpio
+    pin:
+      number: GPIO13
+      mode:
+        input: true
+        pullup: true
+      inverted: true
+    id: button_1
+    on_press:
+      then:
+        - light.toggle: light_1
+
+  - platform: gpio
+    pin:
+      number: GPIO14
+      mode:
+        input: true
+        pullup: true
+      inverted: true
+    id: button_2
+    on_press:
+      then:
+        - light.toggle: light_2
+
+output:
+  - platform: gpio
+    pin: GPIO5
+    id: relay_1
+
+  - platform: gpio
+    pin: GPIO12
+    id: relay_2
+
+light:
+  - platform: binary
+    name: "Light 1"
+    id: light_1
+    output: relay_1
+
+  - platform: binary
+    name: "Light 2"
+    id: light_2
+    output: relay_2
