@@ -2,6 +2,7 @@
 #* Base configuration for ESP-12F board
 # Pawelo 20221119, created as my framework based on !include statements
 # Pawelo 20221127, 1.1.3, added $devices variable to name configutation deployed
+# Pawelo 20221127, 1.1.4, moved i2c configuration to separate include file
 
 esphome:
   name: $devicename
@@ -22,9 +23,3 @@ esphome:
 
 # packages:
 #   network: !include mqtt.yaml
-
-i2c:
-  sda: 4
-  scl: 5
-  scan: true
-  id: bus_a
