@@ -1,5 +1,29 @@
 ---
-# ESP12F sensor board with temperature and humidity sensor SHTx30
+# ESP12F sensor board script name reflecting configuration esp12f_MMmm_SSss.yaml
+#
+#_ Measures used (MM)
+#* T - Temperature
+#* H - Humidity
+# P - Pressure
+# G - gas
+# I - Illuminance
+#
+#_ Manipulators used (mm)
+# 2L - Double Ligiht Switch
+# B - Buzzzer
+# D - Diode
+#
+#_ Sensors used (SS)
+#* S - SHTx30 - Temperature and Humidity
+# B - BH1750 - Illuminance
+# P - BME280 - Temperature, Humidity, Pressure
+# G - BME680 - Temperature, Humidity, Pressure, Gas
+# eC - SGP30 - TVOC (Total Volatile Organic Compounds), eCO2 (Equivalent Carbon Dioxide)
+#
+#_ Switches used (ss)
+# A - AVT5713 - Double Light Switch Board
+# B - 9032A - Active Buzzer 9mm diameteer x 3.2mm height
+#
 # Pawelo 20221112, 1.0.0, created based on https://github.com/nygma2004/esphome
 # Pawelo 20221114, 1.0.1, improved by adding secondary MQTT topic to each sensor (idea from https://community.home-assistant.io/t/publish-mqtt/324939)
 # Pawelo 20221114, 1.0.3, added Material Design Icons for sensors, based on https://pictogrammers.github.io/@mdi/font/2.0.46/
@@ -8,11 +32,17 @@
 # Pawelo 20221119, 1.0.6. added updates as parameter
 # Pawelo 20221119, 1.1.0. moved to framework with !include statements
 # Pawelo 20221119, 1.1.1. added esp version and wifi info text sensors to publish on web
+# Pawelo 20221127, 1.1.2, renamed script to reflect sensors/switches and measures/manipulators
+# Pawelo 20221127, 1.1.3, added $devices variable to name configutation deployed
 
-#! run with this command to ovveride sunstitutions
-# esphome -s devicename espXX -s updates 1min -s room <Room name> -s mqtt_room <room> run esp12f_temp_hum.yaml --device 192.168.x.x
+#! run with this command to override sunstitutions
+# esphome -s devicename espXX -s updates 1min -s room <Room name> -s mqtt_room <room> run esp12f_SSss_MMmm.yaml --device 192.168.x.x
 # heare are default values if those are not given via command line
 substitutions:
+  devices: "Temperature and Humidity via SHTx30"
+  project_name: "pgolawsk.esp_home_TH_S"
+  version: "1.1.3"
+
   devicename: espXX
   updates: "30s"
   room: Room # friendly name of room to display in HA/Web
@@ -20,10 +50,6 @@ substitutions:
   # by default it's also published under <devicename>/<id_sensor>
   mqtt_location: home
   mqtt_room: room
-
-  project_name: "pawelo.temp_hum"
-  version: "1.1.0"
-
 
 <<: !include includes/board_esp12f.yaml
 

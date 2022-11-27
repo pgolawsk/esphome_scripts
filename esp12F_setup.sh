@@ -5,6 +5,7 @@
 
 #TODO: Read more complicated AIQ measurement on https://github.com/nkitanov/iaq_board
 #TODO: Read about speaker with PAM8403 (amplifier) connection to ESP826 on: https://www.instructables.com/MQTT-Audio-Notifier-for-ESP8266-Play-MP3-TTS-RTTL/
+#TODO: For automation on esp board read https://github.com/esphome/esphome-docs/blob/current/guides/automations.rst
 
 #######################
 #* Configure new network for sensors at home
