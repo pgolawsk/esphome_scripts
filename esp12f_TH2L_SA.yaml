@@ -68,10 +68,10 @@ sensor:
   - !include sensors/uptime.yaml
   - !include sensors/wifi_signal.yaml
 
-#  # Temperature and Humidity sensor
-#  - !include sensors/temp_hum_sht3xd.yaml
-#  # Illuminance sensor
-#  - !include sensors/lux_bh1750.yaml
+  # Temperature and Humidity sensor
+  - !include sensors/temp_hum_sht3xd.yaml
+  # Illuminance sensor
+  - !include sensors/lux_bh1750.yaml
 
 
 # Double light Switch on AVT5713

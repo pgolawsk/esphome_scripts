@@ -3,6 +3,8 @@
 # Pawelo 20221112, created based on https://www.youtube.com/watch?v=a3iay-g1AsI, https://github.com/geerlingguy/pico-w-garage-door-sensor, https://github.com/nygma2004/esphome
 # Pawelo 20221115, added prometheus setup, based on https://esphome.io/components/prometheus.html
 # Pawelo 20221127, changed prometheus/mosquitto setups, after renaming all devices from espXX to esp12f-XX
+# Pawelo 20221201, added OPTIONAL section with how to reprogram soldered esp12f module
+
 
 #TODO: Read more complicated AIQ measurement on https://github.com/nkitanov/iaq_board
 #TODO: Read about speaker with PAM8403 (amplifier) connection to ESP826 on: https://www.instructables.com/MQTT-Audio-Notifier-for-ESP8266-Play-MP3-TTS-RTTL/
@@ -82,9 +84,10 @@ mosquitto_sub -t home/# -d
 #* Install the firmwares (wired or OTA)
 #*! RUN those commmands to compile and deliver updates to temp/higro sensors only
 #? --device is optional - if not given and device name can be found by dns then it will be flashed OTA anyway:)
-esphome -s devicename esp12f-10 -s room Office -s mqtt_room office run esp12f_TH_S.yml --device 192.168.10.10
-esphome -s devicename esp12f-11 -s room Kitchen -s mqtt_room kitchen run esp12f_THI_SB.yml --device 192.168.10.11
-esphome -s devicename esp12f-12 -s room Test -s mqtt_room test run esp12f_TH2L_SA.yml --device 192.168.10.11
+esphome -s devicename esp12f-10 -s updates 1min -s room Office -s mqtt_room office run esp12f_TH_S.yml --device 192.168.10.10
+esphome -s devicename esp12f-11 -s updates 1min -s room Kitchen -s mqtt_room kitchen run esp12f_THI_SB.yml --device 192.168.10.11
+
+esphome -s devicename esp12f-12 -s updates 1min -s room Test -s mqtt_room test run esp12f_TH2L_SA.yml --device 192.168.10.11
 
 
 
@@ -112,3 +115,22 @@ docker-compose logs prometheus
 # while using Prometheus datasource check if new measures are available - filter by label: node=esp
 
 #TODO Create dashboard for ESP values in Grafana
+
+
+###########################
+###########################
+#* OPTIONAL
+###########################
+###########################
+#* Programmming of soldered esp12f module, read https://www.hackster.io/brian-lough/3-simple-ways-of-programming-an-esp8266-12x-module-c514ee
+#* 8 cables needed AND
+# A. breadboard, RX, TX, GND connect to USB to serial converter
+#* B. development board for esp01 to esp12 - connect 8 cables using development board pins to program it
+
+# backup current firmware
+esptool.py --port /dev/cu.usbserial-22120 read_flash 0x00000 0x100000 image1M.bin
+
+# upload new ESPHome firmware with OTA
+esphome -s devicename esp12f-13 -s updates 1min -s room TestSwitch -s mqtt_room test_switch run esp12f_TH2L_SA.yaml
+
+# any further upload can be done via OTA:) with no soldering again
