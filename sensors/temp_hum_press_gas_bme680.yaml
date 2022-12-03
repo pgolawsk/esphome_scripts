@@ -1,0 +1,51 @@
+---
+#* Temperature, Humidity, Pressure, Gas sensor BME680 configuration
+# Pawelo, 20221203, created based on framework and https://esphome.io/components/sensor/bme680.html
+
+platform: bme680
+temperature:
+  name: "$room Temperature"
+  id: temp
+  oversampling: 16x
+  accuracy_decimals: 2
+  state_topic: $devicename/temperature
+  on_value:
+    - mqtt.publish:
+        topic: "$mqtt_location/$mqtt_room/temperature"
+        payload: !lambda |-
+          return to_string(id(temp).state);
+humidity:
+  name: "$room Humidity"
+  id: hum
+  oversampling: 16x
+  accuracy_decimals: 2
+  state_topic: $devicename/humidity
+  on_value:
+    - mqtt.publish:
+        topic: "$mqtt_location/$mqtt_room/humidity"
+        payload: !lambda |-
+          return to_string(id(hum).state);
+pressure:
+  name: "$room Pressure"
+  id: press
+  oversampling: 16x
+  accuracy_decimals: 2
+  state_topic: $devicename/pressure
+  on_value:
+    - mqtt.publish:
+        topic: "$mqtt_location/$mqtt_room/pressure"
+        payload: !lambda |-
+          return to_string(id(press).state);
+gas_resistance:
+  name: "$room Gas Resistance"
+  id: gas
+  accuracy_decimals: 2
+  state_topic: $devicename/pressure
+  on_value:
+    - mqtt.publish:
+        topic: "$mqtt_location/$mqtt_room/gas"
+        payload: !lambda |-
+          return to_string(id(gas).state);
+address: 0x77
+#iir_filter: 3x
+update_interval: $updates

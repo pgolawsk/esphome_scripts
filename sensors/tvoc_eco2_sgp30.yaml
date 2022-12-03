@@ -1,0 +1,31 @@
+---
+#* TVOC and eCO2 sensor SGP30 configuration
+# Pawelo, 20221203, created based on framework and https://esphome.io/components/sensor/sgp30.html
+
+platform: sgp30
+tvoc:
+  name: "$room TVOC"
+  id: tvoc
+  accuracy_decimals: 0
+  state_topic: $devicename/tvoc
+  on_value:
+    - mqtt.publish:
+        topic: "$mqtt_location/$mqtt_room/tvoc"
+        payload: !lambda |-
+          return to_string(id(tvoc).state);
+eco2:
+  name: "$room eCO2"
+  id: eco2
+  accuracy_decimals: 0
+  state_topic: $devicename/eco2
+  on_value:
+    - mqtt.publish:
+        topic: "$mqtt_location/$mqtt_room/eco2"
+        payload: !lambda |-
+          return to_string(id(eco2).state);
+address: 0x58
+store_baseline: yes # baseline is stored and preserved between the reboots, but after OTA new baseline needs to be calculated
+compensation:
+  temperature_source: temp
+  humidity_source: hum
+#update_interval: $updates
