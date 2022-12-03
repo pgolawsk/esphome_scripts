@@ -4,6 +4,7 @@
 # Pawelo 20221115, added prometheus setup, based on https://esphome.io/components/prometheus.html
 # Pawelo 20221127, changed prometheus/mosquitto setups, after renaming all devices from espXX to esp12f-XX
 # Pawelo 20221201, added OPTIONAL section with how to reprogram soldered esp12f module
+# Pawelo 20221203, added ESP1 links in OPTIONAL section
 
 
 #TODO: Read more complicated AIQ measurement on https://github.com/nkitanov/iaq_board
@@ -84,11 +85,11 @@ mosquitto_sub -t home/# -d
 #* Install the firmwares (wired or OTA)
 #*! RUN those commmands to compile and deliver updates to temp/higro sensors only
 #? --device is optional - if not given and device name can be found by dns then it will be flashed OTA anyway:)
-esphome -s devicename esp12f-10 -s updates 1min -s room Office -s mqtt_room office run esp12f_TH_S.yml --device 192.168.10.10
-esphome -s devicename esp12f-11 -s updates 1min -s room Kitchen -s mqtt_room kitchen run esp12f_THI_SB.yml --device 192.168.10.11
+esphome -s devicename esp12f-10 -s updates 1min -s room Office -s mqtt_room office run esp12f_TH_S.yaml --device 192.168.10.10
+esphome -s devicename esp12f-11 -s updates 1min -s room Kitchen -s mqtt_room kitchen run esp12f_THI_SB.yaml --device 192.168.10.11
 
-esphome -s devicename esp12f-12 -s updates 1min -s room Test -s mqtt_room test run esp12f_TH2L_SA.yml --device 192.168.10.11
-
+esphome -s devicename esp12f-12 -s updates 1min -s room Test -s mqtt_room test run esp12f_TH2L_SA.yaml --device 192.168.10.12
+esphome -s devicename esp12f-13 -s updates 1min -s room TestSwitch -s mqtt_room test_switch run esp12f_TH2L_SA.yaml --device 192.168.10.13
 
 
 ###########################
@@ -134,3 +135,9 @@ esptool.py --port /dev/cu.usbserial-22120 read_flash 0x00000 0x100000 image1M.bi
 esphome -s devicename esp12f-13 -s updates 1min -s room TestSwitch -s mqtt_room test_switch run esp12f_TH2L_SA.yaml
 
 # any further upload can be done via OTA:) with no soldering again
+
+###########################
+###########################
+#* ESP01 consideration as switch relay - read this: https://www.forward.com.au/pfod/ESP8266/GPIOpins/ESP8266_01_pin_magic.html
+# https://www.circuitschools.com/measure-ac-current-by-interfacing-acs712-sensor-with-esp32/
+# https://www.esphome-devices.com/devices/ESP-01S-1-channel-relay
