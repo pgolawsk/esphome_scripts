@@ -2,21 +2,7 @@
 #* Double Light Switch on AVT5713
 # Pawelo, 20221127, created as new based on https://esphome.io/cookbook/sonoff-t1-3#t2
 # Pawelo, 20221127, renaming switches, adding mqtt publis topics
-
-# platform: gpio
-# pin:
-#   number: GPIO12
-#   inverted: true
-# name: "$room Light 1"
-# id: light1
-# #icon: mdi:lightbulb
-# state_topic: $devicename/light1
-# on_value:
-#   - mqtt.publish:
-#       topic: "$mqtt_location/$mqtt_room/light1"
-#       payload: !lambda |-
-#         return to_string(id(hum).state);
-
+# Pawelo, 20221203, adding on_release action to binary_sensor, to simulate regular light switches
 
 binary_sensor:
   - platform: gpio
@@ -26,10 +12,13 @@ binary_sensor:
         input: true
         pullup: true
       inverted: true
-    name: "$room Button 1"
-    id: button_1
-    state_topic: $devicename/button1
+    name: "$room Switch 1"
+    id: switch_1
+    state_topic: $devicename/switch1
     on_press:
+      then:
+        - light.toggle: light_1
+    on_release:
       then:
         - light.toggle: light_1
 
@@ -40,10 +29,13 @@ binary_sensor:
         input: true
         pullup: true
       inverted: true
-    name: "$room Button 2"
-    id: button_2
-    state_topic: $devicename/button2
+    name: "$room Switch 2"
+    id: switch_2
+    state_topic: $devicename/switch2
     on_press:
+      then:
+        - light.toggle: light_2
+    on_release:
       then:
         - light.toggle: light_2
 
