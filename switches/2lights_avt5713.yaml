@@ -54,9 +54,20 @@ light:
     id: light_1
     state_topic: $devicename/light1
     output: relay_1
+    # on_state:
+    #   - mqtt.publish:
+    #       topic: "$mqtt_location/$mqtt_room/light1"
+    #       payload: !lambda |-
+    #         return to_string(id(light_1).state);
+
 
   - platform: binary
     name: "$room Light 2"
     id: light_2
     state_topic: $devicename/light2
     output: relay_2
+    # on_state:
+    #   - mqtt.publish:
+    #       topic: "$mqtt_location/$mqtt_room/light2"
+    #       payload: !lambda |-
+    #         return to_string(id(light_2).state);
