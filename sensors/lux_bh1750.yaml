@@ -2,6 +2,7 @@
 #* Illuminance sensor BH1750 configuration
 # Pawelo, 20221119, created as my framework based on !include statements
 # Pawelo, 20221127, confirm accuracy decimals to 1
+# Pawelo, 20221211, fix bug for publishing hum instead lux sensor on additional mqtt
 platform: bh1750
 name: "$room Illuminance"
 accuracy_decimals: 1
@@ -12,6 +13,6 @@ on_value:
   - mqtt.publish:
       topic: "$mqtt_location/$mqtt_room/illuminance"
       payload: !lambda |-
-        return to_string(id(hum).state);
+        return to_string(id(lux).state);
 address: 0x23
 update_interval: $updates
