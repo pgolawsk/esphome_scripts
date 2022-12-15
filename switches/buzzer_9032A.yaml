@@ -1,6 +1,7 @@
 ---
 #* Active buzzer connected to GPIO
 # Pawelo, 20221127, created as new based on https://diyi0t.com/active-passive-buzzer-arduino-esp8266-esp32/
+# Pawelo, 20221215, added beep 3 times sortly, based on: https://help.konnected.io/support/solutions/articles/32000030295-esphome-binary-sensors-switches-sensor-configuration
 
 # need active buzzer 9032, diode 1N4001, transistor BC848 and resistor 220Ohm (?)
 switch:
@@ -13,3 +14,19 @@ switch:
       on_turn_on:
       - delay: 750ms
       - switch.turn_off: buzzer
+    - platform: template
+      name: "$room Beep 3x"
+      id: beep3x
+      icon: "mdi:volume-medium"
+      turn_on_action:
+        - switch.turn_on: buzzer
+        - delay: 60ms
+        - switch.turn_off: buzzer
+        - delay: 60ms
+        - switch.turn_on: buzzer
+        - delay: 60ms
+        - switch.turn_off: buzzer
+        - delay: 60ms
+        - switch.turn_on: buzzer
+        - delay: 60ms
+        - switch.turn_off: buzzer
