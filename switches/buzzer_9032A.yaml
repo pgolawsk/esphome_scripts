@@ -2,4 +2,14 @@
 #* Active buzzer connected to GPIO
 # Pawelo, 20221127, created as new based on https://diyi0t.com/active-passive-buzzer-arduino-esp8266-esp32/
 
-# need buzzer, diode 1N4001, transistor BC848 and resistor 220Ohm (?)
+# need active buzzer 9032, diode 1N4001, transistor BC848 and resistor 220Ohm (?)
+switch:
+    - platform: gpio
+      pin: GPIO9
+      id: buzzer
+      name: "$room Buzzer"
+      icon: "mdi:volume-high"
+      state_topic: $devicename/buzzer
+      on_turn_on:
+      - delay: 750ms
+      - switch.turn_off: buzzer
