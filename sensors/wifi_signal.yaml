@@ -12,6 +12,6 @@ update_interval: $updates
 state_topic: $devicename/rssi
 on_value:
   - mqtt.publish:
-      topic: "$mqtt_location/$mqtt_room/$devicename/rssi"
+      topic: "$mqtt_location/$mqtt_room/rssi_$devicename"
       payload: !lambda |-
         return to_string(id(wifi_rssi).state);
