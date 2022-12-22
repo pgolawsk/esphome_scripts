@@ -1,0 +1,29 @@
+---
+#* Base configuration for ESP-01s board
+# Pawelo 20221222, created based on my framework and https://www.esphome-devices.com/devices/ESP-01S-1-channel-relay
+
+esphome:
+  name: $devicename
+  comment: $room ESP01s controller with $devices
+  project:
+    name: $project_name
+    version: $version
+
+esp8266:
+  board: esp01_1m
+  restore_from_flash: true
+  early_pin_init: false
+
+preferences:
+  flash_write_interval: 1min
+
+<<: !include wifi.yaml
+<<: !include api.yaml
+<<: !include ota.yaml
+<<: !include logger.yaml
+<<: !include web_server.yaml
+<<: !include prometheus.yaml
+<<: !include mqtt.yaml
+
+# packages:
+#   network: !include mqtt.yaml

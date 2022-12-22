@@ -92,6 +92,10 @@ esphome -s devicename esp12f-12 -s updates 1min -s room Test -s mqtt_room test r
 esphome -s devicename esp12f-13 -s updates 1min -s room TestSwitch -s mqtt_room test_switch run esp12f_TH2L_SA.yaml --device 192.168.10.13
 
 
+#*! RUN those commmands to compile and deliver updates to esp01s relay switches
+esphome -s devicename esp01s-100 -s updates 1min -s room "Kitchen" -s mqtt_room kitchen_fan -s delay_off 5min run esp01s_1R__F.yaml --device 192.168.10.100
+
+
 ###########################
 #* Set up Prometheus scraping
 # open your prometheus.yaml config file and put there below lines

@@ -1,0 +1,80 @@
+---
+# ESP01s single relay board scriptm name reflecting configuration esp01s_MMmm_SSss_PP.yaml
+#
+#_ Measures used (MM)
+#* T - Temperature
+#* H - Humidity
+# P - Pressure
+# G - gas
+# I - Illuminance
+#
+#_ Manipulators used (mm)
+# 1R - Single Switch/Relay
+# 2L - Double Ligiht Switch
+# B - Buzzzer
+# D - Diode
+#
+#_ Sensors used (SS)
+#* S - SHTx30 - Temperature and Humidity
+# B - BH1750 - Illuminance
+# P - BME280 - Temperature, Humidity, Pressure
+# G - BME680 - Temperature, Humidity, Pressure, Gas
+# eC - SGP30 - TVOC (Total Volatile Organic Compounds), eCO2 (Equivalent Carbon Dioxide)
+#
+#_ Switches used (ss)
+# A - AVT5713 - Double Light Switch Board
+# B - 9032A - Active Buzzer 9mm diameteer x 3.2mm height
+#
+#_ Purpose used (PP)
+# F - Fan
+# Pawelo 20221222, 1.1.5, created based esp12f_ scripts
+
+#! run with this command to override sunstitutions
+# esphome -s devicename espXX -s updates 1min -s room <Room name> -s mqtt_room <room> -s delay_off <time of active output> run esp01s_SSss_MMmm_PP.yaml --device 192.168.x.x
+# heare are default values if those are not given via command line
+substitutions:
+  devices: "Relay Switch"
+  project_name: "pgolawsk.esp_home generic single relay"
+  version: "1.1.5"
+
+  devicename: espXX
+  updates: "30s"
+  room: Room # friendly name of room to display in HA/Web
+  # this is ADDITIONAL topic and sub-topic for MQTT - it publishes under <topic>/<sub-topic>/<sensor>
+  # by default it's also published under <devicename>/<id_sensor>
+  mqtt_location: home
+  mqtt_room: room
+
+  # how much time to wait till relay will bw switched off
+  dalay_off: 10min
+
+<<: !include includes/board_esp01s.yaml
+#<<: !include includes/i2c_4_5.yaml
+
+# reinclude MQTT as a bug in ESPHOME, see: https://github.com/esphome/issues/issues/2180, https://github.com/esphome/issues/issues/1487
+mqtt:
+  broker: !secret mqtt_ip
+  port: !secret mqtt_port
+#  username: $devicename
+  username: !secret mqtt_user
+  password: !secret mqtt_password
+  client_id: $devicename
+# id: $devicename
+
+text_sensor:
+  - !include sensors/text_uptime.yaml
+  - !include sensors/text_version.yaml
+  - !include sensors/text_wifi_info.yaml
+
+sensor:
+  - !include sensors/uptime.yaml
+  - !include sensors/wifi_signal.yaml
+
+#  # Temperature and Humidity sensor
+#  - !include sensors/temp_hum_sht3xd.yaml
+
+# Restart button
+<<: !include switches/platform_restart.yaml
+
+# Single Switch on ESP-01/01S RElay board
+<<: !include switches/1relay_fan_generic_board.yaml
