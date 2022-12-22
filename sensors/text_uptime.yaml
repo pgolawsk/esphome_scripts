@@ -1,14 +1,16 @@
 ---
 #* Uptime (human readable) virtual sensor configuration
 # Pawelo, 20221119, created as my framework based on !include statements
+# Pawelo, 20221222, added $devicename to friendly names of those sensors
+
 platform: template
-name: $room Uptime
+name: $room $devicename Uptime
 id: uptime_human
 icon: mdi:clock-start
 internal: true
 state_topic: $devicename/uptime_text
 on_value:
   - mqtt.publish:
-      topic: "$mqtt_location/$mqtt_room/uptime_text"
+      topic: "$mqtt_location/$mqtt_room/$devicename/uptime_text"
       payload: !lambda |-
         return to_string(id(uptime_human).state);

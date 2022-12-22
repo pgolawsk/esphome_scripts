@@ -1,8 +1,10 @@
 ---
 #* WiFi signal strenght sensor configuration
 # Pawelo, 20221119, created as my framework based on !include statements
+# Pawelo, 20221222, added $devicename to friendly names of those sensors
+
 platform: wifi_signal
-name: "$room WiFi Signal"
+name: "$room $devicename WiFi Signal"
 id: wifi_rssi
 icon: mdi:signal
 update_interval: $updates
@@ -10,6 +12,6 @@ update_interval: $updates
 state_topic: $devicename/rssi
 on_value:
   - mqtt.publish:
-      topic: "$mqtt_location/$mqtt_room/rssi"
+      topic: "$mqtt_location/$mqtt_room/$devicename/rssi"
       payload: !lambda |-
         return to_string(id(wifi_rssi).state);

@@ -1,13 +1,14 @@
 ---
 #* WiFi information virtual sensor configuration
 # Pawelo, 20221119, created based on https://github.com/AlexMekkering/esphome-config/blob/master/common/text_sensors.yaml
+# Pawelo, 20221222, added $devicename to friendly names of those sensors
 platform: wifi_info
 ip_address:
-  name: $room IP Address
+  name: $room $devicename IP Address
   internal: true
 ssid:
-  name: $room SSID
+  name: $room $devicename SSID
   internal: true
 bssid:
-  name: $room BSSID
+  name: $room $devicename BSSID
   internal: true

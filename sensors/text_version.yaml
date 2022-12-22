@@ -1,7 +1,8 @@
 ---
 #* ESP version information virtual sensor configuration
 # Pawelo, 20221119, created based on https://github.com/AlexMekkering/esphome-config/blob/master/common/text_sensors.yaml
+# Pawelo, 20221222, added $devicename to friendly names of those sensors
 platform: version
-name: $room ESPHome Version
+name: $room $devicename ESPHome Version
 internal: true
 

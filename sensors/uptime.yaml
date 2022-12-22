@@ -1,15 +1,17 @@
 ---
 #* Uptime sensor configuration
 # Pawelo, 20221119, created as my framework based on !include statements
+# Pawelo, 20221222, added $devicename to friendly names of those sensors
+
 platform: uptime
-name: "$room Uptime Sensor"
+name: "$room $devicename Uptime"
 id: uptime_sensor
 icon: mdi:clock-start
 internal: true
 state_topic: $devicename/uptime
 on_value:
   - mqtt.publish:
-      topic: "$mqtt_location/$mqtt_room/uptime"
+      topic: "$mqtt_location/$mqtt_room/$devicename/uptime"
       payload: !lambda |-
         return to_string(id(uptime_sensor).state);
 update_interval: $updates
