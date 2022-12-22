@@ -1,10 +1,11 @@
 ---
 #* Restart action
 # Pawelo, 20221203, created based on https://www.esphome-devices.com/devices/ESP-01S-1-channel-relay
+# Pawelo, 20221222, added $devicename to friendly names of those sensors
 
 switch:
   platform: restart
-  name: $room Restart
+  name: $room $devicename Restart
   id: restart_switch
   icon: mdi:restart
   internal: true
