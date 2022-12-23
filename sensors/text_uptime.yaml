@@ -4,7 +4,7 @@
 # Pawelo, 20221222, added $devicename to friendly names of those sensors
 
 platform: template
-name: $room $devicename Uptime [s]
+name: $room $devicename Uptime
 id: uptime_human
 icon: mdi:clock-start
 internal: true

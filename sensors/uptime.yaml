@@ -4,7 +4,7 @@
 # Pawelo, 20221222, added $devicename to friendly names of those sensors
 
 platform: uptime
-name: "$room $devicename Uptime"
+name: "$room $devicename Uptime [min]"
 id: uptime_sensor
 icon: mdi:clock-start
 internal: true
