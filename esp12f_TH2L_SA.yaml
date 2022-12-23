@@ -88,3 +88,7 @@ sensor:
 
 # Double light Switch on AVT5713
 <<: !include switches/2lights_avt5713.yaml
+
+# Buzzer
+#<<: !include switches/active_buzzer_as_light_9032A.yaml
+

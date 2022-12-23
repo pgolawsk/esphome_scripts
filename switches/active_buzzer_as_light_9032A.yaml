@@ -5,29 +5,36 @@
 # Pawelo, 20221223, passive buzzer good example: https://community.home-assistant.io/t/esphome-and-passive-buzzer-continuous-beep-sound/477046/2
 
 # need active buzzer 9032, diode 1N4001, transistor BC848 and resistor 220Ohm (?)
-switch:
-  - platform: gpio
-    pin: GPIO5
-    id: buzzer
+output:
+  - platform: esp8266_pwm
+    pin: GPIO2 # GPIO2 with inverted
+    frequency: 2800Hz
+    id: buz
+    inverted: True
+
+light:
+  - platform: binary
     name: "$room Buzzer"
     icon: "mdi:volume-high"
+    id: buzzer
+    output: buz
     state_topic: $devicename/buzzer
     on_turn_on:
     - delay: 750ms
-    - switch.turn_off: buzzer
-  - platform: template
-    name: "$room Beep 3x"
-    id: beep3x
-    icon: "mdi:volume-medium"
-    turn_on_action:
-      - switch.turn_on: buzzer
-      - delay: 60ms
-      - switch.turn_off: buzzer
-      - delay: 60ms
-      - switch.turn_on: buzzer
-      - delay: 60ms
-      - switch.turn_off: buzzer
-      - delay: 60ms
-      - switch.turn_on: buzzer
-      - delay: 60ms
-      - switch.turn_off: buzzer
+    - light.turn_off: buzzer
+  # - platform: template
+  #   name: "$room Beep 3x"
+  #   id: beep3x
+  #   icon: "mdi:volume-medium"
+  #   turn_on_action:
+  #     - switch.turn_on: buzzer
+  #     - delay: 60ms
+  #     - switch.turn_off: buzzer
+  #     - delay: 60ms
+  #     - switch.turn_on: buzzer
+  #     - delay: 60ms
+  #     - switch.turn_off: buzzer
+  #     - delay: 60ms
+  #     - switch.turn_on: buzzer
+  #     - delay: 60ms
+  #     - switch.turn_off: buzzer
