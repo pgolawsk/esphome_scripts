@@ -1,0 +1,48 @@
+---
+#* Status LED on GPIO16
+# Pawelo, 20221130, created as new based on https://community.home-assistant.io/t/esphome-and-simple-led/115027
+
+output:
+  - platform: gpio
+    pin: GPIO16 # GPIO2 with inverted
+    id: s_led
+    inverted: False
+
+light:
+  - platform: binary
+    name: "$room LED"
+#    icon: "mdi:led"
+    id: status_led
+    output: s_led
+    state_topic: $devicename/led
+    on_turn_on:
+    - delay: 750ms
+    - light.turn_off: status_led
+
+switch:
+  - platform: template
+    name: "$room Beep 3x"
+    id: beep3x
+    icon: "mdi:volume-medium"
+    turn_on_action:
+      - light.turn_on: status_led
+      - delay: 600ms
+      - light.turn_off: status_led
+      - delay: 600ms
+      - light.turn_on: status_led
+      - delay: 600ms
+      - light.turn_off: status_led
+      - delay: 600ms
+      - light.turn_on: status_led
+      - delay: 600ms
+      - light.turn_off: status_led
+      - delay: 60ms
+      - light.turn_on: status_led
+      - delay: 60ms
+      - light.turn_off: status_led
+      - delay: 60ms
+      - light.turn_on: status_led
+      - delay: 60ms
+      - light.turn_off: status_led
+    turn_off_action:
+      - light.turn_off: status_led
