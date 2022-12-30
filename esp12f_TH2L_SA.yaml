@@ -9,9 +9,9 @@
 # I - Illuminance
 #
 #_ Manipulators used (mm)
-#* 2L - Double Ligiht Switch
-# B - Buzzzer
-# D - Diode
+#* 2l - Double Ligiht Switch
+# b - Buzzzer
+# d - Diode
 #
 #_ Sensors used (SS)
 #* S - SHTx30 - Temperature and Humidity
@@ -21,8 +21,8 @@
 # eC - SGP30 - TVOC (Total Volatile Organic Compounds), eCO2 (Equivalent Carbon Dioxide)
 #
 #_ Switches used (ss)
-#* A - AVT5713 - Double Light Switch Board
-# B - 9032A - Active Buzzer 9mm diameteer x 3.2mm height
+#* a - AVT5713 - Double Light Switch Board
+# b - 9032A - Active Buzzer 9mm diameteer x 3.2mm height
 #
 # Pawelo 20221127, 1.0.0, created based on esp12f_THL_SB.yml
 # Pawelo 20221127, 1.1.2, renamed script to reflect sensors/switches and measures/manipulators
@@ -82,13 +82,20 @@ sensor:
   # # TVOC and eCO2 sensor
   # - !include sensors/tvoc_eco2_sgp30.yaml
 
-
 # Restart button
-<<: !include switches/platform_restart.yaml
+#<<: !include switches/platform_restart.yaml
 
 # Double light Switch on AVT5713
-<<: !include switches/2lights_avt5713.yaml
+#<<: !include switches/2lights_avt5713.yaml
+
+###################
+#* Further tests
 
 # Buzzer
 #<<: !include switches/active_buzzer_as_light_9032A.yaml
+
+# Status LED
+<<: !include switches/status_led_as_light_GPIO16.yaml
+
+
 

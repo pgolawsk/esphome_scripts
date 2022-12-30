@@ -9,10 +9,10 @@
 # I - Illuminance
 #
 #_ Manipulators used (mm)
-# 1R - Single Switch/Relay
-# 2L - Double Ligiht Switch
-# B - Buzzzer
-# D - Diode
+# 1r - Single Switch/Relay
+# 2l - Double Ligiht Switch
+# b - Buzzzer
+# d - Diode
 #
 #_ Sensors used (SS)
 #* S - SHTx30 - Temperature and Humidity
@@ -22,8 +22,8 @@
 # eC - SGP30 - TVOC (Total Volatile Organic Compounds), eCO2 (Equivalent Carbon Dioxide)
 #
 #_ Switches used (ss)
-# A - AVT5713 - Double Light Switch Board
-# B - 9032A - Active Buzzer 9mm diameteer x 3.2mm height
+# a - AVT5713 - Double Light Switch Board
+# b - 9032A - Active Buzzer 9mm diameteer x 3.2mm height
 #
 #_ Purpose used (PP)
 # F - Fan

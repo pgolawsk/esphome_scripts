@@ -9,9 +9,9 @@
 #* I - Illuminance
 #
 #_ Manipulators used (mm)
-# 2L - Double Ligiht Switch
-# B - Buzzzer
-# D - Diode
+# 2l - Double Ligiht Switch
+# b - Buzzzer
+# d - Diode
 #
 #_ Sensors used (SS)
 #* S - SHTx30 - Temperature and Humidity
@@ -21,8 +21,8 @@
 # eC - SGP30 - TVOC (Total Volatile Organic Compounds), eCO2 (Equivalent Carbon Dioxide)
 #
 #_ Switches used (ss)
-# A - AVT5713 - Double Light Switch Board
-# B - 9032A - Active Buzzer 9mm diameteer x 3.2mm height
+# a - AVT5713 - Double Light Switch Board
+# b - 9032A - Active Buzzer 9mm diameteer x 3.2mm height
 #
 # Pawelo 20221117, 1.0.0, created based on edp12f_temp_hum.yml
 # Pawelo 20221119, 1.0.1. added updates as parameter
