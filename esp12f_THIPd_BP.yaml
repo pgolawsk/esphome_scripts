@@ -1,0 +1,84 @@
+---
+# ESP12F sensor board script name reflecting configuration esp12f_MMmm_SSss.yaml
+#
+#_ Measures used (MM)
+#* T - Temperature
+#* H - Humidity
+#* P - Pressure
+# G - gas
+#* I - Illuminance
+#
+#_ Manipulators used (mm)
+# 2l - Double Ligiht Switch
+# b - Buzzzer
+#* d - Diode
+#
+#_ Sensors used (SS)
+# S - SHTx30 - Temperature and Humidity
+#* B - BH1750 - Illuminance
+#* P - BME280 - Temperature, Humidity, Pressure
+# G - BME680 - Temperature, Humidity, Pressure, Gas
+# eC - SGP30 - TVOC (Total Volatile Organic Compounds), eCO2 (Equivalent Carbon Dioxide)
+#
+#_ Switches used (ss)
+# a - AVT5713 - Double Light Switch Board
+# b - 9032A - Active Buzzer 9mm diameteer x 3.2mm height
+#
+# Pawelo 20221117, 1.0.0, created based on edp12f_temp_hum.yml
+# Pawelo 20221119, 1.0.1. added updates as parameter
+# Pawelo 20221119, 1.1.0. moved to framework with !include statements
+# Pawelo 20221119, 1.1.1. added esp version and wifi info text sensors to publish on web
+# Pawelo 20221127, 1.1.2, renamed script to reflect sensors/switches and measures/manipulators
+# Pawelo 20221127, 1.1.3, added $devices variable to name configutation deployed
+# Pawelo 20221127, 1.1.4, moved i2c configuration to separate include file
+# Pawelo 20221203, 1.1.5, added Restart button on web
+
+#! run with this command to override sunstitutions
+# esphome -s devicename espXX -s updates 1min -s room <Room name> -s mqtt_room <room> run esp12f_MMmm_SSss.yaml --device 192.168.x.x
+# heare are default values if those are not given via command line
+substitutions:
+  devices: "Temperature and Humidity via SHTx30 and Illuminance via BH1750"
+  project_name: "pgolawsk.esp_home_THI_SB"
+  version: "1.1.5"
+
+  devicename: espXX
+  updates: "30s"
+  room: Room # friendly name of room to display in HA/Web
+  # this is ADDITIONAL topic and sub-topic for MQTT - it publishes under <topic>/<sub-topic>/<sensor>
+  # by default it's also published under <devicename>/<id_sensor>
+  mqtt_location: home
+  mqtt_room: room
+
+<<: !include includes/board_esp12f.yaml
+<<: !include includes/i2c_4_5.yaml
+
+# reinclude MQTT as a bug in ESPHOME, see: https://github.com/esphome/issues/issues/2180, https://github.com/esphome/issues/issues/1487
+mqtt:
+  broker: !secret mqtt_ip
+  port: !secret mqtt_port
+#  username: $devicename
+  username: !secret mqtt_user
+  password: !secret mqtt_password
+  client_id: $devicename
+# id: $devicename
+
+text_sensor:
+  - !include sensors/text_uptime.yaml
+  - !include sensors/text_version.yaml
+  - !include sensors/text_wifi_info.yaml
+
+
+sensor:
+  - !include sensors/uptime.yaml
+  - !include sensors/wifi_signal.yaml
+
+  # Temperature and Humidity and Preasure sensor
+  - !include sensors/temp_hum_press_bme280.yaml
+  # Illuminance sensor
+  - !include sensors/lux_bh1750.yaml
+
+# Restart button
+<<: !include switches/platform_restart.yaml
+
+# Status LED
+<<: !include switches/status_led_as_light_GPIO16.yaml
