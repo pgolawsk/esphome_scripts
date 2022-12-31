@@ -1,6 +1,7 @@
 ---
 #* Status LED on GPIO16
 # Pawelo, 20221130, created as new based on https://community.home-assistant.io/t/esphome-and-simple-led/115027
+# Pawelo, 20221131, switched to 3s of light
 
 output:
   - platform: gpio
@@ -16,13 +17,13 @@ light:
     output: s_led
     state_topic: $devicename/led
     on_turn_on:
-    - delay: 750ms
+    - delay: 3s
     - light.turn_off: status_led
 
 switch:
   - platform: template
-    name: "$room Beep 3x"
-    id: beep3x
+    name: "$room LED 3x"
+    id: led3x
     icon: "mdi:volume-medium"
     turn_on_action:
       - light.turn_on: status_led

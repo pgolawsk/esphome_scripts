@@ -1,0 +1,19 @@
+---
+#* Illuminance sensor BH1750 configuration
+# Pawelo, 20221231, created based on primary lux_bh1750.yaml sensor file,
+#                   with added calibration for Entrance room (where is very dark)
+platform: bh1750
+name: "$room Illuminance"
+accuracy_decimals: 1
+id: lux
+icon: mdi:mdi-decagram-outline
+state_topic: $devicename/illuminance
+on_value:
+  - mqtt.publish:
+      topic: "$mqtt_location/$mqtt_room/illuminance"
+      payload: !lambda |-
+        return to_string(id(lux).state);
+address: 0x23
+update_interval: $updates
+filters:
+  - multiply: 10.2

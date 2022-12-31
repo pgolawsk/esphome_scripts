@@ -1,13 +1,16 @@
 ---
 #* Temperature, Humidity, Pressure, Gas sensor BME680 configuration
 # Pawelo, 20221203, created based on framework and https://esphome.io/components/sensor/bme680.html
+# Pawelo, 20221231, calibrating temp/humid sensors based on Entrance data (see also https://esphome.io/components/sensor/index.html#offset)
 
 platform: bme680
 temperature:
   name: "$room Temperature"
   id: temp
-  oversampling: 16x
+  oversampling: 8x
   accuracy_decimals: 2
+  filters:
+    - offset: -2.4
   state_topic: $devicename/temperature
   on_value:
     - mqtt.publish:
@@ -17,8 +20,10 @@ temperature:
 humidity:
   name: "$room Humidity"
   id: hum
-  oversampling: 16x
+  oversampling: 8x
   accuracy_decimals: 2
+  filters:
+    - offset: 4.4
   state_topic: $devicename/humidity
   on_value:
     - mqtt.publish:
@@ -28,7 +33,7 @@ humidity:
 pressure:
   name: "$room Pressure"
   id: press
-  oversampling: 16x
+  oversampling: 8x
   accuracy_decimals: 2
   state_topic: $devicename/pressure
   on_value:

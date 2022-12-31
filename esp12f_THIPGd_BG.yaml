@@ -67,7 +67,6 @@ text_sensor:
   - !include sensors/text_version.yaml
   - !include sensors/text_wifi_info.yaml
 
-
 sensor:
   - !include sensors/uptime.yaml
   - !include sensors/wifi_signal.yaml
@@ -75,10 +74,41 @@ sensor:
   # Temperature and Humidity and Preasure sensor
   - !include sensors/temp_hum_press_gas_bme680.yaml
   # Illuminance sensor
-  - !include sensors/lux_bh1750.yaml
+  - !include sensors/lux_bh1750_entrance.yaml
 
 # Restart button
 <<: !include switches/platform_restart.yaml
+
+
+
+# switch:
+#   - platform: template
+#     name: "$room LED 3x"
+#     id: led3x
+#     icon: "mdi:volume-medium"
+#     turn_on_action:
+#       - light.turn_on: status_led
+#       - delay: 600ms
+#       - light.turn_off: status_led
+#       - delay: 600ms
+#       - light.turn_on: status_led
+#       - delay: 600ms
+#       - light.turn_off: status_led
+#       - delay: 600ms
+#       - light.turn_on: status_led
+#       - delay: 600ms
+#       - light.turn_off: status_led
+#       - delay: 60ms
+#       - light.turn_on: status_led
+#       - delay: 60ms
+#       - light.turn_off: status_led
+#       - delay: 60ms
+#       - light.turn_on: status_led
+#       - delay: 60ms
+#       - light.turn_off: status_led
+#     turn_off_action:
+#       - light.turn_off: status_led
+
 
 # Status LED
 <<: !include switches/status_led_as_light_GPIO16.yaml
