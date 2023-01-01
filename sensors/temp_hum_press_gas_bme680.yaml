@@ -2,6 +2,7 @@
 #* Temperature, Humidity, Pressure, Gas sensor BME680 configuration
 # Pawelo, 20221203, created based on framework and https://esphome.io/components/sensor/bme680.html
 # Pawelo, 20221231, calibrating temp/humid sensors based on Entrance data (see also https://esphome.io/components/sensor/index.html#offset)
+# Pawelo, 20230101, ranaming /gas to/gas_resistance sensor in MQTT additional message
 
 platform: bme680
 temperature:
@@ -48,7 +49,7 @@ gas_resistance:
   state_topic: $devicename/pressure
   on_value:
     - mqtt.publish:
-        topic: "$mqtt_location/$mqtt_room/gas"
+        topic: "$mqtt_location/$mqtt_room/gas_resistance"
         payload: !lambda |-
           return to_string(id(gas).state);
 address: 0x77
