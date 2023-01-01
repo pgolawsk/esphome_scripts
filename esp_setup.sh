@@ -7,6 +7,7 @@
 # Pawelo 20221203, added ESP1 links in OPTIONAL section
 # Pawelo 20221230, added flashing for Entrance room ("THIPG" measures and "d" switch)
 # Pawelo 20230101, added flashing for generic esp board with esp-32
+# Pawelo 20230101, changed default mosquito_sub options
 
 
 #TODO: Read more complicated AIQ measurement on https://github.com/nkitanov/iaq_board
@@ -64,10 +65,10 @@ sudo service mosquitto restart
 
 # read about mosquitto on http://www.steves-internet-guide.com/mosquitto_pub-sub-clients/
 # subscribe to all MQTT topics:
-mosquitto_sub -h localhost -t \# -d
+mosquitto_sub -h localhost -v -t \#
 
 # subscribe to home/xxxxxx/xxxx MQTT topics:
-mosquitto_sub -t home/# -d
+mosquitto_sub -v -t home/#
 
 
 ##########################
