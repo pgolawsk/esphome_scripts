@@ -16,4 +16,4 @@ on_value:
 address: 0x23
 update_interval: $updates
 filters:
-  - multiply: 10.2
+  - multiply: 3.2
