@@ -10,7 +10,7 @@ temperature:
   oversampling: 16x
   accuracy_decimals: 2
   filters:
-    - offset: -8.2
+    - offset: -9.2
   state_topic: $devicename/temperature
   on_value:
     - mqtt.publish:
@@ -23,7 +23,7 @@ humidity:
   oversampling: 16x
   accuracy_decimals: 2
   filters:
-    - offset: +8.2
+    - offset: +16.2
   state_topic: $devicename/humidity
   on_value:
     - mqtt.publish:
