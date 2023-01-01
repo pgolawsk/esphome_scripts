@@ -6,6 +6,7 @@
 # Pawelo 20221201, added OPTIONAL section with how to reprogram soldered esp12f module
 # Pawelo 20221203, added ESP1 links in OPTIONAL section
 # Pawelo 20221230, added flashing for Entrance room ("THIPG" measures and "d" switch)
+# Pawelo 20230101, added flashing for generic esp board with esp-32
 
 
 #TODO: Read more complicated AIQ measurement on https://github.com/nkitanov/iaq_board
@@ -84,20 +85,25 @@ mosquitto_sub -t home/# -d
 
 ###########################
 #* Install the firmwares (wired or OTA)
-#*! RUN those commmands to compile and deliver updates to temp/higro sensors only
+#*! RUN those commmands to compile and deliver updates to esp12f devices with sensors, switches, ...
 #? --device is optional - if not given and device name can be found by dns then it will be flashed OTA anyway:)
-esphome -s devicename esp12f-10 -s updates 1min -s room Office -s mqtt_room office run esp12f_TH_S.yaml --device 192.168.10.10
-esphome -s devicename esp12f-11 -s updates 1min -s room Entrance -s mqtt_room entrance run esp12f_THIPGd_BG.yaml --device 192.168.10.11
+esphome -s devicename esp12f-10 -s updates 1min -s room Office -s mqtt_room office run esp12f_TH_S.yaml --device 192.168.x.x
+esphome -s devicename esp12f-11 -s updates 1min -s room Entrance -s mqtt_room entrance run esp12f_THIPGd_BG.yaml --device 192.168.x.x
 
-esphome -s devicename esp12f-12 -s updates 1min -s room Test -s mqtt_room test run esp12f_TH2l_Sa.yaml --device 192.168.10.12
-esphome -s devicename esp12f-13 -s updates 1min -s room TestSwitch -s mqtt_room test_switch run esp12f_TH2l_Sa.yaml --device 192.168.10.13
+esphome -s devicename esp12f-12 -s updates 1min -s room Test -s mqtt_room test run esp12f_TH2l_Sa.yaml --device 192.168.x.x
+esphome -s devicename esp12f-13 -s updates 1min -s room TestSwitch -s mqtt_room test_switch run esp12f_TH2l_Sa.yaml --device 192.168.x.x
 
-# esphome -s devicename esp12f-11 -s updates 1min -s room Kitchen -s mqtt_room kitchen run esp12f_THI_SB.yaml --device 192.168.10.11
+# esphome -s devicename esp12f-11 -s updates 1min -s room Kitchen -s mqtt_room kitchen run esp12f_THI_SB.yaml --device 192.168.x.x
 
 
 #*! RUN those commmands to compile and deliver updates to esp01s relay switches
-esphome -s devicename esp01s-100 -s updates 1min -s room "Kitchen" -s mqtt_room kitchen_fan -s delay_off 5min run esp01s_1r__F.yaml --device 192.168.10.100
+#? --device is optional - if not given and device name can be found by dns then it will be flashed OTA anyway:)
+esphome -s devicename esp01s-100 -s updates 1min -s room "Kitchen" -s mqtt_room kitchen_fan -s delay_off 5min run esp01s_1r__F.yaml --device 192.168.x.x
 
+
+#*! RUN those commmands to compile and deliver updates to esp32 devices wit sensors, switches, ...
+#? --device is optional - if not given and device name can be found by dns then it will be flashed OTA anyway:)
+esphome -s devicename esp32-30 -s updates 1min -s room Test32 -s mqtt_room test32 run esp32_dev.yaml --device 192.168.x.x
 
 ###########################
 #* Set up Prometheus scraping
