@@ -91,6 +91,7 @@ sensor:
 
   # Illuminance sensor
   - !include sensors/lux_bh1750.yaml
+#  - !include sensors/lux_color_tcs3472.yaml
 
   # # TVOC and eCO2 sensor
   # - !include sensors/tvoc_eco2_sgp30.yaml
