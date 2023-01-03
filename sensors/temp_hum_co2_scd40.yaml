@@ -1,0 +1,43 @@
+---
+#* Temperature, Humidity, CO2 sensor SCD40 configuration
+# Pawelo, 20230103, created based on framework and https://esphome.io/components/sensor/scd4x.html
+
+platform: scd4x
+measurement_mode: low_power_periodic # available options: periodic (5s), low_power_periodic (30s), single_shot (5s) on update, single_shor_rht_only (50ms, only temp, hum)
+temperature:
+  name: "$room Temperature2"
+  id: temp2
+  accuracy_decimals: 2
+#  filters:
+#    - offset: -2.4
+  state_topic: $devicename/temperature2
+  on_value:
+    - mqtt.publish:
+        topic: "$mqtt_location/$mqtt_room/temperature2"
+        payload: !lambda |-
+          return to_string(id(temp).state);
+humidity:
+  name: "$room Humidity2"
+  id: hum2
+  accuracy_decimals: 2
+#  filters:
+#    - offset: 4.4
+  state_topic: $devicename/humidity2
+  on_value:
+    - mqtt.publish:
+        topic: "$mqtt_location/$mqtt_room/humidity2"
+        payload: !lambda |-
+          return to_string(id(hum).state);
+co2:
+  name: "$room CO2"
+  id: co2
+  accuracy_decimals: 2
+  state_topic: $devicename/co2
+  on_value:
+    - mqtt.publish:
+        topic: "$mqtt_location/$mqtt_room/co2"
+        payload: !lambda |-
+          return to_string(id(co2).state);
+address: 0x62
+#iir_filter: 3x
+update_interval: $updates
