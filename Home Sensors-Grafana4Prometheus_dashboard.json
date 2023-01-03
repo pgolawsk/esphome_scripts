@@ -66,7 +66,7 @@
   "liveNow": false,
   "panels": [
     {
-      "collapsed": false,
+      "collapsed": true,
       "gridPos": {
         "h": 1,
         "w": 24,
@@ -74,313 +74,314 @@
         "y": 0
       },
       "id": 6,
-      "panels": [],
+      "panels": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${DS_PROMETHEUS}"
+          },
+          "description": "",
+          "fieldConfig": {
+            "defaults": {
+              "color": {
+                "mode": "palette-classic"
+              },
+              "mappings": [],
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  {
+                    "color": "transparent",
+                    "value": null
+                  }
+                ]
+              },
+              "unit": "pressurehpa"
+            },
+            "overrides": []
+          },
+          "gridPos": {
+            "h": 6,
+            "w": 12,
+            "x": 0,
+            "y": 1
+          },
+          "id": 21,
+          "options": {
+            "orientation": "auto",
+            "reduceOptions": {
+              "calcs": [
+                "lastNotNull"
+              ],
+              "fields": "",
+              "values": false
+            },
+            "showThresholdLabels": false,
+            "showThresholdMarkers": true
+          },
+          "pluginVersion": "9.3.2",
+          "targets": [
+            {
+              "datasource": {
+                "type": "prometheus",
+                "uid": "${DS_PROMETHEUS}"
+              },
+              "editorMode": "builder",
+              "exemplar": false,
+              "expr": "esphome_sensor_value{id=~\".+pressure.*\"}",
+              "instant": true,
+              "legendFormat": "{{name}}",
+              "range": false,
+              "refId": "A"
+            }
+          ],
+          "title": "Pressure",
+          "type": "gauge"
+        },
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${DS_PROMETHEUS}"
+          },
+          "description": "",
+          "fieldConfig": {
+            "defaults": {
+              "color": {
+                "mode": "palette-classic"
+              },
+              "mappings": [],
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  {
+                    "color": "transparent",
+                    "value": null
+                  }
+                ]
+              },
+              "unit": "lux"
+            },
+            "overrides": []
+          },
+          "gridPos": {
+            "h": 6,
+            "w": 12,
+            "x": 12,
+            "y": 1
+          },
+          "id": 14,
+          "options": {
+            "orientation": "auto",
+            "reduceOptions": {
+              "calcs": [
+                "lastNotNull"
+              ],
+              "fields": "",
+              "values": false
+            },
+            "showThresholdLabels": false,
+            "showThresholdMarkers": true
+          },
+          "pluginVersion": "9.3.2",
+          "targets": [
+            {
+              "datasource": {
+                "type": "prometheus",
+                "uid": "${DS_PROMETHEUS}"
+              },
+              "editorMode": "builder",
+              "exemplar": false,
+              "expr": "esphome_sensor_value{id=~\".+illuminance.*\"}",
+              "instant": true,
+              "legendFormat": "{{name}}",
+              "range": false,
+              "refId": "A"
+            }
+          ],
+          "title": "Illuminance",
+          "type": "gauge"
+        },
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${DS_PROMETHEUS}"
+          },
+          "description": "",
+          "fieldConfig": {
+            "defaults": {
+              "color": {
+                "mode": "thresholds"
+              },
+              "mappings": [],
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  {
+                    "color": "text",
+                    "value": null
+                  },
+                  {
+                    "color": "#6ED0E0",
+                    "value": 0
+                  },
+                  {
+                    "color": "light-green",
+                    "value": 15
+                  },
+                  {
+                    "color": "dark-green",
+                    "value": 20
+                  },
+                  {
+                    "color": "yellow",
+                    "value": 25
+                  },
+                  {
+                    "color": "orange",
+                    "value": 30
+                  },
+                  {
+                    "color": "red",
+                    "value": 35
+                  }
+                ]
+              },
+              "unit": "celsius"
+            },
+            "overrides": []
+          },
+          "gridPos": {
+            "h": 6,
+            "w": 24,
+            "x": 0,
+            "y": 7
+          },
+          "id": 8,
+          "options": {
+            "orientation": "auto",
+            "reduceOptions": {
+              "calcs": [
+                "lastNotNull"
+              ],
+              "fields": "",
+              "values": false
+            },
+            "showThresholdLabels": false,
+            "showThresholdMarkers": true
+          },
+          "pluginVersion": "9.3.2",
+          "targets": [
+            {
+              "datasource": {
+                "type": "prometheus",
+                "uid": "${DS_PROMETHEUS}"
+              },
+              "editorMode": "builder",
+              "exemplar": false,
+              "expr": "esphome_sensor_value{id=~\".+temperature.*\"}",
+              "format": "time_series",
+              "instant": false,
+              "legendFormat": "{{name}}",
+              "range": true,
+              "refId": "A"
+            }
+          ],
+          "title": "Temp in rooms",
+          "type": "gauge"
+        },
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${DS_PROMETHEUS}"
+          },
+          "fieldConfig": {
+            "defaults": {
+              "color": {
+                "mode": "thresholds"
+              },
+              "mappings": [],
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  {
+                    "color": "text",
+                    "value": null
+                  },
+                  {
+                    "color": "red",
+                    "value": 25
+                  },
+                  {
+                    "color": "light-yellow",
+                    "value": 35
+                  },
+                  {
+                    "color": "green",
+                    "value": 45
+                  },
+                  {
+                    "color": "semi-dark-green",
+                    "value": 55
+                  },
+                  {
+                    "color": "blue",
+                    "value": 65
+                  },
+                  {
+                    "color": "semi-dark-blue",
+                    "value": 75
+                  },
+                  {
+                    "color": "dark-blue",
+                    "value": 85
+                  }
+                ]
+              },
+              "unit": "humidity"
+            },
+            "overrides": []
+          },
+          "gridPos": {
+            "h": 6,
+            "w": 24,
+            "x": 0,
+            "y": 13
+          },
+          "id": 10,
+          "options": {
+            "orientation": "auto",
+            "reduceOptions": {
+              "calcs": [
+                "lastNotNull"
+              ],
+              "fields": "",
+              "values": false
+            },
+            "showThresholdLabels": false,
+            "showThresholdMarkers": true
+          },
+          "pluginVersion": "9.3.2",
+          "targets": [
+            {
+              "datasource": {
+                "type": "prometheus",
+                "uid": "${DS_PROMETHEUS}"
+              },
+              "editorMode": "builder",
+              "exemplar": false,
+              "expr": "esphome_sensor_value{id=~\".+humidity.*\"}",
+              "instant": false,
+              "legendFormat": "{{name}}",
+              "range": true,
+              "refId": "A"
+            }
+          ],
+          "title": "Humidity in rooms",
+          "type": "gauge"
+        }
+      ],
       "title": "Current conditions",
       "type": "row"
-    },
-    {
-      "datasource": {
-        "type": "prometheus",
-        "uid": "${DS_PROMETHEUS}"
-      },
-      "description": "",
-      "fieldConfig": {
-        "defaults": {
-          "color": {
-            "mode": "palette-classic"
-          },
-          "mappings": [],
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "transparent",
-                "value": null
-              }
-            ]
-          },
-          "unit": "pressurehpa"
-        },
-        "overrides": []
-      },
-      "gridPos": {
-        "h": 6,
-        "w": 12,
-        "x": 0,
-        "y": 1
-      },
-      "id": 21,
-      "options": {
-        "orientation": "auto",
-        "reduceOptions": {
-          "calcs": [
-            "lastNotNull"
-          ],
-          "fields": "",
-          "values": false
-        },
-        "showThresholdLabels": false,
-        "showThresholdMarkers": true
-      },
-      "pluginVersion": "9.3.2",
-      "targets": [
-        {
-          "datasource": {
-            "type": "prometheus",
-            "uid": "${DS_PROMETHEUS}"
-          },
-          "editorMode": "builder",
-          "exemplar": false,
-          "expr": "esphome_sensor_value{id=~\".+pressure\"}",
-          "instant": true,
-          "legendFormat": "{{name}}",
-          "range": false,
-          "refId": "A"
-        }
-      ],
-      "title": "Pressure",
-      "type": "gauge"
-    },
-    {
-      "datasource": {
-        "type": "prometheus",
-        "uid": "${DS_PROMETHEUS}"
-      },
-      "description": "",
-      "fieldConfig": {
-        "defaults": {
-          "color": {
-            "mode": "palette-classic"
-          },
-          "mappings": [],
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "transparent",
-                "value": null
-              }
-            ]
-          },
-          "unit": "lux"
-        },
-        "overrides": []
-      },
-      "gridPos": {
-        "h": 6,
-        "w": 12,
-        "x": 12,
-        "y": 1
-      },
-      "id": 14,
-      "options": {
-        "orientation": "auto",
-        "reduceOptions": {
-          "calcs": [
-            "lastNotNull"
-          ],
-          "fields": "",
-          "values": false
-        },
-        "showThresholdLabels": false,
-        "showThresholdMarkers": true
-      },
-      "pluginVersion": "9.3.2",
-      "targets": [
-        {
-          "datasource": {
-            "type": "prometheus",
-            "uid": "${DS_PROMETHEUS}"
-          },
-          "editorMode": "builder",
-          "exemplar": false,
-          "expr": "esphome_sensor_value{id=~\".+illuminance\"}",
-          "instant": true,
-          "legendFormat": "{{name}}",
-          "range": false,
-          "refId": "A"
-        }
-      ],
-      "title": "Illuminance",
-      "type": "gauge"
-    },
-    {
-      "datasource": {
-        "type": "prometheus",
-        "uid": "${DS_PROMETHEUS}"
-      },
-      "description": "",
-      "fieldConfig": {
-        "defaults": {
-          "color": {
-            "mode": "thresholds"
-          },
-          "mappings": [],
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "text",
-                "value": null
-              },
-              {
-                "color": "#6ED0E0",
-                "value": 0
-              },
-              {
-                "color": "light-green",
-                "value": 15
-              },
-              {
-                "color": "dark-green",
-                "value": 20
-              },
-              {
-                "color": "yellow",
-                "value": 25
-              },
-              {
-                "color": "orange",
-                "value": 30
-              },
-              {
-                "color": "red",
-                "value": 35
-              }
-            ]
-          },
-          "unit": "celsius"
-        },
-        "overrides": []
-      },
-      "gridPos": {
-        "h": 6,
-        "w": 24,
-        "x": 0,
-        "y": 7
-      },
-      "id": 8,
-      "options": {
-        "orientation": "auto",
-        "reduceOptions": {
-          "calcs": [
-            "lastNotNull"
-          ],
-          "fields": "",
-          "values": false
-        },
-        "showThresholdLabels": false,
-        "showThresholdMarkers": true
-      },
-      "pluginVersion": "9.3.2",
-      "targets": [
-        {
-          "datasource": {
-            "type": "prometheus",
-            "uid": "${DS_PROMETHEUS}"
-          },
-          "editorMode": "builder",
-          "exemplar": false,
-          "expr": "esphome_sensor_value{id=~\".+temperature\"}",
-          "format": "time_series",
-          "instant": false,
-          "legendFormat": "{{name}}",
-          "range": true,
-          "refId": "A"
-        }
-      ],
-      "title": "Temp in rooms",
-      "type": "gauge"
-    },
-    {
-      "datasource": {
-        "type": "prometheus",
-        "uid": "${DS_PROMETHEUS}"
-      },
-      "fieldConfig": {
-        "defaults": {
-          "color": {
-            "mode": "thresholds"
-          },
-          "mappings": [],
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "text",
-                "value": null
-              },
-              {
-                "color": "red",
-                "value": 25
-              },
-              {
-                "color": "light-yellow",
-                "value": 35
-              },
-              {
-                "color": "green",
-                "value": 45
-              },
-              {
-                "color": "semi-dark-green",
-                "value": 55
-              },
-              {
-                "color": "blue",
-                "value": 65
-              },
-              {
-                "color": "semi-dark-blue",
-                "value": 75
-              },
-              {
-                "color": "dark-blue",
-                "value": 85
-              }
-            ]
-          },
-          "unit": "humidity"
-        },
-        "overrides": []
-      },
-      "gridPos": {
-        "h": 6,
-        "w": 24,
-        "x": 0,
-        "y": 13
-      },
-      "id": 10,
-      "options": {
-        "orientation": "auto",
-        "reduceOptions": {
-          "calcs": [
-            "lastNotNull"
-          ],
-          "fields": "",
-          "values": false
-        },
-        "showThresholdLabels": false,
-        "showThresholdMarkers": true
-      },
-      "pluginVersion": "9.3.2",
-      "targets": [
-        {
-          "datasource": {
-            "type": "prometheus",
-            "uid": "${DS_PROMETHEUS}"
-          },
-          "editorMode": "builder",
-          "exemplar": false,
-          "expr": "esphome_sensor_value{id=~\".+humidity\"}",
-          "instant": false,
-          "legendFormat": "{{name}}",
-          "range": true,
-          "refId": "A"
-        }
-      ],
-      "title": "Humidity in rooms",
-      "type": "gauge"
     },
     {
       "collapsed": false,
@@ -388,7 +389,7 @@
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 19
+        "y": 1
       },
       "id": 4,
       "panels": [],
@@ -457,7 +458,7 @@
         "h": 8,
         "w": 24,
         "x": 0,
-        "y": 20
+        "y": 2
       },
       "id": 22,
       "options": {
@@ -481,7 +482,7 @@
             "uid": "${DS_PROMETHEUS}"
           },
           "editorMode": "builder",
-          "expr": "esphome_sensor_value{id=~\".+pressure\"}",
+          "expr": "esphome_sensor_value{id=~\".+pressure.*\"}",
           "legendFormat": "{{name}}",
           "range": true,
           "refId": "A"
@@ -573,7 +574,7 @@
         "h": 9,
         "w": 24,
         "x": 0,
-        "y": 28
+        "y": 10
       },
       "id": 2,
       "options": {
@@ -599,7 +600,7 @@
           },
           "editorMode": "builder",
           "exemplar": true,
-          "expr": "esphome_sensor_value{id=~\".+temperature\"}",
+          "expr": "esphome_sensor_value{id=~\".+temperature.*\"}",
           "hide": false,
           "instant": false,
           "legendFormat": "{{name}}",
@@ -696,7 +697,7 @@
         "h": 8,
         "w": 24,
         "x": 0,
-        "y": 37
+        "y": 19
       },
       "id": 12,
       "options": {
@@ -723,7 +724,7 @@
             "uid": "${DS_PROMETHEUS}"
           },
           "editorMode": "builder",
-          "expr": "esphome_sensor_value{id=~\".+humidity\"}",
+          "expr": "esphome_sensor_value{id=~\".+humidity.*\"}",
           "legendFormat": "{{name}}",
           "range": true,
           "refId": "A"
@@ -794,7 +795,7 @@
         "h": 8,
         "w": 24,
         "x": 0,
-        "y": 45
+        "y": 27
       },
       "id": 18,
       "options": {
@@ -818,7 +819,7 @@
             "uid": "${DS_PROMETHEUS}"
           },
           "editorMode": "builder",
-          "expr": "esphome_sensor_value{id=~\".+illuminance\"}",
+          "expr": "esphome_sensor_value{id=~\".+illuminance.*\"}",
           "legendFormat": "{{name}}",
           "range": true,
           "refId": "A"
@@ -833,7 +834,7 @@
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 53
+        "y": 35
       },
       "id": 24,
       "panels": [],
@@ -902,7 +903,7 @@
         "h": 8,
         "w": 24,
         "x": 0,
-        "y": 54
+        "y": 36
       },
       "id": 26,
       "options": {
@@ -929,7 +930,7 @@
             "uid": "${DS_PROMETHEUS}"
           },
           "editorMode": "builder",
-          "expr": "esphome_sensor_value{id=~\".+co2\"}",
+          "expr": "esphome_sensor_value{id=~\".+co2.*\"}",
           "legendFormat": "{{name}}",
           "range": true,
           "refId": "A"
@@ -1000,7 +1001,7 @@
         "h": 8,
         "w": 24,
         "x": 0,
-        "y": 62
+        "y": 44
       },
       "id": 28,
       "options": {
@@ -1027,7 +1028,7 @@
             "uid": "${DS_PROMETHEUS}"
           },
           "editorMode": "builder",
-          "expr": "esphome_sensor_value{id=~\".+tvoc\"}",
+          "expr": "esphome_sensor_value{id=~\".+tvoc.*\"}",
           "legendFormat": "{{name}}",
           "range": true,
           "refId": "A"
@@ -1098,7 +1099,7 @@
         "h": 8,
         "w": 24,
         "x": 0,
-        "y": 70
+        "y": 52
       },
       "id": 27,
       "options": {
@@ -1125,7 +1126,7 @@
             "uid": "${DS_PROMETHEUS}"
           },
           "editorMode": "builder",
-          "expr": "esphome_sensor_value{id=~\".+gas_resistance\"}",
+          "expr": "esphome_sensor_value{id=~\".+gas_resistance.*\"}",
           "legendFormat": "{{name}}",
           "range": true,
           "refId": "A"
@@ -1152,6 +1153,6 @@
   "timezone": "",
   "title": "Home Sensors",
   "uid": "DFFJKedVz",
-  "version": 11,
+  "version": 12,
   "weekStart": ""
 }
