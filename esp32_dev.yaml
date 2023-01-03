@@ -1,5 +1,5 @@
 ---
-# ESP32 sensor board script name reflecting configuration esp32_MMmm_SSss.yaml
+# ESP32 sensor board script name reflecting configuration esp32_MMmm_SSss__PP.yaml
 #
 #_ Measures used (MM)
 # T - Temperature
@@ -7,27 +7,37 @@
 # P - Pressure
 # G - gas
 # I - Illuminance
+# C - CO2
+# D - eCO2
+# V - TVOC
 #
 #_ Manipulators used (mm)
+# 1r - Single Switch/Relay
 # 2l - Double Ligiht Switch
-# b - Buzzzer
+# b - Buzzer
 # d - Diode
 #
 #_ Sensors used (SS)
 # S - SHTx30 - Temperature and Humidity
 # B - BH1750 - Illuminance
+# T - TCS3472 - Illuminance and Color(s)
 # P - BME280 - Temperature, Humidity, Pressure
 # G - BME680 - Temperature, Humidity, Pressure, Gas
-# eC - SGP30 - TVOC (Total Volatile Organic Compounds), eCO2 (Equivalent Carbon Dioxide)
+# C - SCD40 - CO2, Temperature, Humidity
+# D - SGP30 - TVOC (Total Volatile Organic Compounds), eCO2 (Equivalent Carbon Dioxide)
 #
 #_ Switches used (ss)
 # a - AVT5713 - Double Light Switch Board
 # b - 9032A - Active Buzzer 9mm diameteer x 3.2mm height
 #
+#_ Purpose used (PP)
+# F - Fan
+#
+###
 # Pawelo 20230101, 1.1.5, created based on esp12f_.yaml
 #
 #! run with this command to override sunstitutions
-# esphome -s devicename espXX -s updates 1min -s room <Room name> -s mqtt_room <room> run esp32_MMmm_SSss.yaml --device 192.168.x.x
+# esphome -s devicename espXX -s updates 1min -s room <Room name> -s mqtt_room <room> run esp32_MMmm_SSss__PP.yaml --device 192.168.x.x
 # heare are default values if those are not given via command line
 substitutions:
 #  devices: "Temperature and Humidity via SHTx30 and Illuminance via BH1750"

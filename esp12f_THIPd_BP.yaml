@@ -21,6 +21,7 @@
 # S - SHTx30 - Temperature and Humidity
 #* B - BH1750 - Illuminance
 #* P - BME280 - Temperature, Humidity, Pressure
+# T - TCS3472 - Illuminance and Color(s)
 # G - BME680 - Temperature, Humidity, Pressure, Gas
 # C - SCD40 - CO2, Temperature, Humidity
 # D - SGP30 - TVOC (Total Volatile Organic Compounds), eCO2 (Equivalent Carbon Dioxide)

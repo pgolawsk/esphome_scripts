@@ -1,0 +1,64 @@
+---
+#* Illuminance and Color sensor TCS3472 configuration
+# Pawelo, 20230103, created based on https://esphome.io/components/sensor/tcs34725.html and lux_bh1750.yaml a
+
+platform: tcs34725
+illuminance:
+  name: "$room Illuminance"
+  accuracy_decimals: 1
+  id: lux
+  icon: mdi:mdi-decagram-outline
+  state_topic: $devicename/illuminance
+  on_value:
+    - mqtt.publish:
+        topic: "$mqtt_location/$mqtt_room/illuminance"
+        payload: !lambda |-
+          return to_string(id(lux).state);
+red_channel:
+  name: "$room Red Channel"
+  id: red
+  state_topic: $devicename/red
+  on_value:
+    - mqtt.publish:
+        topic: "$mqtt_location/$mqtt_room/red"
+        payload: !lambda |-
+          return to_string(id(red).state);
+green_channel:
+  name: "$room Green Channel"
+  id: green
+  state_topic: $devicename/green
+  on_value:
+    - mqtt.publish:
+        topic: "$mqtt_location/$mqtt_room/green"
+        payload: !lambda |-
+          return to_string(id(green).state);
+blue_channel:
+  name: "$room Blue Channel"
+  id: blue
+  state_topic: $devicename/blue
+  on_value:
+    - mqtt.publish:
+        topic: "$mqtt_location/$mqtt_room/blue"
+        payload: !lambda |-
+          return to_string(id(blue).state);
+clear_channel:
+  name: "$room Clear Channel"
+  id: clear
+  state_topic: $devicename/clear
+  on_value:
+    - mqtt.publish:
+        topic: "$mqtt_location/$mqtt_room/clear"
+        payload: !lambda |-
+          return to_string(id(clear).state);
+color_temperature:
+  name: "$room Color Temperature"
+  id: color
+  state_topic: $devicename/color_temp
+  on_value:
+    - mqtt.publish:
+        topic: "$mqtt_location/$mqtt_room/color_temp"
+        payload: !lambda |-
+          return to_string(id(color).state);
+glass_attenuation_factor: 1.0
+address: 0x29
+update_interval: $updates

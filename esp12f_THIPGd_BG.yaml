@@ -20,6 +20,7 @@
 #_ Sensors used (SS)
 # S - SHTx30 - Temperature and Humidity
 #* B - BH1750 - Illuminance
+# T - TCS3472 - Illuminance and Color(s)
 # P - BME280 - Temperature, Humidity, Pressure
 #* G - BME680 - Temperature, Humidity, Pressure, Gas
 # C - SCD40 - CO2, Temperature, Humidity
