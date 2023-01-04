@@ -2,7 +2,8 @@
 #* Temperature, Humidity and Pressure sensor BME280 configuration
 # Pawelo, 20221203, created based on framework and https://esphome.io/components/sensor/bme280.html
 # Pawelo, 20230101, calibrating temp/humid sensors as it's in tight enclosure
-# Pawelo, 20230103, removed calibration
+# Pawelo, 20230103, removed calibration as sensor is out of enclosure now
+# Pawelo, 20230104, adjusted calibration temp and humid after 1d observations
 
 platform: bme280
 temperature:
@@ -10,8 +11,8 @@ temperature:
   id: temp
   oversampling: 16x
   accuracy_decimals: 2
-#  filters:
-#    - offset: -9.2
+  filters:
+    - offset: -2.1
   state_topic: $devicename/temperature
   on_value:
     - mqtt.publish:
@@ -23,8 +24,8 @@ humidity:
   id: hum
   oversampling: 16x
   accuracy_decimals: 2
-#  filters:
-#    - offset: +16.2
+  filters:
+    - offset: +9.2
   state_topic: $devicename/humidity
   on_value:
     - mqtt.publish:

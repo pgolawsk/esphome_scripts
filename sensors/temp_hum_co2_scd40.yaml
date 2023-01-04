@@ -1,9 +1,11 @@
 ---
 #* Temperature, Humidity, CO2 sensor SCD40 configuration
 # Pawelo, 20230103, created based on framework and https://esphome.io/components/sensor/scd4x.html
+# Pawelo, 20230104, calibrated of temp sensor via temperature_offset value
 
 platform: scd4x
 measurement_mode: low_power_periodic # available options: periodic (5s), low_power_periodic (30s), single_shot (5s) on update, single_shor_rht_only (50ms, only temp, hum)
+temperature_offset: 1 # default is 4 - as the sensor heats to measure CO2, thus the mode have infuence = needs different compensation
 temperature:
   name: "$room Temperature2"
   id: temp2
