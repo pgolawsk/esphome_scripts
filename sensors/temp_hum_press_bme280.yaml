@@ -4,6 +4,7 @@
 # Pawelo, 20230101, calibrating temp/humid sensors as it's in tight enclosure
 # Pawelo, 20230103, removed calibration as sensor is out of enclosure now
 # Pawelo, 20230104, adjusted calibration temp and humid after 1d observations
+# Pawelo, 20230107, adjusted calibration pressure after 1w observations
 
 platform: bme280
 temperature:
@@ -37,6 +38,8 @@ pressure:
   id: press
   oversampling: 16x
   accuracy_decimals: 2
+  filters:
+    - offset: 8.0
   state_topic: $devicename/pressure
   on_value:
     - mqtt.publish:

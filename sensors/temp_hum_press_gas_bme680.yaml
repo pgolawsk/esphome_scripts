@@ -3,6 +3,7 @@
 # Pawelo, 20221203, created based on framework and https://esphome.io/components/sensor/bme680.html
 # Pawelo, 20221231, calibrating temp/humid sensors based on Entrance data (see also https://esphome.io/components/sensor/index.html#offset)
 # Pawelo, 20230101, ranaming /gas to/gas_resistance sensor in MQTT additional message
+# Pawelo, 20230107, adjusted calibration pressure after 1w observations
 
 platform: bme680
 temperature:
@@ -36,6 +37,8 @@ pressure:
   id: press
   oversampling: 8x
   accuracy_decimals: 2
+  filters:
+    - offset: 8.0
   state_topic: $devicename/pressure
   on_value:
     - mqtt.publish:
