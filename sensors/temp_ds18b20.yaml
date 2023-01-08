@@ -1,0 +1,16 @@
+---
+#* Temperature and Humidity sensor SHT30d configuration
+# Pawelo, 20221119, created based on https://esphome.io/components/sensor/dallas.html and hemp_hum_sht3xd.yaml
+
+platform: dallas
+name: "$room Temperature D"
+id: temp_d
+accuracy_decimals: 2
+state_topic: $devicename/temperature_d
+on_value:
+  - mqtt.publish:
+      topic: "$mqtt_location/$mqtt_room/temperature_d"
+      payload: !lambda |-
+        return to_string(id(temp_d).state);
+address: 0xc00000000c511a28 # change logger to DEBUG to discover available sensor addresses
+#update_interval: $updates # no update interval as this is not I2C
