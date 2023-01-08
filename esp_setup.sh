@@ -9,6 +9,7 @@
 # Pawelo 20230101, added flashing for generic esp board with esp-32
 # Pawelo 20230101, added flashing for Upstairs room ("THP" measires) on esp12f
 # Pawelo 20230107, changed default update_interval to 30s (from 1min) to synchronize with prometheus
+# Pawelo 20230108, moved esp12f tests to esp12f_dev.yaml script
 
 
 #TODO: Read more complicated AIQ measurement on https://github.com/nkitanov/iaq_board
@@ -95,8 +96,8 @@ esphome -s devicename esp12f-10 -s updates 30s -s room Office -s mqtt_room offic
 esphome -s devicename esp12f-11 -s updates 30s -s room Entrance -s mqtt_room entrance run esp12f_THIPGd_BG.yaml --device 192.168.x.x
 esphome -s devicename esp12f-15 -s updates 30s -s room Upstairs -s mqtt_room upstairs run esp12f_THP_P.yaml --device 192.168.x.x
 
-esphome -s devicename esp12f-12 -s updates 30s -s room Test -s mqtt_room test run esp12f_TH2l_Sa.yaml --device 192.168.x.x
-esphome -s devicename esp12f-13 -s updates 30s -s room TestSwitch -s mqtt_room test_switch run esp12f_TH2l_Sa.yaml --device 192.168.x.x
+esphome -s devicename esp12f-12 -s updates 30s -s room Test -s mqtt_room test run esp12f_dev.yaml --device 192.168.x.x
+esphome -s devicename esp12f-13 -s updates 30s -s room TestSwitch -s mqtt_room test_switch run esp12f_THI2l_SBa.yaml --device 192.168.x.x
 
 # esphome -s devicename esp12f-11 -s updates 30s -s room Kitchen -s mqtt_room kitchen run esp12f_THI_SB.yaml --device 192.168.x.x
 

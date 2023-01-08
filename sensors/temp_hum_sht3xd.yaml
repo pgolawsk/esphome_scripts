@@ -2,6 +2,9 @@
 #* Temperature and Humidity sensor SHT30d configuration
 # Pawelo, 20221119, created as my framework based on !include statements
 # Pawelo, 20221127, extended accuracy decimals to 2
+# Pawelo, 20230108, testing confirm the same config is ok fo cable outdoor version of SHT30,
+#                   wiring: BLACK - GND, RED - 3.3V, YELLOW = CLK/SCL, WHITE - SDA/SAA
+
 platform: sht3xd
 temperature:
   name: "$room Temperature"

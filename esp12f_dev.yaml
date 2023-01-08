@@ -74,10 +74,16 @@ text_sensor:
   - !include sensors/text_version.yaml
   - !include sensors/text_wifi_info.yaml
 
+# # Example configuration entry for DS18B20
+# dallas:
+#  - pin: GPIO2
 
 sensor:
   - !include sensors/uptime.yaml
   - !include sensors/wifi_signal.yaml
+
+  # # Temperature Dallas sensor
+  # - !include sensors/temp_ds18b20.yaml
 
   # Temperature and Humidity sensor
   - !include sensors/temp_hum_sht3xd.yaml
