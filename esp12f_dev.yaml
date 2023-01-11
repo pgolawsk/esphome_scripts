@@ -101,8 +101,9 @@ sensor:
   # # TVOC and eCO2 sensor
   # - !include sensors/tvoc_eco2_SGP30.yaml
 
-# Restart button
-#<<: !include switches/platform_restart.yaml
+switch:
+  # Restart button
+  - <<: !include switches/platform_restart.yaml
 
 # Double light Switch on AVT5713
 #<<: !include switches/2lights_AVT5713.yaml

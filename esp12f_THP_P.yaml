@@ -87,5 +87,6 @@ sensor:
   # Temperature, Humidity and Pressure sensor
   - !include sensors/temp_hum_press_BME280.yaml
 
-# Restart button
-<<: !include switches/platform_restart.yaml
+switch:
+  # Restart button
+  - <<: !include switches/platform_restart.yaml

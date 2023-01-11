@@ -57,7 +57,7 @@ substitutions:
   mqtt_room: room
 
 <<: !include includes/board_esp32.yaml
-#<<: !include includes/i2c_4_5.yaml
+<<: !include includes/i2c_21_22.yaml
 
 # reinclude MQTT as a bug in ESPHOME, see: https://github.com/esphome/issues/issues/2180, https://github.com/esphome/issues/issues/1487
 mqtt:
@@ -84,5 +84,6 @@ sensor:
   # # Illuminance sensor
   # - !include sensors/lux_BH1750.yaml
 
-# Restart button
-<<: !include switches/platform_restart.yaml
+switch:
+  # Restart button
+  - <<: !include switches/platform_restart.yaml

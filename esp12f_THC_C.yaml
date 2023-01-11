@@ -84,5 +84,6 @@ sensor:
   # Temperature, Humidity adn CO2 sensor
   - !include sensors/temp_hum_co2_SCD40.yaml
 
-# Restart button
-<<: !include switches/platform_restart.yaml
+switch:
+  # Restart button
+  - <<: !include switches/platform_restart.yaml

@@ -88,8 +88,9 @@ sensor:
   # Illuminance sensor
   - !include sensors/lux_BH1750.yaml
 
-# Restart button
-<<: !include switches/platform_restart.yaml
+switch:
+  # Restart button
+  - <<: !include switches/platform_restart.yaml
 
 
 

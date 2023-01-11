@@ -90,5 +90,6 @@ sensor:
   # Temperature and Humidity sensor
   - !include sensors/temp_hum_SHT3x.yaml
 
-# Restart button
-<<: !include switches/platform_restart.yaml
+switch:
+  # Restart button
+  - <<: !include switches/platform_restart.yaml

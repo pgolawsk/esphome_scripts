@@ -82,8 +82,9 @@ sensor:
 #  # Temperature and Humidity sensor
 #  - !include sensors/temp_hum_SHT3x.yaml
 
-# Restart button
-<<: !include switches/platform_restart.yaml
+switch:
+  # Restart button
+  - <<: !include switches/platform_restart.yaml
 
-# Single Switch on ESP-01/01S RElay board
+# Single Switch on ESP-01/01S Relay board
 <<: !include switches/1relay_fan_generic_board.yaml
