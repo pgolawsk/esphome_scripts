@@ -10,6 +10,7 @@
 # C - CO2
 # D - eCO2
 # V - TVOC
+# W - Water Meter
 #
 #_ Manipulators used (mm)
 # 1r - Single Switch/Relay
@@ -25,6 +26,7 @@
 # G - BME680 - Temperature, Humidity, Pressure, Gas
 # C - SCD40 - CO2, Temperature, Humidity
 # D - SGP30 - TVOC (Total Volatile Organic Compounds), eCO2 (Equivalent Carbon Dioxide)
+# Y - YF-B10 G1 - Water Pulse sensor
 #
 #_ Switches used (ss)
 # a - AVT5713 - Double Light Switch Board
@@ -83,7 +85,7 @@ sensor:
   - !include sensors/wifi_signal.yaml
 
   # Temperature, Humidity and Pressure sensor
-  - !include sensors/temp_hum_press_bme280.yaml
+  - !include sensors/temp_hum_press_BME280.yaml
 
 # Restart button
 <<: !include switches/platform_restart.yaml

@@ -16,6 +16,7 @@
 #TODO: Read about speaker with PAM8403 (amplifier) connection to ESP826 on: https://www.instructables.com/MQTT-Audio-Notifier-for-ESP8266-Play-MP3-TTS-RTTL/
 #TODO: For automation on esp board read https://github.com/esphome/esphome-docs/blob/current/guides/automations.rst
 #TODO: Water meter base on pulse counter https://www.pieterbrinkman.com/2022/02/02/build-a-cheap-water-usage-sensor-using-esphome-home-assistant-and-a-proximity-sensor/
+#TODO: Add capture logs from the devices via Loki
 #? For MDI icons see there https://pictogrammers.github.io/@mdi/font/2.0.46/
 
 #######################

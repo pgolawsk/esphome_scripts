@@ -10,6 +10,7 @@
 #* C - CO2
 # D - eCO2
 # V - TVOC
+# W - Water Meter
 #
 #_ Manipulators used (mm)
 # 1r - Single Switch/Relay
@@ -25,6 +26,7 @@
 # G - BME680 - Temperature, Humidity, Pressure, Gas
 #* C - SCD40 - CO2, Temperature, Humidity
 # D - SGP30 - TVOC (Total Volatile Organic Compounds), eCO2 (Equivalent Carbon Dioxide)
+# Y - YF-B10 G1 - Water Pulse sensor
 #
 #_ Switches used (ss)
 #* a - AVT5713 - Double Light Switch Board
@@ -58,6 +60,7 @@ substitutions:
 
 <<: !include includes/board_esp12f.yaml
 <<: !include includes/i2c_4_10.yaml
+#<<: !include includes/dallas_2.yaml
 
 # reinclude MQTT as a bug in ESPHOME, see: https://github.com/esphome/issues/issues/2180, https://github.com/esphome/issues/issues/1487
 mqtt:
@@ -74,39 +77,35 @@ text_sensor:
   - !include sensors/text_version.yaml
   - !include sensors/text_wifi_info.yaml
 
-# # Example configuration entry for DS18B20
-# dallas:
-#  - pin: GPIO2
-
 sensor:
   - !include sensors/uptime.yaml
   - !include sensors/wifi_signal.yaml
 
   # # Temperature Dallas sensor
-  # - !include sensors/temp_ds18b20.yaml
+  # - !include sensors/temp_DS18B20.yaml
 
   # Temperature and Humidity sensor
-  - !include sensors/temp_hum_sht3xd.yaml
+  - !include sensors/temp_hum_SHT3x.yaml
   # # Temperature, Humidity and Pressure seensor
-  # - !include sensors/temp_hum_press_bme280.yaml
+  # - !include sensors/temp_hum_press_BME280.yaml
   # # Temperature, Humidity, Pressure and Gas Resistance seensor
-  # - !include sensors/temp_hum_press_gas_bme680.yaml
+  # - !include sensors/temp_hum_press_gas_BME680.yaml
 
   # CO2, Temperature and Humidity sensor
   - !include sensors/temp_hum_co2_scd40.yaml
 
   # Illuminance sensor
-  - !include sensors/lux_bh1750.yaml
-#  - !include sensors/lux_color_tcs3472.yaml
+  - !include sensors/lux_BH1750.yaml
+#  - !include sensors/lux_color_TCS3472.yaml
 
   # # TVOC and eCO2 sensor
-  # - !include sensors/tvoc_eco2_sgp30.yaml
+  # - !include sensors/tvoc_eco2_SGP30.yaml
 
 # Restart button
 #<<: !include switches/platform_restart.yaml
 
 # Double light Switch on AVT5713
-#<<: !include switches/2lights_avt5713.yaml
+#<<: !include switches/2lights_AVT5713.yaml
 
 ###################
 #* Further tests
