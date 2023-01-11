@@ -2,6 +2,7 @@
 #* Temperature, Humidity, CO2 sensor SCD40 configuration
 # Pawelo, 20230103, created based on framework and https://esphome.io/components/sensor/scd4x.html
 # Pawelo, 20230104, calibrated of temp sensor via temperature_offset value
+# Pawelo, 20230111, added i2c bus identification
 
 platform: scd4x
 measurement_mode: low_power_periodic # available options: periodic (5s), low_power_periodic (30s), single_shot (5s) on update, single_shor_rht_only (50ms, only temp, hum)
@@ -40,6 +41,7 @@ co2:
         topic: "$mqtt_location/$mqtt_room/co2"
         payload: !lambda |-
           return to_string(id(co2).state);
+i2c_id: bus_a
 address: 0x62
 #iir_filter: 3x
 update_interval: $updates

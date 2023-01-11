@@ -5,6 +5,7 @@
 # Pawelo, 20230103, removed calibration as sensor is out of enclosure now
 # Pawelo, 20230104, adjusted calibration temp and humid after 1d observations
 # Pawelo, 20230107, adjusted calibration pressure after 1w observations
+# Pawelo, 20230111, added i2c bus identification
 
 platform: bme280
 temperature:
@@ -46,6 +47,7 @@ pressure:
         topic: "$mqtt_location/$mqtt_room/pressure"
         payload: !lambda |-
           return to_string(id(press).state);
+i2c_id: bus_a
 address: 0x76
 #iir_filter: 2x
 update_interval: $updates

@@ -1,6 +1,7 @@
 ---
 #* Illuminance and Color sensor TCS3472 configuration
 # Pawelo, 20230103, created based on https://esphome.io/components/sensor/tcs34725.html and lux_bh1750.yaml a
+# Pawelo, 20230111, added i2c bus identification
 
 platform: tcs34725
 illuminance:
@@ -60,5 +61,6 @@ color_temperature:
         payload: !lambda |-
           return to_string(id(color).state);
 glass_attenuation_factor: 1.0
+i2c_id: bus_a
 address: 0x29
 update_interval: $updates

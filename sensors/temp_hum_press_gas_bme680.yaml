@@ -4,6 +4,7 @@
 # Pawelo, 20221231, calibrating temp/humid sensors based on Entrance data (see also https://esphome.io/components/sensor/index.html#offset)
 # Pawelo, 20230101, ranaming /gas to/gas_resistance sensor in MQTT additional message
 # Pawelo, 20230107, adjusted calibration pressure after 1w observations
+# Pawelo, 20230111, added i2c bus identification
 
 platform: bme680
 temperature:
@@ -55,6 +56,7 @@ gas_resistance:
         topic: "$mqtt_location/$mqtt_room/gas_resistance"
         payload: !lambda |-
           return to_string(id(gas).state);
+i2c_id: bus_a
 address: 0x77
 #iir_filter: 3x
 update_interval: $updates

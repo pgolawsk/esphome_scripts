@@ -4,6 +4,7 @@
 # Pawelo, 20221127, extended accuracy decimals to 2
 # Pawelo, 20230108, testing confirm the same config is ok for cable outdoor version of SHT30,
 #                   wiring: BLACK - GND, RED - 3.3V, YELLOW = CLK/SCL, WHITE - SDA/SAA
+# Pawelo, 20230111, added i2c bus identification
 
 platform: sht3xd
 temperature:
@@ -26,5 +27,6 @@ humidity:
         topic: "$mqtt_location/$mqtt_room/humidity"
         payload: !lambda |-
           return to_string(id(hum).state);
+i2c_id: bus_a
 address: 0x44
 update_interval: $updates
