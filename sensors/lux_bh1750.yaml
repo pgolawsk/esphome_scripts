@@ -6,6 +6,8 @@
 platform: bh1750
 name: "$room Illuminance"
 accuracy_decimals: 1
+filters:
+  - multiply: 1.0
 id: lux
 icon: mdi:mdi-decagram-outline
 state_topic: $devicename/illuminance

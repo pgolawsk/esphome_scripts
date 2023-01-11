@@ -1,5 +1,5 @@
 ---
-#* Temperature and Humidity sensor SHT30d configuration
+#* Temperature sensor DS18B20
 # Pawelo, 20221119, created based on https://esphome.io/components/sensor/dallas.html and hemp_hum_sht3xd.yaml
 
 platform: dallas

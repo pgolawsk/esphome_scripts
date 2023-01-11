@@ -23,7 +23,7 @@ humidity:
   id: hum2
   accuracy_decimals: 2
 #  filters:
-#    - offset: 4.4
+#    - offset: 2.4
   state_topic: $devicename/humidity2
   on_value:
     - mqtt.publish:
