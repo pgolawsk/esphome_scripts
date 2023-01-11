@@ -1,0 +1,11 @@
+---
+#* I2C on pins 4 and 2 - for AVT5713, as GIPO5 is used by switch
+# Pawelo 20221127, created
+#! pin 9 do not work (it hangs ESP)- reserved for flashing; 
+#! pin 10 - use with caution, read https://www.letscontrolit.com/forum/viewtopic.php?t=1462
+
+i2c:
+  sda: 4
+  scl: 2
+  scan: true
+  id: bus_a

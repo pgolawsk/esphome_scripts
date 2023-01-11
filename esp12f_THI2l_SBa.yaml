@@ -59,7 +59,7 @@ substitutions:
   mqtt_room: room
 
 <<: !include includes/board_esp12f.yaml
-<<: !include includes/i2c_4_10.yaml
+<<: !include includes/i2c_4_2.yaml
 
 # reinclude MQTT as a bug in ESPHOME, see: https://github.com/esphome/issues/issues/2180, https://github.com/esphome/issues/issues/1487
 mqtt:
