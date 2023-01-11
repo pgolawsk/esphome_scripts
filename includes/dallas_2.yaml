@@ -1,0 +1,5 @@
+---
+#* Dallas on pin GIPO2
+# Pawelo 20230111, created
+dallas:
+  - pin: GPIO2
