@@ -1,0 +1,9 @@
+---
+#* I2C on pins 4 and 10
+# Pawelo 20221127, created
+#! 9 and 10 do not work
+i2c:
+  sda: 21
+  scl: 22
+  scan: true
+  id: bus_a
