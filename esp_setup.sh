@@ -10,6 +10,7 @@
 # Pawelo 20230101, added flashing for Upstairs room ("THP" measires) on esp12f
 # Pawelo 20230107, changed default update_interval to 30s (from 1min) to synchronize with prometheus
 # Pawelo 20230108, moved esp12f tests to esp12f_dev.yaml script
+# Pawelo 20230112, added flashing for generic esp32-cam-mb board
 
 
 #TODO: Read more complicated AIQ measurement on https://github.com/nkitanov/iaq_board
@@ -111,6 +112,8 @@ esphome -s devicename esp01s-100 -s updates 1min -s room "Kitchen" -s mqtt_room 
 #*! RUN those commmands to compile and deliver updates to esp32 devices wit sensors, switches, ...
 #? --device is optional - if not given and device name can be found by dns then it will be flashed OTA anyway:)
 esphome -s devicename esp32-30 -s updates 1min -s room Test32 -s mqtt_room test32 run esp32_dev.yaml --device 192.168.x.x
+
+esphome -s devicename esp32-40 -s updates 1min -s room Test32cam -s mqtt_room test32cam run esp32_cam.yaml --device 192.168.x.x
 
 ###########################
 #* Set up Prometheus scraping

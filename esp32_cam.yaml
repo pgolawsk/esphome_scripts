@@ -1,0 +1,61 @@
+---
+# ESP32 Camera board
+###
+# Pawelo 20230101, 1.1.5, created based on https://ivan-lesar.medium.com/the-eye-of-the-home-77dee1ea3f98
+#
+#! run with this command to override sunstitutions
+# esphome -s devicename espXX -s updates 1min -s room <Room name> -s mqtt_room <room> run esp32_cam.yaml --device 192.168.x.x
+# heare are default values if those are not given via command line
+
+substitutions:
+#  devices: "Temperature and Humidity via SHTx30 and Illuminance via BH1750"
+  devices: "Camera Dev Kit"
+  project_name: "pgolawsk.esp_home"
+  version: "1.1.5"
+
+  devicename: espXX
+  updates: "30s"
+  room: Room # friendly name of room to display in HA/Web
+  # this is ADDITIONAL topic and sub-topic for MQTT - it publishes under <topic>/<sub-topic>/<sensor>
+  # by default it's also published under <devicename>/<id_sensor>
+  mqtt_location: home
+  mqtt_room: room
+
+<<: !include includes/board_esp32-cam.yaml
+
+text_sensor:
+  - !include sensors/text_uptime.yaml
+  - !include sensors/text_version.yaml
+  - !include sensors/text_wifi_info.yaml
+
+
+sensor:
+  - !include sensors/uptime.yaml
+  - !include sensors/wifi_signal.yaml
+
+switch:
+  # Restart button
+  - <<: !include switches/platform_restart.yaml
+
+esp32_camera:
+  name: $room Camera
+  external_clock:
+    pin: GPIO0
+    frequency: 20MHz
+  i2c_pins:
+    sda: GPIO26
+    scl: GPIO27
+  data_pins: [GPIO5, GPIO18, GPIO19, GPIO21, GPIO36, GPIO39, GPIO34, GPIO35]
+  vsync_pin: GPIO25
+  href_pin: GPIO23
+  pixel_clock_pin: GPIO22
+  power_down_pin: GPIO32
+  # camera CY2640
+  resolution: 640x480
+  jpeg_quality: 10
+
+esp32_camera_web_server:
+  - port: 8080
+    mode: stream
+  - port: 8081
+    mode: snapshot

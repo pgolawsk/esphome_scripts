@@ -1,0 +1,29 @@
+---
+#* Base configuration for ESP-32-CAM-MB board
+# Pawelo 20230112, created as copy of board_esp32.yaml
+
+esphome:
+  name: $devicename
+  comment: $room ESP32 Camera controller with $devices
+#  platform: ESP8266   # OLD notation
+  project:
+    name: $project_name
+    version: $version
+
+esp32:
+  board: esp32cam
+#  restore_from_flash: true
+
+preferences:
+  flash_write_interval: 1min
+
+<<: !include wifi.yaml
+<<: !include api.yaml
+<<: !include ota.yaml
+<<: !include logger.yaml
+<<: !include web_server.yaml
+<<: !include prometheus.yaml
+<<: !include mqtt.yaml
+
+# packages:
+#   network: !include mqtt.yaml
