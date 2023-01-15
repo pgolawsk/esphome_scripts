@@ -65,6 +65,8 @@ topic readwrite esp12f-10/#
 #...
 #pattern readwrite %c/#
 #-------------------------
+
+# restart mosquitto service to apply changes
 sudo service mosquitto restart
 
 
