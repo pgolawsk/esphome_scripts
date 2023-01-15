@@ -1,11 +1,46 @@
 ---
 #* Enable MQTT
 # Pawelo, 20221119, created as my framework based on !include statements
+# Pawelo, 20230115, added more options based on https://github.com/esphome/issues/issues/3406
+
 mqtt:
+  id: mqtt_client
   broker: !secret mqtt_ip
   port: !secret mqtt_port
-#  username: $devicename
   username: !secret mqtt_user
   password: !secret mqtt_password
   client_id: $devicename
- # id: $devicename
+  discovery: false
+  discovery_retain: false
+  #discovery_unique_id_generator: mac
+  #discovery_object_id_generator: device_name
+  birth_message:
+  will_message:
+  shutdown_message:
+  on_message:
+    - topic: ${devicename}/log_level
+      payload: 'DEBUG'
+      then:
+        - logger.log: "Got log_level DEBUG."
+    - topic: ${devicename}/log_level
+      payload: 'WARN'
+      then:
+        - logger.log: "Got log_level WARN."
+    - topic: ${devicename}/log_level
+      payload: 'INFO'
+      then:
+        - logger.log: "Got log_level INFO."
+    - topic: ${devicename}/log_level
+      payload: 'NONE'
+      then:
+        - logger.log: "Got log_level NONE."
+    # - topic: ${devicename}/sleep_mode
+    #   payload: 'ON'
+    #   then:
+    #     - logger.log: "Turning deep_sleep on."
+    #     - deep_sleep.allow: deep_sleep_1
+    # - topic: ${devicename}/sleep_mode
+    #   payload: 'OFF'
+    #   then:
+    #     - logger.log: "Turning deep_sleep off."
+    #     - deep_sleep.prevent: deep_sleep_1

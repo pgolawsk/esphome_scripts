@@ -20,10 +20,10 @@ preferences:
 <<: !include wifi.yaml
 <<: !include api.yaml
 <<: !include ota.yaml
+<<: !include mqtt.yaml
 <<: !include logger.yaml
 <<: !include web_server.yaml
 <<: !include prometheus.yaml
-<<: !include mqtt.yaml
 
 # packages:
 #   network: !include mqtt.yaml
