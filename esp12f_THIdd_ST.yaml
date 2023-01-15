@@ -1,0 +1,147 @@
+---
+# ESP12F sensor board script name reflecting configuration esp12f_MMmm_SSss__PP.yaml
+#
+#_ Measures used (MM)
+#* T - Temperature
+#* H - Humidity
+# P - Pressure
+# G - gas
+#* I - Illuminance
+# C - CO2
+# D - eCO2
+# V - TVOC
+# W - Water Meter
+#
+#_ Manipulators used (mm)
+# 1r - Single Switch/Relay
+# 2l - Double Ligiht Switch
+# b - Buzzer
+#** d - Diode
+#
+#_ Sensors used (SS)
+#* S - SHTx30 - Temperature and Humidity
+# B - BH1750 - Illuminance
+#* T - TCS3472 - Illuminance and Color(s)
+# P - BME280 - Temperature, Humidity, Pressure
+# G - BME680 - Temperature, Humidity, Pressure, Gas
+# C - SCD40 - CO2, Temperature, Humidity
+# D - SGP30 - TVOC (Total Volatile Organic Compounds), eCO2 (Equivalent Carbon Dioxide)
+# Y - YF-B10 G1 - Water Pulse sensor
+#
+#_ Switches used (ss)
+# a - AVT5713 - Double Light Switch Board
+# b - 9032A - Active Buzzer 9mm diameteer x 3.2mm height
+#
+#_ Purpose used (PP)
+# F - Fan
+#
+###
+# Pawelo 20230115, 1.1.5, created, manipulator LED on https://forums.adafruit.com/viewtopic.php?f=25&t=72272
+
+#! run with this command to override sunstitutions
+# esphome -s devicename espXX -s updates 1min -s room <Room name> -s mqtt_room <room> run esp12f_SSss_MMmm__PP.yaml --device 192.168.x.x
+# heare are default values if those are not given via command line
+substitutions:
+  devices: "Temperature and Humidity via SHTx30, Illuminance, Color via TCS34725"
+  project_name: "pgolawsk.esp_home"
+  version: "1.1.5"
+
+  devicename: espXX
+  updates: "30s"
+  room: Room # friendly name of room to display in HA/Web
+  # this is ADDITIONAL topic and sub-topic for MQTT - it publishes under <topic>/<sub-topic>/<sensor>
+  # by default it's also published under <devicename>/<id_sensor>
+  mqtt_location: home
+  mqtt_room: room
+
+<<: !include includes/board_esp12f.yaml
+<<: !include includes/i2c_4_5.yaml
+
+# reinclude MQTT as a bug in ESPHOME, see: https://github.com/esphome/issues/issues/2180, https://github.com/esphome/issues/issues/1487
+mqtt:
+  broker: !secret mqtt_ip
+  port: !secret mqtt_port
+  username: !secret mqtt_user
+  password: !secret mqtt_password
+  client_id: $devicename
+
+text_sensor:
+  - !include sensors/text_uptime.yaml
+  - !include sensors/text_version.yaml
+  - !include sensors/text_wifi_info.yaml
+
+sensor:
+  - !include sensors/uptime.yaml
+  - !include sensors/wifi_signal.yaml
+
+  # Temperature and Humidity sensor
+  - !include sensors/temp_hum_SHT3x.yaml
+
+  # Illuminance sensor
+  - !include sensors/lux_color_TCS3472.yaml
+
+# based on following examples, compiled output, light, switch, fan, ...
+  # switch:
+#   # Restart button
+#   - <<: !include switches/platform_restart.yaml
+
+#   # Status and Measurement LEDs
+# <<: !include switches/s_m_leds_12_16.yaml
+
+
+output:
+  - platform: gpio
+    pin: GPIO16 # GPIO2 with inverted
+    id: s_led
+    inverted: False
+  - platform: gpio
+    pin: GPIO12 # GPIO2 with inverted
+    id: m_led
+    inverted: False
+
+light:
+  - platform: binary
+    name: "$room LED"
+#    icon: "mdi:led"
+    id: status_led
+    output: s_led
+    state_topic: $devicename/led
+    on_turn_on:
+    - delay: 3s
+    - light.turn_off: status_led
+
+  - platform: binary
+    name: "$room Measurement LED"
+#    icon: "mdi:led"
+    id: measurement_led
+    output: m_led
+    state_topic: $devicename/m_led
+
+switch:
+  - <<: !include switches/platform_restart.yaml
+  - platform: template
+    name: "$room LED 3x"
+    id: led3x
+    icon: "mdi:volume-medium"
+    turn_on_action:
+      - light.turn_on: status_led
+      - delay: 600ms
+      - light.turn_off: status_led
+      - delay: 600ms
+      - light.turn_on: status_led
+      - delay: 600ms
+      - light.turn_off: status_led
+      - delay: 600ms
+      - light.turn_on: status_led
+      - delay: 600ms
+      - light.turn_off: status_led
+      - delay: 60ms
+      - light.turn_on: status_led
+      - delay: 60ms
+      - light.turn_off: status_led
+      - delay: 60ms
+      - light.turn_on: status_led
+      - delay: 60ms
+      - light.turn_off: status_led
+    turn_off_action:
+      - light.turn_off: status_led
