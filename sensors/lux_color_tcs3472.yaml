@@ -16,7 +16,7 @@ illuminance:
         payload: !lambda |-
           return to_string(id(lux).state);
 red_channel:
-  name: "$room Red Channel"
+  name: "$room Channel Red"
   id: red
   state_topic: $devicename/red
   on_value:
@@ -25,7 +25,7 @@ red_channel:
         payload: !lambda |-
           return to_string(id(red).state);
 green_channel:
-  name: "$room Green Channel"
+  name: "$room Channel Green"
   id: green
   state_topic: $devicename/green
   on_value:
@@ -34,7 +34,7 @@ green_channel:
         payload: !lambda |-
           return to_string(id(green).state);
 blue_channel:
-  name: "$room Blue Channel"
+  name: "$room Channel Blue"
   id: blue
   state_topic: $devicename/blue
   on_value:
@@ -43,7 +43,7 @@ blue_channel:
         payload: !lambda |-
           return to_string(id(blue).state);
 clear_channel:
-  name: "$room Clear Channel"
+  name: "$room Channel Clear"
   id: clear
   state_topic: $devicename/clear
   on_value:
