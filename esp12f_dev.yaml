@@ -117,5 +117,7 @@ switch:
 # Status LED
 <<: !include switches/status_led_as_light_GPIO16.yaml
 
+# Measurement LED
+#<<: !include switches/measurement_led_as_light_GPIO12.yaml
 
 
