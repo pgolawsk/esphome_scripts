@@ -1,0 +1,48 @@
+---
+#* Measurement LED on GPIO12
+# Pawelo, 20230115, created to manipulate measurement LED (for TCS34725) as new based on https://forums.adafruit.com/viewtopic.php?f=25&t=72272
+
+output:
+  - platform: gpio
+    pin: GPIO12 # GPIO2 with inverted
+    id: m_led
+    inverted: False
+
+light:
+  - platform: binary
+    name: "$room Measurement LED"
+#    icon: "mdi:led"
+    id: measurement_led
+    output: m_led
+    state_topic: $devicename/mled
+#     on_turn_on:
+#     - delay: 3s
+#     - light.turn_off: status_led
+
+# switch:
+#   - platform: template
+#     name: "$room LED 3x"
+#     id: led3x
+#     icon: "mdi:volume-medium"
+#     turn_on_action:
+#       - light.turn_on: status_led
+#       - delay: 600ms
+#       - light.turn_off: status_led
+#       - delay: 600ms
+#       - light.turn_on: status_led
+#       - delay: 600ms
+#       - light.turn_off: status_led
+#       - delay: 600ms
+#       - light.turn_on: status_led
+#       - delay: 600ms
+#       - light.turn_off: status_led
+#       - delay: 60ms
+#       - light.turn_on: status_led
+#       - delay: 60ms
+#       - light.turn_off: status_led
+#       - delay: 60ms
+#       - light.turn_on: status_led
+#       - delay: 60ms
+#       - light.turn_off: status_led
+#     turn_off_action:
+#       - light.turn_off: status_led
