@@ -8,25 +8,25 @@
 
 platform: sht3xd
 temperature:
-  name: "$room Temperature"
-  id: temp
+  name: "$room Temperature${id}"
+  id: temp${id}
   accuracy_decimals: 2
-  state_topic: $devicename/temperature
+  state_topic: $devicename/temperature${id}
   on_value:
     - mqtt.publish:
-        topic: "$mqtt_location/$mqtt_room/temperature"
+        topic: "$mqtt_location/$mqtt_room/temperature${id}"
         payload: !lambda |-
-          return to_string(id(temp).state);
+          return to_string(id(temp${id}).state);
 humidity:
-  name: "$room Humidity"
-  id: hum
+  name: "$room Humidity${id}"
+  id: hum${id}
   accuracy_decimals: 2
-  state_topic: $devicename/humidity
+  state_topic: $devicename/humidity${id}
   on_value:
     - mqtt.publish:
-        topic: "$mqtt_location/$mqtt_room/humidity"
+        topic: "$mqtt_location/$mqtt_room/humidity${id}"
         payload: !lambda |-
-          return to_string(id(hum).state);
+          return to_string(id(hum${id}).state);
 i2c_id: bus_a
-address: 0x44
+address: ${address}
 update_interval: $updates

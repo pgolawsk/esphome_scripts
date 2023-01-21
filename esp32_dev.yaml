@@ -80,7 +80,7 @@ sensor:
   - !include sensors/wifi_signal.yaml
 
   # # Temperature and Humidity sensor
-  # - !include sensors/temp_hum_SHT3x.yaml
+  # - !include { file: sensors/temp_hum_SHT3x.yaml, vars: { id: "", address: "0x44" } }
   # # Illuminance sensor
   # - !include sensors/lux_BH1750.yaml
 

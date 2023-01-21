@@ -76,16 +76,17 @@ text_sensor:
   - !include sensors/text_uptime.yaml
   - !include sensors/text_version.yaml
   - !include sensors/text_wifi_info.yaml
+#  - !include sensors/text_firmware.yaml
 
 sensor:
   - !include sensors/uptime.yaml
   - !include sensors/wifi_signal.yaml
 
   # # Temperature Dallas sensor
-  # - !include sensors/temp_DS18B20.yaml
+#  - !include { file: sensors/temp_DS18B20.yaml, vars: { id: "Dtest", address: "0xc00000000c511a28" } }
 
   # Temperature and Humidity sensor
-  - !include sensors/temp_hum_SHT3x.yaml
+  - !include { file: sensors/temp_hum_SHT3x.yaml, vars: { id: "", address: "0x44" } }
   # # Temperature, Humidity and Pressure seensor
   # - !include sensors/temp_hum_press_BME280.yaml
   # # Temperature, Humidity, Pressure and Gas Resistance seensor
