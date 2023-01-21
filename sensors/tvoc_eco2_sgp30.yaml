@@ -4,28 +4,28 @@
 
 platform: sgp30
 tvoc:
-  name: "$room TVOC"
-  id: tvoc
+  name: "$room TVOC${id}"
+  id: tvoc${id}
   accuracy_decimals: 0
-  state_topic: $devicename/tvoc
+  state_topic: $devicename/tvoc${id}
   on_value:
     - mqtt.publish:
-        topic: "$mqtt_location/$mqtt_room/tvoc"
+        topic: "$mqtt_location/$mqtt_room/tvoc${id}"
         payload: !lambda |-
-          return to_string(id(tvoc).state);
+          return to_string(id(tvoc${id}).state);
 eco2:
-  name: "$room eCO2"
-  id: eco2
+  name: "$room eCO2${id}"
+  id: eco2${id}
   accuracy_decimals: 0
-  state_topic: $devicename/eco2
+  state_topic: $devicename/eco2${id}
   on_value:
     - mqtt.publish:
-        topic: "$mqtt_location/$mqtt_room/eco2"
+        topic: "$mqtt_location/$mqtt_room/eco2${id}"
         payload: !lambda |-
-          return to_string(id(eco2).state);
+          return to_string(id(eco2${id}).state);
 address: 0x58
 store_baseline: yes # baseline is stored and preserved between the reboots, but after OTA new baseline needs to be calculated
 compensation:
-  temperature_source: temp
-  humidity_source: hum
+  temperature_source: temp${id}
+  humidity_source: hum${id}
 #update_interval: $updates

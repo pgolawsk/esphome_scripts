@@ -100,7 +100,7 @@ sensor:
 #  - !include sensors/lux_color_TCS3472.yaml
 
   # # TVOC and eCO2 sensor
-  # - !include sensors/tvoc_eco2_SGP30.yaml
+  # - !include { file: sensors/tvoc_eco2_SGP30.yaml, vars: { id: "" } }
 
   # Water ussage YF-B10 sensor
 #  - !include sensors/water_usage_YF-B10.yaml
