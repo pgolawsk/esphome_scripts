@@ -1,50 +1,205 @@
 ---
 #* Water usage sensors using YF-B10 valve configuration
 # Pawelo, 20230111, created based on https://www.pieterbrinkman.com/2022/02/02/build-a-cheap-water-usage-sensor-using-esphome-home-assistant-and-a-proximity-sensor/
+# Pawelo, 20230121, final configuration with real sensor
+# TODO: calibrate sensor on water
 
-
-platform: pulse_counter
-  pin: GPIO12
-  name: "water pulse"
-  id: water_pulse
-  update_interval: $updates
-  internal: true
-
-platform: pulse_meter
-  pin: GPIO12
-  name: "$room Water Pulse Meter"
-  unit_of_measurement: "liter/min"
-  icon: "mdi:water"
-  total:
-    name: "$room Water Total"
-    unit_of_measurement: "liter"
-
-platform: pulse_meter
-  pin: GPIO12
-  name: "$room Water Pulse Meter"
-  unit_of_measurement: "liter/min"
-  icon: "mdi:water"
-  total:
-    name: "$room Water Meter Total"
-    unit_of_measurement: "m³"
-    id: water_meter_total
-    accuracy_decimals: 3
-    device_class: water
-    state_class: total_increasing
-    filters:
-      - multiply: 0.001
-
-platform: template
-  name: "$room Water Flow"
-  id: water_flow
+- platform: pulse_meter
+pin:
+  number: GPIO12
+  mode: INPUT_PULLUP
+id: water_flow
+name: "$room Water Flow"
+unit_of_measurement: "liter/min"
+icon: "mdi:water"
+timeout: $updates
+internal: true
+state_topic: $devicename/water_flow
+on_value:
+  - mqtt.publish:
+      topic: "$mqtt_location/$mqtt_room/water_flow"
+      payload: !lambda |-
+        return to_string(x);
+filters:
+  - lambda: return x / 476;
+total:
+  name: "$room Water Total"
+  id: water_total
+  unit_of_measurement: "liter"
+#      unit_of_measurement: "m³"
   accuracy_decimals: 2
-  unit_of_measurement: "l/min"
-  icon: "mdi:water"
-  lambda: return (id(water_pulse).state / 476);
-  state_topic: $devicename/water_flow
+  device_class: water
+  state_class: total_increasing
+  state_topic: $devicename/water_total
+  filters:
+    - lambda: return x / 476;
+#        - multiply: 0.001
   on_value:
     - mqtt.publish:
-        topic: "$mqtt_location/$mqtt_room/water_flow"
+        topic: "$mqtt_location/$mqtt_room/water_total"
         payload: !lambda |-
-          return to_string(id(water_flow).state);
-  update_interval: $updates
+          return to_string(x);
+
+
+- platform: template
+name: "$room Water Total [m³]"
+id: water_used
+accuracy_decimals: 3
+unit_of_measurement: "m³"
+icon: "mdi:water"
+#    lambda: return (id(water_pulse_total).state / 476);
+lambda: return id(water_total).state;
+state_topic: $devicename/water_used
+on_value:
+  - mqtt.publish:
+      topic: "$mqtt_location/$mqtt_room/water_used"
+      payload: !lambda |-
+        return to_string(id(water_total).state * 0.001);
+filters:
+  - multiply: 0.001
+update_interval: $updates
+
+###########################
+#* initial try based on https://www.pieterbrinkman.com/2022/02/02/build-a-cheap-water-usage-sensor-using-esphome-home-assistant-and-a-proximity-sensor/
+#! DO NOT USE
+platform: pulse_counter
+pin: GPIO12
+name: "water pulse"
+id: water_pulse
+update_interval: $updates
+internal: true
+
+platform: pulse_meter
+pin: GPIO12
+name: "$room Water Pulse Meter"
+unit_of_measurement: "liter/min"
+icon: "mdi:water"
+total:
+  name: "$room Water Total"
+  unit_of_measurement: "liter"
+
+platform: pulse_meter
+pin: GPIO12
+name: "$room Water Pulse Meter"
+unit_of_measurement: "liter/min"
+icon: "mdi:water"
+total:
+  name: "$room Water Meter Total"
+  unit_of_measurement: "m³"
+  id: water_meter_total
+  accuracy_decimals: 3
+  device_class: water
+  state_class: total_increasing
+  filters:
+    - multiply: 0.001
+
+platform: template
+name: "$room Water Flow"
+id: water_flow
+accuracy_decimals: 2
+unit_of_measurement: "l/min"
+icon: "mdi:water"
+lambda: return (id(water_pulse).state / 476);
+state_topic: $devicename/water_flow
+on_value:
+  - mqtt.publish:
+      topic: "$mqtt_location/$mqtt_room/water_flow"
+      payload: !lambda |-
+        return to_string(id(water_flow).state);
+update_interval: $updates
+
+# Pawelo intermediate code
+###########################
+#* Pawelo tries based on https://community.home-assistant.io/t/pulse-counter-esp32-with-yf-b10-i-cant-calibrate/351423
+#! DO NOT USE
+
+  # - platform: pulse_meter
+  #   pin: GPIO12
+  #   name: "$room Water Pulse Meter"
+  #   unit_of_measurement: "liter/min"
+  #   icon: "mdi:water"
+  #   total:
+  #     name: "$room Water Total"
+  #     unit_of_measurement: "liter"
+  #     state_class: total_increasing
+
+  # - platform: integration
+  #   name: "$room Water Total2"
+  #   id: water_total2
+  #   sensor: water_used
+  #   time_unit: min
+  #   restore: false
+  #   accuracy_decimals: 2
+  #   unit_of_measurement: "liter"
+  #   icon: "mdi:water"
+  #   state_topic: $devicename/water_total2
+  #   on_value:
+  #     - mqtt.publish:
+  #         topic: "$mqtt_location/$mqtt_room/water_total2"
+  #         payload: !lambda |-
+  #           return to_string(id(water_total).state);
+
+  - platform: pulse_meter
+    pin:
+      number: GPIO12
+      mode: INPUT_PULLUP
+    id: water_pulse
+    name: "$room Water Pulse Meter"
+    icon: "mdi:water"
+    timeout: $updates
+    internal: true
+    state_topic: $devicename/water_pulse
+    total:
+      name: "$room Water Pulse Total"
+      id: water_pulse_total
+#      accuracy_decimals: 3
+#      device_class: water
+      state_class: total_increasing
+      state_topic: $devicename/water_pulse_total
+
+  - platform: template
+    name: "$room Water Flow"
+    id: water_flow
+    accuracy_decimals: 2
+    unit_of_measurement: "liter/min"
+    icon: "mdi:water"
+    lambda: return (id(water_pulse).state / 476);
+    state_topic: $devicename/water_flow
+    on_value:
+      - mqtt.publish:
+          topic: "$mqtt_location/$mqtt_room/water_flow"
+          payload: !lambda |-
+            return to_string(id(water_flow).state);
+    update_interval: $updates
+
+  - platform: template
+    name: "$room Water Used"
+    id: water_used
+    accuracy_decimals: 2
+    unit_of_measurement: "liter"
+    icon: "mdi:water"
+    lambda: return (id(water_pulse_total).state / 476);
+    state_topic: $devicename/water_used
+    on_value:
+      - mqtt.publish:
+          topic: "$mqtt_location/$mqtt_room/water_used"
+          payload: !lambda |-
+            return to_string(id(water_used).state);
+    update_interval: $updates
+
+  - platform: template
+    name: "$room Water Total"
+    id: water_total
+    accuracy_decimals: 3
+    unit_of_measurement: "m³"
+    icon: "mdi:water"
+    lambda: return (id(water_pulse_total).state / 476);
+    state_topic: $devicename/water_total
+    on_value:
+      - mqtt.publish:
+          topic: "$mqtt_location/$mqtt_room/water_total"
+          payload: !lambda |-
+            return to_string(id(water_total).state);
+    filters:
+      - multiply: 0.001
+    update_interval: $updates

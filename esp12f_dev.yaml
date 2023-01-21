@@ -92,7 +92,7 @@ sensor:
   # - !include sensors/temp_hum_press_gas_BME680.yaml
 
   # CO2, Temperature and Humidity sensor
-  - !include sensors/temp_hum_co2_scd40.yaml
+#  - !include sensors/temp_hum_co2_scd40.yaml
 
   # Illuminance sensor
   - !include sensors/lux_BH1750.yaml
@@ -100,6 +100,63 @@ sensor:
 
   # # TVOC and eCO2 sensor
   # - !include sensors/tvoc_eco2_SGP30.yaml
+
+  # Water ussage YF-B10 sensor
+#  - !include sensors/water_usage_YF-B10.yaml
+  - platform: pulse_meter
+    pin:
+      number: GPIO12
+      mode: INPUT_PULLUP
+    id: water_flow
+    name: "$room Water Flow"
+    unit_of_measurement: "liter/min"
+    icon: "mdi:water"
+    timeout: $updates
+    internal: true
+    state_topic: $devicename/water_flow
+    on_value:
+      - mqtt.publish:
+          topic: "$mqtt_location/$mqtt_room/water_flow"
+          payload: !lambda |-
+            return to_string(x);
+    filters:
+      - lambda: return x / 476;
+    total:
+      name: "$room Water Total"
+      id: water_total
+      unit_of_measurement: "liter"
+#      unit_of_measurement: "m³"
+      accuracy_decimals: 2
+      device_class: water
+      state_class: total_increasing
+      state_topic: $devicename/water_total
+      filters:
+        - lambda: return x / 476;
+#        - multiply: 0.001
+      on_value:
+        - mqtt.publish:
+            topic: "$mqtt_location/$mqtt_room/water_total"
+            payload: !lambda |-
+              return to_string(x);
+
+
+  - platform: template
+    name: "$room Water Total [m³]"
+    id: water_used
+    accuracy_decimals: 3
+    unit_of_measurement: "m³"
+    icon: "mdi:water"
+#    lambda: return (id(water_pulse_total).state / 476);
+    lambda: return id(water_total).state;
+    state_topic: $devicename/water_used
+    on_value:
+      - mqtt.publish:
+          topic: "$mqtt_location/$mqtt_room/water_used"
+          payload: !lambda |-
+            return to_string(id(water_total).state * 0.001);
+    filters:
+      - multiply: 0.001
+    update_interval: $updates
 
 switch:
   # Restart button
