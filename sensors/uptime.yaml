@@ -2,6 +2,7 @@
 #* Uptime sensor configuration
 # Pawelo, 20221119, created as my framework based on !include statements
 # Pawelo, 20221222, added $devicename to friendly names of those sensors
+# Pawelo, 20221222, adjusted units displayed to "min"
 
 platform: uptime
 name: "$room $devicename Uptime [min]"
@@ -35,4 +36,4 @@ on_raw_value:
           ).c_str();
 filters:
   - lambda: return x / 60;
-unit_of_measurement: "m"
+unit_of_measurement: "min"
