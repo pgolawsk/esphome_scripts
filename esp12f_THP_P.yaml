@@ -62,7 +62,7 @@ substitutions:
   mqtt_room: room
 
 <<: !include includes/board_esp12f.yaml
-<<: !include includes/i2c_4_5.yaml
+<<: !include { file: includes/i2c.yaml, vars: { bus_id: "bus_a", sda: "GPIO4", scl: "GPIO5" } }
 
 # reinclude MQTT as a bug in ESPHOME, see: https://github.com/esphome/issues/issues/2180, https://github.com/esphome/issues/issues/1487
 mqtt:
@@ -85,7 +85,7 @@ sensor:
   - !include sensors/wifi_signal.yaml
 
   # Temperature, Humidity and Pressure sensor
-  - !include sensors/temp_hum_press_BME280.yaml
+  - !include { file: sensors/temp_hum_press_BME280.yaml, vars: { id: "", bus_id: "bus_a", address: "0x76" } }
 
 switch:
   # Restart button

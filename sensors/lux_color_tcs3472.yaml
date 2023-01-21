@@ -2,19 +2,20 @@
 #* Illuminance and Color sensor TCS3472 configuration
 # Pawelo, 20230103, created based on https://esphome.io/components/sensor/tcs34725.html and lux_bh1750.yaml a
 # Pawelo, 20230111, added i2c bus identification
+# Pawelo, 20230121, add variables to configure sensor
 
 platform: tcs34725
 illuminance:
-  name: "$room Illuminance"
+  name: "$room Illuminance${id}"
   accuracy_decimals: 1
-  id: lux
+  id: lux${id}
   icon: mdi:mdi-decagram-outline
-  state_topic: $devicename/illuminance
+  state_topic: $devicename/illuminance${id}
   on_value:
     - mqtt.publish:
-        topic: "$mqtt_location/$mqtt_room/illuminance"
+        topic: "$mqtt_location/$mqtt_room/illuminance${id}"
         payload: !lambda |-
-          return to_string(id(lux).state);
+          return to_string(id(lux${id}).state);
 red_channel:
   name: "$room Channel Red"
   id: red
@@ -61,6 +62,7 @@ color_temperature:
         payload: !lambda |-
           return to_string(id(color).state);
 glass_attenuation_factor: 1.0
-i2c_id: bus_a
-address: 0x29
+i2c_id: ${bus_id}
+#address: 0x29
+address: ${address}
 update_interval: $updates

@@ -1,0 +1,13 @@
+---
+#* I2C interface on given GPIO pins
+#! for AVT5713 GIPO5 is used by switch, do not use for I2C
+# Pawelo, 20221127, created
+# Pawelo, 20230121, add variables to configure the interface
+#! pin 9 do not work (it hangs ESP)- reserved for flashing;
+#! pin 10 - use with caution, read https://www.letscontrolit.com/forum/viewtopic.php?t=1462
+
+i2c:
+  sda: ${sda}
+  scl: ${scl}
+  scan: true
+  id: ${bus_id}

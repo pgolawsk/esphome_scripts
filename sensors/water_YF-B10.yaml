@@ -1,0 +1,42 @@
+---
+#* Water usage sensors using YF-B10 valve configuration
+# Pawelo, 20230111, created based on https://www.pieterbrinkman.com/2022/02/02/build-a-cheap-water-usage-sensor-using-esphome-home-assistant-and-a-proximity-sensor/
+# Pawelo, 20230121, final configuration with real sensor
+# TODO: calibrate sensor on water
+
+platform: pulse_meter
+pin:
+  number: ${gpio}
+#  number: GPIO12
+  mode: INPUT_PULLUP
+id: water_flow${id}
+name: "$room Water Flow${id}"
+unit_of_measurement: "liter/min"
+icon: "mdi:water"
+timeout: $updates
+internal: true
+state_topic: $devicename/water_flow${id}
+on_value:
+  - mqtt.publish:
+      topic: "$mqtt_location/$mqtt_room/water_flow${id}"
+      payload: !lambda |-
+        return to_string(x);
+filters:
+  - lambda: return x / 476;
+total:
+  name: "$room Water Total${id}"
+  id: water_total${id}
+  unit_of_measurement: "liter"
+#      unit_of_measurement: "m³"
+  accuracy_decimals: 2
+  device_class: water
+  state_class: total_increasing
+  state_topic: $devicename/water_total${id}
+  filters:
+    - lambda: return x / 476;
+#        - multiply: 0.001
+  on_value:
+    - mqtt.publish:
+        topic: "$mqtt_location/$mqtt_room/water_total${id}"
+        payload: !lambda |-
+          return to_string(x);

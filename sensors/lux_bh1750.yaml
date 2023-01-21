@@ -4,20 +4,22 @@
 # Pawelo, 20221127, confirm accuracy decimals to 1
 # Pawelo, 20221211, fix bug for publishing hum instead lux sensor on additional mqtt
 # Pawelo, 20230111, added i2c bus identification
+# Pawelo, 20230121, add variables to configure sensor
 
 platform: bh1750
-name: "$room Illuminance"
+name: "$room Illuminance${id}"
 accuracy_decimals: 1
 filters:
   - multiply: 1.0
-id: lux
+id: lux${id}
 icon: mdi:mdi-decagram-outline
-state_topic: $devicename/illuminance
+state_topic: $devicename/illuminance${id}
 on_value:
   - mqtt.publish:
-      topic: "$mqtt_location/$mqtt_room/illuminance"
+      topic: "$mqtt_location/$mqtt_room/illuminance${id}"
       payload: !lambda |-
-        return to_string(id(lux).state);
-i2c_id: bus_a
-address: 0x23
+        return to_string(id(lux${id}).state);
+i2c_id: ${bus_id}
+#address: 0x23
+address: ${address}
 update_interval: $updates

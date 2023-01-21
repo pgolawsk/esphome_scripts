@@ -59,8 +59,8 @@ substitutions:
   mqtt_room: room
 
 <<: !include includes/board_esp12f.yaml
-<<: !include includes/i2c_4_2.yaml
-#<<: !include includes/dallas_10.yaml
+<<: !include { file: includes/i2c.yaml, vars: { bus_id: "bus_a", sda: "GPIO4", scl: "GPIO2" } }
+#<<: !include { file: includes/dallas.yaml, vars: { gpio: "GPIO10" } }
 
 # reinclude MQTT as a bug in ESPHOME, see: https://github.com/esphome/issues/issues/2180, https://github.com/esphome/issues/issues/1487
 mqtt:
@@ -86,78 +86,25 @@ sensor:
 #  - !include { file: sensors/temp_DS18B20.yaml, vars: { id: "Dtest", address: "0xc00000000c511a28" } }
 
   # Temperature and Humidity sensor
-  - !include { file: sensors/temp_hum_SHT3x.yaml, vars: { id: "", address: "0x44" } }
+  - !include { file: sensors/temp_hum_SHT3x.yaml, vars: { id: "", bus_id: "bus_a", address: "0x44" } }
   # # Temperature, Humidity and Pressure seensor
-  # - !include sensors/temp_hum_press_BME280.yaml
+  # - !include { file: sensors/temp_hum_press_BME280.yaml, vars: { id: "", bus_id: "bus_a", address: "0x76" } }
   # # Temperature, Humidity, Pressure and Gas Resistance seensor
-  # - !include sensors/temp_hum_press_gas_BME680.yaml
+  # - !include { file: sensors/temp_hum_press_gas_BME680.yaml, vars: { id: "", bus_id: "bus_a", address: "0x77" } }
 
   # CO2, Temperature and Humidity sensor
-#  - !include sensors/temp_hum_co2_scd40.yaml
+  - !include { file: sensors/temp_hum_co2_SCD40.yaml, vars: { id: "2", bus_id: "bus_a", address: "0x62" } }
 
   # Illuminance sensor
-  - !include sensors/lux_BH1750.yaml
-#  - !include sensors/lux_color_TCS3472.yaml
+  - !include { file: sensors/lux_BH1750.yaml, vars: { id: "", bus_id: "bus_a", address: "0x23" } }
+  # - !include { file: sensors/lux_color_TCS3472.yaml, vars: { id: "2", bus_id: "bus_a", address: "0x29" } }
 
   # # TVOC and eCO2 sensor
-  # - !include { file: sensors/tvoc_eco2_SGP30.yaml, vars: { id: "" } }
+  # - !include { file: sensors/tvoc_eco2_SGP30.yaml, vars: { id: "", bus_id: "bus_a", address: "0x58" } }
 
   # Water ussage YF-B10 sensor
-#  - !include sensors/water_usage_YF-B10.yaml
-  - platform: pulse_meter
-    pin:
-      number: GPIO12
-      mode: INPUT_PULLUP
-    id: water_flow
-    name: "$room Water Flow"
-    unit_of_measurement: "liter/min"
-    icon: "mdi:water"
-    timeout: $updates
-    internal: true
-    state_topic: $devicename/water_flow
-    on_value:
-      - mqtt.publish:
-          topic: "$mqtt_location/$mqtt_room/water_flow"
-          payload: !lambda |-
-            return to_string(x);
-    filters:
-      - lambda: return x / 476;
-    total:
-      name: "$room Water Total"
-      id: water_total
-      unit_of_measurement: "liter"
-#      unit_of_measurement: "m³"
-      accuracy_decimals: 2
-      device_class: water
-      state_class: total_increasing
-      state_topic: $devicename/water_total
-      filters:
-        - lambda: return x / 476;
-#        - multiply: 0.001
-      on_value:
-        - mqtt.publish:
-            topic: "$mqtt_location/$mqtt_room/water_total"
-            payload: !lambda |-
-              return to_string(x);
-
-
-  - platform: template
-    name: "$room Water Total [m³]"
-    id: water_used
-    accuracy_decimals: 3
-    unit_of_measurement: "m³"
-    icon: "mdi:water"
-#    lambda: return (id(water_pulse_total).state / 476);
-    lambda: return id(water_total).state;
-    state_topic: $devicename/water_used
-    on_value:
-      - mqtt.publish:
-          topic: "$mqtt_location/$mqtt_room/water_used"
-          payload: !lambda |-
-            return to_string(id(water_total).state * 0.001);
-    filters:
-      - multiply: 0.001
-    update_interval: $updates
+  # - !include { file: sensors/water_YF-B10.yaml, vars: { id: "", gpio: "GPIO12" } }
+  # - !include { file: sensors/water_usage_YF-B10.yaml, vars: { id: "" } }
 
 switch:
   # Restart button

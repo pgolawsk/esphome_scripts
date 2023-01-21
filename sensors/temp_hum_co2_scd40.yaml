@@ -3,34 +3,35 @@
 # Pawelo, 20230103, created based on framework and https://esphome.io/components/sensor/scd4x.html
 # Pawelo, 20230104, calibrated of temp sensor via temperature_offset value
 # Pawelo, 20230111, added i2c bus identification
+# Pawelo, 20230121, add variables to configure sensor
 
 platform: scd4x
 measurement_mode: low_power_periodic # available options: periodic (5s), low_power_periodic (30s), single_shot (5s) on update, single_shor_rht_only (50ms, only temp, hum)
 temperature_offset: 1 # default is 4 - as the sensor heats to measure CO2, thus the mode have infuence = needs different compensation
 temperature:
-  name: "$room Temperature2"
-  id: temp2
+  name: "$room Temperature${id}"
+  id: temp${id}
   accuracy_decimals: 2
 #  filters:
 #    - offset: -2.4
-  state_topic: $devicename/temperature2
+  state_topic: $devicename/temperature${id}
   on_value:
     - mqtt.publish:
-        topic: "$mqtt_location/$mqtt_room/temperature2"
+        topic: "$mqtt_location/$mqtt_room/temperature${id}"
         payload: !lambda |-
-          return to_string(id(temp).state);
+          return to_string(id(temp${id}).state);
 humidity:
-  name: "$room Humidity2"
-  id: hum2
+  name: "$room Humidity${id}"
+  id: hum${id}
   accuracy_decimals: 2
 #  filters:
 #    - offset: 2.4
-  state_topic: $devicename/humidity2
+  state_topic: $devicename/humidity${id}
   on_value:
     - mqtt.publish:
-        topic: "$mqtt_location/$mqtt_room/humidity2"
+        topic: "$mqtt_location/$mqtt_room/humidity${id}"
         payload: !lambda |-
-          return to_string(id(hum).state);
+          return to_string(id(hum${id}).state);
 co2:
   name: "$room CO2"
   id: co2
@@ -41,7 +42,8 @@ co2:
         topic: "$mqtt_location/$mqtt_room/co2"
         payload: !lambda |-
           return to_string(id(co2).state);
-i2c_id: bus_a
-address: 0x62
+i2c_id: ${bus_id}
+#address: 0x62
+address: ${address}
 #iir_filter: 3x
 update_interval: $updates

@@ -5,34 +5,35 @@
 # Pawelo, 20230101, ranaming /gas to/gas_resistance sensor in MQTT additional message
 # Pawelo, 20230107, adjusted calibration pressure after 1w observations
 # Pawelo, 20230111, added i2c bus identification
+# Pawelo, 20230121, add variables to configure sensor
 
 platform: bme680
 temperature:
-  name: "$room Temperature"
-  id: temp
+  name: "$room Temperature${id}"
+  id: temp${id}
   oversampling: 8x
   accuracy_decimals: 2
   filters:
     - offset: -2.4
-  state_topic: $devicename/temperature
+  state_topic: $devicename/temperature${id}
   on_value:
     - mqtt.publish:
-        topic: "$mqtt_location/$mqtt_room/temperature"
+        topic: "$mqtt_location/$mqtt_room/temperature${id}"
         payload: !lambda |-
-          return to_string(id(temp).state);
+          return to_string(id(temp${id}).state);
 humidity:
-  name: "$room Humidity"
-  id: hum
+  name: "$room Humidity${id}"
+  id: hum${id}
   oversampling: 8x
   accuracy_decimals: 2
   filters:
     - offset: 4.4
-  state_topic: $devicename/humidity
+  state_topic: $devicename/humidity${id}
   on_value:
     - mqtt.publish:
-        topic: "$mqtt_location/$mqtt_room/humidity"
+        topic: "$mqtt_location/$mqtt_room/humidity${id}"
         payload: !lambda |-
-          return to_string(id(hum).state);
+          return to_string(id(hum${id}).state);
 pressure:
   name: "$room Pressure"
   id: press
@@ -56,7 +57,8 @@ gas_resistance:
         topic: "$mqtt_location/$mqtt_room/gas_resistance"
         payload: !lambda |-
           return to_string(id(gas).state);
-i2c_id: bus_a
-address: 0x77
+i2c_id: ${bus_id}
+#address: 0x77
+address: ${address}
 #iir_filter: 3x
 update_interval: $updates

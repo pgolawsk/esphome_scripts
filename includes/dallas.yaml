@@ -1,0 +1,8 @@
+---
+#* Dallas interface on given GPIO pin
+# Pawelo, 20230111, created
+# Pawelo, 20230121, add variables to configure the interface
+
+dallas:
+  - pin: ${gpio}
+#  - pin: GPIO10
