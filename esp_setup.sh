@@ -99,6 +99,7 @@ mosquitto_sub -v -t home/#
 esphome -s devicename esp12f-10 -s updates 30s -s room Office -s mqtt_room office run esp12f_TH_S.yaml --device 192.168.x.x
 esphome -s devicename esp12f-11 -s updates 30s -s room Entrance -s mqtt_room entrance run esp12f_THIPGd_BG.yaml --device 192.168.x.x
 esphome -s devicename esp12f-15 -s updates 30s -s room Upstairs -s mqtt_room upstairs run esp12f_THP_P.yaml --device 192.168.x.x
+esphome -s devicename esp12f-25 -s updates 30s -s room AquariumWin -s mqtt_room aquarium_window run esp12f_THIdd_ST.yaml --device 192.168.x.x
 
 esphome -s devicename esp12f-12 -s updates 30s -s room Test -s mqtt_room test run esp12f_dev.yaml --device 192.168.x.x
 esphome -s devicename esp12f-13 -s updates 30s -s room TestSwitch -s mqtt_room test_switch run esp12f_THI2l_SBa.yaml --device 192.168.x.x
