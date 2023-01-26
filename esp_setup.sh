@@ -127,7 +127,11 @@ sudo vi prometheus.yaml
 #---------------------------
   - job_name: 'esphome'
     static_configs:
-      - targets: ['esp01:80','esp02:80']
+#      - targets: ['esp12f-10:80','esp12f-11:80']
+      - targets:
+          - 'esp12f-10:80'
+          - 'esp12f-11:80'
+          - ...
         labels:
           node: 'esp'
 #---------------------------
