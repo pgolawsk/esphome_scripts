@@ -1,0 +1,44 @@
+---
+#* Single Relay on generic board from AliExpress
+# Pawelo, 20221222, created based on https://www.esphome-devices.com/devices/ESP-01S-1-channel-relay
+#? fix needed - toggle GPIO0 on boot - read https://www.letscontrolit.com/forum/viewtopic.php?t=4025
+#TODO: add manipulation of the delay from HA or web - read https://community.home-assistant.io/t/use-home-assistant-number-as-delay-in-esphome/409525
+
+output:
+  - platform: gpio
+    pin: GPIO0
+    id: relay0
+    inverted: true
+
+# light:
+#   - platform: binary
+#     name: "$room Switch"
+#     id: sw
+#     icon: "mdi:fan"
+#     output: relay
+#     state_topic: $devicename/switch
+#     on_turn_on:
+#       - delay: $delay_off
+#       - light.turn_off: sw
+#     # on_state:
+#     #   - mqtt.publish:
+#     #       topic: "$mqtt_location/$mqtt_room/switch"
+#     #       payload: !lambda |-
+#     #         return to_string(id(sw).state);
+
+
+fan:
+  - platform: binary
+    name: "$room Fan"
+    id: fan0
+    icon: "mdi:fan"
+    output: relay0
+    state_topic: $devicename/fan
+    on_turn_on:
+      - delay: $delay_off
+      - fan.turn_off: fan0
+#     # on_state:
+#     #   - mqtt.publish:
+#     #       topic: "$mqtt_location/$mqtt_room/switch"
+#     #       payload: !lambda |-
+#     #         return to_string(id(sw).state);
