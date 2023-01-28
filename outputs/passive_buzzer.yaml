@@ -1,0 +1,11 @@
+---
+#* Passive Buzzer output
+# Pawelo, 20230128, created from examples
+
+platform: esp8266_pwm
+pin:
+  number: ${gpio} # GPIO2 with inverted
+#  mode: INPUT_PULLUP
+frequency: 500Hz
+id: p_buz${id}
+inverted: false

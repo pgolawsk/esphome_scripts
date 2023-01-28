@@ -1,0 +1,13 @@
+---
+#* RTTTL (Ring Tone Text Transfer Language) enanble
+# Pawelo, 20230128, created based on https://esphome.io/components/rtttl.html?highlight=rtttl
+
+rtttl:
+  output: p_buz${id}
+  on_finished_playback:
+    - logger.log:
+        format: 'Song finished...'
+        # args: []
+        # level: INFO
+        tag: 'rtttl'
+    - switch.turn_off: rtttl_play${id}

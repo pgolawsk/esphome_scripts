@@ -1,0 +1,37 @@
+---
+#* Status LED light
+#*! using s_led<id> created by outputs/status_led.yaml
+# Pawelo, 20230128, created from examples
+
+platform: template
+name: "$room RTTTL${id} Play"
+icon: "mdi:volume-high"
+id: rtttl_play${id}
+#output: p_buz${id}
+state_topic: $devicename/rtttl_play${id}
+optimistic: true
+on_turn_on:
+  - logger.log:
+      format: 'Song PLAY'
+      # args: []
+      # level: INFO
+      tag: 'rtttl'
+  - rtttl.play: 'MissionImp:d=16,o=6,b=95:32d,32d#,32d,32d#,32d,32d#,32d,32d#,32d,32d,32d#,32e,32f,32f#,32g,g,8p,g,8p,a#,p,c7,p,g,8p,g,8p,f,p,f#,p,g,8p,g,8p,a#,p,c7,p,g,8p,g,8p,f,p,f#,p,a#,g,2d,32p,a#,g,2c#,32p,a#,g,2c,a#5,8c,2p,32p,a#5,g5,2f#,32p,a#5,g5,2f,32p,a#5,g5,2e,d#,8d'
+#  - rtttl.play: 'missathing:d=4,o=5,b=125:2p,16a,16p,16a,16p,8a.,16p,a,16g,16p,2g,16p,p,8p,16g,16p,16g,16p,16g,8g.,16p,c6,16a#,16p,a,8g,f,g,8d,8f.,16p,16f,16p,16c,8c,16p,a,8g,16f,16p,8f,16p,16c,16p,g,f'
+#  - rtttl.play: 'The X Files:d=4,o=5,b=112:16c,16d#,16g,8g#,2p,8p,c,c,c,c,g,f,g,a#,16g,16d#,16g,8g#,2p,p,2d.6,d#6,d6,c6,a#,d6,2g.,d#6,d6,c6,a#,d6,1g,16c,16d#,16g,8g#,2p,p,c,c,c'
+#  - rtttl.play: 'Xfiles:d=4,o=5,b=125:e,b,a,b,d6,2b.,1p,e,b,a,b,e6,2b.,1p,g6,f#6,e6,d6,e6,2b.,1p,g6,f#6,e6,d6,f#6,2b.,1p,e,b,a,b,d6,2b.,1p,e,b,a,b,e6,2b.,1p,e6,2b.'
+#  - rtttl.play: 'we-rock:d=4,o=6,b=80:32d6,2d#6,32d6,2d#6,32f6,32d#6,32d6,2d#6,32d6,2d#6,32c6,2c#6,32d#6,32c#6,32c6,2c#6,32b5,4c.6,32c#6,32c6,32a#5,32g#5,32c6,2a#5,32a#5,32g#5,32g5,32a#5,2g#5,16d6,16d#6,16d#6,16d#6,16d#6,16d#6,16d#6,16d#6,16d6,16d#6,16d#6,16d#6,16d#6,16d#6,32f6,32d#6,32d6,32f6,16d6,16d#6,16d#6,16d#6,16d#6,16d#6,16d#6,16d#6,16d6,16d#6,16d#6,16d#6,16d#6,16d#6,'
+#  - rtttl.play: 'countdown:d=4,o=5,b=125:p,8p,16b,16a,b,e,p,8p,16c6,16b,8c6,8b,a,p,8p,16c6,16b,c6,e,p,8p,16a,16g,8a,8g,8f#,8a,g.,16f#,16g,a.,16g,16a,8b,8a,8g,8f#,e,c6,2b.,16b,16c6,16b,16a,1b'
+#  - rtttl.play: 'two short:d=4,o=5,b=100:16e6,16e6'
+#  - rtttl.play: 'long:d=1,o=5,b=100:e6'
+#  - rtttl.play: 'siren:d=8,o=5,b=100:d,e,d,e,d,e,d,e'
+#  - rtttl.play: 'scale_up:d=32,o=5,b=100:c,c#,d#,e,f#,g#,a#,b'
+
+on_turn_off:
+  - logger.log:
+      format: 'Song STOP'
+      # args: []
+      # level: INFO
+      tag: 'rtttl'
+  - rtttl.stop
+#  - switch.turn_off: rtttl_play${id}

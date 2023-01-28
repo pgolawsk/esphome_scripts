@@ -1,5 +1,8 @@
 ---
 # ESP12F sensor board script name reflecting configuration esp12f_MMmm_SSss__PP.yaml
+# PINOUT diagram: https://www.mischianti.org/2021/05/04/esp-12-high-resolution-pinout-and-specs/
+#! PIN 9 can be used as scl for ic2 only
+#! PIN 10 can be used as GPIO for LED only
 #
 #_ Measures used (MM)
 #* T - Temperature
@@ -60,7 +63,8 @@ substitutions:
 
 <<: !include includes/board_esp12f.yaml
 <<: !include { file: includes/i2c.yaml, vars: { bus_id: "bus_a", sda: "GPIO4", scl: "GPIO2" } }
-#<<: !include { file: includes/dallas.yaml, vars: { gpio: "GPIO10" } }
+# <<: !include { file: includes/dallas.yaml, vars: { gpio: "GPIO10" } }
+<<: !include { file: includes/rtttl.yaml, vars: { id: "" } }
 
 # reinclude MQTT as a bug in ESPHOME, see: https://github.com/esphome/issues/issues/2180, https://github.com/esphome/issues/issues/1487
 mqtt:
@@ -106,23 +110,35 @@ sensor:
   # - !include { file: sensors/water_YF-B10.yaml, vars: { id: "", gpio: "GPIO12" } }
   # - !include { file: sensors/water_usage_YF-B10.yaml, vars: { id: "" } }
 
+output:
+  # Status LED
+  - !include { file: outputs/status_led.yaml, vars: { id: "", gpio: "GPIO10" } }
+
+  # # Measurement LED
+  # - !include { file: outputs/measurement_led.yaml, vars: { id: "", gpio: "GPIO12" } }
+
+  # RTTTL Buzzer (passive_buzzer)
+  - !include { file: outputs/passive_buzzer.yaml, vars: { id: "", gpio: "GPIO5" } }
+
+light:
+  # Status LED
+  - !include { file: lights/status_led.yaml, vars: { id: "", off_delay: "5s" } }
+
+  # # Measurement LED
+  # - !include { file: lights/measurement_led.yaml, vars: { id: "", off_delay: "5s" } }
+
 switch:
   # Restart button
-  - <<: !include switches/platform_restart.yaml
+  - !include { file: switches/platform_restart.yaml }
 
-# Double light Switch on AVT5713
+  # Status LED
+  - !include { file: switches/led_cycle.yaml, vars: { ID: "status_led", cycles: 3, on_delay: "1s" , off_delay: "500ms" } }
+
+  # RTTTL Play (passive_buzzer)
+  - !include { file: switches/rtttl_play.yaml, vars: { id: "" } }
+
+  # # Buzzer (active)
+  # - !include { file: switches/active_buzzer.yaml, vars: { id: "", gpio: "GPIO5", off_delay: "1100ms" } }
+
+  # Double light Switch on AVT5713
 #<<: !include switches/2lights_AVT5713.yaml
-
-###################
-#* Further tests
-
-# Buzzer
-#<<: !include switches/active_buzzer_as_light_9032A.yaml
-
-# Status LED
-<<: !include switches/status_led_as_light_GPIO16.yaml
-
-# Measurement LED
-#<<: !include switches/measurement_led_as_light_GPIO12.yaml
-
-
