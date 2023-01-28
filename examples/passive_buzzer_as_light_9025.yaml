@@ -1,16 +1,18 @@
 ---
-#* Active buzzer connected to GPIO
+#* Passive buzzer connected to GPIO
 # Pawelo, 20221127, created as new based on https://diyi0t.com/active-passive-buzzer-arduino-esp8266-esp32/
 # Pawelo, 20221215, added beep 3 times sortly, based on: https://help.konnected.io/support/solutions/articles/32000030295-esphome-binary-sensors-switches-sensor-configuration
 # Pawelo, 20221223, passive buzzer good example: https://community.home-assistant.io/t/esphome-and-passive-buzzer-continuous-beep-sound/477046/2
+# Pawelo, 20230128, re-wired besed on BC848 datasheet https://assets.nexperia.com/documents/data-sheet/BC848_SER.pdf
+#                    see also for example: https://esphome.io/components/rtttl.html?highlight=rtttl
 
-# need active buzzer 9032, diode 1N4001, transistor BC848 and resistor 220Ohm (?)
+# need passive buzzer 9025, diode 1N4001/1N4007, transistor BC848 and resistor 220Ohm (?)
 output:
   - platform: esp8266_pwm
-    pin: GPIO2 # GPIO2 with inverted
-    frequency: 2800Hz
+    pin: GPIO5 # GPIO2 with inverted
+    frequency: 2700Hz
     id: buz
-    inverted: True
+#    inverted: True
 
 light:
   - platform: binary
