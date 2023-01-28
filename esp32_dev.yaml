@@ -30,7 +30,8 @@
 #
 #_ Switches used (ss)
 # a - AVT5713 - Double Light Switch Board
-# b - 9032A - Active Buzzer 9mm diameteer x 3.2mm height
+# b - 9032A/9025A - Active Buzzer 9mm diameteer x 3.2/2.5mm height
+# r - 9032/9025 - Passive Buzzer 9mm diameteer x 3.2/2.5mm height
 #
 #_ Purpose used (PP)
 # F - Fan
