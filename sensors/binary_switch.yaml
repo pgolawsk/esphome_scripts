@@ -1,0 +1,23 @@
+---
+#* Switch on GPIO
+# Pawelo, 20221127, created as new based on https://esphome.io/cookbook/sonoff-t1-3#t2
+# Pawelo, 20221127, renaming switches, adding mqtt publis topics
+# Pawelo, 20221203, adding on_release action to binary_sensor, to simulate regular light switches
+# Pawelo, 20231128, moved to separate sensors/manipulators files
+
+platform: gpio
+pin:
+  number: ${gpio}
+  mode:
+    input: true
+    pullup: true
+  inverted: true
+name: "$room Switch ${ix}"
+id: switch_${ix}
+state_topic: $devicename/switch${ix}
+on_press:
+  then:
+    - light.toggle: light_${ix}
+on_release:
+  then:
+    - light.toggle: light_${ix}

@@ -6,5 +6,5 @@ platform: gpio
 pin:
     number: ${gpio} # GPIO2 with inverted
   #  mode: INPUT_PULLUP
-id: relay${ix}
+id: relay_${ix}
 inverted: ${inverted}
