@@ -1,8 +1,8 @@
 ---
 # ESP12F sensor board script name reflecting configuration esp12f_MMmm_SSss__PP.yaml
 # PINOUT diagram: https://www.mischianti.org/2021/05/04/esp-12-high-resolution-pinout-and-specs/
-#! PIN 9 can be used as scl for ic2 only
-#! PIN 10 can be used as GPIO for LED only
+#! PIN 9 cannot be used at ALL
+#! PIN 10 can be used as GPIO for LED only or for SCL in I2C
 #
 #_ Measures used (MM)
 #* T - Temperature
@@ -63,7 +63,7 @@ substitutions:
   mqtt_room: room
 
 <<: !include includes/board_esp12f.yaml
-<<: !include { file: includes/i2c.yaml, vars: { bus_id: "bus_a", sda: "GPIO4", scl: "GPIO2" } }
+<<: !include { file: includes/i2c.yaml, vars: { bus_id: "bus_a", sda: "GPIO4", scl: "GPIO10" } }
 # <<: !include { file: includes/dallas.yaml, vars: { gpio: "GPIO10" } }
 <<: !include { file: includes/rtttl.yaml, vars: { ix: "" } }
 
@@ -118,7 +118,7 @@ sensor:
 
 output:
   # Status LED
-  - !include { file: outputs/status_led.yaml, vars: { ix: "", gpio: "GPIO10" } }
+  - !include { file: outputs/status_led.yaml, vars: { ix: "", gpio: "GPIO2" } }
 
   # # Measurement LED
   # - !include { file: outputs/measurement_led.yaml, vars: { ix: "", gpio: "GPIO12" } }
