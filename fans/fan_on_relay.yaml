@@ -1,0 +1,18 @@
+---
+#* FAN Relay output
+# Pawelo, 20230128, created from examples
+
+platform: binary
+name: "$room Fan${ix}"
+id: r_fan${ix}
+icon: "mdi:fan"
+output: relay${ix}
+state_topic: $devicename/fan${ix}
+on_turn_on:
+  - delay: $off_delay
+  - fan.turn_off: r_fan${ix}
+# on_state:
+#   - mqtt.publish:
+#       topic: "$mqtt_location/$mqtt_room/fam${ix}"
+#       payload: !lambda |-
+#         return to_string(id(fan${ix}).state);

@@ -111,7 +111,7 @@ esphome -s devicename esp12f-13 -s updates 30s -s room TestSwitch -s mqtt_room t
 
 #*! RUN those commmands to compile and deliver updates to esp01s relay switches
 #? --device is optional - if not given and device name can be found by dns then it will be flashed OTA anyway:)
-esphome -s devicename esp01s-100 -s updates 1min -s room "Kitchen" -s mqtt_room kitchen_fan -s delay_off 5min run esp01s_1r__F.yaml --device 192.168.x.x
+esphome -s devicename esp01s-100 -s updates 1min -s room "Kitchen" -s mqtt_room kitchen_fan -s off_delay 5min run esp01s_1r__F.yaml --device 192.168.x.x
 
 
 #*! RUN those commmands to compile and deliver updates to esp32 devices wit sensors, switches, ...

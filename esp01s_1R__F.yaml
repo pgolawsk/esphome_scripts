@@ -82,9 +82,17 @@ sensor:
 #  # Temperature and Humidity sensor
 #  - !include { file: sensors/temp_hum_SHT3x.yaml, vars: { id: "", bus_id: "bus_a", address: "0x44" } }
 
+output:
+  # Relay
+  - !include { file: outputs/relay.yaml, vars: { ix: "", gpio: "GPIO0", inverted: true } }
+
 switch:
   # Restart button
   - <<: !include switches/platform_restart.yaml
 
-# Single Switch on ESP-01/01S Relay board
-<<: !include switches/1relay_fan_generic_board.yaml
+fan:
+  # Fan on relay
+  - !include { file: fans/fan_on_relay.yaml, vars: { ix: "", off_delay: "${off_delay}" } }
+
+# # Single Switch on ESP-01/01S Relay board
+# <<: !include switches/1relay_fan_generic_board.yaml

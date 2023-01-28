@@ -1,0 +1,10 @@
+---
+#* Relay output
+# Pawelo, 20230128, created from examples
+
+platform: gpio
+pin:
+    number: ${gpio} # GPIO2 with inverted
+  #  mode: INPUT_PULLUP
+id: relay${ix}
+inverted: ${inverted}
