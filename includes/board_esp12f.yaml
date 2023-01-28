@@ -6,7 +6,6 @@
 #! PIN 9 cannot be used at ALL
 #! PIN 10 can be used as GPIO for LED only or for SCL in I2C
 
-# Minimum pinout to OPERATE
 # Pawelo 20221119, created as my framework based on !include statements
 # Pawelo 20221127, 1.1.3, added $devices variable to name configutation deployed
 # Pawelo 20221127, 1.1.4, moved i2c configuration to separate include file
