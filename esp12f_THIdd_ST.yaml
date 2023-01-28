@@ -80,68 +80,23 @@ sensor:
   # Illuminance sensor
   - !include { file: sensors/lux_color_TCS3472.yaml, vars: { id: "", bus_id: "bus_a", address: "0x29" } }
 
-# based on following examples, compiled output, light, switch, fan, ...
-  # switch:
-#   # Restart button
-#   - <<: !include switches/platform_restart.yaml
-
-#   # Status and Measurement LEDs
-# <<: !include switches/s_m_leds_12_16.yaml
-
-
 output:
-  - platform: gpio
-    pin: GPIO16 # GPIO2 with inverted
-    id: s_led
-    inverted: False
-  - platform: gpio
-    pin: GPIO12 # GPIO2 with inverted
-    id: m_led
-    inverted: False
+  # Status LED
+  - !include { file: outputs/status_led.yaml, vars: { id: "", gpio: "GPIO16" } }
+
+  # Measurement LED
+  - !include { file: outputs/measurement_led.yaml, vars: { id: "", gpio: "GPIO12" } }
 
 light:
-  - platform: binary
-    name: "$room LED"
-#    icon: "mdi:led"
-    id: status_led
-    output: s_led
-    state_topic: $devicename/led
-    on_turn_on:
-    - delay: 3s
-    - light.turn_off: status_led
+  # Status LED
+  - !include { file: lights/status_led.yaml, vars: { id: "", off_delay: "3s" } }
 
-  - platform: binary
-    name: "$room Measurement LED"
-#    icon: "mdi:led"
-    id: measurement_led
-    output: m_led
-    state_topic: $devicename/m_led
+  # Measurement LED
+  - !include { file: lights/measurement_led.yaml, vars: { id: "", off_delay: "30s" } }
 
 switch:
-  - <<: !include switches/platform_restart.yaml
-  - platform: template
-    name: "$room LED 3x"
-    id: led3x
-    icon: "mdi:volume-medium"
-    turn_on_action:
-      - light.turn_on: status_led
-      - delay: 600ms
-      - light.turn_off: status_led
-      - delay: 600ms
-      - light.turn_on: status_led
-      - delay: 600ms
-      - light.turn_off: status_led
-      - delay: 600ms
-      - light.turn_on: status_led
-      - delay: 600ms
-      - light.turn_off: status_led
-      - delay: 60ms
-      - light.turn_on: status_led
-      - delay: 60ms
-      - light.turn_off: status_led
-      - delay: 60ms
-      - light.turn_on: status_led
-      - delay: 60ms
-      - light.turn_off: status_led
-    turn_off_action:
-      - light.turn_off: status_led
+  # Restart button
+  - !include { file: switches/platform_restart.yaml }
+
+  # Status LED cycle a few times
+  - !include { file: switches/led_cycle.yaml, vars: { ID: "status_led", cycles: 5, on_delay: "1s" , off_delay: "500ms" } }
