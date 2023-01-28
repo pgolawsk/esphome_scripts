@@ -89,4 +89,4 @@ sensor:
 
 switch:
   # Restart button
-  - <<: !include switches/platform_restart.yaml
+  - !include switches/platform_restart.yaml

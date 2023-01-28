@@ -35,7 +35,7 @@ sensor:
 
 switch:
   # Restart button
-  - <<: !include switches/platform_restart.yaml
+  - !include switches/platform_restart.yaml
 
 esp32_camera:
   name: $room Camera

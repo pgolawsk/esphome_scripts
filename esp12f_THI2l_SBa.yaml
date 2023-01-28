@@ -88,7 +88,7 @@ sensor:
 
 switch:
   # Restart button
-  - <<: !include switches/platform_restart.yaml
+  - !include switches/platform_restart.yaml
 
 # Double light Switch on AVT5713
 <<: !include switches/2lights_AVT5713.yaml
