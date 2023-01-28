@@ -1,0 +1,14 @@
+---
+#* Status LED light
+#*! using s_led<id> created by outputs/status_led.yaml
+# Pawelo, 20230128, created from examples
+
+platform: binary
+name: "$room LED${id}"
+icon: "mdi:led"
+id: status_led${id}
+output: s_led${id}
+state_topic: $devicename/led${id}
+on_turn_on:
+- delay: ${off_delay}
+- light.turn_off: status_led${id}

@@ -1,0 +1,14 @@
+---
+#* Measurement LED light
+#*! using m_led<id> created by outputs/measurement_led.yaml
+# Pawelo, 20230128, created from examples
+
+platform: binary
+name: "$room Measurement LED${id}"
+icon: "mdi:led"
+id: measurement_led${id}
+output: m_led${id}
+state_topic: $devicename/m_led${id}
+on_turn_on:
+- delay: ${off_delay}
+- light.turn_off: measurement_led${id}

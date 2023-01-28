@@ -1,0 +1,18 @@
+---
+#* Cycle LED on and off multiple times
+# Pawelo, 20221130, created based on exampleas and https://esphome.io/guides/automations.html?highlight=switch+template#repeat-action
+
+platform: template
+name: "$room LED ${ID} ${cycles} times"
+id: cycle_${ID}
+icon: "mdi:volume-medium"
+turn_on_action:
+  - repeat:
+      count: ${cycles}
+      then:
+        - light.turn_on: ${ID}
+        - delay: ${off_delay}
+        - light.turn_off: ${ID}
+        - delay: ${on_delay}
+turn_off_action:
+  - light.turn_off: ${ID}

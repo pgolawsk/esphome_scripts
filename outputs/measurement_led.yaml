@@ -1,0 +1,10 @@
+---
+#* Measurement LED output
+# Pawelo, 20230128, created from examples
+
+platform: gpio
+pin:
+    number: ${gpio} # GPIO2 with inverted
+  #  mode: INPUT_PULLUP
+id: m_led${id}
+inverted: false
