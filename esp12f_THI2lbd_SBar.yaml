@@ -15,8 +15,8 @@
 #_ Manipulators used (mm)
 # 1r - Single Switch/Relay
 #* 2l - Double Ligiht Switch
-# b - Buzzer
-# d - Diode
+#* b - Buzzer
+#* d - Diode
 #
 #_ Sensors used (SS)
 #* S - SHTx30 - Temperature and Humidity
@@ -30,7 +30,8 @@
 #
 #_ Switches used (ss)
 #* a - AVT5713 - Double Light Switch Board
-# b - 9032A - Active Buzzer 9mm diameteer x 3.2mm height
+# b - 9032A/9025A - Active Buzzer 9mm diameteer x 3.2/2.5mm height
+#* r - 9032/9025 - Passive Buzzer 9mm diameteer x 3.2/2.5mm height
 #
 #_ Purpose used (PP)
 # F - Fan
@@ -59,7 +60,8 @@ substitutions:
   mqtt_room: room
 
 <<: !include includes/board_esp12f.yaml
-<<: !include { file: includes/i2c.yaml, vars: { bus_id: "bus_a", sda: "GPIO4", scl: "GPIO2" } }
+<<: !include { file: includes/i2c.yaml, vars: { bus_id: "bus_a", sda: "GPIO4", scl: "GPIO9" } }
+<<: !include { file: includes/rtttl.yaml, vars: { ix: "" } }
 
 # reinclude MQTT as a bug in ESPHOME, see: https://github.com/esphome/issues/issues/2180, https://github.com/esphome/issues/issues/1487
 mqtt:
@@ -76,6 +78,11 @@ text_sensor:
   - !include sensors/text_version.yaml
   - !include sensors/text_wifi_info.yaml
 
+binary_sensor:
+  # Double light Switch on AVT5713
+  - !include { file: sensors/binary_switch.yaml, vars: { ix: "A", gpio: "GPIO13" } }
+  - !include { file: sensors/binary_switch.yaml, vars: { ix: "B", gpio: "GPIO14" } }
+
 sensor:
   - !include sensors/uptime.yaml
   - !include sensors/wifi_signal.yaml
@@ -86,10 +93,37 @@ sensor:
   # Illuminance sensor
   - !include { file: sensors/lux_BH1750.yaml, vars: { ix: "", bus_id: "bus_a", address: "0x23" } }
 
+output:
+  # Status LED
+  - !include { file: outputs/status_led.yaml, vars: { ix: "", gpio: "GPIO10" } }
+
+  # RTTTL Buzzer (passive_buzzer)
+  - !include { file: outputs/passive_buzzer.yaml, vars: { ix: "", gpio: "GPIO16" } }
+
+  # Double relay on AVT5713
+  - !include { file: outputs/relay.yaml, vars: { ix: "A", gpio: "GPIO5", inverted: false } }
+  - !include { file: outputs/relay.yaml, vars: { ix: "B", gpio: "GPIO12", inverted: false } }
+
+light:
+  # Status LED
+  - !include { file: lights/status_led.yaml, vars: { ix: "", off_delay: "5s" } }
+
+  # Double relay on AVT5713
+  - !include { file: lights/light_on_relay.yaml, vars: { ix: "A" } }
+  - !include { file: lights/light_on_relay.yaml, vars: { ix: "B" } }
+
+
 switch:
   # Restart button
   - !include switches/platform_restart.yaml
 
-# Double light Switch on AVT5713
-<<: !include switches/2lights_AVT5713.yaml
+   # Status LED cycle
+  - !include { file: switches/led_cycle.yaml, vars: { ID: "status_led", cycles: 3, on_delay: "1s" , off_delay: "500ms" } }
+
+  # RTTTL Play (passive_buzzer)
+  - !include { file: switches/rtttl_play.yaml, vars: { ix: "" } }
+
+
+# # Double light Switch on AVT5713
+# <<: !include switches/2lights_AVT5713.yaml
 
