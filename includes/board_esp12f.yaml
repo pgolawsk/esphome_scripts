@@ -1,5 +1,8 @@
 ---
 #* Base configuration for ESP-12F board
+# PINOUT diagram: https://www.mischianti.org/2021/05/04/esp-12-high-resolution-pinout-and-specs/
+#! PIN 9 cannot be used at ALL
+#! PIN 10 can be used as GPIO for LED only or for SCL in I2C
 # Pawelo 20221119, created as my framework based on !include statements
 # Pawelo 20221127, 1.1.3, added $devices variable to name configutation deployed
 # Pawelo 20221127, 1.1.4, moved i2c configuration to separate include file

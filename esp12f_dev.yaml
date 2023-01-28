@@ -1,8 +1,5 @@
 ---
 # ESP12F sensor board script name reflecting configuration esp12f_MMmm_SSss__PP.yaml
-# PINOUT diagram: https://www.mischianti.org/2021/05/04/esp-12-high-resolution-pinout-and-specs/
-#! PIN 9 cannot be used at ALL
-#! PIN 10 can be used as GPIO for LED only or for SCL in I2C
 #
 #_ Measures used (MM)
 #* T - Temperature
