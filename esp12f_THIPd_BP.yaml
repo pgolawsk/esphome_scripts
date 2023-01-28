@@ -89,9 +89,18 @@ sensor:
     # Illuminance sensor
   - !include { file: sensors/lux_BH1750.yaml, vars: { id: "", bus_id: "bus_a", address: "0x23" } }
 
+
+output:
+  # Status LED
+  - !include { file: outputs/status_led.yaml, vars: { id: "", gpio: "GPIO16" } }
+
+light:
+  # Status LED
+  - !include { file: lights/status_led.yaml, vars: { id: "", off_delay: "5s" } }
+
 switch:
   # Restart button
-  - <<: !include switches/platform_restart.yaml
+  - !include switches/platform_restart.yaml
 
-# Status LED
-<<: !include switches/status_led_as_light_GPIO16.yaml
+  # Status LED cycle
+  - !include { file: switches/led_cycle.yaml, vars: { ID: "status_led", cycles: 3, on_delay: "1s" , off_delay: "500ms" } }
