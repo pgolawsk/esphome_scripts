@@ -78,11 +78,11 @@ sensor:
   - !include sensors/wifi_signal.yaml
 
   # Temperature and Humidity sensor
-  - !include { file: sensors/temp_hum_SHT3x.yaml, vars: { id: "", bus_id: "bus_a", address: "0x44" } }
+  - !include { file: sensors/temp_hum_SHT3x.yaml, vars: { ix: "", bus_id: "bus_a", address: "0x44" } }
   # Illuminance sensor
-  - !include { file: sensors/lux_BH1750.yaml, vars: { id: "", bus_id: "bus_a", address: "0x23" } }
+  - !include { file: sensors/lux_BH1750.yaml, vars: { ix: "", bus_id: "bus_a", address: "0x23" } }
   # Temperature, Humidity adn CO2 sensor
-  - !include { file: sensors/temp_hum_co2_SCD40.yaml, vars: { id: "", bus_id: "bus_a", address: "0x62" } }
+  - !include { file: sensors/temp_hum_co2_SCD40.yaml, vars: { ix: "", bus_id: "bus_a", address: "0x62" } }
 
 switch:
   # Restart button

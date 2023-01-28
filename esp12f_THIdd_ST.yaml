@@ -75,24 +75,24 @@ sensor:
   - !include sensors/wifi_signal.yaml
 
   # Temperature and Humidity sensor
-  - !include { file: sensors/temp_hum_SHT3x.yaml, vars: { id: "", bus_id: "bus_a", address: "0x44" } }
+  - !include { file: sensors/temp_hum_SHT3x.yaml, vars: { ix: "", bus_id: "bus_a", address: "0x44" } }
 
   # Illuminance sensor
-  - !include { file: sensors/lux_color_TCS3472.yaml, vars: { id: "", bus_id: "bus_a", address: "0x29" } }
+  - !include { file: sensors/lux_color_TCS3472.yaml, vars: { ix: "", bus_id: "bus_a", address: "0x29" } }
 
 output:
   # Status LED
-  - !include { file: outputs/status_led.yaml, vars: { id: "", gpio: "GPIO16" } }
+  - !include { file: outputs/status_led.yaml, vars: { ix: "", gpio: "GPIO16" } }
 
   # Measurement LED
-  - !include { file: outputs/measurement_led.yaml, vars: { id: "", gpio: "GPIO12" } }
+  - !include { file: outputs/measurement_led.yaml, vars: { ix: "", gpio: "GPIO12" } }
 
 light:
   # Status LED
-  - !include { file: lights/status_led.yaml, vars: { id: "", off_delay: "3s" } }
+  - !include { file: lights/status_led.yaml, vars: { ix: "", off_delay: "3s" } }
 
   # Measurement LED
-  - !include { file: lights/measurement_led.yaml, vars: { id: "", off_delay: "30s" } }
+  - !include { file: lights/measurement_led.yaml, vars: { ix: "", off_delay: "30s" } }
 
 switch:
   # Restart button

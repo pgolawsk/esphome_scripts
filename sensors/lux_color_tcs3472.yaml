@@ -6,16 +6,16 @@
 
 platform: tcs34725
 illuminance:
-  name: "$room Illuminance${id}"
+  name: "$room Illuminance${ix}"
   accuracy_decimals: 1
-  id: lux${id}
+  id: lux${ix}
   icon: mdi:mdi-decagram-outline
-  state_topic: $devicename/illuminance${id}
+  state_topic: $devicename/illuminance${ix}
   on_value:
     - mqtt.publish:
-        topic: "$mqtt_location/$mqtt_room/illuminance${id}"
+        topic: "$mqtt_location/$mqtt_room/illuminance${ix}"
         payload: !lambda |-
-          return to_string(id(lux${id}).state);
+          return to_string(id(lux${ix}).state);
 red_channel:
   name: "$room Channel Red"
   id: red

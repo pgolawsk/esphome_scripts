@@ -10,31 +10,31 @@
 
 platform: bme280
 temperature:
-  name: "$room Temperature${id}"
-  id: temp${id}
+  name: "$room Temperature${ix}"
+  id: temp${ix}
   oversampling: 16x
   accuracy_decimals: 2
   filters:
     - offset: -2.1
-  state_topic: $devicename/temperature${id}
+  state_topic: $devicename/temperature${ix}
   on_value:
     - mqtt.publish:
-        topic: "$mqtt_location/$mqtt_room/temperature${id}"
+        topic: "$mqtt_location/$mqtt_room/temperature${ix}"
         payload: !lambda |-
-          return to_string(id(temp${id}).state);
+          return to_string(id(temp${ix}).state);
 humidity:
-  name: "$room Humidity${id}"
-  id: hum${id}
+  name: "$room Humidity${ix}"
+  id: hum${ix}
   oversampling: 16x
   accuracy_decimals: 2
   filters:
     - offset: +9.2
-  state_topic: $devicename/humidity${id}
+  state_topic: $devicename/humidity${ix}
   on_value:
     - mqtt.publish:
-        topic: "$mqtt_location/$mqtt_room/humidity${id}"
+        topic: "$mqtt_location/$mqtt_room/humidity${ix}"
         payload: !lambda |-
-          return to_string(id(hum${id}).state);
+          return to_string(id(hum${ix}).state);
 pressure:
   name: "$room Pressure"
   id: press

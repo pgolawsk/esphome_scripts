@@ -7,18 +7,18 @@
 # Pawelo, 20230121, add variables to configure sensor
 
 platform: bh1750
-name: "$room Illuminance${id}"
+name: "$room Illuminance${ix}"
 accuracy_decimals: 1
 filters:
   - multiply: 1.0
-id: lux${id}
+id: lux${ix}
 icon: mdi:mdi-decagram-outline
-state_topic: $devicename/illuminance${id}
+state_topic: $devicename/illuminance${ix}
 on_value:
   - mqtt.publish:
-      topic: "$mqtt_location/$mqtt_room/illuminance${id}"
+      topic: "$mqtt_location/$mqtt_room/illuminance${ix}"
       payload: !lambda |-
-        return to_string(id(lux${id}).state);
+        return to_string(id(lux${ix}).state);
 i2c_id: ${bus_id}
 #address: 0x23
 address: ${address}

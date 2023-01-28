@@ -4,11 +4,11 @@
 # Pawelo, 20230128, created from examples
 
 platform: template
-name: "$room RTTTL${id} Play"
+name: "$room RTTTL${ix} Play"
 icon: "mdi:volume-high"
-id: rtttl_play${id}
-#output: p_buz${id}
-state_topic: $devicename/rtttl_play${id}
+id: rtttl_play${ix}
+#output: p_buz${ix}
+state_topic: $devicename/rtttl_play${ix}
 optimistic: true
 on_turn_on:
   - logger.log:
@@ -34,4 +34,4 @@ on_turn_off:
       # level: INFO
       tag: 'rtttl'
   - rtttl.stop
-#  - switch.turn_off: rtttl_play${id}
+#  - switch.turn_off: rtttl_play${ix}

@@ -4,11 +4,11 @@
 # Pawelo, 20230128, created from examples
 
 platform: binary
-name: "$room LED${id}"
+name: "$room LED${ix}"
 icon: "mdi:led"
-id: status_led${id}
-output: s_led${id}
-state_topic: $devicename/led${id}
+id: status_led${ix}
+output: s_led${ix}
+state_topic: $devicename/led${ix}
 on_turn_on:
 - delay: ${off_delay}
-- light.turn_off: status_led${id}
+- light.turn_off: status_led${ix}

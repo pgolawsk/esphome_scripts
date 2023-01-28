@@ -64,7 +64,7 @@ substitutions:
 <<: !include includes/board_esp12f.yaml
 <<: !include { file: includes/i2c.yaml, vars: { bus_id: "bus_a", sda: "GPIO4", scl: "GPIO2" } }
 # <<: !include { file: includes/dallas.yaml, vars: { gpio: "GPIO10" } }
-<<: !include { file: includes/rtttl.yaml, vars: { id: "" } }
+<<: !include { file: includes/rtttl.yaml, vars: { ix: "" } }
 
 # reinclude MQTT as a bug in ESPHOME, see: https://github.com/esphome/issues/issues/2180, https://github.com/esphome/issues/issues/1487
 mqtt:
@@ -87,58 +87,58 @@ sensor:
   - !include sensors/wifi_signal.yaml
 
   # # Temperature Dallas sensor
-#  - !include { file: sensors/temp_DS18B20.yaml, vars: { id: "Dtest", address: "0xc00000000c511a28" } }
+#  - !include { file: sensors/temp_DS18B20.yaml, vars: { ix: "Dtest", address: "0xc00000000c511a28" } }
 
   # Temperature and Humidity sensor
-  - !include { file: sensors/temp_hum_SHT3x.yaml, vars: { id: "", bus_id: "bus_a", address: "0x44" } }
+  - !include { file: sensors/temp_hum_SHT3x.yaml, vars: { ix: "", bus_id: "bus_a", address: "0x44" } }
   # # Temperature, Humidity and Pressure seensor
-  # - !include { file: sensors/temp_hum_press_BME280.yaml, vars: { id: "", bus_id: "bus_a", address: "0x76" } }
+  # - !include { file: sensors/temp_hum_press_BME280.yaml, vars: { ix: "", bus_id: "bus_a", address: "0x76" } }
   # # Temperature, Humidity, Pressure and Gas Resistance seensor
-  # - !include { file: sensors/temp_hum_press_gas_BME680.yaml, vars: { id: "", bus_id: "bus_a", address: "0x77" } }
+  # - !include { file: sensors/temp_hum_press_gas_BME680.yaml, vars: { ix: "", bus_id: "bus_a", address: "0x77" } }
 
   # CO2, Temperature and Humidity sensor
-  - !include { file: sensors/temp_hum_co2_SCD40.yaml, vars: { id: "2", bus_id: "bus_a", address: "0x62" } }
+  - !include { file: sensors/temp_hum_co2_SCD40.yaml, vars: { ix: "2", bus_id: "bus_a", address: "0x62" } }
 
   # Illuminance sensor
-  - !include { file: sensors/lux_BH1750.yaml, vars: { id: "", bus_id: "bus_a", address: "0x23" } }
-  # - !include { file: sensors/lux_color_TCS3472.yaml, vars: { id: "2", bus_id: "bus_a", address: "0x29" } }
+  - !include { file: sensors/lux_BH1750.yaml, vars: { ix: "", bus_id: "bus_a", address: "0x23" } }
+  # - !include { file: sensors/lux_color_TCS3472.yaml, vars: { ix: "2", bus_id: "bus_a", address: "0x29" } }
 
   # # TVOC and eCO2 sensor
-  # - !include { file: sensors/tvoc_eco2_SGP30.yaml, vars: { id: "", bus_id: "bus_a", address: "0x58" } }
+  # - !include { file: sensors/tvoc_eco2_SGP30.yaml, vars: { ix: "", bus_id: "bus_a", address: "0x58" } }
 
   # Water ussage YF-B10 sensor
-  # - !include { file: sensors/water_YF-B10.yaml, vars: { id: "", gpio: "GPIO12" } }
-  # - !include { file: sensors/water_usage_YF-B10.yaml, vars: { id: "" } }
+  # - !include { file: sensors/water_YF-B10.yaml, vars: { ix: "", gpio: "GPIO12" } }
+  # - !include { file: sensors/water_usage_YF-B10.yaml, vars: { ix: "" } }
 
 output:
   # Status LED
-  - !include { file: outputs/status_led.yaml, vars: { id: "", gpio: "GPIO10" } }
+  - !include { file: outputs/status_led.yaml, vars: { ix: "", gpio: "GPIO10" } }
 
   # # Measurement LED
-  # - !include { file: outputs/measurement_led.yaml, vars: { id: "", gpio: "GPIO12" } }
+  # - !include { file: outputs/measurement_led.yaml, vars: { ix: "", gpio: "GPIO12" } }
 
   # RTTTL Buzzer (passive_buzzer)
-  - !include { file: outputs/passive_buzzer.yaml, vars: { id: "", gpio: "GPIO5" } }
+  - !include { file: outputs/passive_buzzer.yaml, vars: { ix: "", gpio: "GPIO5" } }
 
 light:
   # Status LED
-  - !include { file: lights/status_led.yaml, vars: { id: "", off_delay: "5s" } }
+  - !include { file: lights/status_led.yaml, vars: { ix: "", off_delay: "5s" } }
 
   # # Measurement LED
-  # - !include { file: lights/measurement_led.yaml, vars: { id: "", off_delay: "5s" } }
+  # - !include { file: lights/measurement_led.yaml, vars: { ix: "", off_delay: "5s" } }
 
 switch:
   # Restart button
   - !include { file: switches/platform_restart.yaml }
 
-  # Status LED
+  # Status LED cycle
   - !include { file: switches/led_cycle.yaml, vars: { ID: "status_led", cycles: 3, on_delay: "1s" , off_delay: "500ms" } }
 
   # RTTTL Play (passive_buzzer)
-  - !include { file: switches/rtttl_play.yaml, vars: { id: "" } }
+  - !include { file: switches/rtttl_play.yaml, vars: { ix: "" } }
 
   # # Buzzer (active)
-  # - !include { file: switches/active_buzzer.yaml, vars: { id: "", gpio: "GPIO5", off_delay: "1100ms" } }
+  # - !include { file: switches/active_buzzer.yaml, vars: { ix: "", gpio: "GPIO5", off_delay: "1100ms" } }
 
   # Double light Switch on AVT5713
 #<<: !include switches/2lights_AVT5713.yaml

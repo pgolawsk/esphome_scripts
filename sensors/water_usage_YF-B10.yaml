@@ -4,19 +4,19 @@
 # Pawelo, 20230121, final configuration with real sensor
 
 platform: template
-name: "$room Water Total${id} [m³]"
-id: water_used${id}
+name: "$room Water Total${ix} [m³]"
+id: water_used${ix}
 accuracy_decimals: 3
 unit_of_measurement: "m³"
 icon: "mdi:water"
 #    lambda: return (id(water_pulse_total).state / 476);
-lambda: return id(water_total${id}).state;
-state_topic: $devicename/water_used${id}
+lambda: return id(water_total${ix}).state;
+state_topic: $devicename/water_used${ix}
 on_value:
   - mqtt.publish:
-      topic: "$mqtt_location/$mqtt_room/water_used${id}"
+      topic: "$mqtt_location/$mqtt_room/water_used${ix}"
       payload: !lambda |-
-        return to_string(id(water_total${id}).state * 0.001);
+        return to_string(id(water_total${ix}).state * 0.001);
 filters:
   - multiply: 0.001
 update_interval: $updates

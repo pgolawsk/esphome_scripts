@@ -9,34 +9,34 @@ pin:
   number: ${gpio}
 #  number: GPIO12
   mode: INPUT_PULLUP
-id: water_flow${id}
-name: "$room Water Flow${id}"
+id: water_flow${ix}
+name: "$room Water Flow${ix}"
 unit_of_measurement: "liter/min"
 icon: "mdi:water"
 timeout: $updates
 internal: true
-state_topic: $devicename/water_flow${id}
+state_topic: $devicename/water_flow${ix}
 on_value:
   - mqtt.publish:
-      topic: "$mqtt_location/$mqtt_room/water_flow${id}"
+      topic: "$mqtt_location/$mqtt_room/water_flow${ix}"
       payload: !lambda |-
         return to_string(x);
 filters:
   - lambda: return x / 476;
 total:
-  name: "$room Water Total${id}"
-  id: water_total${id}
+  name: "$room Water Total${ix}"
+  id: water_total${ix}
   unit_of_measurement: "liter"
 #      unit_of_measurement: "m³"
   accuracy_decimals: 2
   device_class: water
   state_class: total_increasing
-  state_topic: $devicename/water_total${id}
+  state_topic: $devicename/water_total${ix}
   filters:
     - lambda: return x / 476;
 #        - multiply: 0.001
   on_value:
     - mqtt.publish:
-        topic: "$mqtt_location/$mqtt_room/water_total${id}"
+        topic: "$mqtt_location/$mqtt_room/water_total${ix}"
         payload: !lambda |-
           return to_string(x);

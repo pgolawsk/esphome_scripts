@@ -7,5 +7,5 @@ pin:
   number: ${gpio} # GPIO2 with inverted
 #  mode: INPUT_PULLUP
 frequency: 500Hz
-id: p_buz${id}
+id: p_buz${ix}
 inverted: false

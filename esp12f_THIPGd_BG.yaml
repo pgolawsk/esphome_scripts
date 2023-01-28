@@ -84,17 +84,17 @@ sensor:
   - !include sensors/wifi_signal.yaml
 
   # Temperature and Humidity and Preasure sensor
-  - !include { file: sensors/temp_hum_press_gas_BME680.yaml, vars: { id: "", bus_id: "bus_a", address: "0x77" } }
+  - !include { file: sensors/temp_hum_press_gas_BME680.yaml, vars: { ix: "", bus_id: "bus_a", address: "0x77" } }
   # Illuminance sensor
-  - !include { file: sensors/lux_BH1750.yaml, vars: { id: "", bus_id: "bus_a", address: "0x23" } }
+  - !include { file: sensors/lux_BH1750.yaml, vars: { ix: "", bus_id: "bus_a", address: "0x23" } }
 
 output:
   # Status LED
-  - !include { file: outputs/status_led.yaml, vars: { id: "", gpio: "GPIO16" } }
+  - !include { file: outputs/status_led.yaml, vars: { ix: "", gpio: "GPIO16" } }
 
 light:
   # Status LED
-  - !include { file: lights/status_led.yaml, vars: { id: "", off_delay: "5s" } }
+  - !include { file: lights/status_led.yaml, vars: { ix: "", off_delay: "5s" } }
 
 switch:
   # Restart button

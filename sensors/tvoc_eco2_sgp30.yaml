@@ -29,6 +29,6 @@ i2c_id: ${bus_id}
 address: ${address}
 store_baseline: yes # baseline is stored and preserved between the reboots, but after OTA new baseline needs to be calculated
 compensation:
-  temperature_source: temp${id}
-  humidity_source: hum${id}
+  temperature_source: temp${ix}
+  humidity_source: hum${ix}
 #update_interval: $updates

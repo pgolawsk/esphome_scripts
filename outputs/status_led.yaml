@@ -6,5 +6,5 @@ platform: gpio
 pin:
     number: ${gpio} # GPIO2 with inverted
   #  mode: INPUT_PULLUP
-id: s_led${id}
+id: s_led${ix}
 inverted: false

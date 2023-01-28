@@ -85,7 +85,7 @@ sensor:
   - !include sensors/wifi_signal.yaml
 
   # Temperature, Humidity and Pressure sensor
-  - !include { file: sensors/temp_hum_press_BME280.yaml, vars: { id: "", bus_id: "bus_a", address: "0x76" } }
+  - !include { file: sensors/temp_hum_press_BME280.yaml, vars: { ix: "", bus_id: "bus_a", address: "0x76" } }
 
 switch:
   # Restart button

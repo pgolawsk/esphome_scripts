@@ -4,15 +4,15 @@
 # Pawelo, 20230121, add variables to configure sensor
 
 platform: dallas
-name: "$room Temperature${id}"
-id: temp${id}
+name: "$room Temperature${ix}"
+id: temp${ix}
 accuracy_decimals: 2
-state_topic: $devicename/temperature_${id}
+state_topic: $devicename/temperature_${ix}
 on_value:
   - mqtt.publish:
-      topic: "$mqtt_location/$mqtt_room/temperature_${id}"
+      topic: "$mqtt_location/$mqtt_room/temperature_${ix}"
       payload: !lambda |-
-        return to_string(id(temp${id}).state);
+        return to_string(id(temp${ix}).state);
 #address: 0xc00000000c511a28 # change logger to DEBUG to discover available sensor addresses
 address: ${address} # change logger to DEBUG to discover available sensor addresses
 #update_interval: $updates # no update interval as this is not I2C
