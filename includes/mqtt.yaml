@@ -2,6 +2,7 @@
 #* Enable MQTT
 # Pawelo, 20221119, created as my framework based on !include statements
 # Pawelo, 20230115, added more options based on https://github.com/esphome/issues/issues/3406
+# Pawelo, 20230129, added RTTTL topic to play
 
 mqtt:
   id: mqtt_client
@@ -44,3 +45,39 @@ mqtt:
     #   then:
     #     - logger.log: "Turning deep_sleep off."
     #     - deep_sleep.prevent: deep_sleep_1
+    - topic: ${devicename}/rtttl_play_it
+      then:
+        - if:
+            condition:
+              lambda: |-
+                return x == "" || x == "ON";
+            then:
+              - logger.log: "Recieved MQTT RTTL activation - playing confirmation."
+              - rtttl.play: "success:d=24,o=5,b=100:c,g,b"
+            else:
+              - logger.log: "Recieved MQTT RTTTL to play."
+              - rtttl.play:
+                  rtttl: !lambda 'return x;'
+        - light.turn_on: status_led
+        - delay: 500ms
+        - light.turn_off: status_led
+    - topic: "$mqtt_location/$mqtt_room/rtttl_play_it"
+      then:
+        - if:
+            condition:
+              lambda: |-
+                return x == "" || x == "ON";
+            then:
+              - logger.log: "Recieved MQTT RTTL activation - playing confirmation."
+              - rtttl.play: "success:d=24,o=5,b=100:c,g,b"
+            else:
+              - logger.log: "Recieved MQTT RTTTL to play."
+              - rtttl.play:
+                  rtttl: !lambda 'return x;'
+        - light.turn_on: status_led
+        - delay: 200ms
+        - light.turn_off: status_led
+        - delay: 200ms
+        - light.turn_on: status_led
+        - delay: 200ms
+        - light.turn_off: status_led
