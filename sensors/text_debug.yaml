@@ -1,0 +1,11 @@
+---
+#* ESP debug information - platform information
+#! log level needs to be set at least to DEBUG for this to work
+#! also debug interface is needed
+# Pawelo, 20230130, created based on https://esphome.io/components/debug.html
+platform: debug
+device:
+  name: "$devicename Device Info"
+# reset_reason:
+#   name: "$devicename Reset Reason"
+#internal: true

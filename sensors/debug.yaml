@@ -1,0 +1,15 @@
+---
+#* ESP debug information - sensor
+#! log level needs to be set at least to DEBUG for this to work
+#! also debug interface is needed
+# Pawelo, 20230130, created based on https://esphome.io/components/debug.html
+platform: debug
+free:
+  name: "$devicename Heap Free"
+fragmentation:
+  name: "$devicename Heap Fragmentation"
+block:
+  name: "$devicename Heap Max Block"
+loop_time:
+  name: "$devicename Loop Time"
+#internal: true

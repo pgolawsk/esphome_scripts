@@ -1,0 +1,7 @@
+---
+#* ESP debug interface
+#! log level needs to be set at least to DEBUG for this to work
+# Pawelo, 20230130, created based on https://esphome.io/components/debug.html# Pawelo, 20230111, created
+
+debug:
+  update_interval: ${update_interval}
