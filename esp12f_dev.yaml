@@ -61,84 +61,12 @@ substitutions:
 
 # Include basics of a board
 <<: !include includes/board_esp12f.yaml
-#! reinclude MQTT separately as via nested include it do not work:/
-# <<: !include includes/mqtt.yaml
 
 # Include interfaces needed
 <<: !include { file: interfaces/i2c.yaml, vars: { bus_id: "bus_a", sda: "GPIO4", scl: "GPIO2" } }
 # <<: !include { file: interfaces/dallas.yaml, vars: { gpio: "GPIO10" } }
 <<: !include { file: interfaces/rtttl.yaml, vars: { ix: "" } }
 # <<: !include { file: interfaces/debug.yaml, vars: { update_interval: "15s" } }
-
-# # reinclude MQTT as a bug in ESPHOME, see: https://github.com/esphome/issues/issues/2180, https://github.com/esphome/issues/issues/1487
-# mqtt:
-#   broker: !secret mqtt_ip
-#   port: !secret mqtt_port
-#   # username: $devicename
-#   username: !secret mqtt_user
-#   password: !secret mqtt_password
-#   client_id: $devicename
-#   # id: $devicename
-#   discovery: false
-#   discovery_retain: false
-#   # discovery_unique_id_generator: mac
-#   # discovery_object_id_generator: device_name
-#   birth_message:
-#   will_message:
-#   shutdown_message:
-#   on_message:
-#     - topic: ${devicename}/log_level
-#       payload: 'DEBUG'
-#       then:
-#         - logger.log: "Got log_level DEBUG."
-#     - topic: ${devicename}/log_level
-#       payload: 'WARN'
-#       then:
-#         - logger.log: "Got log_level WARN."
-#     - topic: ${devicename}/log_level
-#       payload: 'INFO'
-#       then:
-#         - logger.log: "Got log_level INFO."
-#     - topic: ${devicename}/log_level
-#       payload: 'NONE'
-#       then:
-#         - logger.log: "Got log_level NONE."
-#     - topic: ${devicename}/rtttl_play_it
-#       then:
-#         - if:
-#             condition:
-#               lambda: |-
-#                 return x == "" || x == "ON";
-#             then:
-#               - logger.log: "Recieved MQTT RTTL activation - playing confirmation."
-#               - rtttl.play: "success:d=24,o=5,b=100:c,g,b"
-#             else:
-#               - logger.log: "Recieved MQTT RTTTL to play."
-#               - rtttl.play:
-#                   rtttl: !lambda 'return x;'
-#         - light.turn_on: status_led
-#         - delay: 500ms
-#         - light.turn_off: status_led
-#     - topic: "$mqtt_location/$mqtt_room/rtttl_play_it"
-#       then:
-#         - if:
-#             condition:
-#               lambda: |-
-#                 return x == "" || x == "ON";
-#             then:
-#               - logger.log: "Recieved MQTT RTTL activation - playing confirmation."
-#               - rtttl.play: "success:d=24,o=5,b=100:c,g,b"
-#             else:
-#               - logger.log: "Recieved MQTT RTTTL to play."
-#               - rtttl.play:
-#                   rtttl: !lambda 'return x;'
-#         - light.turn_on: status_led
-#         - delay: 200ms
-#         - light.turn_off: status_led
-#         - delay: 200ms
-#         - light.turn_on: status_led
-#         - delay: 200ms
-#         - light.turn_off: status_led
 
 text_sensor:
   - !include sensors/text_uptime.yaml
