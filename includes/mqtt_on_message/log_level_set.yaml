@@ -1,5 +1,6 @@
 ---
 #* MQTT on message to set LOG LEVEL
+#! do not include this to on_message, as it causes OTA to run very slow and unstable
 # Pawelo, 20230115, added more options based on https://github.com/esphome/issues/issues/3406
 # Pawelo, 20230129, added RTTTL topic to play
 # Pawelo, 20230130, moved log_level to separate include file
