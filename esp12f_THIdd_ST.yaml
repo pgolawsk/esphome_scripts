@@ -55,16 +55,23 @@ substitutions:
   mqtt_location: home
   mqtt_room: room
 
+# Include basics of a board
 <<: !include includes/board_esp12f.yaml
-<<: !include { file: includes/i2c.yaml, vars: { bus_id: "bus_a", sda: "GPIO4", scl: "GPIO5" } }
+#! reinclude MQTT separately as via nested include it do not work:/
+<<: !include includes/mqtt.yaml
 
-# reinclude MQTT as a bug in ESPHOME, see: https://github.com/esphome/issues/issues/2180, https://github.com/esphome/issues/issues/1487
-mqtt:
-  broker: !secret mqtt_ip
-  port: !secret mqtt_port
-  username: !secret mqtt_user
-  password: !secret mqtt_password
-  client_id: $devicename
+# Include interfaces needed
+<<: !include { file: interfaces/i2c.yaml, vars: { bus_id: "bus_a", sda: "GPIO4", scl: "GPIO5" } }
+# <<: !include { file: interfaces/dallas.yaml, vars: { gpio: "GPIO10" } }
+# <<: !include { file: interfaces/rtttl.yaml, vars: { ix: "" } }
+
+# # reinclude MQTT as a bug in ESPHOME, see: https://github.com/esphome/issues/issues/2180, https://github.com/esphome/issues/issues/1487
+# mqtt:
+#   broker: !secret mqtt_ip
+#   port: !secret mqtt_port
+#   username: !secret mqtt_user
+#   password: !secret mqtt_password
+#   client_id: $devicename
 
 text_sensor:
   - !include sensors/text_uptime.yaml
