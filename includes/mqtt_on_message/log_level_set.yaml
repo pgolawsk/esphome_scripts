@@ -1,0 +1,50 @@
+---
+#* MQTT on message to set LOG LEVEL
+# Pawelo, 20230115, added more options based on https://github.com/esphome/issues/issues/3406
+# Pawelo, 20230129, added RTTTL topic to play
+# Pawelo, 20230130, moved log_level to separate include file
+
+# - topic: ${devicename}/log_level
+#   then:
+#     - if:
+#         condition:
+#             # NONE, ERROR, WARN, INFO, DEBUG, VERBOSE, VERY_VERBOSE
+#             lambda: |-
+#               return x == "NONE" || x == "ERROR" || x == "WARN" || x == "INFO" || x == "DEBUG" || x == "VERBOSE" || x == "VERY_VERBOSE";
+#         then:
+#           - logger.log:
+#               format: 'Set LOG LEVEL to value revieved via MQTT.'
+#               # args: []
+#               level: WARN
+#               tag: 'mqtt'
+#           - lambda: 'logger.level = x;'
+#         else:
+#           - logger.log:
+#               format: 'LOG LEVEL is unchanged. Cannot set to value recieved via MQTT.'
+#               # args: []
+#               level: WARN
+#               tag: 'mqtt'
+topic: ${devicename}/log_level_set
+payload: ${log_level}
+then:
+  - logger.log:
+      format: "Got log_level ${log_level}."
+      level: WARN
+      tag: mqtt
+  - repeat:
+      count: ${led_cycles}
+      then:
+        - light.turn_on: status_led
+        - delay: 100ms
+        - light.turn_off: status_led
+        - delay: 200ms
+# - topic: ${devicename}/sleep_mode
+#   payload: 'ON'
+#   then:
+#     - logger.log: "Turning deep_sleep on."
+#     - deep_sleep.allow: deep_sleep_1
+# - topic: ${devicename}/sleep_mode
+#   payload: 'OFF'
+#   then:
+#     - logger.log: "Turning deep_sleep off."
+#     - deep_sleep.prevent: deep_sleep_1

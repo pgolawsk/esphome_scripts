@@ -1,0 +1,25 @@
+---
+#* MQTT on message to play RTTTL
+# Pawelo, 20230129, added RTTTL topic to play
+# Pawelo, 20230130, moved rtttl_play_it to separate include file
+
+topic: ${topic_prefix}/rtttl_play_it
+then:
+  - if:
+      condition:
+        lambda: |-
+          return x == "" || x == "ON";
+      then:
+        - logger.log: "Recieved MQTT RTTL activation - playing confirmation."
+        - rtttl.play: "success:d=24,o=5,b=100:c,g,b"
+      else:
+        - logger.log: "Recieved MQTT RTTTL to play."
+        - rtttl.play:
+            rtttl: !lambda "return x;"
+  - repeat:
+      count: ${led_cycles}
+      then:
+        - light.turn_on: status_led
+        - delay: 300ms
+        - light.turn_off: status_led
+        - delay: 300ms
