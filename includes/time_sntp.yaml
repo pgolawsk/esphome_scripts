@@ -1,0 +1,25 @@
+---
+#* Activates time source and time based events
+# Pawelo, 20230206, created based on https://esphome.io/components/time/index.html#base-time-config
+time:
+  - platform: sntp
+    id: sntp_time
+    # on_time:
+    #   # Every 5 minutes
+    #   - seconds: 0
+    #     minutes: /5
+    #     then:
+    #       - switch.toggle: my_switch
+
+    #   # Every morning on weekdays
+    #   - seconds: 0
+    #     minutes: 30
+    #     hours: 7
+    #     days_of_week: MON-FRI
+    #     then:
+    #       - light.turn_on: my_light
+
+    #   # Cron syntax, trigger every 5 minutes
+    #   - cron: '* /5 * * * *'
+    #     then:
+    #       - switch.toggle: my_switch
