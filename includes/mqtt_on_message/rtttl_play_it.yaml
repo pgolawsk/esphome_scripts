@@ -11,6 +11,7 @@
 # Scale:d=32,o=5,b=160:c,d,e,f,g,a,b,c6,b,a,g,f,e,d,c
 # Trim Phone:d=16,o=5,b=350:a,b,a,b,a,b,a,4p,a,b,a,b,a,b,a,b,a.
 # beep:d=16,o=5,b=100:b
+# more content/examples on https://raw.githubusercontent.com/schmurtzm/MrDiy-Audio-Notifier/main/src/RTTTL-samples.txt
 
 topic: ${topic_prefix}/rtttl_play_it
 then:
