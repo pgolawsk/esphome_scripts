@@ -3,7 +3,7 @@
 ###
 # Pawelo 20230101, 1.1.5, created based on https://ivan-lesar.medium.com/the-eye-of-the-home-77dee1ea3f98
 #
-#! run with this command to override sunstitutions
+#! run with this command to override substitutions
 # esphome -s devicename espXX -s updates 1min -s room <Room name> -s mqtt_room <room> run esp32_cam.yaml --device 192.168.x.x
 # heare are default values if those are not given via command line
 

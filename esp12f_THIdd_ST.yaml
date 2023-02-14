@@ -1,5 +1,7 @@
 ---
 # ESP12F sensor board script name reflecting configuration esp12f_MMmm_SSss__PP.yaml
+#! pin 9 do not work (it hangs ESP)- reserved for flashing;
+#! pin 10 - use with caution, read https://www.letscontrolit.com/forum/viewtopic.php?t=1462
 #
 #_ Measures used (MM)
 #* T - Temperature
