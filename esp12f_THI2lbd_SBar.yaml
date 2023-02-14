@@ -103,7 +103,7 @@ sensor:
 
 output:
   # Status LED
-  - !include { file: outputs/status_led.yaml, vars: { ix: "", gpio: "GPIO9" } }
+  - !include { file: outputs/status_led.yaml, vars: { ix: "", gpio: "GPIO10" } }
 
   # RTTTL Buzzer (passive_buzzer)
   - !include { file: outputs/passive_buzzer.yaml, vars: { ix: "", gpio: "GPIO16" } }
