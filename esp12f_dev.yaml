@@ -65,7 +65,7 @@ substitutions:
 <<: !include includes/board_esp12f.yaml
 
 # Include interfaces needed
-<<: !include { file: interfaces/i2c.yaml, vars: { bus_id: "bus_a", sda: "GPIO4", scl: "GPIO2" } }
+<<: !include { file: interfaces/i2c.yaml, vars: { bus_id: "bus_a", sda: "GPIO4", scl: "GPIO5" } }
 # <<: !include { file: interfaces/dallas.yaml, vars: { gpio: "GPIO10" } }
 <<: !include { file: interfaces/rtttl.yaml, vars: { ix: "" } }
 # <<: !include { file: interfaces/debug.yaml, vars: { update_interval: "15s" } }
@@ -77,10 +77,10 @@ text_sensor:
 #  - !include sensors/text_firmware.yaml
   # - !include sensors/text_debug.yaml
 
-binary_sensor:
-  # Double light Switch on AVT5713
-  - !include { file: sensors/binary_switch.yaml, vars: { ix: "A", gpio: "GPIO13" } }
-  - !include { file: sensors/binary_switch.yaml, vars: { ix: "B", gpio: "GPIO14" } }
+# binary_sensor:
+#   # Double light Switch on AVT5713
+#   - !include { file: sensors/binary_switch.yaml, vars: { ix: "A", gpio: "GPIO13" } }
+#   - !include { file: sensors/binary_switch.yaml, vars: { ix: "B", gpio: "GPIO14" } }
 
 sensor:
   - !include sensors/uptime.yaml
@@ -121,9 +121,9 @@ output:
   # RTTTL Buzzer (passive_buzzer)
   - !include { file: outputs/passive_buzzer.yaml, vars: { ix: "", gpio: "GPIO16" } }
 
-  # Double relay on AVT5713
-  - !include { file: outputs/relay.yaml, vars: { ix: "A", gpio: "GPIO5", inverted: false } }
-  - !include { file: outputs/relay.yaml, vars: { ix: "B", gpio: "GPIO12", inverted: false } }
+  # # Double relay on AVT5713
+  # - !include { file: outputs/relay.yaml, vars: { ix: "A", gpio: "GPIO5", inverted: false } }
+  # - !include { file: outputs/relay.yaml, vars: { ix: "B", gpio: "GPIO12", inverted: false } }
 
 light:
   # Status LED
@@ -132,9 +132,9 @@ light:
   # # Measurement LED
   # - !include { file: lights/measurement_led.yaml, vars: { ix: "", off_delay: "5s" } }
 
-  # Double relay on AVT5713
-  - !include { file: lights/light_on_relay.yaml, vars: { ix: "A" } }
-  - !include { file: lights/light_on_relay.yaml, vars: { ix: "B" } }
+  # # Double relay on AVT5713
+  # - !include { file: lights/light_on_relay.yaml, vars: { ix: "A" } }
+  # - !include { file: lights/light_on_relay.yaml, vars: { ix: "B" } }
 
 switch:
   # Restart button
