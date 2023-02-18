@@ -19,9 +19,9 @@ mqtt:
   birth_message:
   will_message:
   shutdown_message:
-  # on_message:
-  #   - !include { file: mqtt_on_message/rtttl_play_it.yaml, vars: { topic_prefix: "$devicename", led_cycles: 1 } }
-  #   - !include { file: mqtt_on_message/rtttl_play_it.yaml, vars: { topic_prefix: "$mqtt_location/$mqtt_room", led_cycles: 3 } }
+  on_message:
+    - !include { file: mqtt_on_message/rtttl_play_it.yaml, vars: { topic_prefix: "$devicename", led_cycles: 1 } }
+    - !include { file: mqtt_on_message/rtttl_play_it.yaml, vars: { topic_prefix: "$mqtt_location/$mqtt_room", led_cycles: 3 } }
 #! do not include any log_level messages, as it causes ota to run very slow and unstable
     # - !include { file: mqtt_on_message/log_level_set.yaml, vars: { log_level: "VERY_VERBOSE", led_cycles: 5 } }
     # - !include { file: mqtt_on_message/log_level_set.yaml, vars: { log_level: "VERBOSE", led_cycles: 5 } }
