@@ -59,8 +59,8 @@ substitutions:
 
   # Include basics of a board
 <<: !include includes/board_esp32.yaml
-#! reinclude MQTT separately as via nested include it do not work:/
-<<: !include includes/mqtt.yaml
+# Include/Override mqtt with RTTTL support if needed
+#<<: !include includes/mqtt_with_rtttl.yaml
 
 # Include interfaces needed
 <<: !include { file: interfaces/i2c.yaml, vars: { bus_id: "bus_a", sda: "GPIO21", scl: "GPIO22" } }
