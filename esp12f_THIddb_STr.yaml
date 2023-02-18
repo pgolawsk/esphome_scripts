@@ -59,7 +59,8 @@ substitutions:
 
 # Include basics of a board
 <<: !include includes/board_esp12f.yaml
-# Include/Override mqtt with RTTTL support if needed
+# Include/Override mqtt with/without RTTTL support if needed
+#<<: !include includes/mqtt.yaml
 <<: !include includes/mqtt_with_rtttl.yaml
 
 # Include interfaces needed

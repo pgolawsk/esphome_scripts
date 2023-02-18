@@ -20,10 +20,11 @@ preferences:
 <<: !include wifi.yaml
 <<: !include api.yaml
 <<: !include ota.yaml
-<<: !include mqtt.yaml
 <<: !include logger.yaml
 <<: !include web_server.yaml
 <<: !include prometheus.yaml
+#! as mqtt cannot be overwriten later in the code need to include in in each script (to facilitate "on_message" customization)
+#<<: !include mqtt.yaml
 
 # packages:
 #   network: !include mqtt.yaml
