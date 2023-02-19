@@ -19,6 +19,7 @@
 #* 2l - Double Ligiht Switch
 #* b - Buzzer
 #* d - Diode
+# s - Switch
 #
 #_ Sensors used (SS)
 #* S - SHTx30 - Temperature and Humidity
@@ -37,6 +38,7 @@
 #
 #_ Purpose used (PP)
 # F - Fan
+# I - Intercom
 #
 ###
 # Pawelo 20221127, 1.0.0, created based on esp12f_THL_SB.yml
@@ -103,6 +105,8 @@ text_sensor:
 #   # Double light Switch on AVT5713
 #   - !include { file: sensors/binary_switch.yaml, vars: { ix: "A", gpio: "GPIO13" } }
 #   - !include { file: sensors/binary_switch.yaml, vars: { ix: "B", gpio: "GPIO14" } }
+#   # Doorbell at the gate
+#   - !include { file: sensors/binary_doorbell.yaml, vars: { ix: "", doorbell_name: "gate", gpio: "GPIO13", delay_on: '2s' } }
 
 sensor:
   - !include sensors/uptime.yaml

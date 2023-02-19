@@ -17,6 +17,7 @@
 # 2l - Double Ligiht Switch
 # b - Buzzer
 # d - Diode
+# s - Switch
 #
 #_ Sensors used (SS)
 # S - SHTx30 - Temperature and Humidity
@@ -35,6 +36,7 @@
 #
 #_ Purpose used (PP)
 # F - Fan
+# I - Intercom
 #
 ###
 # Pawelo 20230101, 1.1.5, created based on esp12f_.yaml

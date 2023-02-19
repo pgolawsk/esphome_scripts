@@ -19,6 +19,7 @@
 # 2l - Double Ligiht Switch
 # b - Buzzer
 #* d - Diode
+# s - Switch
 #
 #_ Sensors used (SS)
 # S - SHTx30 - Temperature and Humidity
@@ -37,6 +38,7 @@
 #
 #_ Purpose used (PP)
 # F - Fan
+# I - Intercom
 #
 ###
 # Pawelo 20221117, 1.0.0, created based on edp12f_temp_hum.yml

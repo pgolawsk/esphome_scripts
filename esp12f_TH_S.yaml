@@ -19,6 +19,7 @@
 # 2l - Double Ligiht Switch
 # b - Buzzer
 # d - Diode
+# s - Switch
 #
 #_ Sensors used (SS)
 #* S - SHTx30 - Temperature and Humidity
@@ -37,6 +38,7 @@
 #
 #_ Purpose used (PP)
 # F - Fan
+# I - Intercom
 #
 ###
 # Pawelo 20221112, 1.0.0, created based on https://github.com/nygma2004/esphome
