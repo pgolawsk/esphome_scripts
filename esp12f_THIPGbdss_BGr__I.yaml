@@ -19,6 +19,7 @@
 # 2l - Double Ligiht Switch
 # b - Buzzer
 #* d - Diode
+#** s - Switch
 #
 #_ Sensors used (SS)
 # S - SHTx30 - Temperature and Humidity
@@ -37,6 +38,7 @@
 #
 #_ Purpose used (PP)
 # F - Fan
+#* I - Intercom
 #
 ###
 # Pawelo 20221117, 1.0.0, created based on edp12f_temp_hum.yml
@@ -67,13 +69,13 @@ substitutions:
 # Include basics of a board
 <<: !include includes/board_esp12f.yaml
 # Include/Override mqtt with/without RTTTL support if needed
-<<: !include includes/mqtt.yaml
-#<<: !include includes/mqtt_with_rtttl.yaml
+#<<: !include includes/mqtt.yaml
+<<: !include includes/mqtt_with_rtttl.yaml
 
 # Include interfaces needed
 <<: !include { file: interfaces/i2c.yaml, vars: { bus_id: "bus_a", sda: "GPIO4", scl: "GPIO5" } }
 # <<: !include { file: interfaces/dallas.yaml, vars: { gpio: "GPIO10" } }
-# <<: !include { file: interfaces/rtttl.yaml, vars: { ix: "" } }
+<<: !include { file: interfaces/rtttl.yaml, vars: { ix: "" } }
 
 # # reinclude MQTT as a bug in ESPHOME, see: https://github.com/esphome/issues/issues/2180, https://github.com/esphome/issues/issues/1487
 # mqtt:
@@ -103,6 +105,9 @@ output:
   # Status LED
   - !include { file: outputs/status_led.yaml, vars: { ix: "", gpio: "GPIO16" } }
 
+  # RTTTL Buzzer (passive_buzzer)
+  - !include { file: outputs/passive_buzzer.yaml, vars: { ix: "", gpio: "GPIO13" } }
+
 light:
   # Status LED
   - !include { file: lights/status_led.yaml, vars: { ix: "", off_delay: "5s" } }
@@ -113,3 +118,9 @@ switch:
 
   # Status LED cycle
   - !include { file: switches/led_cycle.yaml, vars: { ID: "status_led", cycles: 3, on_delay: "1s" , off_delay: "500ms" } }
+
+  # RTTTL Play (passive_buzzer)
+  - !include { file: switches/rtttl_play.yaml, vars: { ix: "" } }
+
+  # Intercom switch
+  - !include { file: switches/intercom.yaml, vars: { ix: "", gpio: "GPIO14", off_delay: "5s" } }

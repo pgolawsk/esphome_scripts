@@ -171,5 +171,8 @@ switch:
   # # Buzzer (active)
   # - !include { file: switches/active_buzzer.yaml, vars: { ix: "", gpio: "GPIO5", off_delay: "1100ms" } }
 
+  # # Intercom switch
+  # - !include { file: switches/intercom.yaml, vars: { ix: "", gpio: "GPIO14", off_delay: "5s" } }
+
   # Double light Switch on AVT5713
 #<<: !include switches/2lights_AVT5713.yaml
