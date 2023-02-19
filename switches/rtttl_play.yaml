@@ -1,6 +1,5 @@
 ---
-#* Status LED light
-#*! using s_led<id> created by outputs/status_led.yaml
+#* RTTTL play switch
 # Pawelo, 20230128, created from examples
 
 platform: template
