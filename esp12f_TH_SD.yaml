@@ -28,7 +28,7 @@
 # P - BME280 - Temperature, Humidity, Pressure
 # G - BME680 - Temperature, Humidity, Pressure, Gas
 # C - SCD40 - CO2, Temperature, Humidity
-# D - Dallas - Temperature
+#* D - Dallas - Temperature
 # E - SGP30 - TVOC (Total Volatile Organic Compounds), eCO2 (Equivalent Carbon Dioxide)
 # Y - YF-B10 G1 - Water Pulse sensor
 #
