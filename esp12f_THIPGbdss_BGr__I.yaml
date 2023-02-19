@@ -92,6 +92,10 @@ text_sensor:
   - !include sensors/text_version.yaml
   - !include sensors/text_wifi_info.yaml
 
+binary_sensor:
+  # Doorbell at tehe gate
+  - !include { file: sensors/binary_doorbell.yaml, vars: { ix: "", doorbell_name: "gate", gpio: "GPIO13", delay_on: '2s' } }
+
 sensor:
   - !include sensors/uptime.yaml
   - !include sensors/wifi_signal.yaml

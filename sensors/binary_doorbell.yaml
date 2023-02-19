@@ -1,0 +1,23 @@
+---
+#* Doorbell on GPIO
+# Pawelo, 20230219, created as new
+
+platform: gpio
+pin:
+  number: ${gpio}
+  mode:
+    input: true
+    pullup: true
+  inverted: true
+name: "$room ${doorbell_name}${ix}"
+id: doorbell${ix}
+state_topic: $devicename/${doorbell_name}${ix}
+# on_press:
+#   then:
+#     - delay: ${delay_on}
+#     - rtttl.play: 'siren:d=8,o=5,b=100:d,e,d,e,d,e,d,e'
+on_release:
+  then:
+    - delay: ${delay_on}
+    # - rtttl.play: 'siren:d=8,o=5,b=100:d,e,d,e,d,e,d,e'
+    - rtttl.play: 'countdown:d=4,o=5,b=125:p,8p,16b,16a,b,e,p,8p,16c6,16b,8c6,8b,a,p,8p,16c6,16b,c6,e,p,8p,16a,16g,8a,8g,8f#,8a,g.,16f#,16g,a.,16g,16a,8b,8a,8g,8f#,e,c6,2b.,16b,16c6,16b,16a,1b'
