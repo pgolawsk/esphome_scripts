@@ -1,8 +1,15 @@
 ---
 #* Dallas interface on given GPIO pin
-# Pawelo, 20230111, created
+# Pawelo, 20230111, created based on https://esphome.io/components/sensor/dallas.html
 # Pawelo, 20230121, add variables to configure the interface
+#! remember to add pullup resistor 4.6kOhm between pin and 3.3V
 
 dallas:
-  - pin: ${gpio}
-#  - pin: GPIO10
+  - pin:
+      number: ${gpio}
+      # mode:
+      #   input: true
+      #   pullup: true
+      # inverted: true
+  #  - pin: GPIO10
+    update_interval: $updates

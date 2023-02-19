@@ -115,7 +115,7 @@ sensor:
   # - !include sensors/debug.yaml
 
   # # Temperature Dallas sensor
-#  - !include { file: sensors/temp_DS18B20.yaml, vars: { ix: "Dtest", address: "0xc00000000c511a28" } }
+  #  - !include { file: sensors/temp_DS18B20.yaml, vars: { ix: "Dtest", address: "0xc00000000c511a28" } }
 
   # Temperature and Humidity sensor
   - !include { file: sensors/temp_hum_SHT3x.yaml, vars: { ix: "", bus_id: "bus_a", address: "0x44" } }

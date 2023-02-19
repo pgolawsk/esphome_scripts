@@ -74,23 +74,13 @@ substitutions:
 # Include basics of a board
 <<: !include includes/board_esp12f.yaml
 # Include/Override mqtt with/without RTTTL support if needed
-<<: !include includes/mqtt.yaml
-#<<: !include includes/mqtt_with_rtttl.yaml
+#<<: !include includes/mqtt.yaml
+<<: !include includes/mqtt_with_rtttl.yaml
 
 # Include interfaces needed
 <<: !include { file: interfaces/i2c.yaml, vars: { bus_id: "bus_a", sda: "GPIO4", scl: "GPIO5" } }
-# <<: !include { file: interfaces/dallas.yaml, vars: { gpio: "GPIO10" } }
-# <<: !include { file: interfaces/rtttl.yaml, vars: { ix: "" } }
-
-# # reinclude MQTT as a bug in ESPHOME, see: https://github.com/esphome/issues/issues/2180, https://github.com/esphome/issues/issues/1487
-# mqtt:
-#   broker: !secret mqtt_ip
-#   port: !secret mqtt_port
-# #  username: $devicename
-#   username: !secret mqtt_user
-#   password: !secret mqtt_password
-#   client_id: $devicename
-# # id: $devicename
+<<: !include { file: interfaces/dallas.yaml, vars: { gpio: "GPIO14" } }
+<<: !include { file: interfaces/rtttl.yaml, vars: { ix: "" } }
 
 text_sensor:
   - !include sensors/text_uptime.yaml
@@ -104,6 +94,27 @@ sensor:
   # Temperature and Humidity sensor
   - !include { file: sensors/temp_hum_SHT3x.yaml, vars: { ix: "", bus_id: "bus_a", address: "0x44" } }
 
+  # Temperature Dallas sensor
+  - !include { file: sensors/temp_DS18B20.yaml, vars: { ix: "Dshort", address: "0xc00000000c511a28" } } # 1m cable
+  - !include { file: sensors/temp_DS18B20.yaml, vars: { ix: "Dlong", address: "0x0b0417c42dceff28" } } # 2m cable
+
+output:
+  #! needed for RTTTL but its not connected to this device
+  # Status LED
+  - !include { file: outputs/status_led.yaml, vars: { ix: "", gpio: "GPIO10" } }
+
+  # RTTTL Buzzer (passive_buzzer)
+  - !include { file: outputs/passive_buzzer.yaml, vars: { ix: "", gpio: "GPIO16" } }
+
+light:
+  #! needed for RTTTL but its not connected to this device
+  # Status LED
+  - !include { file: lights/status_led.yaml, vars: { ix: "", off_delay: "5s" } }
+
 switch:
   # Restart button
   - !include switches/platform_restart.yaml
+
+  # RTTTL Play (passive_buzzer)
+  - !include { file: switches/rtttl_play.yaml, vars: { ix: "" } }
+
