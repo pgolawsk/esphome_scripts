@@ -1,0 +1,144 @@
+---
+# ESP12F sensor board script name reflecting configuration esp12f_MMmm_SSss__PP.yaml
+#! pin 9 do not work (it hangs ESP)- reserved for flashing;
+#! pin 10 - use with caution, read https://www.letscontrolit.com/forum/viewtopic.php?t=1462
+#
+#_ Measures used (MM)
+#* T - Temperature
+#* H - Humidity
+# P - Pressure
+# G - gas
+#* I - Illuminance
+#* C - CO2
+#* D - eCO2
+#* V - TVOC
+# W - Water Meter
+#
+#_ Manipulators used (mm)
+# 1r - Single Switch/Relay
+#* 2l - Double Ligiht Switch
+#* b - Buzzer
+#* d - Diode
+#
+#_ Sensors used (SS)
+# S - SHTx30 - Temperature and Humidity
+#* B - BH1750 - Illuminance
+# T - TCS3472 - Illuminance and Color(s)
+# P - BME280 - Temperature, Humidity, Pressure
+# G - BME680 - Temperature, Humidity, Pressure, Gas
+#* C - SCD40 - CO2, Temperature, Humidity
+#* D - SGP30 - TVOC (Total Volatile Organic Compounds), eCO2 (Equivalent Carbon Dioxide)
+# Y - YF-B10 G1 - Water Pulse sensor
+#
+#_ Switches used (ss)
+#* a - AVT5713 - Double Light Switch Board
+# b - 9032A/9025A - Active Buzzer 9mm diameteer x 3.2/2.5mm height
+#* r - 9032/9025 - Passive Buzzer 9mm diameteer x 3.2/2.5mm height
+#
+#_ Purpose used (PP)
+# F - Fan
+#
+###
+# Pawelo 20221127, 1.0.0, created based on esp12f_THL_SB.yml
+# Pawelo 20221127, 1.1.2, renamed script to reflect sensors/switches and measures/manipulators
+# Pawelo 20221127, 1.1.3, added $devices variable to nam configutation deployed
+# Pawelo 20221127, 1.1.4, moved i2c configuration to separate include file
+# Pawelo 20221203, 1.1.5, added Restart button on web
+
+#! run with this command to override substitutions
+# esphome -s devicename espXX -s updates 1min -s room <Room name> -s mqtt_room <room> run esp12f_MMmm_SSss__PP.yaml --device 192.168.x.x
+# heare are default values if those are not given via command line
+substitutions:
+  devices: "Temperature and Humidity via SHTx30, Illuminance via BH1750 and Doulbe Light Switch via AVT5713"
+  project_name: "pgolawsk.esp_home"
+  version: "1.1.5"
+
+  devicename: espXX
+  updates: "30s"
+  room: Room # friendly name of room to display in HA/Web
+  # this is ADDITIONAL topic and sub-topic for MQTT - it publishes under <topic>/<sub-topic>/<sensor>
+  # by default it's also published under <devicename>/<id_sensor>
+  mqtt_location: home
+  mqtt_room: room
+
+# Include basics of a board
+<<: !include includes/board_esp12f.yaml
+# Include/Override mqtt with/without RTTTL support if needed
+#<<: !include includes/mqtt.yaml
+<<: !include includes/mqtt_with_rtttl.yaml
+
+# Include interfaces needed
+<<: !include { file: interfaces/i2c.yaml, vars: { bus_id: "bus_a", sda: "GPIO4", scl: "GPIO0" } }
+# <<: !include { file: interfaces/dallas.yaml, vars: { gpio: "GPIO10" } }
+<<: !include { file: interfaces/rtttl.yaml, vars: { ix: "" } }
+
+# # reinclude MQTT as a bug in ESPHOME, see: https://github.com/esphome/issues/issues/2180, https://github.com/esphome/issues/issues/1487
+# mqtt:
+#   broker: !secret mqtt_ip
+#   port: !secret mqtt_port
+# #  username: $devicename
+#   username: !secret mqtt_user
+#   password: !secret mqtt_password
+#   client_id: $devicename
+# # id: $devicename
+
+text_sensor:
+  - !include sensors/text_uptime.yaml
+  - !include sensors/text_version.yaml
+  - !include sensors/text_wifi_info.yaml
+
+binary_sensor:
+  # Double light Switch on AVT5713
+  - !include { file: sensors/binary_switch.yaml, vars: { ix: "A", gpio: "GPIO13" } }
+  - !include { file: sensors/binary_switch.yaml, vars: { ix: "B", gpio: "GPIO14" } }
+
+sensor:
+  - !include sensors/uptime.yaml
+  - !include sensors/wifi_signal.yaml
+
+  # # Temperature and Humidity sensor
+  # - !include { file: sensors/temp_hum_SHT3x.yaml, vars: { ix: "", bus_id: "bus_a", address: "0x44" } }
+
+  # Illuminance sensor
+  - !include { file: sensors/lux_BH1750.yaml, vars: { ix: "", bus_id: "bus_a", address: "0x23" } }
+
+  # CO2, Temperature and Humidity sensor
+  - !include { file: sensors/temp_hum_co2_SCD40.yaml, vars: { ix: "", bus_id: "bus_a", address: "0x62" } }
+
+  # TVOC and eCO2 sensor
+  - !include { file: sensors/tvoc_eco2_SGP30.yaml, vars: { ix: "", bus_id: "bus_a", address: "0x58" } }
+
+output:
+  # Status LED
+  - !include { file: outputs/status_led.yaml, vars: { ix: "", gpio: "GPIO10" } }
+
+  # RTTTL Buzzer (passive_buzzer)
+  - !include { file: outputs/passive_buzzer.yaml, vars: { ix: "", gpio: "GPIO16" } }
+
+  # Double relay on AVT5713
+  - !include { file: outputs/relay.yaml, vars: { ix: "A", gpio: "GPIO5", inverted: false } }
+  - !include { file: outputs/relay.yaml, vars: { ix: "B", gpio: "GPIO12", inverted: false } }
+
+light:
+  # Status LED
+  - !include { file: lights/status_led.yaml, vars: { ix: "", off_delay: "5s" } }
+
+  # Double relay on AVT5713
+  - !include { file: lights/light_on_relay.yaml, vars: { ix: "A" } }
+  - !include { file: lights/light_on_relay.yaml, vars: { ix: "B" } }
+
+
+switch:
+  # Restart button
+  - !include switches/platform_restart.yaml
+
+   # Status LED cycle
+  - !include { file: switches/led_cycle.yaml, vars: { ID: "status_led", cycles: 3, on_delay: "1s" , off_delay: "500ms" } }
+
+  # RTTTL Play (passive_buzzer)
+  - !include { file: switches/rtttl_play.yaml, vars: { ix: "" } }
+
+
+# # Double light Switch on AVT5713
+# <<: !include switches/2lights_AVT5713.yaml
+
