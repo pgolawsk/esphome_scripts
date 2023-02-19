@@ -96,7 +96,8 @@ mosquitto_sub -v -t home/#
 #*! RUN those commmands to compile and deliver updates to esp12f devices with sensors, switches, ...
 #? --device is optional - if not given and device name can be found by dns then it will be flashed OTA anyway:)
 #? 30s is 30 seconds and it's optimal as the same interval is setup on prometheus (could be 10s, 1min, 5min, ...)
-esphome -s devicename esp12f-10 -s updates 30s -s room Office -s mqtt_room office run esp12f_TH_S.yaml --device 192.168.x.x
+# esphome -s devicename esp12f-10 -s updates 30s -s room Office -s mqtt_room office run esp12f_TH_S.yaml --device 192.168.x.x
+esphome -s devicename esp12f-10 -s updates 30s -s room Office -s mqtt_room office run esp12f_THICDV2lbd_BCDar.yaml --device 192.168.x.x
 esphome -s devicename esp12f-11 -s updates 30s -s room Entrance -s mqtt_room entrance run esp12f_THIPGd_BG.yaml --device 192.168.x.x
 esphome -s devicename esp12f-15 -s updates 30s -s room Upstairs -s mqtt_room upstairs run esp12f_THP_P.yaml --device 192.168.x.x
 esphome -s devicename esp12f-25 -s updates 30s -s room AquariumWindow -s mqtt_room aquarium_window run esp12f_THIddb_STr.yaml --device 192.168.x.x
@@ -104,7 +105,8 @@ esphome -s devicename esp12f-25 -s updates 30s -s room AquariumWindow -s mqtt_ro
 #esphome -s devicename esp12f-25 -s updates 30s -s room AquariumWindow -s mqtt_location measures -s mqtt_room aquarium_window run esp12f_THIdd_ST.yaml --device 192.168.x.x
 
 esphome -s devicename esp12f-12 -s updates 30s -s room Test -s mqtt_room test run esp12f_dev.yaml --device 192.168.x.x
-esphome -s devicename esp12f-13 -s updates 30s -s room TestSwitch -s mqtt_room test_switch run esp12f_THI2lbd_SBar.yaml --device 192.168.x.x
+#esphome -s devicename esp12f-13 -s updates 30s -s room TestSwitch -s mqtt_room test_switch run esp12f_THI2lbd_SBar.yaml --device 192.168.x.x
+esphome -s devicename esp12f-13 -s updates 30s -s room TestSwitch2 -s mqtt_room test_switch2 run esp12f_THICDV2lbd_BCDar.yaml --device 192.168.x.x
 
 # esphome -s devicename esp12f-11 -s updates 30s -s room Kitchen -s mqtt_room kitchen run esp12f_THI_SB.yaml --device 192.168.x.x
 
