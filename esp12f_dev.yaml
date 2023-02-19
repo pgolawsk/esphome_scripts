@@ -119,8 +119,8 @@ sensor:
   # # Temperature, Humidity, Pressure and Gas Resistance seensor
   # - !include { file: sensors/temp_hum_press_gas_BME680.yaml, vars: { ix: "", bus_id: "bus_a", address: "0x77" } }
 
-  # CO2, Temperature and Humidity sensor
-  - !include { file: sensors/temp_hum_co2_SCD40.yaml, vars: { ix: "2", bus_id: "bus_a", address: "0x62" } }
+  # # CO2, Temperature and Humidity sensor
+  # - !include { file: sensors/temp_hum_co2_SCD40.yaml, vars: { ix: "2", bus_id: "bus_a", address: "0x62" } }
 
   # Illuminance sensor
   - !include { file: sensors/lux_BH1750.yaml, vars: { ix: "", bus_id: "bus_a", address: "0x23" } }
