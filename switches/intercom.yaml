@@ -6,11 +6,16 @@
 platform: gpio
 pin:
   number: ${gpio} # GPIO2 with inverted
+#  inverted: true
+  mode:
+    output: true
+#    pullup: true
+#    pulldown: true
 #  mode: INPUT_PULLUP
 id: intercom${ix}
 name: "$room Intercom${ix}"
 #icon: "mdi:gate"
-icon: "mdi:doorbel"
+icon: "mdi:doorbell"
 state_topic: $devicename/intercom${ix}
 on_turn_on:
 - delay: $off_delay

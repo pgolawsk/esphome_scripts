@@ -94,7 +94,7 @@ text_sensor:
 
 binary_sensor:
   # Doorbell at the gate
-  - !include { file: sensors/binary_doorbell.yaml, vars: { ix: "", doorbell_name: "gate", gpio: "GPIO13", delay_on: '2s' } }
+  - !include { file: sensors/binary_doorbell.yaml, vars: { ix: "", doorbell_name: "gate", gpio: "GPIO12", delay_on: '2s' } }
 
 sensor:
   - !include sensors/uptime.yaml
