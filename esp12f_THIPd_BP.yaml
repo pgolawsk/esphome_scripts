@@ -28,7 +28,8 @@
 # T - TCS3472 - Illuminance and Color(s)
 # G - BME680 - Temperature, Humidity, Pressure, Gas
 # C - SCD40 - CO2, Temperature, Humidity
-# D - SGP30 - TVOC (Total Volatile Organic Compounds), eCO2 (Equivalent Carbon Dioxide)
+# D - Dallas - Temperature
+# E - SGP30 - TVOC (Total Volatile Organic Compounds), eCO2 (Equivalent Carbon Dioxide)
 # Y - YF-B10 G1 - Water Pulse sensor
 #
 #_ Switches used (ss)
