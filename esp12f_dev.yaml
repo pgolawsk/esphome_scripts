@@ -39,7 +39,7 @@
 #
 #_ Purpose used (PP)
 # F - Fan
-# I - Intercom
+# G - Gate
 #
 ###
 # Pawelo 20221127, 1.0.0, created based on esp12f_THL_SB.yml
@@ -106,6 +106,7 @@ text_sensor:
 #   # Double light Switch on AVT5713
 #   - !include { file: sensors/binary_switch.yaml, vars: { ix: "A", gpio: "GPIO13" } }
 #   - !include { file: sensors/binary_switch.yaml, vars: { ix: "B", gpio: "GPIO14" } }
+
 #   # Doorbell at the gate
 #   - !include { file: sensors/binary_doorbell.yaml, vars: { ix: "", doorbell_name: "gate", gpio: "GPIO13", delay_on: '2s' } }
 
@@ -176,8 +177,8 @@ switch:
   # # Buzzer (active)
   # - !include { file: switches/active_buzzer.yaml, vars: { ix: "", gpio: "GPIO5", off_delay: "1100ms" } }
 
-  # Intercom switch
-  - !include { file: switches/intercom.yaml, vars: { ix: "", gpio: "GPIO14", off_delay: "5s" } }
+  # Gate switch
+  - !include { file: switches/gate.yaml, vars: { ix: "", gpio: "GPIO12", off_delay: "5s", room: "Entry" } }
 
   # Double light Switch on AVT5713
 #<<: !include switches/2lights_AVT5713.yaml

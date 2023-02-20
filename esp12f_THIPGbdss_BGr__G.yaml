@@ -39,7 +39,7 @@
 #
 #_ Purpose used (PP)
 # F - Fan
-#* I - Intercom
+#* G - Gate
 #
 ###
 # Pawelo 20221117, 1.0.0, created based on edp12f_temp_hum.yml
@@ -127,5 +127,5 @@ switch:
   # RTTTL Play (passive_buzzer)
   - !include { file: switches/rtttl_play.yaml, vars: { ix: "" } }
 
-  # Intercom switch
-  - !include { file: switches/intercom.yaml, vars: { ix: "", gpio: "GPIO14", off_delay: "5s" } }
+  # Gate switch
+  - !include { file: switches/gate.yaml, vars: { ix: "", gpio: "GPIO14", off_delay: "5s", room: "Entry" } }

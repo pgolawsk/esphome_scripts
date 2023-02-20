@@ -39,7 +39,7 @@
 #
 #_ Purpose used (PP)
 # F - Fan
-# I - Intercom
+# G - Gate
 #
 ###
 # Pawelo 20221112, 1.0.0, created based on https://github.com/nygma2004/esphome

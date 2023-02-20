@@ -1,5 +1,5 @@
 ---
-#* Intercom connected to GPIO
+#* Entry gate connected to GPIO
 # Pawelo, 20230219, created as new
 
 # need transistor BC848 and resistor 220Ohm (?)
@@ -12,11 +12,11 @@ pin:
 #    pullup: true
 #    pulldown: true
 #  mode: INPUT_PULLUP
-id: intercom${ix}
-name: "$room Intercom${ix}"
+id: gate${ix}
+name: "${room} Gate${ix}"
 #icon: "mdi:gate"
 icon: "mdi:doorbell"
-state_topic: $devicename/intercom${ix}
+state_topic: $devicename/gate${ix}
 on_turn_on:
 - delay: $off_delay
-- switch.turn_off: intercom${ix}
+- switch.turn_off: gate${ix}
