@@ -2,7 +2,7 @@
 #* Entry gate connected to GPIO
 # Pawelo, 20230219, created as new
 
-# need transistor BC848 and resistor 220Ohm (?)
+# need transistor BD139 and resistor 10KOhm, plus diode  1N4007 to connect to 12V to block reverse current
 platform: gpio
 pin:
   number: ${gpio} # GPIO2 with inverted
