@@ -104,7 +104,7 @@ esphome -s devicename esp12f-15 -s updates 30s -s room Upstairs -s mqtt_room ups
 #TODO to put esp12f-25 device outside of "home" location to do not disturb regular climate measures (climate, measures, utility)
 esphome -s devicename esp12f-25 -s updates 30s -s room AquariumWindow -s mqtt_location measures -s mqtt_room aquarium_window run esp12f_THIddb_STr.yaml --device 192.168.x.x
 #esphome -s devicename esp12f-25 -s updates 30s -s room AquariumWindow -s mqtt_location measures -s mqtt_room aquarium_window run esp12f_THIddb_STr.yaml --device 192.168.x.x
-esphome -s devicename esp12f-26 -s updates 30s -s room Unrderfloor -s mqtt_location measures -s mqtt_room underfloor run esp12f_TH_SD.yaml --device 192.168.x.x
+esphome -s devicename esp12f-26 -s updates 30s -s room Unrderfloor -s mqtt_location measures -s mqtt_room underfloor run esp12f_THdb_SDr.yaml --device 192.168.x.x
 
 esphome -s devicename esp12f-12 -s updates 30s -s room Test  -s mqtt_location measures -s mqtt_room test run esp12f_dev.yaml --device 192.168.x.x
 #esphome -s devicename esp12f-13 -s updates 30s -s room TestSwitch  -s mqtt_location measures -s mqtt_room test_switch run esp12f_THI2lbd_SBar.yaml --device 192.168.x.x
