@@ -11,6 +11,7 @@
 # Pawelo 20230107, changed default update_interval to 30s (from 1min) to synchronize with prometheus
 # Pawelo 20230108, moved esp12f tests to esp12f_dev.yaml script
 # Pawelo 20230112, added flashing for generic esp32-cam-mb board
+#! Pawelo, 20230225, prometheus not working while $mqtt_location is "measures", changed to "measure"
 
 
 #TODO: Read more complicated AIQ measurement on https://github.com/nkitanov/iaq_board
@@ -101,10 +102,10 @@ esphome -s devicename esp12f-10 -s updates 30s -s room Office -s mqtt_room offic
 esphome -s devicename esp12f-11 -s updates 30s -s room Entrance -s mqtt_room entrance run esp12f_THIPGbdss_BGr__I.yaml --device 192.168.x.x
 esphome -s devicename esp12f-15 -s updates 30s -s room Upstairs -s mqtt_room upstairs run esp12f_THP_P.yaml --device 192.168.x.x
 
-#TODO to put esp12f-25 device outside of "home" location to do not disturb regular climate measures (climate, measures, utility)
-esphome -s devicename esp12f-25 -s updates 30s -s room AquariumWindow -s mqtt_location measures -s mqtt_room aquarium_window run esp12f_THIddb_STr.yaml --device 192.168.x.x
-#esphome -s devicename esp12f-25 -s updates 30s -s room AquariumWindow -s mqtt_location measures -s mqtt_room aquarium_window run esp12f_THIddb_STr.yaml --device 192.168.x.x
-esphome -s devicename esp12f-26 -s updates 30s -s room Unrderfloor -s mqtt_location measures -s mqtt_room underfloor run esp12f_THdb_SDr.yaml --device 192.168.x.x
+#TODO to put esp12f-25 device outside of "home" location to do not disturb regular climate measures (climate, measure, utility)
+esphome -s devicename esp12f-25 -s updates 30s -s room AquariumWindow -s mqtt_location measure -s mqtt_room aquarium_window run esp12f_THIddb_STr.yaml --device 192.168.x.x
+#esphome -s devicename esp12f-25 -s updates 30s -s room AquariumWindow -s mqtt_location measure -s mqtt_room aquarium_window run esp12f_THIddb_STr.yaml --device 192.168.x.x
+esphome -s devicename esp12f-26 -s updates 30s -s room Unrderfloor -s mqtt_location measure -s mqtt_room underfloor run esp12f_THdb_SDr.yaml --device 192.168.x.x
 
 esphome -s devicename esp12f-12 -s updates 30s -s room Test  -s mqtt_location measures -s mqtt_room test run esp12f_dev.yaml --device 192.168.x.x
 #esphome -s devicename esp12f-13 -s updates 30s -s room TestSwitch  -s mqtt_location measures -s mqtt_room test_switch run esp12f_THI2lbd_SBar.yaml --device 192.168.x.x
