@@ -98,18 +98,28 @@ mosquitto_sub -v -t home/#
 #? --device is optional - if not given and device name can be found by dns then it will be flashed OTA anyway:)
 #? 30s is 30 seconds and it's optimal as the same interval is setup on prometheus (could be 10s, 1min, 5min, ...)
 # esphome -s devicename esp12f-10 -s updates 30s -s room Office -s mqtt_room office run esp12f_TH_S.yaml --device 192.168.x.x
+# GROUND Floor
 esphome -s devicename esp12f-10 -s updates 30s -s room Office -s mqtt_room office run esp12f_THICDV2lbd_BCEar.yaml --device 192.168.x.x
 esphome -s devicename esp12f-11 -s updates 30s -s room Entrance -s mqtt_room entrance run esp12f_THIPGbdss_BGr__I.yaml --device 192.168.x.x
+# esphome -s devicename esp12f-12 -s updates 30s -s room Kitchen -s mqtt_room kitchen run esp12f_dev.yaml --device 192.168.x.x
+# esphome -s devicename esp12f-13 -s updates 30s -s room Salon -s mqtt_room salon run esp12f_dev.yaml --device 192.168.x.x
+# esphome -s devicename esp12f-14 -s updates 30s -s room Toilet -s mqtt_room toilet run esp12f_dev.yaml --device 192.168.x.x
+# esphome -s devicename esp12f-20 -s updates 30s -s room Dinning -s mqtt_room dinning run esp12f_dev.yaml --device 192.168.x.x
+# 1ST Floor
 esphome -s devicename esp12f-15 -s updates 30s -s room Upstairs -s mqtt_room upstairs run esp12f_THP_P.yaml --device 192.168.x.x
+# esphome -s devicename esp12f-16 -s updates 30s -s room Aquarium -s mqtt_room aquarium run esp12f_dev.yaml --device 192.168.x.x
+# esphome -s devicename esp12f-17 -s updates 30s -s room Forest -s mqtt_room forest run esp12f_dev.yaml --device 192.168.x.x
+# esphome -s devicename esp12f-18 -s updates 30s -s room Bedroom -s mqtt_room bedroom run esp12f_dev.yaml --device 192.168.x.x
+# esphome -s devicename esp12f-19 -s updates 30s -s room Bathroom -s mqtt_room bathroom run esp12f_dev.yaml --device 192.168.x.x
 
-#TODO to put esp12f-25 device outside of "home" location to do not disturb regular climate measures (climate, measure, utility)
-esphome -s devicename esp12f-25 -s updates 30s -s room AquariumWindow -s mqtt_location measure -s mqtt_room aquarium_window run esp12f_THIddb_STr.yaml --device 192.168.x.x
-#esphome -s devicename esp12f-25 -s updates 30s -s room AquariumWindow -s mqtt_location measure -s mqtt_room aquarium_window run esp12f_THIddb_STr.yaml --device 192.168.x.x
-esphome -s devicename esp12f-26 -s updates 30s -s room Unrderfloor -s mqtt_location measure -s mqtt_room underfloor run esp12f_THdb_SDr.yaml --device 192.168.x.x
+# MEASURES devices
+esphome -s devicename esp12f-21 -s updates 30s -s room Unrderfloor -s mqtt_location measures -s mqtt_room underfloor run esp12f_THdb_SDr.yaml --device 192.168.x.x
+esphome -s devicename esp12f-25 -s updates 30s -s room AquariumWindow -s mqtt_location measures -s mqtt_room aquarium_window run esp12f_THIddb_STr.yaml --device 192.168.x.x
 
-esphome -s devicename esp12f-12 -s updates 30s -s room Test  -s mqtt_location measures -s mqtt_room test run esp12f_dev.yaml --device 192.168.x.x
-#esphome -s devicename esp12f-13 -s updates 30s -s room TestSwitch  -s mqtt_location measures -s mqtt_room test_switch run esp12f_THI2lbd_SBar.yaml --device 192.168.x.x
-esphome -s devicename esp12f-13 -s updates 30s -s room TestSwitch2 -s mqtt_location measures -s mqtt_room test_switch2 run esp12f_THICDV2lbd_BCDar.yaml --device 192.168.x.x
+# TEST devices
+esphome -s devicename esp12f-29 -s updates 30s -s room Test  -s mqtt_location measures -s mqtt_room test run esp12f_dev.yaml --device 192.168.x.x
+#esphome -s devicename esp12f-28 -s updates 30s -s room TestSwitch  -s mqtt_location measures -s mqtt_room test_switch run esp12f_THI2lbd_SBar.yaml --device 192.168.x.x
+esphome -s devicename esp12f-28 -s updates 30s -s room TestSwitch2 -s mqtt_location measures -s mqtt_room test_switch2 run esp12f_THICDV2lbd_BCDar.yaml --device 192.168.x.x
 
 # esphome -s devicename esp12f-11 -s updates 30s -s room Kitchen -s mqtt_room kitchen run esp12f_THI_SB.yaml --device 192.168.x.x
 
