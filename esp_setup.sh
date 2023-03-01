@@ -104,7 +104,7 @@ esphome -s devicename esp12f-11 -s updates 30s -s room Entrance -s mqtt_room ent
 # esphome -s devicename esp12f-12 -s updates 30s -s room Kitchen -s mqtt_room kitchen run esp12f_dev.yaml --device 192.168.x.x
 # esphome -s devicename esp12f-13 -s updates 30s -s room Salon -s mqtt_room salon run esp12f_dev.yaml --device 192.168.x.x
 # esphome -s devicename esp12f-14 -s updates 30s -s room Toilet -s mqtt_room toilet run esp12f_dev.yaml --device 192.168.x.x
-# esphome -s devicename esp12f-20 -s updates 30s -s room Dinning -s mqtt_room dinning run esp12f_dev.yaml --device 192.168.x.x
+# esphome -s devicename esp12f-20 -s updates 30s -s room Dining -s mqtt_room dining run esp12f_dev.yaml --device 192.168.x.x
 # 1ST Floor
 esphome -s devicename esp12f-15 -s updates 30s -s room Upstairs -s mqtt_room upstairs run esp12f_THP_P.yaml --device 192.168.x.x
 # esphome -s devicename esp12f-16 -s updates 30s -s room Aquarium -s mqtt_room aquarium run esp12f_dev.yaml --device 192.168.x.x
