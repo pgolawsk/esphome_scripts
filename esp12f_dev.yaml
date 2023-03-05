@@ -1,48 +1,8 @@
 ---
-# ESP12F sensor board script name reflecting configuration esp12f_MMmm_SSss__PP.yaml
+#* ESP12F sensor board script name reflecting configuration esp12f_MMmm_SSss__PP.yaml
+#* Please read README.md for details
 #! pin 9 do not work (it hangs ESP)- reserved for flashing;
 #! pin 10 - use with caution, read https://www.letscontrolit.com/forum/viewtopic.php?t=1462
-#
-#_ Measures used (MM)
-#* T - Temperature
-#* H - Humidity
-# P - Pressure
-# G - gas
-#* I - Illuminance
-#* C - CO2
-# E - eCO2
-#* D - Distance
-# V - TVOC
-# W - Water Meter
-#
-#_ Manipulators used (mm)
-# 1r - Single Switch/Relay
-#* 2l - Double Ligiht Switch
-#* b - Buzzer
-#* d - Diode
-# s - Switch
-#
-#_ Sensors used (SS)
-#* S - SHTx30 - Temperature and Humidity
-#* B - BH1750 - Illuminance
-# T - TCS3472 - Illuminance and Color(s)
-# P - BME280 - Temperature, Humidity, Pressure
-# G - BME680 - Temperature, Humidity, Pressure, Gas
-#* C - SCD40 - CO2, Temperature, Humidity
-# D - Dallas - Temperature
-# E - SGP30 - TVOC (Total Volatile Organic Compounds), eCO2 (Equivalent Carbon Dioxide)
-# Y - YF-B10 G1 - Water Pulse sensor
-# L - LD2410 - Radar sensor 24GHz
-#
-#_ Switches used (ss)
-#* a - AVT5713 - Double Light Switch Board
-# b - 9032A/9025A - Active Buzzer 9mm diameteer x 3.2/2.5mm height
-#* r - 9032/9025 - Passive Buzzer 9mm diameteer x 3.2/2.5mm height
-#
-#_ Purpose used (PP)
-# F - Fan
-# G - Gate
-#
 ###
 # Pawelo 20221127, 1.0.0, created based on esp12f_THL_SB.yml
 # Pawelo 20221127, 1.1.2, renamed script to reflect sensors/switches and measures/manipulators

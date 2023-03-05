@@ -11,9 +11,7 @@
 # Pawelo 20230107, changed default update_interval to 30s (from 1min) to synchronize with prometheus
 # Pawelo 20230108, moved esp12f tests to esp12f_dev.yaml script
 # Pawelo 20230112, added flashing for generic esp32-cam-mb board
-#! Pawelo, 20230225, prometheus not working while $mqtt_location is "measures", changed to "measure"
 # Pawelo 20230305, upgrade esphome to 2023.2 version and platformio
-
 
 #TODO: Read more complicated AIQ measurement on https://github.com/nkitanov/iaq_board
 #TODO: Read about speaker with PAM8403 (amplifier) connection to ESP826 on: https://www.instructables.com/MQTT-Audio-Notifier-for-ESP8266-Play-MP3-TTS-RTTL/
@@ -25,7 +23,6 @@
 #######################
 #* Configure new network for sensors at home
 # based on: https://wiki.teltonika-networks.com/view/How_to_set_up_a_guest_WiFi_network_on_RUTX
-
 
 #######################
 #* Install ESPHome on ESP-12F board
@@ -47,6 +44,7 @@ pip3 install esphome
 #*** OR Upgrade ESP Home on mac/win
 pip3 install -U esphome
 pip3 install -U platformio
+
 #######################
 # Create YAML file
 # based on https://www.youtube.com/watch?v=a3iay-g1AsI
@@ -73,7 +71,6 @@ topic readwrite esp12f-10/#
 
 # restart mosquitto service to apply changes
 sudo service mosquitto restart
-
 
 # read about mosquitto on http://www.steves-internet-guide.com/mosquitto_pub-sub-clients/
 # subscribe to all MQTT topics:

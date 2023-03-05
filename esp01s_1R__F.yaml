@@ -1,41 +1,6 @@
 ---
-# ESP01s single relay board, script name reflecting configuration esp01s_MMmm_SSss__PP.yaml
-#
-#_ Measures used (MM)
-# T - Temperature
-# H - Humidity
-# P - Pressure
-# G - gas
-# I - Illuminance
-# C - CO2
-# D - eCO2
-# V - TVOC
-# W - Water Meter
-#
-#_ Manipulators used (mm)
-#* 1r - Single Switch/Relay
-# 2l - Double Ligiht Switch
-# b - Buzzer
-# d - Diode
-#
-#_ Sensors used (SS)
-# S - SHTx30 - Temperature and Humidity
-# B - BH1750 - Illuminance
-# T - TCS3472 - Illuminance and Color(s)
-# P - BME280 - Temperature, Humidity, Pressure
-# G - BME680 - Temperature, Humidity, Pressure, Gas
-# C - SCD40 - CO2, Temperature, Humidity
-# D - SGP30 - TVOC (Total Volatile Organic Compounds), eCO2 (Equivalent Carbon Dioxide)
-# Y - YF-B10 G1 - Water Pulse sensor
-#
-#_ Switches used (ss)
-# a - AVT5713 - Double Light Switch Board
-# b - 9032A - Active Buzzer 9mm diameteer x 3.2mm height
-#
-#_ Purpose used (PP)
-#* F - Fan
-# G - Gate
-#
+#* ESP01s single relay board, script name reflecting configuration esp01s_MMmm_SSss__PP.yaml
+#* Please read README.md for details
 ###
 # Pawelo 20221222, 1.1.5, created based esp12f_ scripts
 
