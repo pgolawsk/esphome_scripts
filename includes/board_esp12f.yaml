@@ -10,6 +10,7 @@
 # Pawelo 20221127, 1.1.3, added $devices variable to name configutation deployed
 # Pawelo 20221127, 1.1.4, moved i2c configuration to separate include file
 # Pawelo 20221127, 1.1.5, added preserving values in flash
+# Pawelo 20230305, added time_sntp amd sun by default
 
 esphome:
   name: $devicename
@@ -31,6 +32,8 @@ preferences:
 <<: !include ota.yaml
 <<: !include logger.yaml
 <<: !include web_server.yaml
+<<: !include time_sntp.yaml
+<<: !include sun.yaml
 <<: !include prometheus.yaml
 #! as mqtt cannot be overwriten later in the code need to include in in each script (to facilitate "on_message" customization)
 #<<: !include mqtt.yaml

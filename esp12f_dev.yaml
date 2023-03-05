@@ -69,7 +69,7 @@ substitutions:
 # Include/Override mqtt with/without RTTTL support if needed
 #<<: !include includes/mqtt.yaml
 <<: !include includes/mqtt_with_rtttl.yaml
-<<: !include includes/time_sntp.yaml
+#<<: !include includes/time_sntp.yaml
 
 # mqtt:
 #   id: mqtt_client
@@ -95,7 +95,7 @@ substitutions:
 # <<: !include { file: interfaces/dallas.yaml, vars: { gpio: "GPIO10" } }
 <<: !include { file: interfaces/rtttl.yaml, vars: { ix: "" } }
 # <<: !include { file: interfaces/debug.yaml, vars: { update_interval: "15s" } }
-<<: !include { file: interfaces/sun.yaml }
+#<<: !include { file: interfaces/sun.yaml }
 
 text_sensor:
   - !include sensors/text_uptime.yaml

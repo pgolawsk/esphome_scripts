@@ -1,6 +1,7 @@
 ---
 #* Base configuration for ESP-01s board
 # Pawelo 20221222, created based on my framework and https://www.esphome-devices.com/devices/ESP-01S-1-channel-relay
+# Pawelo 20230305, added time_sntp amd sun by default
 
 esphome:
   name: $devicename
@@ -23,6 +24,8 @@ preferences:
 <<: !include mqtt.yaml
 <<: !include logger.yaml
 <<: !include web_server.yaml
+<<: !include time_sntp.yaml
+<<: !include sun.yaml
 <<: !include prometheus.yaml
 
 # packages:
