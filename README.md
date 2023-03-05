@@ -108,7 +108,7 @@ For example: ```esp12f_THIddb_STr.yaml``` script is for:
   * ```S``` - SHT30 - temperature and humidity
   * ```T``` - TCS3472 - illuminance and temperature color
 * switches:
-  * ```r``` - passive buzzer
+  * ```r``` - RTTTL
 
 ## Usage
 
