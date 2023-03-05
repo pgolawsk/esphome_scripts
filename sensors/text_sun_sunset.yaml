@@ -1,0 +1,7 @@
+---
+#* Sun sunset information virtual sensor configuration
+# Pawelo, 20230305, created based on https://esphome.io/components/sun.html
+
+platform: sun
+name: Sun Next Sunset
+type: sunset

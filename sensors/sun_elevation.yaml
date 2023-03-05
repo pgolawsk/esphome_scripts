@@ -1,0 +1,16 @@
+---
+#* Sun elevation sensor configuration
+# Pawelo, 20230305, created based on https://esphome.io/components/sun.html
+
+platform: sun
+name: "Sun Elevation"
+type: elevation
+id: sun_elevation
+icon: mdi:sun-angle
+# internal: true
+state_topic: $devicename/sun_elevation
+on_value:
+  - mqtt.publish:
+      topic: "$mqtt_location/$mqtt_room/sun_elevation"
+      payload: !lambda |-
+        return to_string(id(sun_elevation).state);

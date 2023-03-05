@@ -1,0 +1,7 @@
+---
+#* Sun interface enanble
+# Pawelo, 20230305, created based on https://esphome.io/components/sun.html
+
+sun:
+  latitude: !secret latitude
+  longitude: !secret longitude

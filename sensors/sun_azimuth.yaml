@@ -1,0 +1,16 @@
+---
+#* Sun azimuth sensor configuration
+# Pawelo, 20230305, created based on https://esphome.io/components/sun.html
+
+platform: sun
+name: "Sun Azimuth"
+type: azimuth
+id: sun_azimuth
+icon: mdi:sun-compass
+# internal: true
+state_topic: $devicename/sun_azimuth
+on_value:
+  - mqtt.publish:
+      topic: "$mqtt_location/$mqtt_room/sun_azimuth"
+      payload: !lambda |-
+        return to_string(id(sun_azimuth).state);
