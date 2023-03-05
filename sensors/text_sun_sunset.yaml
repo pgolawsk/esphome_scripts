@@ -6,3 +6,4 @@ platform: sun
 name: Sun Next Sunset
 type: sunset
 icon: mdi:weather-sunset-down
+state_topic: $devicename/next_sunset
