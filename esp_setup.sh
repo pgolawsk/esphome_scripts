@@ -12,6 +12,7 @@
 # Pawelo 20230108, moved esp12f tests to esp12f_dev.yaml script
 # Pawelo 20230112, added flashing for generic esp32-cam-mb board
 #! Pawelo, 20230225, prometheus not working while $mqtt_location is "measures", changed to "measure"
+# Pawelo 20230305, upgrade esphome to 2023.2 version
 
 
 #TODO: Read more complicated AIQ measurement on https://github.com/nkitanov/iaq_board
@@ -42,6 +43,9 @@
 # assuming python3 is installed
 pip3 install esphome
 
+#######################
+#*** OR Upgrade ESP Home on mac/win
+pip3 install -U esphome
 
 #######################
 # Create YAML file
