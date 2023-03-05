@@ -62,7 +62,7 @@ All available sensors
 * ```P``` - BME280 - Temperature, Humidity, Pressure
 * ```G``` - BME680 - Temperature, Humidity, Pressure, Gas Ressistance
 * ```C``` - SCD40 - CO2, Temperature, Humidity
-* ```D``` - Dallas - Temperature
+* ```D``` - DS18B20 (Dallas) - Temperature
 * ```E``` - SGP30 - TVOC and eCO2
 * ```Y``` - YF-B10 G1 - Water Pulse sensor
 * ```L``` - LD2410 - Radar sensor 24GHz
@@ -72,6 +72,7 @@ All available sensors
 All available switches boards
 
 * ```a``` - AVT5713 - Double Light Switch Board
+* ```x``` - Single Relay Board (generic from Aliexpress)
 * ```b``` - 9032A/9025A - Active Buzzer 9mm diameteer x 3.2/2.5mm height
 * ```r``` - 9032/9025 - Passive Buzzer 9mm diameteer x 3.2/2.5mm height
 
