@@ -1,5 +1,6 @@
 ---
 #* UART interface for LD2410 radar sensor
+#! Do not include this if LD2410 sensor is not connected as it makes device unstable
 # Pawelo, 20230305, created based on https://esphome.io/components/sensor/ld2410.html
 
 uart:
