@@ -1,0 +1,35 @@
+---
+#* Presence sensor on LD2410
+# Pawelo, 20230305, created based on https://esphome.io/components/sensor/ld2410.html
+
+platform: ld2410
+has_target:
+  name: "$room Presence"
+  id: presence${ix}
+  icon: mdi:human
+  state_topic: $devicename/presence${ix}
+  on_state:
+    - mqtt.publish:
+        topic: "$mqtt_location/$mqtt_room/presence${ix}"
+        payload: !lambda |-
+          return to_string(id(presence${ix}).state);
+has_moving_target:
+  name: "$room Moving Target"
+  id: moving${ix}
+  icon: mdi:walk
+  state_topic: $devicename/moving${ix}
+  on_state:
+    - mqtt.publish:
+        topic: "$mqtt_location/$mqtt_room/moving${ix}"
+        payload: !lambda |-
+          return to_string(id(moving${ix}).state);
+has_still_target:
+  name: "$room Still Target"
+  id: still${ix}
+  icon: mdi:meditation
+  state_topic: $devicename/still${ix}
+  on_state:
+    - mqtt.publish:
+        topic: "$mqtt_location/$mqtt_room/still${ix}"
+        payload: !lambda |-
+          return to_string(id(still${ix}).state);

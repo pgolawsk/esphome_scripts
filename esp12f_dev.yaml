@@ -10,7 +10,8 @@
 # G - gas
 #* I - Illuminance
 #* C - CO2
-# D - eCO2
+# E - eCO2
+#* D - Distance
 # V - TVOC
 # W - Water Meter
 #
@@ -31,6 +32,7 @@
 # D - Dallas - Temperature
 # E - SGP30 - TVOC (Total Volatile Organic Compounds), eCO2 (Equivalent Carbon Dioxide)
 # Y - YF-B10 G1 - Water Pulse sensor
+# L - LD2410 - Radar sensor 24GHz
 #
 #_ Switches used (ss)
 #* a - AVT5713 - Double Light Switch Board
@@ -52,7 +54,8 @@
 # esphome -s devicename espXX -s updates 1min -s room <Room name> -s mqtt_room <room> run esp12f_MMmm_SSss__PP.yaml --device 192.168.x.x
 # heare are default values if those are not given via command line
 substitutions:
-  devices: "Temperature and Humidity via SHTx30, Illuminance via BH1750 and Doulbe Light Switch via AVT5713"
+#  devices: "Temperature, Humidity via SHTx30, Illuminance via BH1750,  and Doulbe Light Switch via AVT5713"
+  devices: "DEV board: Temperature and Humidity via SHTx30, Illuminance via BH1750, Distance and Presence via LD2410"
   project_name: "pgolawsk.esp_home"
   version: "1.1.5"
 
@@ -69,7 +72,6 @@ substitutions:
 # Include/Override mqtt with/without RTTTL support if needed
 #<<: !include includes/mqtt.yaml
 <<: !include includes/mqtt_with_rtttl.yaml
-#<<: !include includes/time_sntp.yaml
 
 # mqtt:
 #   id: mqtt_client
@@ -95,7 +97,7 @@ substitutions:
 # <<: !include { file: interfaces/dallas.yaml, vars: { gpio: "GPIO10" } }
 <<: !include { file: interfaces/rtttl.yaml, vars: { ix: "" } }
 # <<: !include { file: interfaces/debug.yaml, vars: { update_interval: "15s" } }
-#<<: !include { file: interfaces/sun.yaml }
+<<: !include { file: interfaces/uart_ld2410.yaml, vars: { ix: "ld", tx_pin: "TX", rx_pin: "RX", max_distance: "4.5m" } }
 
 text_sensor:
   - !include sensors/text_uptime.yaml
@@ -106,13 +108,16 @@ text_sensor:
   - !include sensors/text_sun_sunrise.yaml
   - !include sensors/text_sun_sunset.yaml
 
-# binary_sensor:
+binary_sensor:
 #   # Double light Switch on AVT5713
 #   - !include { file: sensors/binary_switch.yaml, vars: { ix: "A", gpio: "GPIO13" } }
 #   - !include { file: sensors/binary_switch.yaml, vars: { ix: "B", gpio: "GPIO14" } }
 
 #   # Doorbell at the gate
 #   - !include { file: sensors/binary_doorbell.yaml, vars: { ix: "", doorbell_name: "gate", gpio: "GPIO13", delay_on: '2s' } }
+
+  # Distance sensor
+  - !include { file: sensors/binary_presence_ld2410.yaml, vars: { ix: "" } }
 
 sensor:
   - !include sensors/uptime.yaml
@@ -144,6 +149,9 @@ sensor:
   # Water ussage YF-B10 sensor
   # - !include { file: sensors/water_YF-B10.yaml, vars: { ix: "", gpio: "GPIO12" } }
   # - !include { file: sensors/water_usage_YF-B10.yaml, vars: { ix: "" } }
+
+  # Distance sensor
+  - !include { file: sensors/distance_ld2410.yaml, vars: { ix: "" } }
 
 output:
   # Status LED

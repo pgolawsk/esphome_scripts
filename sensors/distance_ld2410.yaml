@@ -1,0 +1,70 @@
+---
+#* Distance sensor LD2410 configuration
+# Pawelo, 20230305, created based on https://esphome.io/components/sensor/ld2410.html
+
+platform: ld2410
+moving_distance:
+  name: "$room Moving Distance${ix}"
+  accuracy_decimals: 1
+  # filters:
+  #   - multiply: 1.0
+  id: mdistance${ix}
+  icon: mdi:walk
+  state_topic: $devicename/moving_distance${ix}
+  on_value:
+    - mqtt.publish:
+        topic: "$mqtt_location/$mqtt_room/moving_distance${ix}"
+        payload: !lambda |-
+          return to_string(id(mdistance${ix}).state);
+still_distance:
+  name: "$room Still Distance${ix}"
+  accuracy_decimals: 1
+  # filters:
+  #   - multiply: 1.0
+  id: sdistance${ix}
+  icon: mdi:human
+  state_topic: $devicename/still_distance${ix}
+  on_value:
+    - mqtt.publish:
+        topic: "$mqtt_location/$mqtt_room/still_distance${ix}"
+        payload: !lambda |-
+          return to_string(id(sdistance${ix}).state);
+moving_energy:
+  name: "$room Move Energy"
+  accuracy_decimals: 1
+  # filters:
+  #   - multiply: 1.0
+  id: menergy${ix}
+  icon: mdi:run
+  state_topic: $devicename/moving_energy{ix}
+  on_value:
+    - mqtt.publish:
+        topic: "$mqtt_location/$mqtt_room/moving_energy${ix}"
+        payload: !lambda |-
+          return to_string(id(menergy${ix}).state);
+still_energy:
+  name: "$room Still Energy"
+  accuracy_decimals: 1
+  # filters:
+  #   - multiply: 1.0
+  id: senergy${ix}
+  icon: mdi:meditation
+  state_topic: $devicename/still_energy${ix}
+  on_value:
+    - mqtt.publish:
+        topic: "$mqtt_location/$mqtt_room/still_energy${ix}"
+        payload: !lambda |-
+          return to_string(id(senergy${ix}).state);
+detection_distance:
+  name: "$room Detection Distance"
+  accuracy_decimals: 1
+  # filters:
+  #   - multiply: 1.0
+  id: ddistance${ix}
+  icon: mdi:social-distance-2-meters
+  state_topic: $devicename/detection_distance${ix}
+  on_value:
+    - mqtt.publish:
+        topic: "$mqtt_location/$mqtt_room/detection_distance${ix}"
+        payload: !lambda |-
+          return to_string(id(ddistance${ix}).state);
