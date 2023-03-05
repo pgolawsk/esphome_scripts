@@ -5,3 +5,4 @@
 platform: sun
 name: Sun Next Sunset
 type: sunset
+icon: mdi:weather-sunset-down
