@@ -1,0 +1,134 @@
+---
+#* DC Current, Power and Voltage sensor INA3221 configuration
+# Pawelo, 20230306, created based on https://esphome.io/components/sensor/ina3221.html
+
+platform: ina3221
+channel_1:
+  shunt_resistance: 0.1 ohm
+  current:
+    name: "$room C1 Current${ix}"
+    id: c1_current${ix}
+    accuracy_decimals: 2
+    state_topic: $devicename/c1_current${ix}
+    on_value:
+      - mqtt.publish:
+          topic: "$mqtt_location/$mqtt_room/c1_current${ix}"
+          payload: !lambda |-
+            return to_string(id(c1_current${ix}).state);
+  power:
+    name: "$room C1 Power${ix}"
+    id: c1_power${ix}
+    accuracy_decimals: 2
+    state_topic: $devicename/c1_power${ix}
+    on_value:
+      - mqtt.publish:
+          topic: "$mqtt_location/$mqtt_room/c1_power${ix}"
+          payload: !lambda |-
+            return to_string(id(c1_power${ix}).state);
+  bus_voltage:
+    name: "$room C1 Voltage${ix}"
+    id: c1_voltage${ix}
+    accuracy_decimals: 2
+    state_topic: $devicename/c1_voltage${ix}
+    on_value:
+      - mqtt.publish:
+          topic: "$mqtt_location/$mqtt_room/c1_voltage${ix}"
+          payload: !lambda |-
+            return to_string(id(c1_voltage${ix}).state);
+  shunt_voltage:
+    name: "$room C1 Shunt Voltage${ix}"
+    id: c1_svoltage${ix}
+    accuracy_decimals: 2
+    state_topic: $devicename/c1_shunt_voltage${ix}
+    on_value:
+      - mqtt.publish:
+          topic: "$mqtt_location/$mqtt_room/c1_shunt_voltage${ix}"
+          payload: !lambda |-
+            return to_string(id(c1_svoltage${ix}).state);
+channel_2:
+  shunt_resistance: 0.1 ohm
+  current:
+    name: "$room C2 Current${ix}"
+    id: c2_current${ix}
+    accuracy_decimals: 2
+    state_topic: $devicename/c2_current${ix}
+    on_value:
+      - mqtt.publish:
+          topic: "$mqtt_location/$mqtt_room/c2_current${ix}"
+          payload: !lambda |-
+            return to_string(id(c2_current${ix}).state);
+  power:
+    name: "$room C2 Power${ix}"
+    id: c2_power${ix}
+    accuracy_decimals: 2
+    state_topic: $devicename/c2_power${ix}
+    on_value:
+      - mqtt.publish:
+          topic: "$mqtt_location/$mqtt_room/c2_power${ix}"
+          payload: !lambda |-
+            return to_string(id(c2_power${ix}).state);
+  bus_voltage:
+    name: "$room C2 Voltage${ix}"
+    id: c2_voltage${ix}
+    accuracy_decimals: 2
+    state_topic: $devicename/c2_voltage${ix}
+    on_value:
+      - mqtt.publish:
+          topic: "$mqtt_location/$mqtt_room/c2_voltage${ix}"
+          payload: !lambda |-
+            return to_string(id(c2_voltage${ix}).state);
+  shunt_voltage:
+    name: "$room C2 Shunt Voltage${ix}"
+    id: c2_svoltage${ix}
+    accuracy_decimals: 2
+    state_topic: $devicename/c2_shunt_voltage${ix}
+    on_value:
+      - mqtt.publish:
+          topic: "$mqtt_location/$mqtt_room/c2_shunt_voltage${ix}"
+          payload: !lambda |-
+            return to_string(id(c2_svoltage${ix}).state);
+channel_3:
+  shunt_resistance: 0.1 ohm
+  current:
+    name: "$room C3 Current${ix}"
+    id: c3_current${ix}
+    accuracy_decimals: 2
+    state_topic: $devicename/c3_current${ix}
+    on_value:
+      - mqtt.publish:
+          topic: "$mqtt_location/$mqtt_room/c3_current${ix}"
+          payload: !lambda |-
+            return to_string(id(c3_current${ix}).state);
+  power:
+    name: "$room C3 Power${ix}"
+    id: c3_power${ix}
+    accuracy_decimals: 2
+    state_topic: $devicename/c3_power${ix}
+    on_value:
+      - mqtt.publish:
+          topic: "$mqtt_location/$mqtt_room/c3_power${ix}"
+          payload: !lambda |-
+            return to_string(id(c3_power${ix}).state);
+  bus_voltage:
+    name: "$room C3 Voltage${ix}"
+    id: c3_voltage${ix}
+    accuracy_decimals: 2
+    state_topic: $devicename/c3_voltage${ix}
+    on_value:
+      - mqtt.publish:
+          topic: "$mqtt_location/$mqtt_room/c3_voltage${ix}"
+          payload: !lambda |-
+            return to_string(id(c3_voltage${ix}).state);
+  shunt_voltage:
+    name: "$room C3 Shunt Voltage${ix}"
+    id: c3_svoltage${ix}
+    accuracy_decimals: 2
+    state_topic: $devicename/c3_shunt_voltage${ix}
+    on_value:
+      - mqtt.publish:
+          topic: "$mqtt_location/$mqtt_room/c3_shunt_voltage${ix}"
+          payload: !lambda |-
+            return to_string(id(c3_svoltage${ix}).state);
+i2c_id: ${bus_id}
+address: ${address}
+update_interval: $updates

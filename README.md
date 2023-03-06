@@ -38,9 +38,13 @@ All available measures
 * ```C``` - CO2 (Carbon Dioxide)
 * ```E``` - eCO2 (Equivalent Carbon Dioxide)
 * ```D``` - Distance
-* ```V``` - TVOC (Total Volatile Organic Compounds)
+* ```O``` - TVOC (Total Volatile Organic Compounds)
 * ```W``` - Water Meter
 * ```P``` - Presence (human)
+* ```R``` - Current (DC)
+* ```V``` - Voltage (DC)
+* ```W``` - Power (DC)
+
 
 ### Manipulators (```mm```)
 
@@ -63,9 +67,11 @@ All available sensors
 * ```G``` - BME680 - Temperature, Humidity, Pressure, Gas Ressistance
 * ```C``` - SCD40 - CO2, Temperature, Humidity
 * ```D``` - DS18B20 (Dallas) - Temperature
-* ```E``` - SGP30 - TVOC and eCO2
+* ```O``` - SGP30 - TVOC and eCO2
 * ```Y``` - YF-B10 G1 - Water Pulse sensor
 * ```L``` - LD2410 - Radar sensor 24GHz
+* ```E``` - INA226 - DC Current, Power, Voltage
+* ```F``` - INA3221 - 3-channel DC Current, Power, Voltage
 
 ### Switches (```ss```)
 

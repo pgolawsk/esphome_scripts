@@ -1,0 +1,50 @@
+---
+#* DC Current, Power and Voltage sensor INA226 configuration
+# Pawelo, 20230306, created based on https://esphome.io/components/sensor/ina226.html
+
+platform: ina226
+shunt_resistance: 0.1 ohm
+max_current: ${max_current}
+current:
+  name: "$room Current${ix}"
+  id: current${ix}
+  accuracy_decimals: 2
+  state_topic: $devicename/current${ix}
+  on_value:
+    - mqtt.publish:
+        topic: "$mqtt_location/$mqtt_room/current${ix}"
+        payload: !lambda |-
+          return to_string(id(current${ix}).state);
+power:
+  name: "$room Power${ix}"
+  id: power${ix}
+  accuracy_decimals: 2
+  state_topic: $devicename/power${ix}
+  on_value:
+    - mqtt.publish:
+        topic: "$mqtt_location/$mqtt_room/power${ix}"
+        payload: !lambda |-
+          return to_string(id(power${ix}).state);
+bus_voltage:
+  name: "$room Voltage${ix}"
+  id: voltage${ix}
+  accuracy_decimals: 2
+  state_topic: $devicename/voltage${ix}
+  on_value:
+    - mqtt.publish:
+        topic: "$mqtt_location/$mqtt_room/voltage${ix}"
+        payload: !lambda |-
+          return to_string(id(voltage${ix}).state);
+shunt_voltage:
+  name: "$room Shunt Voltage${ix}"
+  id: svoltage${ix}
+  accuracy_decimals: 2
+  state_topic: $devicename/shunt_voltage${ix}
+  on_value:
+    - mqtt.publish:
+        topic: "$mqtt_location/$mqtt_room/shunt_voltage${ix}"
+        payload: !lambda |-
+          return to_string(id(svoltage${ix}).state);
+i2c_id: ${bus_id}
+address: ${address}
+update_interval: $updates
