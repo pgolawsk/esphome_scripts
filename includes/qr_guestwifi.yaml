@@ -1,0 +1,6 @@
+---
+#* QR Code for guest WiFi
+# Pawelo, 20230508, created based on https://github.com/danuw/esphome-configs/blob/epd-multipage/epd47-1.yaml
+qr_code:
+  - id: guestwifi_qr
+    value: !secret qr_guestwifi
