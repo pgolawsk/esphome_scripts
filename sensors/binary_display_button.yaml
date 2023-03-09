@@ -1,0 +1,20 @@
+---
+#* Display button on GPIO
+# Pawelo, 20230308, created as new based on framework
+
+platform: gpio
+pin:
+  number: ${gpio}
+  # mode:
+  #   input: true
+  #   pullup: true
+  inverted: true
+name: "$room Display Button ${ix}"
+id: dbutton${ix}
+state_topic: $devicename/dbutton${ix}
+on_press:
+  then:
+    # - display.page.show_next: ${display_id}
+    # - display.page.show_previous: ${display_id}
+    # - component.update: ${display_id}
+    - button.press: button${ix}

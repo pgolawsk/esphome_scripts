@@ -1,0 +1,210 @@
+---
+#* ESP32 LillyGo T5 4.7 display
+#* Please read README.md for details
+###
+# Pawelo 20230308, created based on https://github.com/danuw/esphome-configs/blob/epd-multipage/epd47-1.yaml
+#
+#! run with this command to override substitutions
+# esphome -s devicename espXX -s updates 1min -s room <Room name> -s mqtt_room <room> run esp32_MMmm_SSss__PP.yaml --device 192.168.x.x
+# heare are default values if those are not given via command line
+substitutions:
+#  devices: "Temperature and Humidity via SHTx30 and Illuminance via BH1750"
+  devices: "T5 Display"
+  project_name: "pgolawsk.esp_home"
+  version: "1.1.5"
+
+  devicename: espXX
+  updates: "30s"
+  room: Room # friendly name of room to display in HA/Web
+  # this is ADDITIONAL topic and sub-topic for MQTT - it publishes under <topic>/<sub-topic>/<sensor>
+  # by default it's also published under <devicename>/<id_sensor>
+  mqtt_location: home
+  mqtt_room: room
+
+  # Include basics of a board
+<<: !include includes/board_esp32.yaml
+# Include/Override mqtt with/without RTTTL support if needed
+<<: !include includes/mqtt.yaml
+#<<: !include includes/mqtt_with_rtttl.yaml
+<<: !include includes/qr_guestwifi.yaml
+
+# Include interfaces needed
+# <<: !include { file: interfaces/i2c.yaml, vars: { bus_id: "bus_a", sda: "GPIO12", scl: "GPIO13" } }
+# <<: !include { file: interfaces/i2c.yaml, vars: { bus_id: "bus_b", sda: "GPIO14", scl: "GPIO15" } }
+# <<: !include { file: interfaces/dallas.yaml, vars: { gpio: "GPIO10" } }
+# <<: !include { file: interfaces/rtttl.yaml, vars: { ix: "" } }
+
+# # reinclude MQTT as a bug in ESPHOME, see: https://github.com/esphome/issues/issues/2180, https://github.com/esphome/issues/issues/1487
+# mqtt:
+#   broker: !secret mqtt_ip
+#   port: !secret mqtt_port
+# #  username: $devicename
+#   username: !secret mqtt_user
+#   password: !secret mqtt_password
+#   client_id: $devicename
+# # id: $devicename
+
+text_sensor:
+  - !include sensors/text_uptime.yaml
+  - !include sensors/text_version.yaml
+  - !include sensors/text_wifi_info.yaml
+  # Sun component
+  - !include sensors/text_sun_sunrise.yaml
+  - !include sensors/text_sun_sunset.yaml
+
+binary_sensor:
+#   # LilyGo buttons
+#   - !include { file: sensors/binary_button_display.yaml, vars: { ix: "refresh", gpio: "GPIO39", display_id: "t5_display", command: "" } }
+#   - !include { file: sensors/binary_button_display.yaml, vars: { ix: "Next", gpio: "GPIO34", display_id: "t5_display", command: "next" } }
+#   - !include { file: sensors/binary_button_display.yaml, vars: { ix: "Prev", gpio: "GPIO35", display_id: "t5_display", command: "prev" } }
+
+  - !include { file: sensors/binary_display_button.yaml, vars: { ix: "Refresh", gpio: "GPIO39" } }
+  - !include { file: sensors/binary_display_button.yaml, vars: { ix: "Next", gpio: "GPIO34" } }
+  - !include { file: sensors/binary_display_button.yaml, vars: { ix: "Prev", gpio: "GPIO35" } }
+
+sensor:
+  - !include sensors/uptime.yaml
+  - !include sensors/wifi_signal.yaml
+  # Sun component
+  - !include sensors/sun_elevation.yaml
+  - !include sensors/sun_azimuth.yaml
+
+  # # Temperature and Humidity sensor
+  # - !include { file: sensors/temp_hum_SHT3x.yaml, vars: { ix: "", bus_id: "bus_a", address: "0x44" } }
+  # # Illuminance sensor
+  # - !include { file: sensors/lux_BH1750.yaml, vars: { ix: "", bus_id: "bus_a", address: "0x23" } }
+
+switch:
+  # Restart button
+  - !include switches/platform_restart.yaml
+
+button:
+  # LilyGo buttons
+  # - !include { file: buttons/display_button.yaml, vars: { ix: "Refresh", gpio: "GPIO39", display_id: "t5_display", command: "", mdi_icon: "refresh" } }
+  # - !include { file: buttons/display_button.yaml, vars: { ix: "Next", gpio: "GPIO34", display_id: "t5_display", command: "next", mdi_icon: "page-next" } }
+  # - !include { file: buttons/display_button.yaml, vars: { ix: "Prev", gpio: "GPIO35", display_id: "t5_display", command: "prev", mdi_icon: "page-previous" } }
+  - !include { file: buttons/display_button.yaml, vars: { ix: "Refresh", display_id: "t5_display", command: "", mdi_icon: "refresh" } }
+  - !include { file: buttons/display_button.yaml, vars: { ix: "Next", display_id: "t5_display", command: "next", mdi_icon: "page-next" } }
+  - !include { file: buttons/display_button.yaml, vars: { ix: "Prev", display_id: "t5_display", command: "previous", mdi_icon: "page-previous" } }
+
+external_components:
+  - source: github://ashald/esphome@lilygo-t5-47
+    components:
+      - lilygo_t5_47
+
+# display
+font:
+  - file: 'fonts/IBMPlexMono-Bold.ttf'
+    id: din_big
+    glyphs: "+-0123456789.:"
+    size: 300
+  - file: 'fonts/IBMPlexMono-Bold.ttf'
+    id: din_med
+    size: 100
+  - file: 'fonts/IBMPlexMono-Bold.ttf'
+    id: din_med2
+    size: 40
+  - file: 'fonts/IBMPlexMono-Bold.ttf'
+    id: din_small
+    size: 30
+
+display:
+  - platform: lilygo_t5_47
+    id: t5_display
+    rotation: 180
+    update_interval: 60s
+    full_update_every: 5 # optional (default:  1): 0 - never, 1 (default) - every, 2+ - throttled
+    cycles_render: 20    # optional (default: 20): higher number -> less ghosting, crisper image, more time
+    cycles_invert: 20    # optional (default: 20): higher number -> more timef or full update, but mor burn-in protection
+    on_page_change:
+      - then:
+          lambda: |-
+            id(t5_display).clear();
+    pages:
+      - id: page1
+        lambda: |-
+          // positioning constants
+          #define xRes 960
+          #define yRes 540
+          #define xCenter (xRes/2 + 40) // X position center
+          //id(t5_display).clear();
+          it.strftime(15, 310, id(din_big), TextAlign::BASELINE_LEFT, "%H:%M", id(sntp_time).now());
+          it.strftime(50, 500, id(din_med), TextAlign::BASELINE_LEFT, "%Y-%m-%d %a", id(sntp_time).now());
+          it.print(xRes - 40, yRes - 40, id(din_small), TextAlign::BOTTOM_LEFT, "1");
+      - id: page2
+        lambda: |-
+          // positioning constants
+          #define xRes 960
+          #define yRes 540
+          #define xCenter (xRes/2 + 40) // X position center
+          //id(t5_display).clear();
+          it.strftime(xCenter + 100, 40, id(din_small), TextAlign::BASELINE_LEFT, "%Y-%m-%d %a", id(sntp_time).now());
+          it.strftime(15, 310, id(din_big), TextAlign::BASELINE_LEFT, "%H:%M", id(sntp_time).now());
+          it.printf(50, 380, id(din_small), TextAlign::BASELINE_LEFT, "Sunrise at %s and sunset at %s.", id(sunrise).state.c_str(), id(sunset).state.c_str());
+          it.strftime(50, 500, id(din_med), TextAlign::BASELINE_LEFT, "%Y-%m-%d %a", id(sntp_time).now());
+          it.print(xRes - 40, yRes - 40, id(din_small), TextAlign::BOTTOM_LEFT, "2");
+      - id: page3
+        lambda: |-
+          // positioning constants
+          #define xRes 960
+          #define yRes 540
+          #define xCenter (xRes/2 + 40) // X position center
+          //id(t5_display).clear();
+          it.fill(COLOR_ON);
+          it.print(xRes - 40, yRes - 40, id(din_small), COLOR_OFF, TextAlign::BASELINE_LEFT, "3");
+      - id: page4
+        lambda: |-
+          // positioning constants
+          #define xRes 960
+          #define yRes 540
+          #define xCenter (xRes/2 + 40) // X position center
+          //id(t5_display).clear();
+          it.fill(COLOR_ON);
+          it.strftime(10, 10, id(din_small), COLOR_OFF, TextAlign::TOP_LEFT, "%H:%M", id(sntp_time).now());
+          it.print(xRes - 40, yRes-40, id(din_small), COLOR_OFF, TextAlign::BASELINE_LEFT, "4");
+          /// Multiline text from https://community.home-assistant.io/t/eink-multi-line-text/255814/8
+          std::string s = "Some really interesting quote over multiple lines centered on the page - by Author";//id(weather).state;
+          int limit = 35;
+          int space = 0;
+          int i = 0;
+          int line = 0;
+          int y= 70; // start Y
+          while(i<s.length()){ //loop through string, counting all the spaces, and replacing the last one with ~ [marked by space variable] if the count exceeds limit of 35
+            if(s.substr(i,1) == " "){space = i; }
+            if(line>limit-1){s=s.substr(0,space)+"~"+s.substr(space+1);line = 0;}
+              i++;line++;
+          }
+          size_t pos = s.find("~"); //find the first line break
+          int linecount = 1; //need number of lines to store the break positions in an array
+          int breakpositions[10]; //store breakpositions [the '~']
+          breakpositions[0] = -1; // start at -1 cause we need to truncate the replaced characters and without this will cut off 1st character of message
+          while ( pos != std::string::npos) //loop through  replacing the ~ with CR - though this doesnt matter here it will never be displayed, but need to change them to keep the loop from repeating at the start
+          {
+            s.replace(pos,1, "\n");
+            breakpositions[linecount] = pos; //store the position of the break in an array
+            pos = s.find("~"); // move forward
+            linecount++; // we have a new line, count it
+          }
+          breakpositions[linecount] = s.length(); //set the last entry in array to the length of string for calculation below
+          std::string singleline; //this will be the line we print
+          i = 0;
+          while (i < linecount ) {  // count through the lines
+            singleline = s.substr(breakpositions[i]+1,(breakpositions[i+1]-breakpositions[i]-1)); //extract each line of text from the string - strip off the CRLF and the space.
+            it.printf(xCenter, y, id(din_med2), COLOR_OFF, TextAlign::BASELINE_CENTER, "%s", singleline.c_str()); //print it!
+            y=y+30; // increment y to print properly on display
+            i++;
+          }
+          it.print(xRes - 40, yRes - 40, id(din_small), TextAlign::BASELINE_LEFT, "4");
+      - id: page5
+        lambda: |-
+          // positioning constants
+          #define xRes 960
+          #define yRes 540
+          #define xCenter (xRes/2 + 40) // X position center
+          //id(t5_display).clear();
+          it.print(60, 60, id(din_small), TextAlign::BASELINE_LEFT, "Join Guest WIFI");
+          it.print(xRes - 40, yRes - 40, id(din_small), TextAlign::BASELINE_LEFT, "5");
+          // guest wifi
+          // WIFI:S:<WIFI NAME HERE>;T:WPA;P:<WIFI PASSWOD HERE>;H:false;;
+          // Draw the QR-code at position [x=50,y=100] with white color and a 2x scale
+          it.qr_code(50, 100, id(guestwifi_qr), COLOR_ON, 14);

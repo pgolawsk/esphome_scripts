@@ -14,6 +14,8 @@ esphome:
 esp32:
   board: esp32dev
 #  restore_from_flash: true
+  framework:
+    type: arduino
 
 preferences:
   flash_write_interval: 1min
