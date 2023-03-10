@@ -3,6 +3,9 @@
 #* Please read README.md for details
 ###
 # Pawelo 20230308, created based on https://github.com/danuw/esphome-configs/blob/epd-multipage/epd47-1.yaml
+# Pawelo 20230310, added battery sensor based on https://github.com/esphome/feature-requests/issues/1109#issuecomment-1408376503
+#TODO: good example to deep_sleep: https://gist.github.com/Plawasan/8e27956db016eb5158311b94d096509b
+#                                  https://gist.github.com/Plawasan/4ae826b05aaa7812f3a191714ca47a50
 #
 #! run with this command to override substitutions
 # esphome -s devicename espXX -s updates 1min -s room <Room name> -s mqtt_room <room> run esp32_MMmm_SSss__PP.yaml --device 192.168.x.x
@@ -13,7 +16,7 @@ substitutions:
   project_name: "pgolawsk.esp_home"
   version: "1.1.5"
 
-  devicename: espXX
+  devicename: esp32-xx
   updates: "30s"
   room: Room # friendly name of room to display in HA/Web
   # this is ADDITIONAL topic and sub-topic for MQTT - it publishes under <topic>/<sub-topic>/<sensor>
@@ -21,7 +24,13 @@ substitutions:
   mqtt_location: home
   mqtt_room: room
 
-  # Include basics of a board
+  run_time: 20s #needs to be as long as needed to get data
+  sleep_time: 2min # normal sleep time
+  away_sleep_time: 1h # sleep time when nobody's at home
+  night_sleep_time: 6.5h # 1st sleep time after midnight
+  refresh_interval: ${updates} #refresh when on USB power
+
+# Include basics of a board
 <<: !include includes/board_esp32.yaml
 # Include/Override mqtt with/without RTTTL support if needed
 <<: !include includes/mqtt.yaml
@@ -49,8 +58,23 @@ text_sensor:
   - !include sensors/text_version.yaml
   - !include sensors/text_wifi_info.yaml
   # Sun component
-  - !include sensors/text_sun_sunrise.yaml
-  - !include sensors/text_sun_sunset.yaml
+  - !include { file: sensors/text_sun_sunrise.yaml, vars: { updates: "${updates}" } }
+  - !include { file: sensors/text_sun_sunset.yaml, vars: { updates: "${updates}" } }
+
+  - platform: template
+    name: "${devicename} Powered From"
+    id: powered_from
+    state_topic: $devicename/powered_from
+    lambda: |-
+      if (to_string(id(batt_volt)->state) == "nan" ) {
+        return to_string("Checking...");
+      }
+      if (id(batt_volt)->state > 4.5) {
+        return to_string("USB");
+      }
+      return to_string("BATTERY");
+    internal: true
+    update_interval: ${updates}
 
 binary_sensor:
 #   # LilyGo buttons
@@ -74,6 +98,44 @@ sensor:
   # # Illuminance sensor
   # - !include { file: sensors/lux_BH1750.yaml, vars: { ix: "", bus_id: "bus_a", address: "0x23" } }
 
+  - platform: lilygo_t5_47
+    name: "${devicename} Battery Voltage"
+    id: batt_volt
+    accuracy_decimals: 2
+    unit_of_measurement: "V"
+    state_class: measurement
+    device_class: voltage
+    update_interval: ${updates}
+    state_topic: $devicename/battery_voltage
+    on_value:
+      - mqtt.publish:
+          topic: "$mqtt_location/$mqtt_room/battery_voltage"
+          payload: !lambda |-
+            return to_string(id(batt_volt).state);
+
+  - platform: template
+    name: "${devicename} Battery"
+    id: batt
+    unit_of_measurement: "%"
+    accuracy_decimals: 0
+    device_class: battery
+    lambda: |-
+      int y = (1-(4.1-id(batt_volt)->state)/(4.1-3.0))*100;
+      if (y < 0) {return 0;}
+      if (y > 120) {return NAN;}
+      if (y > 100) {return 100;}
+      return y;
+    update_interval: ${updates}
+    state_topic: $devicename/battery
+    on_value:
+      - mqtt.publish:
+          topic: "$mqtt_location/$mqtt_room/battery"
+          payload: !lambda |-
+            return to_string(id(batt).state);
+    # on_value: # Actions to perform once data for the last sensor has been received
+    #   then:
+    #     - script.execute: all_data_received
+
 switch:
   # Restart button
   - !include switches/platform_restart.yaml
@@ -87,40 +149,226 @@ button:
   - !include { file: buttons/display_button.yaml, vars: { ix: "Next", display_id: "t5_display", command: "next", mdi_icon: "page-next" } }
   - !include { file: buttons/display_button.yaml, vars: { ix: "Prev", display_id: "t5_display", command: "previous", mdi_icon: "page-previous" } }
 
+  - platform: template
+    name: "${devicename} Refresh"
+    icon: "mdi:update"
+    on_press:
+      then:
+      - component.update: t5_display
+
+# deep_sleep:
+#   run_duration: ${run_time}
+#   sleep_duration: ${sleep_time}
+#   id: deep_sleep_1
+#   esp32_ext1_wakeup:
+#     pins: GPIO39
+#     mode: ALL_LOW
+
 external_components:
   - source: github://ashald/esphome@lilygo-t5-47
     components:
       - lilygo_t5_47
 
-# display
+# Fonts
 font:
   - file: 'fonts/IBMPlexMono-Bold.ttf'
     id: din_big
     glyphs: "+-0123456789.:"
     size: 300
+
   - file: 'fonts/IBMPlexMono-Bold.ttf'
     id: din_med
     size: 100
+
   - file: 'fonts/IBMPlexMono-Bold.ttf'
     id: din_med2
     size: 40
+
   - file: 'fonts/IBMPlexMono-Bold.ttf'
     id: din_small
     size: 30
 
+  - file: "fonts/ProductSans-Bold.ttf"
+    id: font_name
+    size: 40
+
+  - file: "fonts/ProductSans-Medium.ttf"
+    id: font_value
+    size: 64
+
+  - file: "fonts/ProductSans-Medium.ttf"
+    id: font_footer
+    size: 28
+
+  # https://pictogrammers.github.io/@mdi/font/5.3.45/
+  - file: 'fonts/materialdesignicons-webfont.ttf'
+    id: font_icons
+    size: 160
+    glyphs:
+      - "\U000F0594" # clear-night
+      - "\U000F0590" # cloudy
+      - "\U000F0595" # partlycloudy
+      - "\U000F0591" # fog
+      - "\U000F0592" # hail
+      - "\U000F0593" # lightning
+      - "\U000F067E" # lightning-rainy
+      - "\U000F0596" # pouring
+      - "\U000F0597" # rainy
+      - "\U000F0F36" # snowy
+      - "\U000F067F" # snowy-rainy
+      - "\U000F0599" # sunny
+      - "\U000F059D" # windy
+      - "\U000F059E" # windy-variant
+      - "\U000F0F38" # exceptional
+
+  - file: 'fonts/materialdesignicons-webfont.ttf'
+    id: font_icons_small
+    size: 56
+    glyphs:
+      - "\U000F059C" # Sunrise
+      - "\U000F059B" # Sunset
+      - "\U000F10C2" # Temperature High
+      - "\U000F10C3" # Temperature Low
+      - "\U000F07E4" # CO2
+      - "\U000F054B" # umbrella
+      - "\U000F13E2" # umbrella-closed
+      - "\U000F0592" # hail
+      - "\U000F0593" # lightning
+      - "\U000F067E" # lightning-rainy
+      - "\U000F0597" # rainy
+      - "\U000F0F36" # snowy
+      - "\U000F0594" # clear-night
+      - "\U000F0599" # sunny
+      - "\U000F07CA" # fuel
+      - "\U000F024A" # flower
+      - "\U000F051F" # time-remaining
+      - "\U000F140B" # Energy
+      - "\U000F0F29" # Frost Alert
+
+  - file: 'fonts/materialdesignicons-webfont.ttf'
+    id: font_icons_tiny
+    size: 28
+    glyphs:
+      - "\U000F04B2" # sleep
+      - "\U000F02DC" # home
+      - "\U000F13D7" # not_home
+      - "\U000F12A3" # battery-high
+      - "\U000F12A2" # battery-medium
+      - "\U000F12A1" # battery-low
+      - "\U000F008E" # battery-outline
+
+# # Scripts
+# script:
+#   - id: refresh_display
+#     then:
+#       - repeat:
+#           count: 1
+#           then:
+#           - display.page.show: black
+#           - component.update: t5_display
+#           - display.page.show: blank
+#           - component.update: t5_display
+#           - display.page.show: main
+#           - component.update: t5_display
+
+#   - id: all_data_received
+#     mode: restart
+#     then:
+#       - component.update: batt_volt
+#       - component.update: batt
+#       - display.page.show: main
+#       - component.update: t5_display
+#       - if:
+#           condition:
+#             lambda: |-
+#               if (id(batt_volt).state > 4.5) {
+#                 return false;
+#               }
+#               return true;
+#           then:
+#             - script.execute: enter_sleep
+#           else:
+#             - logger.log: "On USB power, preventing deep sleep"
+#             - deep_sleep.prevent: deep_sleep_1
+#             - delay: ${updates}
+#             - script.execute: all_data_received
+
+#   - id: enter_night_sleep
+#     then:
+#       - logger.log: "It's nighttime, entering night sleep for ${night_sleep_time}"
+#       - deep_sleep.enter:
+#           id: deep_sleep_1
+#           sleep_duration: ${night_sleep_time}
+
+#   - id: enter_normal_sleep
+#     then:
+#       - if:
+#           condition:
+#             lambda: |-
+#               // if (id(adults).state == "not_home") {
+#               //   return false;
+#               // }
+#               return true;
+#           then:
+#             - logger.log: "It's daytime and people are home, entering short sleep for ${sleep_time}"
+#             - deep_sleep.enter:
+#                 id: deep_sleep_1
+#                 sleep_duration: ${sleep_time}
+#           else:
+#             - logger.log: "It's daytime but nobody's home, entering sleep for ${away_sleep_time}"
+#             - deep_sleep.enter:
+#                 id: deep_sleep_1
+#                 sleep_duration: ${away_sleep_time}
+
+#   - id: enter_sleep
+#     then:
+#       - if:
+#           condition:
+#             lambda: |-
+#               auto time = id(sntp_time).now();
+#               if (!time.is_valid()) {
+#                 return false;
+#               }
+#               return (time.hour < 6);
+#           then:
+#             - script.execute: enter_night_sleep
+#           else:
+#             - script.execute: enter_normal_sleep
+
+# Display
 display:
   - platform: lilygo_t5_47
     id: t5_display
     rotation: 180
     update_interval: 60s
-    full_update_every: 5 # optional (default:  1): 0 - never, 1 (default) - every, 2+ - throttled
-    cycles_render: 20    # optional (default: 20): higher number -> less ghosting, crisper image, more time
-    cycles_invert: 20    # optional (default: 20): higher number -> more timef or full update, but mor burn-in protection
+    full_update_every: 0 # optional (default:  1): 0 - never, 1 (default) - every, 2+ - throttled
+    cycles_render: 15    # optional (default: 20): higher number -> less ghosting, crisper image, more time
+    cycles_invert: 40    # optional (default: 20): higher number -> more timef or full update, but mor burn-in protection
     on_page_change:
       - then:
           lambda: |-
             id(t5_display).clear();
     pages:
+      # - id: blank
+      #   lambda: |-
+      #     // #define xres 540
+      #     // #define yres 960
+      #     #define xRes 960
+      #     #define yRes 540
+      #     //draw clear background
+      #     it.filled_rectangle(0, 0, xRes, yRes, COLOR_OFF);
+      #     it.print(xRes/2, yRes/2, id(font_name), COLOR_ON, TextAlign::CENTER, "Refreshing...");
+
+      # - id: black
+      #   lambda: |-
+      #     // #define xres 540
+      #     // #define yres 960
+      #     #define xRes 960
+      #     #define yRes 540
+      #     //draw filled background
+      #     it.filled_rectangle(0, 0, xRes, yRes, COLOR_ON);
+      #     it.print(xRes/2, yRes/2, id(font_name), COLOR_OFF, TextAlign::CENTER, "Refreshing...");
+
       - id: page1
         lambda: |-
           // positioning constants
