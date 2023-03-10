@@ -18,7 +18,7 @@ substitutions:
   project_name: "pgolawsk.esp_home"
   version: "1.1.5"
 
-  devicename: espXX
+  devicename: esp12f-xx
   updates: "30s"
   room: Room # friendly name of room to display in HA/Web
   # this is ADDITIONAL topic and sub-topic for MQTT - it publishes under <topic>/<sub-topic>/<sensor>

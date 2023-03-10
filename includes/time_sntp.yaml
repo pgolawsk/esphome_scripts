@@ -4,6 +4,10 @@
 time:
   - platform: sntp
     id: sntp_time
+    # on_time_sync:
+    #   - then:
+    #     - component.update: sunrise
+    #     - component.update: sunset
     # on_time:
     #   # Every 5 minutes
     #   - seconds: 0
