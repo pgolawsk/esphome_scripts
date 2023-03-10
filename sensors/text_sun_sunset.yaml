@@ -8,3 +8,4 @@ type: sunset
 id: sunset
 icon: mdi:weather-sunset-down
 state_topic: $devicename/next_sunset
+update_interval: ${updates}
