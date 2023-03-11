@@ -22,7 +22,7 @@ preferences:
 <<: !include api.yaml
 <<: !include ota.yaml
 <<: !include logger.yaml
-<<: !include web_server.yaml
+<<: !include { file: web_server.yaml, vars: { ota_enabled: false } }
 <<: !include time_sntp.yaml
 <<: !include sun.yaml
 <<: !include prometheus.yaml
