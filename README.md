@@ -44,6 +44,9 @@ All available measures
 * ```R``` - Current (DC)
 * ```V``` - Voltage (DC)
 * ```W``` - Power (DC)
+* ```M``` - Motion
+* ```U``` - Gestures
+* ```B``` - RGB Colour
 
 
 ### Manipulators (```mm```)
@@ -72,6 +75,7 @@ All available sensors
 * ```L``` - LD2410 - Radar sensor 24GHz
 * ```E``` - INA226 - DC Current, Power, Voltage
 * ```F``` - INA3221 - 3-channel DC Current, Power, Voltage
+* ```A``` - APDS9660 - Illuminance, Color(s), Gesture and Motion
 
 ### Switches (```ss```)
 

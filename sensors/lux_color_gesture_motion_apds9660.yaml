@@ -1,0 +1,116 @@
+---
+#* Illuminance, Color, Gesture and Motion sensor APDS9660 configuration
+# Pawelo, 20230311, created based on framework and https://community.home-assistant.io/t/adding-near-far-gesture-control-with-apds9960-esphome-and-ha/437881
+#TODO: implement configuration - example:
+sensor:
+  - platform: apds9960
+    type: CLEAR
+    name: "APDS9960 Clear Channel"
+
+  - platform: apds9960
+    type: RED
+    name: "APDS9960 Red Channel"
+
+  - platform: apds9960
+    type: GREEN
+    name: "APDS9960 Green Channel"
+
+  - platform: apds9960
+    type: BLUE
+    name: "APDS9960 Blue Channel"
+
+  - platform: apds9960    
+    type: PROXIMITY
+    name: "APDS9960 Proximity Channel"
+
+binary_sensor: 
+  - platform: apds9960
+    direction: UP
+    id: apds9960_up
+    on_state:
+      then:
+        - text_sensor.template.publish:
+            id: direction_state
+            state: "UP"
+
+  - platform: apds9960
+    direction: DOWN
+    id: apds9960_down
+    on_state:
+      then:
+        - text_sensor.template.publish:
+            id: direction_state
+            state: "DOWN"
+
+  - platform: apds9960
+    direction: LEFT
+    id: apds9960_left
+    on_state:
+      then:
+        - text_sensor.template.publish:
+            id: direction_state
+            state: "LEFT"
+
+  - platform: apds9960
+    direction: RIGHT
+    id: apds9960_right
+    on_state:
+      then:
+        - text_sensor.template.publish:
+            id: direction_state
+            state: "RIGHT"    
+
+text_sensor:
+  - platform: template
+    name: "direction_state"
+    id: direction_state   
+
+
+
+
+
+platform: bme280
+temperature:
+  name: "$room Temperature${ix}"
+  id: temp${ix}
+  oversampling: 16x
+  accuracy_decimals: 2
+  filters:
+    - offset: -2.1
+  state_topic: $devicename/temperature${ix}
+  on_value:
+    - mqtt.publish:
+        topic: "$mqtt_location/$mqtt_room/temperature${ix}"
+        payload: !lambda |-
+          return to_string(id(temp${ix}).state);
+humidity:
+  name: "$room Humidity${ix}"
+  id: hum${ix}
+  oversampling: 16x
+  accuracy_decimals: 2
+  filters:
+    - offset: +9.2
+  state_topic: $devicename/humidity${ix}
+  on_value:
+    - mqtt.publish:
+        topic: "$mqtt_location/$mqtt_room/humidity${ix}"
+        payload: !lambda |-
+          return to_string(id(hum${ix}).state);
+pressure:
+  name: "$room Pressure"
+  id: press
+  oversampling: 16x
+  accuracy_decimals: 2
+  filters:
+    - offset: 7.0
+  state_topic: $devicename/pressure
+  on_value:
+    - mqtt.publish:
+        topic: "$mqtt_location/$mqtt_room/pressure"
+        payload: !lambda |-
+          return to_string(id(press).state);
+i2c_id: ${bus_id}
+#address: 0x76
+address: ${address}
+#iir_filter: 2x
+update_interval: $updates
