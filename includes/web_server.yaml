@@ -6,4 +6,4 @@ web_server:
   port: 80
   include_internal: true
   # ota: false # disable OTA via web
-  ota: ${ota_enable}
+  ota: ${ota_enabled}
