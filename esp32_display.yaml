@@ -439,7 +439,7 @@ display:
           while (i < linecount ) {  // count through the lines
             singleline = s.substr(breakpositions[i]+1,(breakpositions[i+1]-breakpositions[i]-1)); //extract each line of text from the string - strip off the CRLF and the space.
             it.printf(xCenter, y, id(din_med2), COLOR_OFF, TextAlign::BASELINE_CENTER, "%s", singleline.c_str()); //print it!
-            y=y+30; // increment y to print properly on display
+            y=y+50; // increment y to print properly on display
             i++;
           }
           it.print(xRes - 40, yRes - 40, id(din_small), TextAlign::BASELINE_LEFT, "4");
