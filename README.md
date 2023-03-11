@@ -1,8 +1,8 @@
 # esphome
 
-My configutation scripts for esp devices within my home network, including multiple sensors, switches.
+My configutation scripts for esp and similar devices within my home network, including multiple sensors, switches.
 
-This repository contains YAML scripts for configuration of ESP devices (includes esp8266, esp32).
+This repository contains YAML scripts for configuration of ESP devices (includes esp8266, esp32, bk7231n).
 
 Author Pawel Golawski <pawel.golawski@2com.pl>
 
@@ -13,7 +13,7 @@ Author Pawel Golawski <pawel.golawski@2com.pl>
 * Always available components:
   * Wifi
   * OTA (Over The Air) updates
-  * MQTT publish sensor values, like ```espXX/temperature```
+  * MQTT publish sensor values, like ```esp-xx/temperature```
   * Addittional MQTT topic for sensors with friendly structure, like ```home/office/temperatude```
   * Logger via MQTT
   * Prometheus
@@ -22,7 +22,7 @@ Author Pawel Golawski <pawel.golawski@2com.pl>
   * Time (via SNTP)
   * Sun (to provide elevation, azimuth and sunrise sunset times)
 * Optional components:
-  * RTTTL - to play RTTTL melody via passive buzzer; melody can be recieved via MQTT (```espXX/play_rtttl``` topic)
+  * RTTTL - to play RTTTL melody via passive buzzer; melody can be recieved via MQTT (```esp-xx/play_rtttl``` topic)
 
 ## Available configurations
 
@@ -47,7 +47,6 @@ All available measures
 * ```M``` - Motion
 * ```U``` - Gestures
 * ```B``` - RGB Colour
-
 
 ### Manipulators (```mm```)
 
@@ -97,7 +96,7 @@ All available purposes. Those are changing the names of the manipulators to refl
 
 Script filenames reflect what sensors, switches and manipulators are included in particular one. The naming convention is ```board_MMmm_SSss__PP.yaml```, where:
 
-* ```board``` is the type of ESP board
+* ```board``` is the type of ESP board/device
 * ```MM``` are the MEASURES provided, like temperature, humidity, ...
 * ```mm``` are the manipulators used, like diode, rtttl, ...
 * ```SS``` are the SENSORS used, like SHT30, BH1750, ...
@@ -127,7 +126,7 @@ For example: ```esp12f_THIddb_STr.yaml``` script is for:
 You need to have
 
 * ```python3``` installed, in minimum version ```3.10```
-* ```esphome``` command installed, im ninimum version ```2023.02```.
+* ```esphome``` command installed, im minimum version ```2023.02```.
 
 ### Installation
 
@@ -141,6 +140,7 @@ To see full installation procedure please follow ```esp_setup.sh``` file and run
 * MQTT configuration, especially ACL
 * Prometheus configuration
   * Example Grafana dashboard to display data from Prometheus is in ```Home Sensors-Grafana4Prometheus_dashboard.json``` file
+* ```esphome``` commands to flash specific configurations
 
 ### Example ESP device flasing command
 
@@ -149,7 +149,7 @@ Before running it please:
 * Copy ```secrets_example.yaml``` script into ```secrets.yaml``` and modify values for secret variables, like WiFi password
 * Review the script actions. See ```esp12_dev.yaml``` as example as it contains almost all available configurations with ```!include``` files parameters. For full list of include file parameters please see inside specific include file.
 
-#### Sample command:
+#### Sample command
 
 ```esphome -s devicename esp12f_office -s updates 30s -s room Office -s mqtt_room office run esp12f_THIddb_STr.yaml```
 
@@ -159,7 +159,7 @@ To trigger only OTA update for particular IP please add ```--device 192.168.x.x`
 
 The parameters are following ```-s``` argument. Those are:
 
-* ```devicename``` - the name of the device, ```espXX``` is default
+* ```devicename``` - the name of the device, ```esp-xx``` is default
 * ```updates``` - how frequently sensors are updated, ```30s``` is default
 * ```room``` - friendly name of the room, ```Room``` is default
 * ```mqtt_location``` - name of the location for MQTT, ```home``` is default
@@ -169,10 +169,13 @@ The parameters are following ```-s``` argument. Those are:
 
 ### Folders
 
+* ```buttons``` - list of buttons inteded to include them under ```button:``` section
 * ```deprecated``` - contain all old versions (not modular)
 * ```examples``` - example configurations, how to use set of scripts
 * ```fans``` - list of switches inteded to include them under ```fan:``` section
+* ```fonts``` - list of fonts to draw on displays inteded to include them under ```font:``` section
 * ```includes``` - basic scripts for ESP boards, wifi, mqtt, ota, ...
+  * ```boards``` scripts mat contain wiring instructions - please READ those
 * ```interfaces``` - list of separate interfaces to includem like ```i2c```, ```uart```, ```dallas```
 * ```lights``` - list of switches inteded to include them under ```light:``` section
 * ```outputs``` - list of outputs inteded to include them under ```output:``` section
@@ -181,11 +184,6 @@ The parameters are following ```-s``` argument. Those are:
   * ```text_senor:``` section, those with filenames starting as ```text_```
   * ```sensor:``` section, all remaining files
 * ```switches``` - list of switches inteded to include them under ```switch:``` section
-
-folder ```mac``` for Mac mini M1 (pMacM1)
-* folder ```rpi``` for all RaspberyPi and arm devices (ppi4, ppi41, ci)
-* folder ```rutx``` for router (rutx11). NOTE: there is separarate ansible (automated) repository for router confiruration ```pgolawsk/rutos_setups```
-* folder ```esphome``` for all ESP devices
 
 ### Other
 
