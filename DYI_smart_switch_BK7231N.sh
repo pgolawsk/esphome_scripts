@@ -45,4 +45,65 @@ bk7231tools write_flash -d /dev/tty.usbserial-A50285BI -s 0x11000 -S 0x11000 -l 
 
 ########################
 #* Install OpenBeken - via Tuya CloudCutter
+#! Not working
+# As per instructions from https://github.com/tuya-cloudcutter/tuya-cloudcutter/blob/main/HOST_SPECIFIC_INSTRUCTIONS.md
 
+# use stanalone Raspbeery with ubuntu
+ssh rpi_ubuntu
+
+# prepare tuya-cloudcutter
+git clone https://github.com/tuya-cloudcutter/tuya-cloudcutter
+
+cd tuya-cloudcutter
+
+sudo docker build --network=host -t cloudcutter .
+
+# download your device .json configuration
+# look for specific device on https://github.com/tuya-cloudcutter/tuya-cloudcutter.github.io/tree/master/devices
+# For Mini Smart Swith this is https://raw.githubusercontent.com/tuya-cloudcutter/tuya-cloudcutter.github.io/master/devices/aubess-16a-mini-smart-switch.json
+# curl -O https://raw.githubusercontent.com/tuya-cloudcutter/tuya-cloudcutter.github.io/master/devices/aubess-16a-mini-smart-switch.json
+
+# determine your specific device name https://github.com/tuya-cloudcutter/tuya-cloudcutter.github.io/tree/master/devices
+# aubess-16a-mini-smart-switch
+
+# display wifi interfaces
+rfkill
+
+sudo rfkill unblock wlan
+
+rfkill
+
+# download OpenBeken firmware to flash
+#! get version for cloudcutter - "UG"
+# curl -O https://raw.githubusercontent.com/openshwprojects/OpenBK7231T_App/releases/download/1.15.581/OpenBK7231N_UG_1.15.581.bin
+cd custom-firmware
+wget https://github.com/openshwprojects/OpenBK7231T_App/releases/download/1.15.581/OpenBK7231N_UG_1.15.581.bin
+cd ..
+
+# install NetworkManager
+sudo apt-get install network-manager
+sudo systemctl start NetworkManager.service
+
+# configure DHCP client daemon
+sudo vi /etc/dhcpcd.conf
+#--------------------- add this
+denyinterfaces wlan0
+#---------------------
+
+# configure NetworkManager
+sudo vi /etc/NetworkManager/NetworkManager.conf
+#--------------------- add this
+[main]
+plugins=ifupdown,keyfile
+dhcp=internal
+
+[ifupdown]
+managed=true
+#---------------------
+
+# detaching from tuya cloud
+sudo ./tuya-cloudcutter.sh -s <SSID> <SSID_password>
+# flashing custom firmware
+sudo ./tuya-cloudcutter.sh -p aubess-16a-mini-smart-switch -f OpenBK7231N_UG_1.15.581.bin
+
+#!Error: Connection activation failed: (11) 802.1X supplicant took too long to authenticate.
