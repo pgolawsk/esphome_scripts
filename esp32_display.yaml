@@ -452,7 +452,7 @@ display:
   - platform: lilygo_t5_47
     id: t5_display
     rotation: 180
-    update_interval: 60s
+    update_interval: 300s
     full_update_every: 0 # optional (default:  1): 0 - never, 1 (default) - every, 2+ - throttled
     cycles_render: 15    # optional (default: 20): higher number -> less ghosting, crisper image, more time
     cycles_invert: 40    # optional (default: 20): higher number -> more timef or full update, but mor burn-in protection
