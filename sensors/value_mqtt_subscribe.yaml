@@ -1,0 +1,16 @@
+---
+#* MQTT subscribe sensor configuration
+# Pawelo, 20230312, created based on https://esphome.io/components/sensor/mqtt_subscribe.html
+
+platform: mqtt_subscribe
+# name: "Office Temperature"
+name: ${name}
+accuracy_decimals: 2
+# unit_of_measurement: "°C"
+unit_of_measurement: ${unit}
+# id: temp_office
+id: ${id}
+# topic: home/office/temperature
+topic: ${topic}
+
+

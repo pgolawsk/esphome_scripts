@@ -1,0 +1,8 @@
+---
+#* Text MQTT subscribe sensor configuration
+# Pawelo, 20230312, created based on https://esphome.io/components/sensor/mqtt_subscribe.html
+
+platform: mqtt_subscribe
+name: ${name}
+id: ${id}
+topic: ${topic}
