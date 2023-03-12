@@ -272,6 +272,103 @@ font:
       - "\U000F12A1" # battery-low
       - "\U000F008E" # battery-outline
 
+  - file: 'fonts/materialdesignicons-webfont.ttf'
+    id: mdi_sensor
+    size: 50
+    glyphs:
+      - "\U000F007A" # mdi-battery-10
+      - "\U000F007B" # mdi-battery-20
+      - "\U000F007C" # mdi-battery-30
+      - "\U000F007D" # mdi-battery-40
+      - "\U000F007E" # mdi-battery-50
+      - "\U000F007F" # mdi-battery-60
+      - "\U000F0080" # mdi-battery-70
+      - "\U000F0081" # mdi-battery-80
+      - "\U000F0082" # mdi-battery-90
+      - "\U000F0079" # mdi-battery (100%)
+      - "\U000F089C" # mdi-battery-charging-10
+      - "\U000F0086" # mdi-battery-charging-20
+      - "\U000F0087" # mdi-battery-charging-30
+      - "\U000F0088" # mdi-battery-charging-40
+      - "\U000F089D" # mdi-battery-charging-50
+      - "\U000F0089" # mdi-battery-charging-60
+      - "\U000F089E" # mdi-battery-charging-70
+      - "\U000F008A" # mdi-battery-charging-80
+      - "\U000F008B" # mdi-battery-charging-90
+      - "\U000F0085" # mdi-battery-charging-100 (100%)
+      - "\U000F0091" # mdi-battery-unknown
+      - "\U000F092B" # mdi-wifi-strength-alert-outline
+      - "\U000F091F" # mdi-wifi-strength-1
+      - "\U000F0922" # mdi-wifi-strength-2
+      - "\U000F0925" # mdi-wifi-strength-3
+      - "\U000F0928" # mdi-wifi-strength-4
+      - "\U000F050F" # mdi-themometer
+      - "\U000F08F0" # mdi-map-marker-distance
+      - "\U000F06A5" # mdi-power-plug
+      - "\U000F06A6" # mdi-power-plug-off
+      - "\U000F1424" # mdi-power-plug-off-outline
+      - "\U000F0B6C" # mdi-car-electric
+      - "\U000F05F1" # mdi-ev-station
+      - "\U000F0530" # mdi-transfer-right
+      - "\U000F0F54" # mdi-home-thermometer
+      - "\U000F18D6" # mdi-sun-thermometer
+      - "\U000F044C" # mdi-recycle
+      - "\U000F0073" # mdi-barley
+      - "\U000F0A79" # mdi-trash-can
+      - "\U000F00ED" # mdi-calendar
+      - "\U000F181D" # mdi-kitchen-counter-outline
+      - "\U000F112B" # mdi-home-roof
+      - "\U000F0F92" # mdi-water-boiler
+      - "\U000F0438" # mdi-radiator
+      - "\U000F0AD7" # mdi-radiator-disabled
+      - "\U000F0F29" # mdi-snowflake-alert
+      - "\U000F0594" # mdi-clear-night
+      - "\U000F0590" # mdi-cloudy
+      - "\U000F0591" # mdi-fog
+      - "\U000F0592" # mdi-hail
+      - "\U000F0593" # mdi-lightning
+      - "\U000F067E" # mdi-lightning-rainy
+      - "\U000F0F31" # mdi-night-partly-cloudy
+      - "\U000F0595" # mdi-partly-cloudy
+      - "\U000F0596" # mdi-pouring
+      - "\U000F0597" # mdi-rainy
+      - "\U000F0F36" # mdi-snowy
+      - "\U000F067F" # mdi-snowy-rainy
+      - "\U000F0599" # mdi-sunny
+      - "\U000F059D" # mdi-windy
+      - "\U000F059E" # mdi-windy-variant
+      - "\U000F0F38" # mdi-exceptional
+
+  - file: 'fonts/materialdesignicons-webfont.ttf'
+    id:  mdi_footer
+    size: 28
+    glyphs:
+      - "\U000F092B" # mdi-wifi-strength-alert-outline
+      - "\U000F091F" # mdi-wifi-strength-1
+      - "\U000F0922" # mdi-wifi-strength-2
+      - "\U000F0925" # mdi-wifi-strength-3
+      - "\U000F0928" # mdi-wifi-strength-4
+      - "\U000F06A5" # mdi-power-plug
+      - "\U000F06A6" # mdi-power-plug-off
+      # battery
+      - "\U000F008E" # bat empty
+      - "\U000F007A" # bat 10
+      - "\U000F007B" # bat 20
+      - "\U000F007C" # bat 30
+      - "\U000F007D" # bat 40
+      - "\U000F007E" # bat 50
+      - "\U000F007F" # bat 60
+      - "\U000F0080" # bat 70
+      - "\U000F0081" # bat 80
+      - "\U000F0082" # bat 90
+      - "\U000F0079" # bat 100
+      - "\U000F0DA5" # mdi-wind-turbine
+      - "\U000F19AB" # mdi-wind-turbine-alert
+      - "\U000F050F" # mdi-thermometer
+      - "\U000F0596" # mdi-weather-pouring
+      - "\U000F01B7" # mdi-step-over
+
+
 # # Scripts
 # script:
 #   - id: refresh_display
