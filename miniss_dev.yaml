@@ -1,0 +1,107 @@
+---
+#* Mini Smart Switch (BK7231N chip) board, script name reflecting configuration esp12f_MMmm_SSss__PP.yaml
+#* Please read README.md for details
+# Pawelo, 20230311, created based on https://www.elektroda.pl/rtvforum/topic3912748.html
+#
+#! run with this command to override sunstitutions
+# esphome -s devicename esp-xx -s updates 1min -s room <Room name> -s mqtt_room <room> -s delay_off <time of active output> run esp01s_SSss_MMmm__PP.yaml --device 192.168.x.x
+# heare are default values if those are not given via command line
+substitutions:
+  devices: "Single Relay Switch"
+  project_name: "pgolawsk.esp_home"
+  version: "1.1.5"
+
+  devicename: miniss-xx
+  updates: "30s"
+  room: Room # friendly name of room to display in HA/Web
+  # this is ADDITIONAL topic and sub-topic for MQTT - it publishes under <topic>/<sub-topic>/<sensor>
+  # by default it's also published under <devicename>/<id_sensor>
+  mqtt_location: home
+  mqtt_room: room
+
+  # how much time to wait till relay will bw switched off
+  dalay_off: 0s
+
+# Include basics of a board
+<<: !include includes/board_miniss_bk7231n.yaml
+#! reinclude MQTT separately as via nested include it do not work:/
+<<: !include includes/mqtt.yaml
+
+# Include interfaces needed
+# <<: !include { file: interfaces/i2c.yaml, vars: { bus_id: "bus_a", sda: "GPIO4", scl: "GPIO2" } }
+# <<: !include { file: interfaces/dallas.yaml, vars: { gpio: "GPIO10" } }
+# <<: !include { file: interfaces/rtttl.yaml, vars: { ix: "" } }
+
+# # reinclude MQTT as a bug in ESPHOME, see: https://github.com/esphome/issues/issues/2180, https://github.com/esphome/issues/issues/1487
+# mqtt:
+#   broker: !secret mqtt_ip
+#   port: !secret mqtt_port
+# #  username: $devicename
+#   username: !secret mqtt_user
+#   password: !secret mqtt_password
+#   client_id: $devicename
+# # id: $devicename
+
+# text_sensor:
+#   - !include sensors/text_uptime.yaml
+#   - !include sensors/text_version.yaml
+#   - !include sensors/text_wifi_info.yaml
+
+# sensor:
+#   - !include sensors/uptime.yaml
+#   - !include sensors/wifi_signal.yaml
+
+# #  # Temperature and Humidity sensor
+# #  - !include { file: sensors/temp_hum_SHT3x.yaml, vars: { ix: "", bus_id: "bus_a", address: "0x44" } }
+
+# output:
+#   # Relay
+#   - !include { file: outputs/relay.yaml, vars: { ix: "", gpio: "GPIO0", inverted: true } }
+
+# switch:
+#   # Restart button
+#   - !include switches/platform_restart.yaml
+
+# fan:
+#   # Fan on relay
+#   - !include { file: fans/fan_on_relay.yaml, vars: { ix: "", off_delay: "${off_delay}" } }
+
+# # Single Switch on ESP-01/01S Relay board
+# <<: !include switches/1relay_fan_generic_board.yaml
+
+status_led:
+  pin:
+    number: D2
+    inverted: true
+
+output:
+  - platform: gpio
+    id: gpio_relay
+    pin: D9
+
+switch:
+  - platform: output
+    id: switch_output
+    name: "Switch"
+    output: gpio_relay
+
+binary_sensor:
+  - platform: gpio
+    id: button_tact
+    pin:
+      number: D4
+      inverted: true
+    on_click:
+      then:
+        - switch.toggle: switch_output
+  - platform: gpio
+    id: button_input
+    pin:
+      number: D8
+      inverted: true
+      mode:
+        input: true
+        pullup: true
+    on_state:
+      then:
+        - switch.toggle: switch_output
