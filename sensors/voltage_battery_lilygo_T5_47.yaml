@@ -1,0 +1,18 @@
+---
+#* Battery Voltage sensor on LilyGo T5 screen
+# Pawelo, 20230314, created based on https://github.com/esphome/feature-requests/issues/1109#issuecomment-1408376503
+
+platform: lilygo_t5_47
+name: "${devicename} Battery Voltage${ix}"
+id: batt_volt${ix}
+accuracy_decimals: 2
+unit_of_measurement: "V"
+state_class: measurement
+device_class: voltage
+update_interval: ${updates}
+state_topic: $devicename/battery_voltage${ix}
+on_value:
+  - mqtt.publish:
+      topic: "$mqtt_location/$mqtt_room/battery_voltage${ix}"
+      payload: !lambda |-
+        return to_string(id(batt_volt${ix}).state);

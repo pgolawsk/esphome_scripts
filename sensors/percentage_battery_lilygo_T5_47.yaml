@@ -1,0 +1,23 @@
+---
+#* Battery Percentage sensor on template based on voltage
+# Pawelo, 20230314, created based on https://github.com/esphome/feature-requests/issues/1109#issuecomment-1408376503
+
+platform: template
+name: "${devicename} Battery${ix}"
+id: batt${ix}
+unit_of_measurement: "%"
+accuracy_decimals: 0
+device_class: battery
+lambda: |-
+  int y = (1-(${max_voltage}-id(batt_volt${ix})->state)/(${max_voltage}-${min_voltage}))*100;
+  if (y < 0) {return 0;}
+  if (y > 120) {return NAN;}
+  if (y > 100) {return 100;}
+  return y;
+update_interval: ${updates}
+state_topic: $devicename/battery${ix}
+on_value:
+  - mqtt.publish:
+      topic: "$mqtt_location/$mqtt_room/battery${ix}"
+      payload: !lambda |-
+        return to_string(id(batt${ix}).state);

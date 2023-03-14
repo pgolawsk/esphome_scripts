@@ -1,0 +1,18 @@
+---
+#* Powered From text sensor on LilyGo T5 screen
+# Pawelo, 20230314, created on my own
+
+platform: template
+name: "${devicename} Powered From${ix}"
+id: powered_from${ix}
+state_topic: $devicename/powered_from${ix}
+lambda: |-
+  if (to_string(id(batt_volt${ix})->state) == "nan" ) {
+    return to_string("Checking...");
+  }
+  if (id(batt_volt${ix})->state > ${usb_threshold_voltage}) {
+    return to_string("USB");
+  }
+  return to_string("BATTERY");
+internal: true
+update_interval: ${updates}
