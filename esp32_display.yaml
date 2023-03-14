@@ -13,7 +13,7 @@
 # heare are default values if those are not given via command line
 substitutions:
 #  devices: "Temperature and Humidity via SHTx30 and Illuminance via BH1750"
-  devices: "T5 Display"
+  devices: "T5 Display and MQTT sensors"
   project_name: "pgolawsk.esp_home"
   version: "1.1.5"
 
