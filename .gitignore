@@ -4,5 +4,5 @@
 /.esphome/
 /secrets.yaml
 /image1M.bin
-/fonts
+*.ttf
 /openbeken_bin

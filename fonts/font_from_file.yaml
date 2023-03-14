@@ -1,0 +1,8 @@
+---
+#* Generic font from current folder to include
+# Pawelo, 20230314, created on my own
+
+file: 'fonts/${font_file}'
+id: font_${ix}
+#glyphs: "+-0123456789.:"
+size: ${size}

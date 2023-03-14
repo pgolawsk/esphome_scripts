@@ -115,12 +115,12 @@ button:
   - !include { file: buttons/display_button.yaml, vars: { ix: "Next", display_id: "t5_display", command: "next", mdi_icon: "page-next" } }
   - !include { file: buttons/display_button.yaml, vars: { ix: "Prev", display_id: "t5_display", command: "previous", mdi_icon: "page-previous" } }
 
-  - platform: template
-    name: "${devicename} Refresh"
-    icon: "mdi:update"
-    on_press:
-      then:
-      - component.update: t5_display
+  # - platform: template
+  #   name: "${devicename} Refresh"
+  #   icon: "mdi:update"
+  #   on_press:
+  #     then:
+  #     - component.update: t5_display
 
 # deep_sleep:
 #   run_duration: ${run_time}
@@ -137,34 +137,43 @@ external_components:
 
 # Fonts
 font:
-  - file: 'fonts/IBMPlexMono-Bold.ttf'
-    id: din_big
-    glyphs: "+-0123456789.:"
-    size: 300
+  - !include { file: fonts/font_from_file.yaml, vars: { ix: "big", font_file: "IBMPlexMono-Bold.ttf", size: 300 } }
+  - !include { file: fonts/font_from_file.yaml, vars: { ix: "med", font_file: "IBMPlexMono-Bold.ttf", size: 100 } }
+  - !include { file: fonts/font_from_file.yaml, vars: { ix: "med2", font_file: "IBMPlexMono-Bold.ttf", size: 40 } }
+  - !include { file: fonts/font_from_file.yaml, vars: { ix: "small", font_file: "IBMPlexMono-Bold.ttf", size: 30 } }
 
-  - file: 'fonts/IBMPlexMono-Bold.ttf'
-    id: din_med
-    size: 100
+  # - file: 'fonts/IBMPlexMono-Bold.ttf'
+  #   id: din_big
+  #   glyphs: "+-0123456789.:"
+  #   size: 300
 
-  - file: 'fonts/IBMPlexMono-Bold.ttf'
-    id: din_med2
-    size: 40
+  # - file: 'fonts/IBMPlexMono-Bold.ttf'
+  #   id: din_med
+  #   size: 100
 
-  - file: 'fonts/IBMPlexMono-Bold.ttf'
-    id: din_small
-    size: 30
+  # - file: 'fonts/IBMPlexMono-Bold.ttf'
+  #   id: din_med2
+  #   size: 40
 
-  - file: "fonts/ProductSans-Bold.ttf"
-    id: font_name
-    size: 40
+  # - file: 'fonts/IBMPlexMono-Bold.ttf'
+  #   id: din_small
+  #   size: 30
 
-  - file: "fonts/ProductSans-Medium.ttf"
-    id: font_value
-    size: 64
+  - !include { file: fonts/font_from_file.yaml, vars: { ix: "name", font_file: "ProductSans-Bold.ttf", size: 40 } }
+  - !include { file: fonts/font_from_file.yaml, vars: { ix: "value", font_file: "ProductSans-Bold.ttf", size: 64 } }
+  - !include { file: fonts/font_from_file.yaml, vars: { ix: "footer", font_file: "ProductSans-Bold.ttf", size: 28 } }
 
-  - file: "fonts/ProductSans-Medium.ttf"
-    id: font_footer
-    size: 28
+  # - file: "fonts/ProductSans-Bold.ttf"
+  #   id: font_name
+  #   size: 40
+
+  # - file: "fonts/ProductSans-Medium.ttf"
+  #   id: font_value
+  #   size: 64
+
+  # - file: "fonts/ProductSans-Medium.ttf"
+  #   id: font_footer
+  #   size: 28
 
   # https://pictogrammers.github.io/@mdi/font/5.3.45/
   - file: 'fonts/materialdesignicons-webfont.ttf'
@@ -439,9 +448,9 @@ display:
           #define yRes 540
           #define xCenter (xRes/2 + 40) // X position center
           //id(t5_display).clear();
-          it.strftime(15, 310, id(din_big), TextAlign::BASELINE_LEFT, "%H:%M", id(sntp_time).now());
-          it.strftime(50, 500, id(din_med), TextAlign::BASELINE_LEFT, "%Y-%m-%d %a", id(sntp_time).now());
-          it.print(xRes - 40, yRes - 40, id(din_small), TextAlign::BOTTOM_LEFT, "1");
+          it.strftime(15, 310, id(font_big), TextAlign::BASELINE_LEFT, "%H:%M", id(sntp_time).now());
+          it.strftime(50, 500, id(font_med), TextAlign::BASELINE_LEFT, "%Y-%m-%d %a", id(sntp_time).now());
+          it.print(xRes - 40, yRes - 40, id(font_small), TextAlign::BOTTOM_LEFT, "1");
       - id: page2
         lambda: |-
           // positioning constants
@@ -449,11 +458,11 @@ display:
           #define yRes 540
           #define xCenter (xRes/2 + 40) // X position center
           //id(t5_display).clear();
-          it.strftime(xCenter + 100, 40, id(din_small), TextAlign::BASELINE_LEFT, "%Y-%m-%d %a", id(sntp_time).now());
-          it.strftime(15, 310, id(din_big), TextAlign::BASELINE_LEFT, "%H:%M", id(sntp_time).now());
-          it.printf(50, 380, id(din_small), TextAlign::BASELINE_LEFT, "Sunrise at %s and sunset at %s.", id(sunrise).state.c_str(), id(sunset).state.c_str());
-          it.strftime(50, 500, id(din_med), TextAlign::BASELINE_LEFT, "%Y-%m-%d %a", id(sntp_time).now());
-          it.print(xRes - 40, yRes - 40, id(din_small), TextAlign::BOTTOM_LEFT, "2");
+          it.strftime(xCenter + 100, 40, id(font_small), TextAlign::BASELINE_LEFT, "%Y-%m-%d %a", id(sntp_time).now());
+          it.strftime(15, 310, id(font_big), TextAlign::BASELINE_LEFT, "%H:%M", id(sntp_time).now());
+          it.printf(50, 380, id(font_small), TextAlign::BASELINE_LEFT, "Sunrise at %s and sunset at %s.", id(sunrise).state.c_str(), id(sunset).state.c_str());
+          it.strftime(50, 500, id(font_med), TextAlign::BASELINE_LEFT, "%Y-%m-%d %a", id(sntp_time).now());
+          it.print(xRes - 40, yRes - 40, id(font_small), TextAlign::BOTTOM_LEFT, "2");
       - id: page3
         lambda: |-
           // positioning constants
@@ -462,7 +471,7 @@ display:
           #define xCenter (xRes/2 + 40) // X position center
           //id(t5_display).clear();
           it.fill(COLOR_ON);
-          it.print(xRes - 40, yRes - 40, id(din_small), COLOR_OFF, TextAlign::BASELINE_LEFT, "3");
+          it.print(xRes - 40, yRes - 40, id(font_small), COLOR_OFF, TextAlign::BASELINE_LEFT, "3");
       - id: page4
         lambda: |-
           // positioning constants
@@ -471,8 +480,8 @@ display:
           #define xCenter (xRes/2 + 40) // X position center
           //id(t5_display).clear();
           it.fill(COLOR_ON);
-          it.strftime(10, 10, id(din_small), COLOR_OFF, TextAlign::TOP_LEFT, "%H:%M", id(sntp_time).now());
-          it.print(xRes - 40, yRes-40, id(din_small), COLOR_OFF, TextAlign::BASELINE_LEFT, "4");
+          it.strftime(10, 10, id(font_small), COLOR_OFF, TextAlign::TOP_LEFT, "%H:%M", id(sntp_time).now());
+          it.print(xRes - 40, yRes-40, id(font_small), COLOR_OFF, TextAlign::BASELINE_LEFT, "4");
           /// Multiline text from https://community.home-assistant.io/t/eink-multi-line-text/255814/8
           std::string s = "Some really interesting quote over multiple lines centered on the page - by Author";//id(weather).state;
           int limit = 35;
@@ -501,11 +510,11 @@ display:
           i = 0;
           while (i < linecount ) {  // count through the lines
             singleline = s.substr(breakpositions[i]+1,(breakpositions[i+1]-breakpositions[i]-1)); //extract each line of text from the string - strip off the CRLF and the space.
-            it.printf(xCenter, y, id(din_med2), COLOR_OFF, TextAlign::BASELINE_CENTER, "%s", singleline.c_str()); //print it!
+            it.printf(xCenter, y, id(font_med2), COLOR_OFF, TextAlign::BASELINE_CENTER, "%s", singleline.c_str()); //print it!
             y=y+50; // increment y to print properly on display
             i++;
           }
-          it.print(xRes - 40, yRes - 40, id(din_small), TextAlign::BASELINE_LEFT, "4");
+          it.print(xRes - 40, yRes - 40, id(font_small), TextAlign::BASELINE_LEFT, "4");
       - id: page5
         lambda: |-
           // positioning constants
@@ -513,8 +522,8 @@ display:
           #define yRes 540
           #define xCenter (xRes/2 + 40) // X position center
           //id(t5_display).clear();
-          it.print(60, 60, id(din_small), TextAlign::BASELINE_LEFT, "Join Guest WIFI");
-          it.print(xRes - 40, yRes - 40, id(din_small), TextAlign::BASELINE_LEFT, "5");
+          it.print(60, 60, id(font_small), TextAlign::BASELINE_LEFT, "Join Guest WIFI");
+          it.print(xRes - 40, yRes - 40, id(font_small), TextAlign::BASELINE_LEFT, "5");
           // guest wifi
           // WIFI:S:<WIFI NAME HERE>;T:WPA;P:<WIFI PASSWOD HERE>;H:false;;
           // Draw the QR-code at position [x=50,y=100] with white color and a 2x scale
