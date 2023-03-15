@@ -142,38 +142,9 @@ font:
   - !include { file: fonts/font_from_file.yaml, vars: { ix: "med2", font_file: "IBMPlexMono-Bold.ttf", size: 40 } }
   - !include { file: fonts/font_from_file.yaml, vars: { ix: "small", font_file: "IBMPlexMono-Bold.ttf", size: 30 } }
 
-  # - file: 'fonts/IBMPlexMono-Bold.ttf'
-  #   id: din_big
-  #   glyphs: "+-0123456789.:"
-  #   size: 300
-
-  # - file: 'fonts/IBMPlexMono-Bold.ttf'
-  #   id: din_med
-  #   size: 100
-
-  # - file: 'fonts/IBMPlexMono-Bold.ttf'
-  #   id: din_med2
-  #   size: 40
-
-  # - file: 'fonts/IBMPlexMono-Bold.ttf'
-  #   id: din_small
-  #   size: 30
-
   - !include { file: fonts/font_from_file.yaml, vars: { ix: "name", font_file: "ProductSans-Bold.ttf", size: 40 } }
   - !include { file: fonts/font_from_file.yaml, vars: { ix: "value", font_file: "ProductSans-Bold.ttf", size: 64 } }
   - !include { file: fonts/font_from_file.yaml, vars: { ix: "footer", font_file: "ProductSans-Bold.ttf", size: 28 } }
-
-  # - file: "fonts/ProductSans-Bold.ttf"
-  #   id: font_name
-  #   size: 40
-
-  # - file: "fonts/ProductSans-Medium.ttf"
-  #   id: font_value
-  #   size: 64
-
-  # - file: "fonts/ProductSans-Medium.ttf"
-  #   id: font_footer
-  #   size: 28
 
   # https://pictogrammers.github.io/@mdi/font/5.3.45/
   - file: 'fonts/materialdesignicons-webfont.ttf'
