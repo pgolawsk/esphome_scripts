@@ -1,0 +1,2 @@
+# Ignore font TTF files as those sgould be downloaded separately
+*.ttf
