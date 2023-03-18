@@ -7,3 +7,6 @@ web_server:
   include_internal: true
   # ota: false # disable OTA via web
   ota: ${ota_enabled}
+#  auth:
+#    username: !secret web_username
+#    password: !secret web_password
