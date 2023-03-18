@@ -4,3 +4,5 @@
 api:
   reboot_timeout: 0s # 0s will disable reboot if no HA connected
   password: !secret api_password
+  # encryption:
+  #   key: !secret api_key
