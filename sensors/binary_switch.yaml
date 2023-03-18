@@ -14,6 +14,7 @@ pin:
   inverted: true
 name: "$room Switch ${ix}"
 id: switch_${ix}
+icon: mdi:light-switch
 state_topic: $devicename/switch${ix}
 on_press:
   then:

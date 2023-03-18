@@ -7,7 +7,7 @@ platform: ld2410
 has_target:
   name: "$room Presence"
   id: presence${ix}
-  icon: mdi:human
+  icon: mdi:human-handsdown
   state_topic: $devicename/presence${ix}
   on_state:
     - mqtt.publish:

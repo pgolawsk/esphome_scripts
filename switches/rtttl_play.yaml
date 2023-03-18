@@ -4,8 +4,8 @@
 
 platform: template
 name: "$room RTTTL${ix} Play"
-icon: "mdi:volume-high"
 id: rtttl_play${ix}
+icon: "mdi:volume-high"
 #output: p_buz${ix}
 state_topic: $devicename/rtttl_play${ix}
 optimistic: true

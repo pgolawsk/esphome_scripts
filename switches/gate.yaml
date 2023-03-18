@@ -13,9 +13,9 @@ pin:
 #    pulldown: true
 #  mode: INPUT_PULLUP
 id: gate${ix}
-name: "${room} Gate${ix}"
 #icon: "mdi:gate"
-icon: "mdi:doorbell"
+icon: "mdi:gate-arrow-left"
+name: "${room} Gate${ix}"
 state_topic: $devicename/gate${ix}
 on_turn_on:
 - delay: $off_delay

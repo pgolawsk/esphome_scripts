@@ -10,9 +10,9 @@ pin:
 #  number: GPIO12
   mode: INPUT_PULLUP
 id: water_flow${ix}
+icon: "mdi:water"
 name: "$room Water Flow${ix}"
 unit_of_measurement: "liter/min"
-icon: "mdi:water"
 timeout: $updates
 internal: true
 state_topic: $devicename/water_flow${ix}
@@ -26,6 +26,7 @@ filters:
 total:
   name: "$room Water Total${ix}"
   id: water_total${ix}
+  icon: "mdi:water-plus"
   unit_of_measurement: "liter"
 #      unit_of_measurement: "m³"
   accuracy_decimals: 2

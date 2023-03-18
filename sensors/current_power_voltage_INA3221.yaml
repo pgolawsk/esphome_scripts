@@ -8,6 +8,7 @@ channel_1:
   current:
     name: "$room C1 Current${ix}"
     id: c1_current${ix}
+    icon: mdi:current-dc
     accuracy_decimals: 2
     state_topic: $devicename/c1_current${ix}
     on_value:
@@ -18,6 +19,7 @@ channel_1:
   power:
     name: "$room C1 Power${ix}"
     id: c1_power${ix}
+    icon: mdi:lightning-bolt
     accuracy_decimals: 2
     state_topic: $devicename/c1_power${ix}
     on_value:
@@ -28,6 +30,7 @@ channel_1:
   bus_voltage:
     name: "$room C1 Voltage${ix}"
     id: c1_voltage${ix}
+    icon: mdi:flash
     accuracy_decimals: 2
     state_topic: $devicename/c1_voltage${ix}
     on_value:
@@ -38,6 +41,7 @@ channel_1:
   shunt_voltage:
     name: "$room C1 Shunt Voltage${ix}"
     id: c1_svoltage${ix}
+    icon: mdi:flash-outline
     accuracy_decimals: 2
     state_topic: $devicename/c1_shunt_voltage${ix}
     on_value:
@@ -50,6 +54,7 @@ channel_2:
   current:
     name: "$room C2 Current${ix}"
     id: c2_current${ix}
+    icon: mdi:current-dc
     accuracy_decimals: 2
     state_topic: $devicename/c2_current${ix}
     on_value:
@@ -60,6 +65,7 @@ channel_2:
   power:
     name: "$room C2 Power${ix}"
     id: c2_power${ix}
+    icon: mdi:lightning-bolt
     accuracy_decimals: 2
     state_topic: $devicename/c2_power${ix}
     on_value:
@@ -70,6 +76,7 @@ channel_2:
   bus_voltage:
     name: "$room C2 Voltage${ix}"
     id: c2_voltage${ix}
+    icon: mdi:flash
     accuracy_decimals: 2
     state_topic: $devicename/c2_voltage${ix}
     on_value:
@@ -80,6 +87,7 @@ channel_2:
   shunt_voltage:
     name: "$room C2 Shunt Voltage${ix}"
     id: c2_svoltage${ix}
+    icon: mdi:flash-outline
     accuracy_decimals: 2
     state_topic: $devicename/c2_shunt_voltage${ix}
     on_value:
@@ -92,6 +100,7 @@ channel_3:
   current:
     name: "$room C3 Current${ix}"
     id: c3_current${ix}
+    icon: mdi:current-dc
     accuracy_decimals: 2
     state_topic: $devicename/c3_current${ix}
     on_value:
@@ -102,6 +111,7 @@ channel_3:
   power:
     name: "$room C3 Power${ix}"
     id: c3_power${ix}
+    icon: mdi:lightning-bolt
     accuracy_decimals: 2
     state_topic: $devicename/c3_power${ix}
     on_value:
@@ -112,6 +122,7 @@ channel_3:
   bus_voltage:
     name: "$room C3 Voltage${ix}"
     id: c3_voltage${ix}
+    icon: mdi:flash
     accuracy_decimals: 2
     state_topic: $devicename/c3_voltage${ix}
     on_value:
@@ -122,6 +133,7 @@ channel_3:
   shunt_voltage:
     name: "$room C3 Shunt Voltage${ix}"
     id: c3_svoltage${ix}
+    icon: mdi:flash-outline
     accuracy_decimals: 2
     state_topic: $devicename/c3_shunt_voltage${ix}
     on_value:

@@ -35,6 +35,7 @@ humidity:
 co2:
   name: "$room CO2"
   id: co2
+  icon: mdi:molecule-co2
   accuracy_decimals: 2
   state_topic: $devicename/co2
   on_value:

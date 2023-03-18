@@ -3,6 +3,7 @@
 # Pawelo, 20230121, created based on https://github.com/esphome/feature-requests/issues/805
 platform: template
 name: "$room $devicename Firmware Config"
+icon: mdi:cog
 lambda: |-
   return {"{{ runtime.config_txt|sha256 }}"};
 internal: true

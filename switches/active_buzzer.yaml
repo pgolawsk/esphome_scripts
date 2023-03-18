@@ -10,8 +10,8 @@ pin:
   number: ${gpio} # GPIO2 with inverted
 #  mode: INPUT_PULLUP
 id: buzzer${ix}
-name: "$room Buzzer${ix}"
 icon: "mdi:volume-high"
+name: "$room Buzzer${ix}"
 state_topic: $devicename/buzzer${ix}
 on_turn_on:
 - delay: $off_delay

@@ -5,6 +5,7 @@
 platform: template
 name: "${devicename} Battery${ix}"
 id: batt${ix}
+icon: mdi:car-battery
 unit_of_measurement: "%"
 accuracy_decimals: 0
 device_class: battery

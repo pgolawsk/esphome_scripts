@@ -5,10 +5,13 @@
 platform: wifi_info
 ip_address:
   name: $room $devicename IP Address
+  icon: mdi:ip
   internal: true
 ssid:
   name: $room $devicename SSID
+  icon: mdi:wifi
   internal: true
 bssid:
   name: $room $devicename BSSID
+  icon: mdi:wifi-settings
   internal: true

@@ -6,9 +6,9 @@
 platform: template
 name: "$room Water Total${ix} [m³]"
 id: water_used${ix}
+icon: "mdi:water"
 accuracy_decimals: 3
 unit_of_measurement: "m³"
-icon: "mdi:water"
 #    lambda: return (id(water_pulse_total).state / 476);
 lambda: return id(water_total${ix}).state;
 state_topic: $devicename/water_used${ix}

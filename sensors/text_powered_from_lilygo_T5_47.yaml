@@ -5,6 +5,7 @@
 platform: template
 name: "${devicename} Powered From${ix}"
 id: powered_from${ix}
+icon: mdi:power-plug
 state_topic: $devicename/powered_from${ix}
 lambda: |-
   if (to_string(id(batt_volt${ix})->state) == "nan" ) {

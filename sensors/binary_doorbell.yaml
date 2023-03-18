@@ -11,6 +11,7 @@ pin:
   inverted: true
 name: "$room ${doorbell_name}${ix}"
 id: doorbell${ix}
+icon: mdi:doorbell
 state_topic: $devicename/${doorbell_name}${ix}
 # on_press:
 #   then:

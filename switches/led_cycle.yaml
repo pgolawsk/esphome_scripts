@@ -5,7 +5,7 @@
 platform: template
 name: "$room LED ${ID} ${cycles} times"
 id: cycle_${ID}
-icon: "mdi:volume-medium"
+icon: "mdi:led-on"
 turn_on_action:
   - repeat:
       count: ${cycles}

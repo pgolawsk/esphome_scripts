@@ -23,7 +23,7 @@ still_distance:
   # filters:
   #   - multiply: 1.0
   id: sdistance${ix}
-  icon: mdi:human
+  icon: mdi:human-handsdown
   state_topic: $devicename/still_distance${ix}
   on_value:
     - mqtt.publish:

@@ -8,4 +8,5 @@ pin:
 #  mode: INPUT_PULLUP
 frequency: 500Hz
 id: p_buz${ix}
+# icon: mdi:volume-vibrate
 inverted: false

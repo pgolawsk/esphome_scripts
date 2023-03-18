@@ -7,4 +7,5 @@ pin:
     number: ${gpio} # GPIO2 with inverted
   #  mode: INPUT_PULLUP
 id: m_led${ix}
+# icon: mdi:led-outline
 inverted: false

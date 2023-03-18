@@ -7,4 +7,5 @@ pin:
     number: ${gpio} # GPIO2 with inverted
   #  mode: INPUT_PULLUP
 id: relay_${ix}
+# icon: mdi:light-switch
 inverted: ${inverted}

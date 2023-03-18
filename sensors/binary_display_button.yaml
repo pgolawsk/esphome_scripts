@@ -11,6 +11,7 @@ pin:
   inverted: true
 name: "$room Display Button ${ix}"
 id: dbutton${ix}
+icon: mdi:radiobox-blank
 state_topic: $devicename/dbutton${ix}
 on_press:
   then:

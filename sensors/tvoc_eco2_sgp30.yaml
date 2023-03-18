@@ -7,6 +7,7 @@ platform: sgp30
 tvoc:
   name: "$room TVOC"
   id: tvoc
+  icon: mdi:leaf-circle-outline
   accuracy_decimals: 0
   state_topic: $devicename/tvoc
   on_value:
@@ -17,6 +18,7 @@ tvoc:
 eco2:
   name: "$room eCO2"
   id: eco2
+  icon: mdi:molecule-co2
   accuracy_decimals: 0
   state_topic: $devicename/eco2
   on_value:

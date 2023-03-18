@@ -4,5 +4,6 @@
 # Pawelo, 20221222, added $devicename to friendly names of those sensors
 platform: version
 name: $room $devicename ESPHome Version
+icon: mdi:cog-outline
 internal: true
 

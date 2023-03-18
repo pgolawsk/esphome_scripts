@@ -5,6 +5,7 @@
 platform: lilygo_t5_47
 name: "${devicename} Battery Voltage${ix}"
 id: batt_volt${ix}
+icon: mdi:flash
 accuracy_decimals: 2
 unit_of_measurement: "V"
 state_class: measurement

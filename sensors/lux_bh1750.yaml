@@ -12,7 +12,7 @@ accuracy_decimals: 1
 filters:
   - multiply: 1.0
 id: lux${ix}
-icon: mdi:mdi-decagram-outline
+icon: mdi:decagram-outline
 state_topic: $devicename/illuminance${ix}
 on_value:
   - mqtt.publish:

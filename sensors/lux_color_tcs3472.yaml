@@ -9,7 +9,7 @@ illuminance:
   name: "$room Illuminance${ix}"
   accuracy_decimals: 1
   id: lux${ix}
-  icon: mdi:mdi-decagram-outline
+  icon: mdi:decagram-outline
   state_topic: $devicename/illuminance${ix}
   on_value:
     - mqtt.publish:
@@ -19,6 +19,7 @@ illuminance:
 red_channel:
   name: "$room Channel Red"
   id: red
+  icon: mdi:palette
   state_topic: $devicename/red
   on_value:
     - mqtt.publish:
@@ -28,6 +29,7 @@ red_channel:
 green_channel:
   name: "$room Channel Green"
   id: green
+  icon: mdi:palette
   state_topic: $devicename/green
   on_value:
     - mqtt.publish:
@@ -37,6 +39,7 @@ green_channel:
 blue_channel:
   name: "$room Channel Blue"
   id: blue
+  icon: mdi:palette
   state_topic: $devicename/blue
   on_value:
     - mqtt.publish:
@@ -46,6 +49,7 @@ blue_channel:
 clear_channel:
   name: "$room Channel Clear"
   id: clear
+  icon: mdi:palette-outline
   state_topic: $devicename/clear
   on_value:
     - mqtt.publish:
@@ -55,6 +59,7 @@ clear_channel:
 color_temperature:
   name: "$room Color Temperature"
   id: color
+  icon: mdi:temperature-kelvin
   state_topic: $devicename/color_temp
   on_value:
     - mqtt.publish:
