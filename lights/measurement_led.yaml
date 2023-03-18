@@ -5,7 +5,7 @@
 
 platform: binary
 name: "$room Measurement LED${ix}"
-icon: "mdi:led"
+icon: "mdi:mdi:led-outline"
 id: measurement_led${ix}
 output: m_led${ix}
 state_topic: $devicename/m_led${ix}

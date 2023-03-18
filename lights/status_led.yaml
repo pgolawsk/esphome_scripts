@@ -5,7 +5,7 @@
 
 platform: binary
 name: "$room LED${ix}"
-icon: "mdi:led"
+icon: "mdi:mdi:led-off"
 id: status_led${ix}
 output: s_led${ix}
 state_topic: $devicename/led${ix}
