@@ -1,0 +1,15 @@
+---
+#* Gesture text sensor APDS9960 configuration
+# Pawelo, 20230311, created based on framework and https://community.home-assistant.io/t/adding-near-far-gesture-control-with-apds9960-esphome-and-ha/437881
+# Pawelo, 20230319, adjusted based on framework and https://esphome.io/components/sensor/apds9960.html
+
+platform: template
+name: "$room Gesture"
+id: gesture_state
+icon: mdi:gesture-swipe
+state_topic: $devicename/gesture_state
+on_value:
+  - mqtt.publish:
+      topic: "$mqtt_location/$mqtt_room/gesture_state"
+      payload: !lambda |-
+        return to_string(id(gesture_state).state);

@@ -1,5 +1,5 @@
 ---
-#* Illuminance, Color, Gesture and Motion sensor APDS9660 configuration
+#* Illuminance, Color, Gesture and Motion sensor APDS9960 configuration
 # Pawelo, 20230311, created based on framework and https://community.home-assistant.io/t/adding-near-far-gesture-control-with-apds9960-esphome-and-ha/437881
 #TODO: implement configuration - example:
 sensor:

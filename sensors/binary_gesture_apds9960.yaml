@@ -1,0 +1,22 @@
+---
+#* Gesture and Motion sensor APDS9960 configuration
+# Pawelo, 20230311, created based on framework and https://community.home-assistant.io/t/adding-near-far-gesture-control-with-apds9960-esphome-and-ha/437881
+# Pawelo, 20230319, adjusted based on framework and https://esphome.io/components/sensor/apds9960.html
+
+platform: apds9960
+direction: ${direction} # UP, DOWN, LEFT, RIGHT
+name: "$room Gesture ${direction}"
+id: gesture_${direction}
+# icon: mdi:gesture-swipe
+icon: mdi:${mdi_icon}
+state_topic: $devicename/gesture_${direction}
+on_state:
+  - mqtt.publish:
+      topic: "$mqtt_location/$mqtt_room/gesture_${direction}"
+      payload: !lambda |-
+        return to_string(id(gesture_${direction}).state);
+  - text_sensor.template.publish:
+      id: gesture_state
+      state: "${direction}"
+
+

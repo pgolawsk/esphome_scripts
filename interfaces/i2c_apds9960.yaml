@@ -1,0 +1,14 @@
+---
+#* APDS9660 interface on I2C
+# Pawelo, 20230319, created based on https://esphome.io/components/sensor/apds9960.html
+
+apds9960:
+#  address: 0x39
+  address: ${address}
+  update_interval: $updates
+  # led_drive: 100mA
+  # proximity_gain: 4x
+  # ambient_light_gain: 4x
+  # gesture_led_drive: 100mA
+  # gesture_gain: 4x
+  # gesture_wait_time: 2.8ms
