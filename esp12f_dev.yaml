@@ -54,6 +54,7 @@ substitutions:
 
 # Include interfaces needed
 <<: !include { file: interfaces/i2c.yaml, vars: { bus_id: "bus_a", sda: "GPIO4", scl: "GPIO5" } }
+# <<: !include { file: interfaces/i2c_apds9960.yaml, vars: { address: "0x39" } }
 # <<: !include { file: interfaces/dallas.yaml, vars: { gpio: "GPIO10" } }
 <<: !include { file: interfaces/rtttl.yaml, vars: { ix: "" } }
 # <<: !include { file: interfaces/debug.yaml, vars: { update_interval: "15s" } }
@@ -68,6 +69,9 @@ text_sensor:
   - !include sensors/text_sun_sunrise.yaml
   - !include sensors/text_sun_sunset.yaml
 
+  # Gesture sensor
+  # - !include { file: sensors/text_gesture_apds9960.yaml }
+
 # binary_sensor:
 #   # Double light Switch on AVT5713
 #   - !include { file: sensors/binary_switch.yaml, vars: { ix: "A", gpio: "GPIO13" } }
@@ -78,6 +82,12 @@ text_sensor:
 
 #   # Distance sensor
 #   - !include { file: sensors/binary_presence_ld2410.yaml, vars: { ix: "" } }
+
+  # # Gesture sensor
+  # - !include { file: sensors/binary_gesture_apds9960.yaml, vars: { direction: "UP", mdi_icon: 'gesture-swipe-up' } }
+  # - !include { file: sensors/binary_gesture_apds9960.yaml, vars: { direction: "DOWN", mdi_icon: 'gesture-swipe-down' } }
+  # - !include { file: sensors/binary_gesture_apds9960.yaml, vars: { direction: "LEFT", mdi_icon: 'gesture-swipe-left' } }
+  # - !include { file: sensors/binary_gesture_apds9960.yaml, vars: { direction: "RIGHT", mdi_icon: 'gesture-swipe-right' } }
 
 sensor:
   - !include sensors/uptime.yaml
@@ -116,6 +126,13 @@ sensor:
   # DC Current, Power, Voltage
   # - !include { file: sensors/current_power_voltage_INA226.yaml, vars: { ix: "", bus_id: "bus_a", address: "0x40", max_current: "1.2A" } }
   # - !include { file: sensors/current_power_voltage_INA3221.yaml, vars: { ix: "", bus_id: "bus_a", address: "0x40" } }
+
+  # Color and Proximity
+  # - !include { file: sensors/color_proximity_apds9960.yaml, vars: { type: "CLEAR" } }
+  # - !include { file: sensors/color_proximity_apds9960.yaml, vars: { type: "RED" } }
+  # - !include { file: sensors/color_proximity_apds9960.yaml, vars: { type: "GREEN" } }
+  # - !include { file: sensors/color_proximity_apds9960.yaml, vars: { type: "BLUE" } }
+  # - !include { file: sensors/color_proximity_apds9960.yaml, vars: { type: "PROXIMITY" } }
 
 output:
   # Status LED

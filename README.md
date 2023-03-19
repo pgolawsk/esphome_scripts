@@ -169,21 +169,21 @@ The parameters are following ```-s``` argument. Those are:
 
 ### Folders
 
-* ```buttons``` - list of buttons inteded to include them under ```button:``` section
+* ```buttons``` - list of buttons intended to include them under ```button:``` section
 * ```deprecated``` - contain all old versions (not modular)
 * ```examples``` - example configurations, how to use set of scripts
-* ```fans``` - list of switches inteded to include them under ```fan:``` section
-* ```fonts``` - list of fonts to draw on displays inteded to include them under ```font:``` section
+* ```fans``` - list of switches intended to include them under ```fan:``` section
+* ```fonts``` - list of fonts to draw on displays intended to include them under ```font:``` section
 * ```includes``` - basic scripts for ESP boards, wifi, mqtt, ota, ...
   * ```boards``` scripts mat contain wiring instructions - please READ those
-* ```interfaces``` - list of separate interfaces to includem like ```i2c```, ```uart```, ```dallas```
-* ```lights``` - list of switches inteded to include them under ```light:``` section
-* ```outputs``` - list of outputs inteded to include them under ```output:``` section
-* ```sensors``` - list of sensors inteded to include them under:
+* ```interfaces``` - list of separate interfaces to include like ```i2c```, ```uart```, ```dallas```
+* ```lights``` - list of switches intended to include them under ```light:``` section
+* ```outputs``` - list of outputs intended to include them under ```output:``` section
+* ```sensors``` - list of sensors intended to include them under:
   * ```binary_senor:``` section, those with filenames starting as ```binary_```
   * ```text_senor:``` section, those with filenames starting as ```text_```
   * ```sensor:``` section, all remaining files
-* ```switches``` - list of switches inteded to include them under ```switch:``` section
+* ```switches``` - list of switches intended to include them under ```switch:``` section
 
 ### Other
 
