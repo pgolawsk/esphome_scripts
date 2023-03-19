@@ -5,4 +5,5 @@
 platform: mqtt_subscribe
 name: ${name}
 id: ${id}
+icon: "mdi:${mdi_icon}"
 topic: ${topic}

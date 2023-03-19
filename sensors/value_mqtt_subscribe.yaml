@@ -11,6 +11,7 @@ unit_of_measurement: ${unit}
 # id: temp_office
 id: ${id}
 # topic: home/office/temperature
+icon: "mdi:${mdi_icon}"
 topic: ${topic}
 
 

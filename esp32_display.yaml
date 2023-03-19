@@ -84,18 +84,18 @@ sensor:
   # - !include { file: sensors/lux_BH1750.yaml, vars: { ix: "", bus_id: "bus_a", address: "0x23" } }
 
   # Various MQTT sensors
-  - !include { file: sensors/value_mqtt_subscribe.yaml, vars: { topic: "home/entrance/temperature", id: "temp_entrance", name: "Temperature Entrance", unit: "°C" } }
-  - !include { file: sensors/value_mqtt_subscribe.yaml, vars: { topic: "home/upstairs/temperature", id: "temp_upstairs", name: "Temperature Upstairs", unit: "°C" } }
+  - !include { file: sensors/value_mqtt_subscribe.yaml, vars: { topic: "home/entrance/temperature", id: "temp_entrance", name: "Temperature Entrance", unit: "°C", mdi_icon: "thermometer" } }
+  - !include { file: sensors/value_mqtt_subscribe.yaml, vars: { topic: "home/upstairs/temperature", id: "temp_upstairs", name: "Temperature Upstairs", unit: "°C", mdi_icon: "thermometer" } }
 
-  - !include { file: sensors/value_mqtt_subscribe.yaml, vars: { topic: "measures/underfloor/temperature", id: "temp_underfloor", name: "Temperature Underfloor", unit: "°C" } }
-  - !include { file: sensors/value_mqtt_subscribe.yaml, vars: { topic: "measures/underfloor/temperature_Dshort", id: "temp_underfloorS", name: "Temperature Underfloor Short", unit: "°C" } }
-  - !include { file: sensors/value_mqtt_subscribe.yaml, vars: { topic: "measures/underfloor/temperature_Dlong", id: "temp_underfloorL", name: "Temperature Underfloor Long", unit: "°C" } }
-  - !include { file: sensors/value_mqtt_subscribe.yaml, vars: { topic: "measures/aquarium_window/temperature", id: "temp_aquariumW", name: "Temperature Aquarium Window", unit: "°C" } }
+  - !include { file: sensors/value_mqtt_subscribe.yaml, vars: { topic: "measures/underfloor/temperature", id: "temp_underfloor", name: "Temperature Underfloor", unit: "°C", mdi_icon: "thermometer" } }
+  - !include { file: sensors/value_mqtt_subscribe.yaml, vars: { topic: "measures/underfloor/temperature_Dshort", id: "temp_underfloorS", name: "Temperature Underfloor Short", unit: "°C", mdi_icon: "thermometer" } }
+  - !include { file: sensors/value_mqtt_subscribe.yaml, vars: { topic: "measures/underfloor/temperature_Dlong", id: "temp_underfloorL", name: "Temperature Underfloor Long", unit: "°C", mdi_icon: "thermometer" } }
+  - !include { file: sensors/value_mqtt_subscribe.yaml, vars: { topic: "measures/aquarium_window/temperature", id: "temp_aquariumW", name: "Temperature Aquarium Window", unit: "°C", mdi_icon: "thermometer" } }
 
-  - !include { file: sensors/value_mqtt_subscribe.yaml, vars: { topic: "home/entrance/humidity", id: "hum_entrance", name: "Humidity Entrance", unit: "%" } }
-  - !include { file: sensors/value_mqtt_subscribe.yaml, vars: { topic: "home/upstairs/humidity", id: "hum_upstairs", name: "Humidity Upstairs", unit: "%" } }
-  - !include { file: sensors/value_mqtt_subscribe.yaml, vars: { topic: "measures/underfloor/humidity", id: "hum_underfloor", name: "Humidity Underfloor", unit: "%" } }
-  - !include { file: sensors/value_mqtt_subscribe.yaml, vars: { topic: "measures/aquarium_window/humidity", id: "hum_aquariumW", name: "Humidity Aquarium Window", unit: "%" } }
+  - !include { file: sensors/value_mqtt_subscribe.yaml, vars: { topic: "home/entrance/humidity", id: "hum_entrance", name: "Humidity Entrance", unit: "%", mdi_icon: "water-percent" } }
+  - !include { file: sensors/value_mqtt_subscribe.yaml, vars: { topic: "home/upstairs/humidity", id: "hum_upstairs", name: "Humidity Upstairs", unit: "%", mdi_icon: "water-percent" } }
+  - !include { file: sensors/value_mqtt_subscribe.yaml, vars: { topic: "measures/underfloor/humidity", id: "hum_underfloor", name: "Humidity Underfloor", unit: "%", mdi_icon: "water-percent" } }
+  - !include { file: sensors/value_mqtt_subscribe.yaml, vars: { topic: "measures/aquarium_window/humidity", id: "hum_aquariumW", name: "Humidity Aquarium Window", unit: "%", mdi_icon: "water-percent" } }
 
   # Battery voltage sensor
   - !include { file: sensors/voltage_battery_lilygo_T5_47.yaml, vars: { ix: "" } }
