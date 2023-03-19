@@ -72,6 +72,7 @@ binary_sensor:
   - !include { file: sensors/binary_display_button.yaml, vars: { ix: "Prev", gpio: "GPIO35" } }
 
 sensor:
+  - !include sensors/temp_internal.yaml
   - !include sensors/uptime.yaml
   - !include sensors/wifi_signal.yaml
   # Sun component

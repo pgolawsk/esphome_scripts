@@ -50,6 +50,7 @@ text_sensor:
 
 
 sensor:
+  - !include sensors/temp_internal.yaml
   - !include sensors/uptime.yaml
   - !include sensors/wifi_signal.yaml
 
