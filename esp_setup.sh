@@ -18,7 +18,7 @@
 #TODO: For automation on esp board read https://github.com/esphome/esphome-docs/blob/current/guides/automations.rst
 #TODO: Water meter base on pulse counter https://www.pieterbrinkman.com/2022/02/02/build-a-cheap-water-usage-sensor-using-esphome-home-assistant-and-a-proximity-sensor/
 #TODO: Add capture logs from the devices via Loki - read: https://github.com/lux4rd0/mqtt-logger
-#? For MDI icons see there https://pictogrammers.github.io/@mdi/font/2.0.46/
+#? For MDI icons see there https://pictogrammers.github.io/@mdi/font/2.0.46/ or https://mdisearch.com
 
 #######################
 #* Configure new network for sensors at home
