@@ -59,6 +59,7 @@ substitutions:
 <<: !include { file: interfaces/rtttl.yaml, vars: { ix: "" } }
 # <<: !include { file: interfaces/debug.yaml, vars: { update_interval: "15s" } }
 # <<: !include { file: interfaces/uart_ld2410.yaml, vars: { ix: "ld", tx_pin: "TX", rx_pin: "RX", max_distance: "4.5m" } }
+# <<: !include { file: interfaces/uart_ld2410.yaml, vars: { ix: "ld", tx_pin: "GPIO1", rx_pin: "GPIO3", max_distance: "4.5m" } }
 
 text_sensor:
   - !include sensors/text_uptime.yaml
@@ -172,8 +173,6 @@ switch:
   # # Buzzer (active)
   # - !include { file: switches/active_buzzer.yaml, vars: { ix: "", gpio: "GPIO5", off_delay: "1100ms" } }
 
-  # Gate switch
-  - !include { file: switches/gate.yaml, vars: { ix: "", gpio: "GPIO12", off_delay: "5s", room: "Entry" } }
+  # # Gate switch
+  # - !include { file: switches/gate.yaml, vars: { ix: "", gpio: "GPIO12", off_delay: "5s", room: "Entry" } }
 
-  # Double light Switch on AVT5713
-#<<: !include switches/2lights_AVT5713.yaml
