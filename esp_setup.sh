@@ -45,6 +45,10 @@ pip3 install esphome
 pip3 install -U esphome
 pip3 install -U platformio
 
+# clean unnesecary packages
+# pio system prune --dry-run
+pio system prune
+
 #######################
 # Create YAML file
 # based on https://www.youtube.com/watch?v=a3iay-g1AsI
