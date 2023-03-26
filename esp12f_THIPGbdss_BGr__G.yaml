@@ -17,7 +17,7 @@
 # esphome -s devicename espXX -s updates 1min -s room <Room name> -s mqtt_room <room> run esp12f_MMmm_SSss__PP.yaml --device 192.168.x.x
 # heare are default values if those are not given via command line
 substitutions:
-  devices: "Temperature, Humidity, Preassure, Gas Resistance via BME680 and Illuminance via BH1750"
+  devices: "Temperature, Humidity, Preassure, Gas Resistance via BME680, Illuminance via BH1750 and GATE via GPIO14"
   project_name: "pgolawsk.esp_home"
   version: "1.1.5"
 
@@ -57,7 +57,7 @@ text_sensor:
 
 binary_sensor:
   # Doorbell at the gate
-  - !include { file: sensors/binary_doorbell.yaml, vars: { ix: "", doorbell_name: "gate", gpio: "GPIO12", delay_on: '2s' } }
+  - !include { file: sensors/binary_doorbell.yaml, vars: { ix: "", doorbell_name: "doorbell", gpio: "GPIO12", delay_on: '2s', room: "Entry" } }
 
 sensor:
   - !include sensors/uptime.yaml
@@ -90,4 +90,4 @@ switch:
   - !include { file: switches/rtttl_play.yaml, vars: { ix: "" } }
 
   # Gate switch
-  - !include { file: switches/gate.yaml, vars: { ix: "", gpio: "GPIO14", off_delay: "25s", room: "Entry" } }
+  - !include { file: switches/gate.yaml, vars: { ix: "", gpio: "GPIO14", off_delay: "4s", room: "Entry" } }
