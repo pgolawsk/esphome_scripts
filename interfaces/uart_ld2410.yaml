@@ -4,10 +4,18 @@
 # Pawelo, 20230305, created based on https://esphome.io/components/sensor/ld2410.html
 
 uart:
-  id: uart${ix}
+  id: uart_${ix}
   # recommended to use hardware uart
-  tx_pin: ${tx_pin}
-  rx_pin: ${rx_pin}
+  tx_pin:
+    number: ${tx_pin}
+    # mode:
+    #   output: true
+    #   open_drain: true
+  rx_pin:
+    number: ${rx_pin}
+    # mode:
+    #   input: true
+    #   pullup: true
   baud_rate: 256000
   parity: NONE
   stop_bits: 1
