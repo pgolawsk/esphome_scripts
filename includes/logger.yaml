@@ -4,6 +4,7 @@
 logger:
 #  level: NONE, ERROR, WARN, INFO, DEBUG (default), VERBOSE, VERY_VERBOSE
   level: INFO
+#  level: VERY_VERBOSE
   # disable UART logging
   baud_rate: 0
   logs:
