@@ -122,7 +122,7 @@ esphome -s devicename esp12f-21 -s updates 30s -s room Unrderfloor -s mqtt_locat
 esphome -s devicename esp12f-25 -s updates 30s -s room AquariumWindow -s mqtt_location measures -s mqtt_room aquarium_window run esp12f_THIddb_STr.yaml --device 192.168.x.x
 
 # TEST devices
-esphome -s devicename esp12f-29 -s updates 30s -s room Test  -s mqtt_location measures -s mqtt_room test run esp12f_dev.yaml --device 192.168.x.x
+esphome -s devicename esp12f-29 -s updates 30s -s room Test -s mqtt_location measures -s mqtt_room test run esp12f_dev.yaml --device 192.168.x.x
 #esphome -s devicename esp12f-28 -s updates 30s -s room TestSwitch  -s mqtt_location measures -s mqtt_room test_switch run esp12f_THI2lbd_SBar.yaml --device 192.168.x.x
 esphome -s devicename esp12f-28 -s updates 30s -s room TestSwitch2 -s mqtt_location measures -s mqtt_room test_switch2 run esp12f_THICDV2lbd_BCDar.yaml --device 192.168.x.x
 
