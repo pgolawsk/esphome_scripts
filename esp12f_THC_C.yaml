@@ -60,6 +60,10 @@ sensor:
   # Temperature, Humidity adn CO2 sensor
   - !include { file: sensors/temp_hum_co2_SCD40.yaml, vars: { ix: "", bus_id: "bus_a", address: "0x62" } }
 
-switch:
+# switch:
+#   # Restart button
+#   - !include switches/platform_restart.yaml
+
+button:
   # Restart button
-  - !include switches/platform_restart.yaml
+  - !include { file: buttons/restart_button.yaml }

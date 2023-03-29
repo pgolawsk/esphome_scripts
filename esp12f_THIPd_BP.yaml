@@ -75,8 +75,12 @@ light:
   - !include { file: lights/status_led.yaml, vars: { ix: "", off_delay: "5s" } }
 
 switch:
-  # Restart button
-  - !include switches/platform_restart.yaml
+  # # Restart button
+  # - !include switches/platform_restart.yaml
 
   # Status LED cycle
   - !include { file: switches/led_cycle.yaml, vars: { ID: "status_led", cycles: 3, on_delay: "1s" , off_delay: "500ms" } }
+
+button:
+  # Restart button
+  - !include { file: buttons/restart_button.yaml }

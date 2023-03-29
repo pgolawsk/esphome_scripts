@@ -106,11 +106,14 @@ sensor:
     #   then:
     #     - script.execute: all_data_received
 
-switch:
-  # Restart button
-  - !include switches/platform_restart.yaml
+# switch:
+#   # Restart button
+#   - !include switches/platform_restart.yaml
 
 button:
+  # Restart button
+  - !include { file: buttons/restart_button.yaml }
+
   # LilyGo buttons
   - !include { file: buttons/display_button.yaml, vars: { ix: "Refresh", display_id: "t5_display", command: "", mdi_icon: "refresh" } }
   - !include { file: buttons/display_button.yaml, vars: { ix: "Next", display_id: "t5_display", command: "next", mdi_icon: "page-next" } }

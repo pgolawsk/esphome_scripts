@@ -94,8 +94,8 @@ light:
 
 
 switch:
-  # Restart button
-  - !include switches/platform_restart.yaml
+  # # Restart button
+  # - !include switches/platform_restart.yaml
 
    # Status LED cycle
   - !include { file: switches/led_cycle.yaml, vars: { ID: "status_led", cycles: 3, on_delay: "1s" , off_delay: "500ms" } }
@@ -103,7 +103,6 @@ switch:
   # RTTTL Play (passive_buzzer)
   - !include { file: switches/rtttl_play.yaml, vars: { ix: "" } }
 
-
-# # Double light Switch on AVT5713
-# <<: !include switches/2lights_AVT5713.yaml
-
+button:
+  # Restart button
+  - !include { file: buttons/restart_button.yaml }

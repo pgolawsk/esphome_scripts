@@ -59,9 +59,13 @@ output:
   # Relay
   - !include { file: outputs/relay.yaml, vars: { ix: "", gpio: "GPIO0", inverted: true } }
 
-switch:
+# switch:
+#   # Restart button
+#   - !include switches/platform_restart.yaml
+
+button:
   # Restart button
-  - !include switches/platform_restart.yaml
+  - !include { file: buttons/restart_button.yaml }
 
 fan:
   # Fan on relay

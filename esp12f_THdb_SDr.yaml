@@ -74,9 +74,12 @@ light:
   - !include { file: lights/status_led.yaml, vars: { ix: "", off_delay: "5s" } }
 
 switch:
-  # Restart button
-  - !include switches/platform_restart.yaml
+  # # Restart button
+  # - !include switches/platform_restart.yaml
 
   # RTTTL Play (passive_buzzer)
   - !include { file: switches/rtttl_play.yaml, vars: { ix: "" } }
 
+button:
+  # Restart button
+  - !include { file: buttons/restart_button.yaml }

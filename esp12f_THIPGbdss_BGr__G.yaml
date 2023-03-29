@@ -55,9 +55,9 @@ text_sensor:
   - !include sensors/text_version.yaml
   - !include sensors/text_wifi_info.yaml
 
-binary_sensor:
-  # Doorbell at the gate
-  - !include { file: sensors/binary_doorbell.yaml, vars: { ix: "", doorbell_name: "Doorbell", gpio: "GPIO12", delay_on: '2s', room: "Entry" } }
+# binary_sensor:
+#   # Doorbell at the gate
+#   - !include { file: sensors/binary_doorbell.yaml, vars: { ix: "", doorbell_name: "Doorbell", gpio: "GPIO12", delay_on: '2s', room: "Entry" } }
 
 sensor:
   - !include sensors/uptime.yaml
@@ -80,8 +80,8 @@ light:
   - !include { file: lights/status_led.yaml, vars: { ix: "", off_delay: "5s" } }
 
 switch:
-  # Restart button
-  - !include switches/platform_restart.yaml
+  # # Restart button
+  # - !include switches/platform_restart.yaml
 
   # Status LED cycle
   - !include { file: switches/led_cycle.yaml, vars: { ID: "status_led", cycles: 3, on_delay: "1s" , off_delay: "500ms" } }
@@ -89,5 +89,9 @@ switch:
   # RTTTL Play (passive_buzzer)
   - !include { file: switches/rtttl_play.yaml, vars: { ix: "" } }
 
-  # Gate switch
-  - !include { file: switches/gate.yaml, vars: { ix: "", gpio: "GPIO14", off_delay: "4s", room: "Entry" } }
+  # # Gate switch
+  # - !include { file: switches/gate.yaml, vars: { ix: "", gpio: "GPIO14", off_delay: "4s", room: "Entry" } }
+
+button:
+  # Restart button
+  - !include { file: buttons/restart_button.yaml }

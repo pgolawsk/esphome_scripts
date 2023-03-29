@@ -44,9 +44,13 @@ sensor:
   - !include sensors/uptime.yaml
   - !include sensors/wifi_signal.yaml
 
-switch:
+# switch:
+#   # Restart button
+#   - !include switches/platform_restart.yaml
+
+button:
   # Restart button
-  - !include switches/platform_restart.yaml
+  - !include { file: buttons/restart_button.yaml }
 
 esp32_camera:
   name: $room Camera

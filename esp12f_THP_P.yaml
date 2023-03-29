@@ -63,6 +63,10 @@ sensor:
   # Temperature, Humidity and Pressure sensor
   - !include { file: sensors/temp_hum_press_BME280.yaml, vars: { ix: "", bus_id: "bus_a", address: "0x76" } }
 
-switch:
+# switch:
+#   # Restart button
+#   - !include switches/platform_restart.yaml
+
+button:
   # Restart button
-  - !include switches/platform_restart.yaml
+  - !include { file: buttons/restart_button.yaml }

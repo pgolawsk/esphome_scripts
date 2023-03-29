@@ -66,6 +66,10 @@ sensor:
   # Temperature and Humidity sensor
   - !include { file: sensors/temp_hum_SHT3x.yaml, vars: { ix: "", bus_id: "bus_a", address: "0x44" } }
 
-switch:
+# switch:
+#   # Restart button
+#   - !include switches/platform_restart.yaml
+
+button:
   # Restart button
-  - !include switches/platform_restart.yaml
+  - !include { file: buttons/restart_button.yaml }
