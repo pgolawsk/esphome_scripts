@@ -1,6 +1,7 @@
 ---
 #* Battery Voltage sensor on LilyGo T5 screen
 # Pawelo, 20230314, created based on https://github.com/esphome/feature-requests/issues/1109#issuecomment-1408376503
+# Pawelo, 20230330, fixed related sensors not refreshing at the same time by adding lambda
 
 platform: lilygo_t5_47
 name: "${devicename} Battery Voltage${ix}"
@@ -17,3 +18,8 @@ on_value:
       topic: "$mqtt_location/$mqtt_room/battery_voltage${ix}"
       payload: !lambda |-
         return to_string(id(batt_volt${ix}).state);
+  - lambda: |-
+      id(powered_from${ix}).update();
+      id(batt${ix}).update();
+  # - text_sensor.update: powered_from${ix}
+  # - sensor.update: batt${ix}
