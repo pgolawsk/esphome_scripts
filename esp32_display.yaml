@@ -100,7 +100,7 @@ sensor:
 
   # Battery voltage sensor
   - !include { file: sensors/voltage_battery_lilygo_T5_47.yaml, vars: { ix: "" } }
-  - !include { file: sensors/percentage_battery_lilygo_T5_47.yaml, vars: { ix: "", max_voltage: 4.1, min_voltage: 3.4 } }
+  - !include { file: sensors/percentage_battery_lilygo_T5_47.yaml, vars: { ix: "", max_voltage: 4.16, min_voltage: 3.35 } }
 
     # on_value: # Actions to perform once data for the last sensor has been received
     #   then:
