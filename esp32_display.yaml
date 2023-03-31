@@ -100,7 +100,7 @@ sensor:
 
   # Battery voltage sensor
   - !include { file: sensors/voltage_battery_lilygo_T5_47.yaml, vars: { ix: "" } }
-  - !include { file: sensors/percentage_battery_lilygo_T5_47.yaml, vars: { ix: "", max_voltage: 4.1, min_voltage: 2.9 } }
+  - !include { file: sensors/percentage_battery_lilygo_T5_47.yaml, vars: { ix: "", max_voltage: 4.1, min_voltage: 3.4 } }
 
     # on_value: # Actions to perform once data for the last sensor has been received
     #   then:
@@ -387,7 +387,8 @@ display:
   - platform: lilygo_t5_47
     id: t5_display
     rotation: 180
-    update_interval: 300s
+    update_interval: $updates
+    # update_interval: 300s
     full_update_every: 0 # optional (default:  1): 0 - never, 1 (default) - every, 2+ - throttled
     cycles_render: 15    # optional (default: 20): higher number -> less ghosting, crisper image, more time
     cycles_invert: 40    # optional (default: 20): higher number -> more timef or full update, but mor burn-in protection
