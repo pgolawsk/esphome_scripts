@@ -89,8 +89,8 @@ switch:
   # RTTTL Play (passive_buzzer)
   - !include { file: switches/rtttl_play.yaml, vars: { ix: "" } }
 
-  # # Gate switch
-  # - !include { file: switches/gate.yaml, vars: { ix: "", gpio: "GPIO14", off_delay: "4s", room: "Entry" } }
+  # Gate switch
+  - !include { file: switches/gate.yaml, vars: { ix: "", gpio: "GPIO14", off_delay: "4s", room: "Entry" } }
 
 button:
   # Restart button
