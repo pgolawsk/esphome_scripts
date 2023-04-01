@@ -44,6 +44,12 @@ substitutions:
 <<: !include { file: interfaces/dallas.yaml, vars: { gpio: "GPIO14" } }
 <<: !include { file: interfaces/rtttl.yaml, vars: { ix: "" } }
 
+# Fix for "scratch pad checksum invalid" on dallas
+external_components:
+  - source: github://ssieb/esphome@dallas
+    components: [ dallas ]
+    refresh: $updates
+
 text_sensor:
   - !include sensors/text_uptime.yaml
   - !include sensors/text_version.yaml
@@ -53,12 +59,16 @@ sensor:
   - !include sensors/uptime.yaml
   - !include sensors/wifi_signal.yaml
 
+  # Temperature Dallas sensor
+  - !include { file: sensors/temp_DS18B20.yaml, vars: { ix: "Dshort", address: "0xc00000000c511a28" } } # 1m cable
+  - !include { file: sensors/temp_DS18B20.yaml, vars: { ix: "Dlong", address: "0x0b0417c42dceff28" } } # 2m cable
+
   # Temperature and Humidity sensor
   - !include { file: sensors/temp_hum_SHT3x.yaml, vars: { ix: "", bus_id: "bus_a", address: "0x44" } }
 
   # Temperature Dallas sensor
-  - !include { file: sensors/temp_DS18B20.yaml, vars: { ix: "Dshort", address: "0xc00000000c511a28" } } # 1m cable
-  - !include { file: sensors/temp_DS18B20.yaml, vars: { ix: "Dlong", address: "0x0b0417c42dceff28" } } # 2m cable
+  # - !include { file: sensors/temp_DS18B20.yaml, vars: { ix: "Dshort", address: "0xc00000000c511a28" } } # 1m cable
+  # - !include { file: sensors/temp_DS18B20.yaml, vars: { ix: "Dlong", address: "0x0b0417c42dceff28" } } # 2m cable
 
 output:
   #! needed for RTTTL but its not connected to this device
