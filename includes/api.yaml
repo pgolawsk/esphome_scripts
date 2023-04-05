@@ -1,5 +1,5 @@
 ---
-#* Enables native ESPHOme API
+#* Enables native ESPHome API
 # Pawelo, 20221119, created as my framework based on !include statements
 api:
   reboot_timeout: 0s # 0s will disable reboot if no HA connected
