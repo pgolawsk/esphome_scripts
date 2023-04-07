@@ -1,0 +1,9 @@
+---
+#* Factory reset button action
+# Pawelo, 20230406, created based on https://esphome.io/components/switch/factory_reset.html
+
+platform: factory_reset
+name: $room $devicename Factory Reset
+id: reset_button
+icon: mdi:restore-alert
+internal: true

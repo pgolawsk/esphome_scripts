@@ -1,0 +1,9 @@
+---
+#* Shoutdown button action (deep sleap with no wake-up action)
+# Pawelo, 20230406, created based on https://esphome.io/components/button/shutdown.html
+
+platform: shutdown
+name: $room $devicename Shutdown
+id: shutdown_button
+icon: mdi:power
+internal: true
