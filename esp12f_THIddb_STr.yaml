@@ -77,5 +77,8 @@ switch:
   - !include { file: switches/rtttl_play.yaml, vars: { ix: "" } }
 
 button:
-  # Restart button
+  # Restart, reset and shutdown buttons
   - !include { file: buttons/restart_button.yaml }
+  - !include { file: buttons/safe_mode_restart_button.yaml }
+  - !include { file: buttons/factory_reset_button.yaml }
+  - !include { file: buttons/shutdown_button.yaml }
