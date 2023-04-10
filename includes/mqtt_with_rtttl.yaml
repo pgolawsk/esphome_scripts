@@ -4,7 +4,8 @@
 # Pawelo, 20230115, added more options based on https://github.com/esphome/issues/issues/3406
 # Pawelo, 20230129, added RTTTL topic to play
 # Pawelo, 20230130, moved on_message topics to separate include files
-#! Pawelo, 20230225, prometheus not working while $mqtt_location is "measures"
+#! Pawelo, 20230410, prometheus not working with "on_message" section
+#! Pawelo, 20230410, prometheus randomly not working while client_id is set
 
 mqtt:
   id: mqtt_client
@@ -12,7 +13,7 @@ mqtt:
   port: !secret mqtt_port
   username: !secret mqtt_user
   password: !secret mqtt_password
-  client_id: $devicename
+#  client_id: $devicename
   discovery: false
   discovery_retain: false
   #discovery_unique_id_generator: mac
