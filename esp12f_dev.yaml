@@ -81,8 +81,8 @@ text_sensor:
 #   # Doorbell at the gate
 #   - !include { file: sensors/binary_doorbell.yaml, vars: { ix: "", doorbell_name: "gate", gpio: "GPIO13", delay_on: '2s' } }
 
-#   # Distance sensor
-#   - !include { file: sensors/binary_presence_ld2410.yaml, vars: { ix: "" } }
+  # # Distance sensor
+  # - !include { file: sensors/binary_presence_ld2410.yaml, vars: { ix: "" } }
 
   # # Gesture sensor
   # - !include { file: sensors/binary_gesture_apds9960.yaml, vars: { direction: "UP", mdi_icon: 'gesture-swipe-up' } }
@@ -121,7 +121,7 @@ sensor:
   # - !include { file: sensors/water_YF-B10.yaml, vars: { ix: "", gpio: "GPIO12" } }
   # - !include { file: sensors/water_usage_YF-B10.yaml, vars: { ix: "" } }
 
-  # Distance sensor
+  # # Distance sensor
   # - !include { file: sensors/distance_ld2410.yaml, vars: { ix: "" } }
 
   # DC Current, Power, Voltage
