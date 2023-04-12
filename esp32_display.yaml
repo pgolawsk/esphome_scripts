@@ -504,3 +504,10 @@ display:
           // WIFI:S:<WIFI NAME HERE>;T:WPA;P:<WIFI PASSWOD HERE>;H:false;;
           // Draw the QR-code at position [x=50,y=100] with white color and a 2x scale
           it.qr_code(50, 100, id(guestwifi_qr), COLOR_ON, 14);
+      - id: page6
+        lambda: |-
+          // positioning constants
+          #define xRes 960
+          #define yRes 540
+          #define xCenter (xRes/2 + 40) // X position center
+          id(t5_display).clear();
