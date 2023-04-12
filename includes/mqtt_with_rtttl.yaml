@@ -14,13 +14,13 @@ mqtt:
   username: !secret mqtt_user
   password: !secret mqtt_password
 #  client_id: $devicename
-  discovery: false
-  discovery_retain: false
+  # discovery: false
+  # discovery_retain: false
   #discovery_unique_id_generator: mac
   #discovery_object_id_generator: device_name
-  birth_message:
-  will_message:
-  shutdown_message:
+  # birth_message:
+  # will_message:
+  # shutdown_message:
   on_message:
     # - topic: aaa
     #   then:

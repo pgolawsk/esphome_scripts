@@ -27,7 +27,8 @@ substitutions:
 #! MQTT on_message make prometheus include not working
 # Include/Override mqtt with/without RTTTL support if needed
 <<: !include includes/mqtt.yaml
-#<<: !include includes/mqtt_with_rtttl.yaml
+# <<: !include includes/mqtt_with_rtttl.yaml
+
 
 # Include interfaces needed
 <<: !include { file: interfaces/i2c.yaml, vars: { bus_id: "bus_a", sda: "GPIO4", scl: "GPIO5" } }
