@@ -11,6 +11,7 @@
 # Pawelo 20221127, 1.1.4, moved i2c configuration to separate include file
 # Pawelo 20221127, 1.1.5, added preserving values in flash
 # Pawelo 20230305, added time_sntp amd sun by default
+# Pawelo 20230414, fix for compilation error: "firmware.elf section `.text1' will not fit in region `iram1_0_seg'"
 
 esphome:
   name: $devicename
@@ -19,6 +20,10 @@ esphome:
   project:
     name: $project_name
     version: $version
+
+  platformio_options:
+    build_flags:
+      - -DPIO_FRAMEWORK_ARDUINO_MMU_CACHE16_IRAM48
 
 esp8266:
   board: esp12e
