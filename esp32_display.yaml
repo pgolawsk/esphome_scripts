@@ -389,8 +389,8 @@ display:
     rotation: 180
     update_interval: $updates
     # update_interval: 300s
-    full_update_every: 0 # optional (default:  1): 0 - never, 1 (default) - every, 2+ - throttled
-    cycles_render: 15    # optional (default: 20): higher number -> less ghosting, crisper image, more time
+    full_update_every: 1 # optional (default:  1): 0 - never, 1 (default) - every, 2+ - throttled
+    cycles_render: 20    # optional (default: 20): higher number -> less ghosting, crisper image, more time
     cycles_invert: 40    # optional (default: 20): higher number -> more timef or full update, but mor burn-in protection
     # on_page_change:
     #   - then:
@@ -417,6 +417,13 @@ display:
       #     it.filled_rectangle(0, 0, xRes, yRes, COLOR_ON);
       #     it.print(xRes/2, yRes/2, id(font_name), COLOR_OFF, TextAlign::CENTER, "Refreshing...");
 
+      - id: page0
+        lambda: |-
+          // positioning constants
+          #define xRes 960
+          #define yRes 540
+          #define xCenter (xRes/2 + 40) // X position center
+          id(t5_display).clear();
       - id: page1
         lambda: |-
           // positioning constants
@@ -504,10 +511,4 @@ display:
           // WIFI:S:<WIFI NAME HERE>;T:WPA;P:<WIFI PASSWOD HERE>;H:false;;
           // Draw the QR-code at position [x=50,y=100] with white color and a 2x scale
           it.qr_code(50, 100, id(guestwifi_qr), COLOR_ON, 14);
-      - id: page6
-        lambda: |-
-          // positioning constants
-          #define xRes 960
-          #define yRes 540
-          #define xCenter (xRes/2 + 40) // X position center
-          id(t5_display).clear();
+
