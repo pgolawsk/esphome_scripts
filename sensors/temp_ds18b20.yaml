@@ -2,6 +2,7 @@
 #* Temperature sensor DS18B20
 # Pawelo, 20221119, created based on https://esphome.io/components/sensor/dallas.html and hemp_hum_sht3xd.yaml
 # Pawelo, 20230121, add variables to configure sensor
+# Pawelo, 20230414, filtering out NaN values
 
 platform: dallas
 name: "$room Temperature${ix}"
@@ -16,3 +17,5 @@ on_value:
 #address: 0xc00000000c511a28 # change logger to DEBUG to discover available sensor addresses
 address: ${address} # change logger to DEBUG to discover available sensor addresses
 #update_interval: $updates # no update interval as this is not I2C
+filters:
+  - filter_out: NAN
