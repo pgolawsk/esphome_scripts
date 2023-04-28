@@ -60,8 +60,9 @@ sensor:
   - !include sensors/wifi_signal.yaml
 
   # Temperature Dallas sensor
-  - !include { file: sensors/temp_DS18B20.yaml, vars: { ix: "Dshort", address: "0xc00000000c511a28" } } # 1m cable
-  - !include { file: sensors/temp_DS18B20.yaml, vars: { ix: "Dlong", address: "0x0b0417c42dceff28" } } # 2m cable
+  - !include { file: sensors/temp_DS18B20.yaml, vars: { ix: "Dwall", address: "0xc00000000c511a28" } } # 1m cable
+  - !include { file: sensors/temp_DS18B20.yaml, vars: { ix: "Dboiler", address: "0xba0000000ab27528" } } # 1m cable
+#  - !include { file: sensors/temp_DS18B20.yaml, vars: { ix: "Dlong", address: "0x0b0417c42dceff28" } } # 2m cable
 
   # Temperature and Humidity sensor
   - !include { file: sensors/temp_hum_SHT3x.yaml, vars: { ix: "", bus_id: "bus_a", address: "0x44" } }
