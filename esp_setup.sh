@@ -104,7 +104,7 @@ mosquitto_sub -v -t home/#
 #? 30s is 30 seconds and it's optimal as the same interval is setup on prometheus (could be 10s, 1min, 5min, ...)
 # esphome -s devicename esp12f-10 -s updates 30s -s room Office -s mqtt_room office run esp12f_TH_S.yaml --device 192.168.x.x
 # GROUND Floor
-esphome -s devicename esp12f-10 -s updates 30s -s room Office -s mqtt_room office run esp12f_THICDV2lbd_BCEar.yaml --device 192.168.x.x
+esphome -s devicename esp12f-10 -s updates 30s -s room Office -s mqtt_room office run esp12f_THICEV2lbd_BCEar.yaml --device 192.168.x.x
 esphome -s devicename esp12f-11 -s updates 30s -s room Entrance -s mqtt_room entrance run esp12f_THIPGbdss_BGr__G.yaml --device 192.168.x.x
 # esphome -s devicename esp12f-12 -s updates 30s -s room Kitchen -s mqtt_room kitchen run esp12f_dev.yaml --device 192.168.x.x
 # esphome -s devicename esp12f-13 -s updates 30s -s room Salon -s mqtt_room salon run esp12f_dev.yaml --device 192.168.x.x
