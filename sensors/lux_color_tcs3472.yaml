@@ -3,7 +3,7 @@
 # Pawelo, 20230103, created based on https://esphome.io/components/sensor/tcs34725.html and lux_bh1750.yaml a
 # Pawelo, 20230111, added i2c bus identification
 # Pawelo, 20230121, add variables to configure sensor
-# Pawelo, 20230728, set integration time to 24ms to get rid of worning that sensor check should not be longer than 200-300ms
+# Pawelo, 20230728, set integration time to 24ms (no effect) to get rid of warning that sensor check should not be longer than 200-300ms
 
 platform: tcs34725
 illuminance:
