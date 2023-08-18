@@ -6,10 +6,11 @@
 #! pin 9 do not work (it hangs ESP)- reserved for flashing;
 #! pin 10 - use with caution, read https://www.letscontrolit.com/forum/viewtopic.php?t=1462
 # Pawelo, 20230728, set frequency to 400kHz (no effect) to get rid of warning that sensor check should not be longer than 200-300ms
+# Pawelo, 20230817, set frequency to 50kHz to enable SHT3X with Dallas
 
 i2c:
   sda: ${sda}
   scl: ${scl}
   scan: true
   id: ${bus_id}
-  frequency: 400kHz
+  frequency: 50kHz
