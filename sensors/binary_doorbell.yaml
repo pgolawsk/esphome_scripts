@@ -1,6 +1,9 @@
 ---
 #* Doorbell on GPIO
 # Pawelo, 20230219, created as new
+# Pawelo, 20230831, for EURA-AD43 need to connect to exterior module (2 cables) where there is 9V.
+# While doorbell is pressed then this is 0V - need voltage divider to decrease V from 9V to 3.3V.
+
 
 platform: gpio
 pin:

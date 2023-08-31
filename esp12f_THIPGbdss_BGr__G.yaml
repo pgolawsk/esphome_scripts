@@ -55,9 +55,9 @@ text_sensor:
   - !include sensors/text_version.yaml
   - !include sensors/text_wifi_info.yaml
 
-# binary_sensor:
-#   # Doorbell at the gate
-#   - !include { file: sensors/binary_doorbell.yaml, vars: { ix: "", doorbell_name: "Doorbell", gpio: "GPIO12", delay_on: '2s', room: "Entry" } }
+binary_sensor:
+  # Doorbell at the gate
+  - !include { file: sensors/binary_doorbell.yaml, vars: { ix: "", doorbell_name: "Doorbell", gpio: "GPIO12", delay_on: '2s', room: "Entry" } }
 
 sensor:
   - !include sensors/uptime.yaml
