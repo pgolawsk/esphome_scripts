@@ -56,6 +56,8 @@ substitutions:
 <<: !include { file: interfaces/i2c.yaml, vars: { bus_id: "bus_a", sda: "GPIO4", scl: "GPIO5" } }
 # <<: !include { file: interfaces/i2c_apds9960.yaml, vars: { address: "0x39" } }
 # <<: !include { file: interfaces/dallas.yaml, vars: { gpio: "GPIO10" } }
+# OR
+# <<: !include { file: interfaces/dallasng.yaml, vars: { gpio: "GPIO10" } }
 <<: !include { file: interfaces/rtttl.yaml, vars: { ix: "" } }
 # <<: !include { file: interfaces/debug.yaml, vars: { update_interval: "15s" } }
 # <<: !include { file: interfaces/uart_ld2410.yaml, vars: { ix: "ld", tx_pin: "TX", rx_pin: "RX", max_distance: "4.5m" } }
@@ -99,6 +101,8 @@ sensor:
 
   # # Temperature Dallas sensor
   #  - !include { file: sensors/temp_DS18B20.yaml, vars: { ix: "Dtest", address: "0xc00000000c511a28" } }
+  # OR
+  #  - !include { file: sensors/temp_DS18B20_on_dallasng.yaml, vars: { ix: "Dtest", address: "0xc00000000c511a28" } }
 
   # Temperature and Humidity sensor
   - !include { file: sensors/temp_hum_SHT3x.yaml, vars: { ix: "", bus_id: "bus_a", address: "0x44" } }
