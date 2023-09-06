@@ -4,6 +4,7 @@
 # Pawelo, 20230111, added i2c bus identification
 # Pawelo, 20230121, add variables to configure sensor
 # Pawelo, 20230728, set integration time to 24ms (no effect) to get rid of warning that sensor check should not be longer than 200-300ms
+# Pawelo, 20230728, set integration time to auto to get rid of another warning message "[W][tcs34725:162]: No light detected on red channel, switch to auto gain or adjust timing, values will be unreliable"
 
 platform: tcs34725
 illuminance:
@@ -68,7 +69,7 @@ color_temperature:
         payload: !lambda |-
           return to_string(id(color).state);
 glass_attenuation_factor: 1.0
-integration_time: 24ms
+# integration_time: 24ms
 i2c_id: ${bus_id}
 #address: 0x29
 address: ${address}
