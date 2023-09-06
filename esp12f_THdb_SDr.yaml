@@ -34,9 +34,6 @@ substitutions:
   mqtt_location: home
   mqtt_room: room
 
-# external_components:
-#   - source: github://nrandell/dallasng
-
 # Include basics of a board
 <<: !include includes/board_esp12f.yaml
 # Include/Override mqtt with/without RTTTL support if needed
