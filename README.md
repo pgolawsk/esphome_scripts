@@ -9,12 +9,12 @@ Author Pawel Golawski <pawel.golawski@2com.pl>
 ## Futures
 
 * This is modular repository, which means that sensors, manipulators, ... are embed into particular device script via ```!include <file>``` statements. Usualy those are single line includes.
-* Those include may define or override variables, which make paricular configuration. For example for ```i2c.yaml``` variables given define GPIO pins which are serve as I2C interface.
+* Those includes may define or override variables, which make paricular configuration. For example for ```i2c.yaml``` variables given define GPIO pins which are serve as I2C interface.
 * Always available components:
   * Wifi
   * OTA (Over The Air) updates
   * MQTT publish sensor values, like ```esp-xx/temperature```
-  * Addittional MQTT topic for sensors with friendly structure, like ```home/office/temperatude```
+  * Addittional MQTT topic for sensors with friendly structure, like ```home/office/temperature```
   * Logger via MQTT
   * Prometheus
   * Homeassistant API
