@@ -136,6 +136,8 @@ esphome -s devicename esp01s-100 -s updates 1min -s room "Kitchen" -s mqtt_room 
 
 #*! RUN those commmands to compile and deliver updates to esp32 devices wit sensors, switches, ...
 #? --device is optional - if not given and device name can be found by dns then it will be flashed OTA anyway:)
+esphome -s devicename esp32-35 -s updates 1min -s room Garage -s mqtt_location measures -s mqtt_room garage run esp32_THIWdb_SBYr.yaml --device 192.168.x.x
+
 esphome -s devicename esp32-30 -s updates 1min -s room Test32 -s mqtt_location measures -s mqtt_room test32 run esp32_dev.yaml --device 192.168.x.x
 
 esphome -s devicename esp32-40 -s updates 1min -s room Test32cam -s mqtt_location measures -s mqtt_room test32cam run esp32_cam.yaml --device 192.168.x.x
