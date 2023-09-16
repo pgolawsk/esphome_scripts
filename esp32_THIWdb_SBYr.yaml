@@ -5,7 +5,7 @@
 # Pawelo 20230101, 1.1.5, created based on esp32_dev.yaml and esp12f_dev.yaml
 #? ESP32-WROOM-32 minimum wiring https://www.mischianti.org/2021/05/30/esp32-wroom-32-esp32-s-flash-pinout-specs-and-ide-configuration-1/
 # Pawelo 20230916, 1.1.5, added difference between 2 pulse counters as new counter
-# Pawelo 20230916, 1.1.5, fix to preserve total values between reboots, based on https://github.com/esphome/feature-requests/issues/461
+#! Pawelo 20230916, 1.1.5, (NOT DONE) fix to preserve total values between reboots, based on https://github.com/esphome/feature-requests/issues/461
 #
 #! run with this command to override substitutions
 # esphome -s devicename espXX -s updates 1min -s room <Room name> -s mqtt_room <room> run esp32_MMmm_SSss__PP.yaml --device 192.168.x.x
