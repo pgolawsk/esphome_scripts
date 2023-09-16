@@ -1,0 +1,32 @@
+---
+#* Water total sensor using YF-B10 valve configuration - based on difference of 2 pulse_counter's
+# Pawelo, 20230916, created
+
+platform: template
+name: "$room Water Total${ix}"
+id: water_total${ix}
+icon: "mdi:water-plus"
+unit_of_measurement: "liter"
+accuracy_decimals: 2
+device_class: water
+state_class: total_increasing
+state_topic: $devicename/water_total${ix}
+on_value:
+  - mqtt.publish:
+      topic: "$mqtt_location/$mqtt_room/water_total${ix}"
+      payload: !lambda |-
+        return to_string(x);
+lambda: |-
+  float a, b;
+  if (isnan(id(water_total${ix_A}).state)) {
+    a = 0;
+  } else {
+    a = id(water_total${ix_A}).state;
+  }
+  if (isnan(id(water_total${ix_B}).state)) {
+    b = 0;
+  } else {
+    b = id(water_total${ix_B}).state;
+  }
+  return (a ${operator} b);
+

@@ -1,0 +1,30 @@
+---
+#* Water flow sensor using YF-B10 valve configuration - based on difference of 2 pulse_counter's
+# Pawelo, 20230916, created
+
+platform: template
+id: water_flow${ix}
+icon: "mdi:water"
+name: "$room Water Flow${ix}"
+unit_of_measurement: "liter/min"
+internal: true
+state_topic: $devicename/water_flow${ix}
+on_value:
+  - mqtt.publish:
+      topic: "$mqtt_location/$mqtt_room/water_flow${ix}"
+      payload: !lambda |-
+        return to_string(x);
+#lambda: 'return id(water_flow${ix_A}).state ${operator} id(water_flow${ix_B}).state;'
+lambda: |-
+  float a, b;
+  if (isnan(id(water_flow${ix_A}).state)) {
+    a = 0;
+  } else {
+    a = id(water_flow${ix_A}).state;
+  }
+  if (isnan(id(water_flow${ix_B}).state)) {
+    b = 0;
+  } else {
+    b = id(water_flow${ix_B}).state;
+  }
+  return (a ${operator} b);
