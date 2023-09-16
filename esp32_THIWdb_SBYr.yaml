@@ -4,6 +4,8 @@
 ###
 # Pawelo 20230101, 1.1.5, created based on esp32_dev.yaml and esp12f_dev.yaml
 #? ESP32-WROOM-32 minimum wiring https://www.mischianti.org/2021/05/30/esp32-wroom-32-esp32-s-flash-pinout-specs-and-ide-configuration-1/
+# Pawelo 20230916, 1.1.5, added difference between 2 pulse counters as new counter
+# Pawelo 20230916, 1.1.5, fix to preserve total values between reboots, based on https://github.com/esphome/feature-requests/issues/461
 #
 #! run with this command to override substitutions
 # esphome -s devicename espXX -s updates 1min -s room <Room name> -s mqtt_room <room> run esp32_MMmm_SSss__PP.yaml --device 192.168.x.x
@@ -20,6 +22,8 @@ substitutions:
   # by default it's also published under <devicename>/<id_sensor>
   mqtt_location: home
   mqtt_room: room
+
+  pulses_per_liter: "476"
 
   # Include basics of a board
 <<: !include includes/board_esp32.yaml
@@ -52,18 +56,25 @@ sensor:
   - !include sensors/uptime.yaml
   - !include sensors/wifi_signal.yaml
 
-  # Temperature and Humidity sensor
-  - !include { file: sensors/temp_hum_SHT3x.yaml, vars: { ix: "", bus_id: "bus_a", address: "0x44" } }
-  # Illuminance sensor
-  - !include { file: sensors/lux_BH1750.yaml, vars: { ix: "", bus_id: "bus_a", address: "0x23" } }
+  # # Temperature and Humidity sensor
+  # - !include { file: sensors/temp_hum_SHT3x.yaml, vars: { ix: "", bus_id: "bus_a", address: "0x44" } }
+  # # Illuminance sensor
+  # - !include { file: sensors/lux_BH1750.yaml, vars: { ix: "", bus_id: "bus_a", address: "0x23" } }
 
   # Water ussage YF-B10 sensor
-  - !include { file: sensors/water_YF-B10.yaml, vars: { ix: "a", gpio: "GPIO13" } }
-  - !include { file: sensors/water_usage_YF-B10.yaml, vars: { ix: "a" } }
+  - !include { file: sensors/water_YF-B10.yaml, vars: { ix: "_all", gpio: "GPIO16" } }
+  - !include { file: sensors/water_used_YF-B10.yaml, vars: { ix: "_all" } }
 
-  - !include { file: sensors/water_YF-B10.yaml, vars: { ix: "b", gpio: "GPIO14" } }
-  - !include { file: sensors/water_usage_YF-B10.yaml, vars: { ix: "b" } }
+  - !include { file: sensors/water_YF-B10.yaml, vars: { ix: "_garden", gpio: "GPIO17" } }
+  - !include { file: sensors/water_used_YF-B10.yaml, vars: { ix: "_garden" } }
+
+  - !include { file: sensors/water_flow_diff_YF-B10.yaml, vars: { ix: "_home",  ix_A: "_all", ix_B: "_garden", operator: "-"} }
+  - !include { file: sensors/water_total_diff_YF-B10.yaml, vars: { ix: "_home",  ix_A: "_all", ix_B: "_garden", operator: "-"} }
+  - !include { file: sensors/water_used_diff_YF-B10.yaml, vars: { ix: "_home",  ix_A: "_all", ix_B: "_garden", operator: "-"} }
 
 button:
   # Restart button
   - !include { file: buttons/restart_button.yaml }
+
+  # # Save button
+  # - !include { file: buttons/save_watertotal_button.yaml }

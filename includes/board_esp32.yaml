@@ -18,7 +18,7 @@ esp32:
   #   type: arduino
 
 preferences:
-  flash_write_interval: 1min
+  flash_write_interval: 5min
 
 <<: !include wifi.yaml
 <<: !include api.yaml
