@@ -22,7 +22,7 @@ on_value:
       payload: !lambda |-
         return to_string(x);
 filters:
-  - lambda: return x / 476;
+  - lambda: return x / ${pulses_per_liter};
 total:
   name: "$room Water Total${ix}"
   id: water_total${ix}
@@ -34,7 +34,7 @@ total:
   state_class: total_increasing
   state_topic: $devicename/water_total${ix}
   filters:
-    - lambda: return x / 476;
+    - lambda: if (isnan(x)) { return 0; } return x / ${pulses_per_liter};
 #        - multiply: 0.001
   on_value:
     - mqtt.publish:
