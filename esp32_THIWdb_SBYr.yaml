@@ -38,7 +38,6 @@ substitutions:
 #<<: !include { file: interfaces/dallas.yaml, vars: { gpio: "GPIO27" } }
 # <<: !include { file: interfaces/rtttl.yaml, vars: { ix: "" } }
 <<: !include { file: interfaces/dallasng.yaml, vars: { gpio: "GPIO27" } }
-<<: !include includes/qr_guestwifi.yaml
 
 # # reinclude MQTT as a bug in ESPHOME, see: https://github.com/esphome/issues/issues/2180, https://github.com/esphome/issues/issues/1487
 # mqtt:
