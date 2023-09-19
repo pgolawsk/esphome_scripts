@@ -1,12 +1,14 @@
 ---
 #* Water flow sensor using YF-B10 valve configuration - based on difference of 2 pulse_counter's
 # Pawelo, 20230916, created
+# Pawelo, 20230917, set accuracy_decimals to 2
 
 platform: template
 id: water_flow${ix}
 icon: "mdi:water"
 name: "$room Water Flow${ix}"
 unit_of_measurement: "liter/min"
+accuracy_decimals: 2
 internal: true
 state_topic: $devicename/water_flow${ix}
 on_value:
