@@ -23,6 +23,9 @@ on_value:
         return to_string(x);
 filters:
   - lambda: return x / ${pulses_per_liter};
+  - clamp:
+      min_value: 0
+      max_value: 80
 total:
   name: "$room Water Total${ix}"
   id: water_total${ix}
