@@ -1,14 +1,19 @@
 ---
 #* Activates time source and time based events
 # Pawelo, 20230206, created based on https://esphome.io/components/time/index.html#base-time-config
-# Pawelo, 20230919, fix to display Europe/Warsaw time
+# Pawelo, 20230919, fix to display sunrise and sunset components (if they exists) in local time
 time:
   - platform: sntp
-    timezone: Europe/Warsaw
+#    timezone: Europe/Warsaw
     id: sntp_time
-    # on_time_sync:
-    #   then:
-    #     - logger.log: "Synchronized system clock via SNTP"
+    on_time_sync:
+      then:
+        - logger.log:
+            format: "Synchronized system clock via SNTP"
+            level: INFO
+        - lambda: |-
+            if (sunrise) { id(sunrise).update(); }
+            if (sunset) { id(sunset).update(); }
     #     - component.update: sunrise
     #     - component.update: sunset
 
