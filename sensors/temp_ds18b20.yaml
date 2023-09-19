@@ -1,5 +1,6 @@
 ---
 #* Temperature sensor DS18B20
+#! remember to add 4.7KOhm resistor between VCC and signal cable
 # Pawelo, 20221119, created based on https://esphome.io/components/sensor/dallas.html and hemp_hum_sht3xd.yaml
 # Pawelo, 20230121, add variables to configure sensor
 # Pawelo, 20230414, filtering out NaN values
