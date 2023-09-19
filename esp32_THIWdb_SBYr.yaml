@@ -6,6 +6,8 @@
 #? ESP32-WROOM-32 minimum wiring https://www.mischianti.org/2021/05/30/esp32-wroom-32-esp32-s-flash-pinout-specs-and-ide-configuration-1/
 # Pawelo 20230916, 1.1.5, added difference between 2 pulse counters as new counter
 #! Pawelo 20230916, 1.1.5, (NOT DONE) fix to preserve total values between reboots, based on https://github.com/esphome/feature-requests/issues/461
+# Pawelo 20230917, 1.1.5, added temp & humid via SHT30
+# Pawelo 20230919, 1.1.5, added sunrise and sunset text sensors
 #
 #! run with this command to override substitutions
 # esphome -s devicename espXX -s updates 1min -s room <Room name> -s mqtt_room <room> run esp32_MMmm_SSss__PP.yaml --device 192.168.x.x
@@ -33,8 +35,10 @@ substitutions:
 
 # Include interfaces needed
 <<: !include { file: interfaces/i2c.yaml, vars: { bus_id: "bus_a", sda: "GPIO21", scl: "GPIO22" } }
-# <<: !include { file: interfaces/dallas.yaml, vars: { gpio: "GPIO10" } }
+#<<: !include { file: interfaces/dallas.yaml, vars: { gpio: "GPIO27" } }
 # <<: !include { file: interfaces/rtttl.yaml, vars: { ix: "" } }
+<<: !include { file: interfaces/dallasng.yaml, vars: { gpio: "GPIO27" } }
+<<: !include includes/qr_guestwifi.yaml
 
 # # reinclude MQTT as a bug in ESPHOME, see: https://github.com/esphome/issues/issues/2180, https://github.com/esphome/issues/issues/1487
 # mqtt:
@@ -50,14 +54,21 @@ text_sensor:
   - !include sensors/text_uptime.yaml
   - !include sensors/text_version.yaml
   - !include sensors/text_wifi_info.yaml
+  # Sun component
+  - !include { file: sensors/text_sun_sunrise.yaml, vars: { updates: "${updates}" } }
+  - !include { file: sensors/text_sun_sunset.yaml, vars: { updates: "${updates}" } }
 
 sensor:
   - !include sensors/temp_internal.yaml
   - !include sensors/uptime.yaml
   - !include sensors/wifi_signal.yaml
 
-  # # Temperature and Humidity sensor
-  # - !include { file: sensors/temp_hum_SHT3x.yaml, vars: { ix: "", bus_id: "bus_a", address: "0x44" } }
+  # Temperature Dallas sensor
+  #- !include { file: sensors/temp_DS18B20.yaml, vars: { ix: "Floor", address: "0x450417c411e3ff28" } }
+  - !include { file: sensors/temp_DS18B20_on_dallasng.yaml, vars: { ix: "Floor", address: "0x450417c411e3ff28" } }
+
+  # Temperature and Humidity sensor
+  - !include { file: sensors/temp_hum_SHT3x.yaml, vars: { ix: "", bus_id: "bus_a", address: "0x44" } }
   # # Illuminance sensor
   # - !include { file: sensors/lux_BH1750.yaml, vars: { ix: "", bus_id: "bus_a", address: "0x23" } }
 
