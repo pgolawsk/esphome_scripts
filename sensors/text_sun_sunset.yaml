@@ -1,6 +1,7 @@
 ---
 #* Sun sunset information virtual sensor configuration
 # Pawelo, 20230305, created based on https://esphome.io/components/sun.html
+# Pawelo, 20230921, switching of updates as this will be driven by time sync event (which is every 15 min)
 
 platform: sun
 name: Sun Next Sunset
@@ -8,4 +9,5 @@ type: sunset
 id: sunset
 icon: mdi:weather-sunset-down
 state_topic: $devicename/next_sunset
-update_interval: ${updates}
+# update_interval: ${updates}
+update_interval: never
