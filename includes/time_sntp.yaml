@@ -2,6 +2,8 @@
 #* Activates time source and time based events
 # Pawelo, 20230206, created based on https://esphome.io/components/time/index.html#base-time-config
 # Pawelo, 20230919, fix to display sunrise and sunset components (if they exists) in local time
+# Pawelo, 20230920, switching loging info to debug level
+
 time:
   - platform: sntp
 #    timezone: Europe/Warsaw
@@ -10,7 +12,7 @@ time:
       then:
         - logger.log:
             format: "Synchronized system clock via SNTP"
-            level: INFO
+            level: DEBUG
         - lambda: |-
             if (sunrise) { id(sunrise).update(); }
             if (sunset) { id(sunset).update(); }
