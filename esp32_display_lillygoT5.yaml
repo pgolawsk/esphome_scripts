@@ -4,6 +4,7 @@
 ###
 # Pawelo 20230308, created based on https://github.com/danuw/esphome-configs/blob/epd-multipage/epd47-1.yaml
 # Pawelo 20230310, added battery sensor based on https://github.com/esphome/feature-requests/issues/1109#issuecomment-1408376503
+# Pawelo 20230923, 1.1.5, added HA Connected binary sensor
 #TODO: good example to deep_sleep: https://gist.github.com/Plawasan/8e27956db016eb5158311b94d096509b
 #                                  https://gist.github.com/Plawasan/4ae826b05aaa7812f3a191714ca47a50
 #                                  https://pastebin.com/Yd7xhtCQ
@@ -67,7 +68,7 @@ text_sensor:
 
 binary_sensor:
   # HA Connected
-  - !include { file: sensors/binary_ha_connected.yaml, vars: { ix: "" } }
+  - !include sensors/binary_ha_connected.yaml
 
   # LilyGo buttons
   - !include { file: sensors/binary_display_button.yaml, vars: { ix: "Refresh", gpio: "GPIO39" } }

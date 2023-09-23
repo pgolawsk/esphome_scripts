@@ -16,6 +16,7 @@
 # Pawelo 20221127, 1.1.3, added $devices variable to name configutation deployed
 # Pawelo 20221127, 1.1.4, moved i2c configuration to separate include file
 # Pawelo 20221203, 1.1.5, added Restart button on web
+# Pawelo 20230923, 1.1.5, added HA Connected binary sensor
 
 #! run with this command to override substitutions
 # esphome -s devicename espXX -s updates 1min -s room <Room name> -s mqtt_room <room> run esp12f_SSss_MMmm__PP.yaml --device 192.168.x.x
@@ -58,6 +59,10 @@ text_sensor:
   - !include sensors/text_uptime.yaml
   - !include sensors/text_version.yaml
   - !include sensors/text_wifi_info.yaml
+
+binary_sensor:
+  # HA Connected
+  - !include sensors/binary_ha_connected.yaml
 
 sensor:
   - !include sensors/uptime.yaml

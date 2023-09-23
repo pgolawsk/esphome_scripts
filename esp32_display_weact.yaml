@@ -4,6 +4,7 @@
 #* Please read README.md for details
 ###
 # Pawelo 20230921, created based on esp32_display.yaml and https://github.com/esphome/feature-requests/issues/2101
+# Pawelo 20230923, 1.1.5, added HA Connected binary sensor
 #
 #! run with this command to override substitutions
 # esphome -s devicename espXX -s updates 1min -s room <Room name> -s mqtt_room <room> run esp32_MMmm_SSss__PP.yaml --device 192.168.x.x
@@ -61,7 +62,7 @@ text_sensor:
 
 binary_sensor:
   # HA Connected
-  - !include { file: sensors/binary_ha_connected.yaml, vars: { ix: "" } }
+  - !include sensors/binary_ha_connected.yaml
 
 sensor:
   - !include sensors/temp_internal.yaml

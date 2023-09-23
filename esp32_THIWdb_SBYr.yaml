@@ -8,6 +8,7 @@
 #! Pawelo 20230916, 1.1.5, (NOT DONE) fix to preserve total values between reboots, based on https://github.com/esphome/feature-requests/issues/461
 # Pawelo 20230917, 1.1.5, added temp & humid via SHT30
 # Pawelo 20230919, 1.1.5, added sunrise and sunset text sensors
+# Pawelo 20230923, 1.1.5, added HA Connected binary sensor
 #
 #! run with this command to override substitutions
 # esphome -s devicename espXX -s updates 1min -s room <Room name> -s mqtt_room <room> run esp32_MMmm_SSss__PP.yaml --device 192.168.x.x
@@ -56,6 +57,10 @@ text_sensor:
   # Sun component
   - !include { file: sensors/text_sun_sunrise.yaml, vars: { updates: "${updates}" } }
   - !include { file: sensors/text_sun_sunset.yaml, vars: { updates: "${updates}" } }
+
+binary_sensor:
+  # HA Connected
+  - !include sensors/binary_ha_connected.yaml
 
 sensor:
   - !include sensors/temp_internal.yaml
