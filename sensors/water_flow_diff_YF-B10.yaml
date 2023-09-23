@@ -2,6 +2,7 @@
 #* Water flow sensor using YF-B10 valve configuration - based on difference of 2 pulse_counter's
 # Pawelo, 20230916, created
 # Pawelo, 20230917, set accuracy_decimals to 2
+# Pawelo, 20230919, calculate values from range (0;80)
 
 platform: template
 id: water_flow${ix}
@@ -30,3 +31,7 @@ lambda: |-
     b = id(water_flow${ix_B}).state;
   }
   return (a ${operator} b);
+filters:
+  - clamp:
+      min_value: 0
+      max_value: 80
