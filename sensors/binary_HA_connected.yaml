@@ -3,13 +3,13 @@
 # Pawelo, 20230923, created based on https://github.com/ageurtse/ESP-Home-SO-counter-with-persistant-memory-module/blob/main/102-fram.yaml
 
 platform: status
-name: "$room $devicename HA Connected${ix}"
-id: ha_connected${ix}
+name: "$room $devicename HA Connected"
+id: ha_connected
 icon: mdi:connection
 internal: true
-state_topic: $devicename/ha_connected${ix}
+state_topic: $devicename/ha_connected$
 on_state:
   - mqtt.publish:
-      topic: "$mqtt_location/$mqtt_room/ha_connected${ix}"
+      topic: "$mqtt_location/$mqtt_room/ha_connected"
       payload: !lambda |-
-        return to_string(id(ha_connected${ix}).state);
+        return to_string(id(ha_connected).state);
