@@ -2,7 +2,7 @@
 #* Water usage sensors using YF-B10 valve configuration
 # Pawelo, 20230111, created based on https://www.pieterbrinkman.com/2022/02/02/build-a-cheap-water-usage-sensor-using-esphome-home-assistant-and-a-proximity-sensor/
 # Pawelo, 20230121, final configuration with real sensor
-# TODO: calibrate sensor on water
+# TODO: calibrate sensor on water, based on https://community.home-assistant.io/t/using-esphome-to-build-a-water-flow-rate-meter/119380/75
 
 platform: pulse_meter
 pin:
