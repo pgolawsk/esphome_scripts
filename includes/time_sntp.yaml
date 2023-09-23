@@ -13,9 +13,9 @@ time:
         - logger.log:
             format: "Synchronized system clock via SNTP"
             level: DEBUG
-        - lambda: |-
-            if (sunrise) { id(sunrise).update(); }
-            if (sunset) { id(sunset).update(); }
+        # - lambda: |-
+        #     if (sunrise) { id(sunrise).update(); }
+        #     if (sunset) { id(sunset).update(); }
     #     - component.update: sunrise
     #     - component.update: sunset
 
