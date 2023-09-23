@@ -66,6 +66,9 @@ text_sensor:
   - !include { file: sensors/text_powered_from_lilygo_T5_47.yaml, vars: { ix: "", usb_threshold_voltage: 4.5 } } # below threshold voltage its is BATERY, above it's USB
 
 binary_sensor:
+  # HA Connected
+  - !include { file: sensors/binary_ha_connected.yaml, vars: { ix: "" } }
+
   # LilyGo buttons
   - !include { file: sensors/binary_display_button.yaml, vars: { ix: "Refresh", gpio: "GPIO39" } }
   - !include { file: sensors/binary_display_button.yaml, vars: { ix: "Next", gpio: "GPIO34" } }
@@ -114,7 +117,7 @@ button:
   # Restart button
   - !include { file: buttons/restart_button.yaml }
 
-  # LilyGo buttons
+  # display buttons
   - !include { file: buttons/display_button.yaml, vars: { ix: "Refresh", display_id: "t5_display", command: "", mdi_icon: "refresh" } }
   - !include { file: buttons/display_button.yaml, vars: { ix: "Next", display_id: "t5_display", command: "next", mdi_icon: "page-next" } }
   - !include { file: buttons/display_button.yaml, vars: { ix: "Prev", display_id: "t5_display", command: "previous", mdi_icon: "page-previous" } }
