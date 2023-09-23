@@ -75,7 +75,10 @@ text_sensor:
   # # Gesture sensor
   # - !include { file: sensors/text_gesture_apds9960.yaml }
 
-# binary_sensor:
+binary_sensor:
+  # HA Connected
+  - !include { file: sensors/binary_ha_connected.yaml, vars: { ix: "" } }
+
 #   # Double light Switch on AVT5713
 #   - !include { file: sensors/binary_switch.yaml, vars: { ix: "A", gpio: "GPIO13" } }
 #   - !include { file: sensors/binary_switch.yaml, vars: { ix: "B", gpio: "GPIO14" } }

@@ -48,6 +48,9 @@ text_sensor:
   - !include sensors/text_version.yaml
   - !include sensors/text_wifi_info.yaml
 
+binary_sensor:
+  # HA Connected
+  - !include { file: sensors/binary_ha_connected.yaml, vars: { ix: "" } }
 
 sensor:
   - !include sensors/temp_internal.yaml

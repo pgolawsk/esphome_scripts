@@ -1,0 +1,15 @@
+---
+#* HomeAssistant Connected status sensor
+# Pawelo, 20230923, created based on https://github.com/ageurtse/ESP-Home-SO-counter-with-persistant-memory-module/blob/main/102-fram.yaml
+
+platform: status
+name: "$room $devicename HA Connected${ix}"
+id: ha_connected${ix}
+icon: mdi:connection
+internal: true
+state_topic: $devicename/ha_connected${ix}
+on_state:
+  - mqtt.publish:
+      topic: "$mqtt_location/$mqtt_room/ha_connected${ix}"
+      payload: !lambda |-
+        return to_string(id(ha_connected${ix}).state);
