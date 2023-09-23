@@ -1,0 +1,304 @@
+---
+#* ESP32 WeAct 2.9' display
+#! NOT CONFIRMED AS WORKING YET
+#* Please read README.md for details
+###
+# Pawelo 20230921, created based on esp32_display.yaml and https://github.com/esphome/feature-requests/issues/2101
+#
+#! run with this command to override substitutions
+# esphome -s devicename espXX -s updates 1min -s room <Room name> -s mqtt_room <room> run esp32_MMmm_SSss__PP.yaml --device 192.168.x.x
+# heare are default values if those are not given via command line
+substitutions:
+#  devices: "Temperature and Humidity via SHTx30 and Illuminance via BH1750"
+  devices: "WeAct Display and MQTT sensors"
+  project_name: "pgolawsk.esp_home"
+  version: "1.1.5"
+
+  devicename: esp32-xx
+  updates: "30s"
+  room: Room # friendly name of room to display in HA/Web
+  # this is ADDITIONAL topic and sub-topic for MQTT - it publishes under <topic>/<sub-topic>/<sensor>
+  # by default it's also published under <devicename>/<id_sensor>
+  mqtt_location: home
+  mqtt_room: room
+
+  run_time: 20s #needs to be as long as needed to get data
+  sleep_time: 2min # normal sleep time
+  away_sleep_time: 1h # sleep time when nobody's at home
+  night_sleep_time: 6.5h # 1st sleep time after midnight
+  refresh_interval: ${updates} #refresh when on USB power
+
+# Include basics of a board
+<<: !include includes/board_esp32.yaml
+# Include/Override mqtt with/without RTTTL support if needed
+<<: !include includes/mqtt.yaml
+#<<: !include includes/mqtt_with_rtttl.yaml
+#<<: !include includes/qr_guestwifi.yaml
+
+# Include interfaces needed
+# <<: !include { file: interfaces/i2c.yaml, vars: { bus_id: "bus_a", sda: "GPIO12", scl: "GPIO13" } }
+# <<: !include { file: interfaces/i2c.yaml, vars: { bus_id: "bus_b", sda: "GPIO14", scl: "GPIO15" } }
+# <<: !include { file: interfaces/dallas.yaml, vars: { gpio: "GPIO10" } }
+# <<: !include { file: interfaces/rtttl.yaml, vars: { ix: "" } }
+
+# # reinclude MQTT as a bug in ESPHOME, see: https://github.com/esphome/issues/issues/2180, https://github.com/esphome/issues/issues/1487
+# mqtt:
+#   broker: !secret mqtt_ip
+#   port: !secret mqtt_port
+# #  username: $devicename
+#   username: !secret mqtt_user
+#   password: !secret mqtt_password
+#   client_id: $devicename
+# # id: $devicename
+
+text_sensor:
+  - !include sensors/text_uptime.yaml
+  - !include sensors/text_version.yaml
+  - !include sensors/text_wifi_info.yaml
+  # Sun component
+  - !include { file: sensors/text_sun_sunrise.yaml, vars: { updates: "${updates}" } }
+  - !include { file: sensors/text_sun_sunset.yaml, vars: { updates: "${updates}" } }
+
+binary_sensor:
+  # HA Connected
+  - !include { file: sensors/binary_ha_connected.yaml, vars: { ix: "" } }
+
+sensor:
+  - !include sensors/temp_internal.yaml
+  - !include sensors/uptime.yaml
+  - !include sensors/wifi_signal.yaml
+  # Sun component
+  - !include sensors/sun_elevation.yaml
+  - !include sensors/sun_azimuth.yaml
+
+  # # Temperature and Humidity sensor
+  # - !include { file: sensors/temp_hum_SHT3x.yaml, vars: { ix: "", bus_id: "bus_a", address: "0x44" } }
+  # # Illuminance sensor
+  # - !include { file: sensors/lux_BH1750.yaml, vars: { ix: "", bus_id: "bus_a", address: "0x23" } }
+
+  # Various MQTT sensors
+  - !include { file: sensors/value_mqtt_subscribe.yaml, vars: { topic: "home/entrance/temperature", id: "temp_entrance", name: "Temperature Entrance", unit: "°C", mdi_icon: "thermometer" } }
+  - !include { file: sensors/value_mqtt_subscribe.yaml, vars: { topic: "home/upstairs/temperature", id: "temp_upstairs", name: "Temperature Upstairs", unit: "°C", mdi_icon: "thermometer" } }
+
+  - !include { file: sensors/value_mqtt_subscribe.yaml, vars: { topic: "measures/underfloor/temperature", id: "temp_underfloor", name: "Temperature Underfloor", unit: "°C", mdi_icon: "thermometer" } }
+  - !include { file: sensors/value_mqtt_subscribe.yaml, vars: { topic: "measures/underfloor/temperature_Dwall", id: "temp_underfloorW", name: "Temperature Underfloor Wall", unit: "°C", mdi_icon: "thermometer" } }
+  - !include { file: sensors/value_mqtt_subscribe.yaml, vars: { topic: "measures/underfloor/temperature_Dboiler", id: "temp_underfloorB", name: "Temperature Underfloor Boiler", unit: "°C", mdi_icon: "thermometer" } }
+  - !include { file: sensors/value_mqtt_subscribe.yaml, vars: { topic: "measures/aquarium_window/temperature", id: "temp_aquariumW", name: "Temperature Aquarium Window", unit: "°C", mdi_icon: "thermometer" } }
+
+  - !include { file: sensors/value_mqtt_subscribe.yaml, vars: { topic: "home/entrance/humidity", id: "hum_entrance", name: "Humidity Entrance", unit: "%", mdi_icon: "water-percent" } }
+  - !include { file: sensors/value_mqtt_subscribe.yaml, vars: { topic: "home/upstairs/humidity", id: "hum_upstairs", name: "Humidity Upstairs", unit: "%", mdi_icon: "water-percent" } }
+  - !include { file: sensors/value_mqtt_subscribe.yaml, vars: { topic: "measures/underfloor/humidity", id: "hum_underfloor", name: "Humidity Underfloor", unit: "%", mdi_icon: "water-percent" } }
+  - !include { file: sensors/value_mqtt_subscribe.yaml, vars: { topic: "measures/aquarium_window/humidity", id: "hum_aquariumW", name: "Humidity Aquarium Window", unit: "%", mdi_icon: "water-percent" } }
+
+    # on_value: # Actions to perform once data for the last sensor has been received
+    #   then:
+    #     - script.execute: all_data_received
+
+# switch:
+#   # Restart button
+#   - !include switches/platform_restart.yaml
+
+button:
+  # Restart button
+  - !include { file: buttons/restart_button.yaml }
+
+  # display buttons
+  - !include { file: buttons/display_button.yaml, vars: { ix: "Refresh", display_id: "weact_display", command: "", mdi_icon: "refresh" } }
+  - !include { file: buttons/display_button.yaml, vars: { ix: "Next", display_id: "weact_display", command: "next", mdi_icon: "page-next" } }
+  - !include { file: buttons/display_button.yaml, vars: { ix: "Prev", display_id: "weact_display", command: "previous", mdi_icon: "page-previous" } }
+
+  # - platform: template
+  #   name: "${devicename} Refresh"
+  #   icon: "mdi:update"
+  #   on_press:
+  #     then:
+  #     - component.update: t5_display
+
+# deep_sleep:
+#   run_duration: ${run_time}
+#   sleep_duration: ${sleep_time}
+#   id: deep_sleep_1
+#   esp32_ext1_wakeup:
+#     pins: GPIO39
+#     mode: ALL_LOW
+
+font:
+  - file: 'fonts/Roboto-Medium.ttf'
+    id: size_85_font
+    size: 85
+  - file: 'fonts/Roboto-Medium.ttf'
+    id: size_75_font
+    size: 75
+  - file: 'fonts/Roboto-Medium.ttf'
+    id: size_60_font
+    size: 60
+  - file: 'fonts/Roboto-Medium.ttf'
+    id: size_50_font
+    size: 50
+  - file: 'fonts/Roboto-Light.ttf'
+    id: size_12_font
+    size: 12
+  - file: 'fonts/Roboto-Medium.ttf'
+    id: size_15_font
+    size: 15
+  - file: 'fonts/Roboto-Medium.ttf'
+    id: size_14_font
+    size: 14
+  - file: 'fonts/Roboto-Medium.ttf'
+    id: size_20_font
+    glyphs:
+      ['&', '@', '!', ',', '.', '?', '"', '%', '(', ')', '+', '-', '_', ':', '°', '0',
+        '1', '2', '3', '4', '5', '6', '7', '8', '9', 'A', 'B', 'C', 'D', 'E',
+        'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S',
+        'T', 'U', 'V', 'W', 'X', 'Y', 'Z', ' ', 'a', 'b', 'c', 'd', 'e', 'f',
+        'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't',
+        'u', 'v', 'w', 'x', 'y', 'z', '/']
+    size: 20
+  - file: 'fonts/Roboto-Medium.ttf'
+    id: size_25_font
+    size: 25
+  - file: 'fonts/Roboto-Medium.ttf'
+    id: size_30_font
+    size: 30
+  - file: 'fonts/materialdesignicons-webfont.ttf'
+    id: weather_font
+    size: 120
+    glyphs: [
+      # Weather
+      "\U000F0599", # mdi-weather-sunny
+      "\U000F0590", # mdi-weather-cloudy
+      "\U000F0596", # mdi-weather-pouring
+      "\U000F067F", # mdi-weather-snowy-rainy
+      "\U000F0F36", # mdi-weather-snowy-heavy
+      "\U000F059E", # mdi-weather-windy-variant
+      "\U000F0591", # mdi-weather-fog
+      "\U000F0F31", # mdi-weather-night-partly-cloudy
+      "\U000F0595", # mdi-weather-partly-cloudy
+      "\U000F0597", # mdi-weather-rainy
+      "\U000F0598", # mdi-weather-snowy
+      "\U000F0594", # mdi-weather-clear-night
+      "\U000F199F", # unknown
+      ]
+  - file: 'fonts/materialdesignicons-webfont.ttf'
+    id: weather_temp_icon_font
+    size: 25
+    glyphs: [
+      "\U000F0E03", # mdi-down
+      "\U000F0E02", # mdi-up
+      "\U000F058C", # raindrop
+      "\U000F059D", # wind
+      ]
+  - file: 'fonts/materialdesignicons-webfont.ttf'
+    id: home_icon_font
+    size: 20
+    glyphs: [
+      "\U000F0F48", # mdi-chair-rolling
+      "\U000F02E3", # mdi-bed
+      "\U000F04B9", # mdi-sofa
+      "\U000F065A", # mdi-pot-steam
+      ]
+  - file: 'fonts/materialdesignicons-webfont.ttf'
+    id: weather_font_45
+    size: 45
+    glyphs: [
+      # Moon
+      "\U000F0F64", # new_moon
+      "\U000F0F67", # waxing_crecent
+      "\U000F0F61", # first_quarter
+      "\U000F0F66", # waxing_gibbous
+      "\U000F0F62", # full_moon
+      "\U000F0F68", # waning_gibbous
+      "\U000F0F63", # last_quarter
+      "\U000F0F65", # waning_crescent
+      "\U000F199F", # mdi-timer-sand-complete
+      ]
+  - file: 'fonts/materialdesignicons-webfont.ttf'
+    id: sun_icon_font
+    size: 20
+    glyphs: [
+      "\U000F059C", # sun rise
+      "\U000F059B", # sun set
+      ]
+  - file: 'fonts/materialdesignicons-webfont.ttf'
+    id: wlan_icon_font
+    size: 25
+    glyphs: [
+      "\U000F0920", # wifi-strength-1-alert
+      "\U000F0922", # wifi-strenght-2
+      "\U000F0925", # wifi-strenght-3
+      "\U000F0928", # wifi-strenght-4
+      "\U000F092E", # wifi-strength-off-outline
+      ]
+
+external_components:
+  - source: github://pr#4579
+    components: [waveshare_epaper]
+
+spi:
+  id: spi_v
+  clk_pin: GPIO18 # SDA
+  mosi_pin: GPIO23 # SCL
+
+display:
+  - platform: waveshare_epaper
+    model: 2.90in
+    id: weact_display
+    cs_pin: GPIO5
+    busy_pin: GPIO15
+    reset_pin: GPIO2
+    dc_pin: GPIO0
+    rotation: 180
+#    full_update_every: 60
+    update_interval: 120s
+
+    pages:
+      - id: blank
+        lambda: |-
+          // #define xres 540
+          // #define yres 960
+          #define xRes 296
+          #define yRes 128
+          //draw clear background
+          it.filled_rectangle(0, 0, xRes, yRes, COLOR_OFF);
+          it.print(xRes/2, yRes/2, id(size_14_font), COLOR_ON, TextAlign::CENTER, "Refreshing...");
+
+      - id: page0
+        lambda: |-
+          int x, y;
+
+          //sun set-rise
+          it.printf(85, 22, id(sun_icon_font), TextAlign::BASELINE_RIGHT, "\U000F059C");
+          it.printf(135, 22, id(size_20_font), TextAlign::BASELINE_RIGHT, "%s", id(sunset).state.c_str());
+                                        it.printf(85, 44, id(sun_icon_font), TextAlign::BASELINE_RIGHT, "\U000F059B");
+          it.printf(135, 44, id(size_20_font), TextAlign::BASELINE_RIGHT, "%s", id(sunrise).state.c_str());
+          //date
+
+          it.strftime(210, 43, id(size_50_font), TextAlign::BASELINE_RIGHT, "%d", id(sntp_time).now());
+          it.printf(213, 43, id(size_14_font), TextAlign::BASELINE_LEFT, "D");
+          it.strftime(280, 43, id(size_50_font), TextAlign::BASELINE_RIGHT, "%m", id(sntp_time).now());
+          it.printf(283, 43, id(size_14_font), TextAlign::BASELINE_LEFT, "M");
+
+          //line
+          it.line(0, 54, 296, 54);
+
+          //Time
+          it.strftime(20, 45, id(size_85_font), "%H:%M", id(sntp_time).now());
+          /* it.strftime(225, 68, id(size_60_font), "%S", id(sntp_time).now()); */
+
+          it.strftime(250, 58, id(size_20_font), "%a", id(sntp_time).now());
+
+          //wifi
+          if (id(wifi_rssi).has_state()) {
+            x = 265, y = 120;
+            if (id(wifi_rssi).state >= -50) {
+              it.printf(x, y, id(wlan_icon_font), TextAlign::BASELINE_CENTER , "\U000F0928");
+            } else if (id(wifi_rssi).state >= -60) {
+              it.printf(x, y, id(wlan_icon_font), TextAlign::BASELINE_CENTER , "\U000F0925");
+            } else if (id(wifi_rssi).state >= -67) {
+              it.printf(x, y, id(wlan_icon_font), TextAlign::BASELINE_CENTER , "\U000F0922");
+            } else if (id(wifi_rssi).state >= -70) {
+              it.printf(x, y, id(wlan_icon_font), TextAlign::BASELINE_CENTER , "\U000F0920");
+            } else {
+              it.printf(x, y, id(wlan_icon_font), TextAlign::BASELINE_CENTER , "\U000F092E");
+            }
+          }
