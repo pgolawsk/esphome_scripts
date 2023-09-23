@@ -1,0 +1,40 @@
+---
+#* Activates time source and time based events
+# Pawelo, 20230206, created based on https://esphome.io/components/time/index.html#base-time-config
+# Pawelo, 20230919, fix to display sunrise and sunset components (if they exists) in local time
+# Pawelo, 20230920, switching loging info to debug level
+
+time:
+  - platform: sntp
+#    timezone: Europe/Warsaw
+    id: sntp_time
+    on_time_sync:
+      then:
+        - logger.log:
+            format: "Synchronized system clock via SNTP"
+            level: DEBUG
+        - lambda: |-
+            if (sunrise) { id(sunrise).update(); }
+            if (sunset) { id(sunset).update(); }
+    #     - component.update: sunrise
+    #     - component.update: sunset
+
+        # on_time:
+    #   # Every 5 minutes
+    #   - seconds: 0
+    #     minutes: /5
+    #     then:
+    #       - switch.toggle: my_switch
+
+    #   # Every morning on weekdays
+    #   - seconds: 0
+    #     minutes: 30
+    #     hours: 7
+    #     days_of_week: MON-FRI
+    #     then:
+    #       - light.turn_on: my_light
+
+    #   # Cron syntax, trigger every 5 minutes
+    #   - cron: '* /5 * * * *'
+    #     then:
+    #       - switch.toggle: my_switch
