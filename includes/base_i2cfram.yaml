@@ -1,0 +1,10 @@
+---
+#* Include i2c FRAM base
+#! NOT TESTED
+# Pawelo, 20230923, created based on https://github.com/ageurtse/ESP-Home-SO-counter-with-persistant-memory-module/blob/main/102-fram.yaml
+
+includes:
+  - "i2cfram.h"
+libraries:
+#  - "Wire"
+  - https://github.com/RobTillaart/FRAM_I2C.git#master

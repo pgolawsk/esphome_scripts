@@ -1,0 +1,38 @@
+---
+#* FRAM interface on I2C (f.ex. MB85RC256V)
+#! NOT TESTED
+# Pawelo, 20230319, created based on https://esphome.io/components/sensor/apds9960.html
+
+#Enabeling the I2CFram module
+custom_component:
+  components:
+    - id: fram
+  lambda: |-
+    auto fram = new MyFram(0x50);
+    App.register_component(fram);
+    return {fram};
+
+#? EXAMPLE
+# #global counter for total usage
+# globals:
+#   - id: counter_1
+#     type: float
+
+# binary_sensor:
+#   - platform: status
+#     name: "${friendly_name} Connected with HA"
+#     id: homeassistant_status
+
+#   - platform: gpio
+#     name: "${friendly_name} counter 1"
+#     id: puls_counter_1
+#     pin:
+#       number: D5
+#       mode:
+#         input: true
+#     #when there is a new puls, increment the global puls variable and write it to memory, only the pulse count is stored not the actual output.
+#     on_press:
+#       then:
+#         - lambda: |-
+#             id(counter_1) += 1;
+#             writetofram(0x01,id(counter_1));
