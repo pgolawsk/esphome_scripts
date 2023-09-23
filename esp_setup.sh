@@ -139,10 +139,11 @@ esphome -s devicename esp01s-100 -s updates 1min -s room "Kitchen" -s mqtt_room 
 esphome -s devicename esp32-35 -s updates 1min -s room Garage -s mqtt_location measures -s mqtt_room garage run esp32_THIWdb_SBYr.yaml --device 192.168.x.x
 
 esphome -s devicename esp32-30 -s updates 1min -s room Test32 -s mqtt_location measures -s mqtt_room test32 run esp32_dev.yaml --device 192.168.x.x
+esphome -s devicename esp32-30 -s updates 60s -s room Test32Display -s mqtt_location measures -s mqtt_room test32disp run esp32_display_weact.yaml --device 192.168.x.x
 
 esphome -s devicename esp32-40 -s updates 1min -s room Test32cam -s mqtt_location measures -s mqtt_room test32cam run esp32_cam.yaml --device 192.168.x.x
 
-esphome -s devicename esp32-50 -s updates 60s -s room Display -s mqtt_location measures -s mqtt_room display run esp32_display.yaml --device 192.168.x.x
+esphome -s devicename esp32-50 -s updates 60s -s room Display -s mqtt_location measures -s mqtt_room display run esp32_display_lillygoT5.yaml --device 192.168.x.x
 
 esphome -s devicename miniss-200 -s updates 60s -s room TestMiniSS -s mqtt_location measures -s mqtt_room test_miniss run miniss_dev.yaml --device 192.168.x.x
 
