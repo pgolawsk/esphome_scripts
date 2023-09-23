@@ -19,6 +19,7 @@
 #TODO: Water meter base on pulse counter https://www.pieterbrinkman.com/2022/02/02/build-a-cheap-water-usage-sensor-using-esphome-home-assistant-and-a-proximity-sensor/
 #TODO: Add capture logs from the devices via Loki - read: https://github.com/lux4rd0/mqtt-logger
 #? For MDI icons see there https://pictogrammers.github.io/@mdi/font/2.0.46/ or https://mdisearch.com
+#TODO: FRAM - on https://github.com/esphome/esphome/pull/4880 and https://github.com/sharkydog/esphome-fram
 
 #######################
 #* Configure new network for sensors at home
