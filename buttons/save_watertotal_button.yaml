@@ -1,0 +1,18 @@
+---
+#* Save water total button on interface
+#! NOT TESTED
+# Pawelo, 20230917, created
+
+platform: template
+name: "$room Button Save Totals"
+id: button_save
+icon: "mdi:content-save-all"
+state_topic: $devicename/button_save
+on_press:
+  then:
+    - globals.set:
+        id: global_watertotal_all
+        value: !lambda 'return id(water_flow_all).state / ${pulses_per_liter};'
+    - globals.set:
+        id: global_watertotal_garden
+        value: !lambda 'return id(water_flow_garden).state / ${pulses_per_liter};'

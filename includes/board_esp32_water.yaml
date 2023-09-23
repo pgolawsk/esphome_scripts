@@ -1,0 +1,64 @@
+---
+#* Base configuration for ESP-32-WROOM board
+#! NOT TESTED
+# Pawelo 20230101, created as copy of board_esp12f.yaml
+# Pawelo 20230305, added time_sntp amd sun by default
+# Pawelo 20230305, forked as separate for water device
+
+globals:
+  - id: global_watertotal_all
+    type: float
+    restore_value: true
+  - id: global_watertotal_garden
+    type: float
+    restore_value: true
+  # - id: global_watertotal_home
+  #   type: float
+  #   restore_value: true
+
+esphome:
+  name: $devicename
+  comment: $room ESP32 controller with $devices
+#  platform: ESP8266   # OLD notation
+  project:
+    name: $project_name
+    version: $version
+  on_boot:
+    then:
+      - pulse_meter.set_total_pulses:
+          id: water_flow_all
+          value: !lambda 'return (id(global_watertotal_all) * ${pulses_per_liter});'
+      - pulse_meter.set_total_pulses:
+          id: water_flow_garden
+          value: !lambda 'return (id(global_watertotal_garden) * ${pulses_per_liter});'
+  on_shutdown:
+    then:
+      - globals.set:
+          id: global_watertotal_all
+          value: !lambda 'return id(water_flow_all).state / ${pulses_per_liter};'
+      - globals.set:
+          id: global_watertotal_garden
+          value: !lambda 'return id(water_flow_garden).state / ${pulses_per_liter};'
+
+esp32:
+  board: esp32dev
+#  restore_from_flash: true
+  # framework:
+  #   type: arduino
+
+preferences:
+  flash_write_interval: 5min
+
+<<: !include wifi.yaml
+<<: !include api.yaml
+<<: !include ota.yaml
+<<: !include logger.yaml
+<<: !include { file: web_server.yaml, vars: { ota_enabled: false } }
+<<: !include time_sntp.yaml
+<<: !include sun.yaml
+<<: !include prometheus.yaml
+#! as mqtt cannot be overwriten later in the code need to include in in each script (to facilitate "on_message" customization)
+#<<: !include mqtt.yaml
+
+# packages:
+#   network: !include mqtt.yaml

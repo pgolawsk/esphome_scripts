@@ -1,0 +1,11 @@
+---
+#* Set total Water Usage by native ESPHome API
+#! NOT TESTED
+# Pawelo, 20230916, created based on https://github.com/esphome/feature-requests/issues/461
+service: set_total_water${ix}
+variables:
+  water_meter_reading: float
+then:
+  - pulse_meter.set_total_pulses:
+      id: water_flow${ix}
+      value: !lambda 'return to_int(water_meter_reading * ${pulses_per_liter});'
