@@ -64,6 +64,11 @@ binary_sensor:
   # HA Connected
   - !include sensors/binary_ha_connected.yaml
 
+  # # Physical buttons
+  # - !include { file: sensors/binary_display_button.yaml, vars: { ix: "Refresh", gpio: "GPIO39" } }
+  # - !include { file: sensors/binary_display_button.yaml, vars: { ix: "Next", gpio: "GPIO34" } }
+  # - !include { file: sensors/binary_display_button.yaml, vars: { ix: "Prev", gpio: "GPIO35" } }
+
 sensor:
   - !include sensors/temp_internal.yaml
   - !include sensors/uptime.yaml
