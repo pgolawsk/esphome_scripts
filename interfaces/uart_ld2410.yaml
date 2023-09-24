@@ -21,24 +21,119 @@ uart:
   stop_bits: 1
 
 ld2410:
-  timeout: 150s
-  max_move_distance : ${max_distance}
-  max_still_distance: ${max_distance}
-  g0_move_threshold: 10
-  g0_still_threshold: 20
-  g1_move_threshold: 10
-  g1_still_threshold: 20
-  g2_move_threshold: 20
-  g2_still_threshold: 21
-  g3_move_threshold: 30
-  g3_still_threshold: 31
-  g4_move_threshold: 40
-  g4_still_threshold: 41
-  g5_move_threshold: 50
-  g5_still_threshold: 51
-  g6_move_threshold: 60
-  g6_still_threshold: 61
-  g7_move_threshold: 70
-  g7_still_threshold: 71
-  g8_move_threshold: 80
-  g8_still_threshold: 81
+  uart_id: uart_${ix}
+  throttle: 1000ms
+  # timeout: 150s
+  # max_move_distance : ${max_distance}
+  # max_still_distance: ${max_distance}
+  # g0_move_threshold: 10
+  # g0_still_threshold: 20
+  # g1_move_threshold: 10
+  # g1_still_threshold: 20
+  # g2_move_threshold: 20
+  # g2_still_threshold: 21
+  # g3_move_threshold: 30
+  # g3_still_threshold: 31
+  # g4_move_threshold: 40
+  # g4_still_threshold: 41
+  # g5_move_threshold: 50
+  # g5_still_threshold: 51
+  # g6_move_threshold: 60
+  # g6_still_threshold: 61
+  # g7_move_threshold: 70
+  # g7_still_threshold: 71
+  # g8_move_threshold: 80
+  # g8_still_threshold: 81
+
+number:
+  - platform: ld2410
+    timeout:
+      name: Setup ${sensor_name} timeout
+      internal: true
+    light_threshold:
+      name: Setup ${sensor_name} light threshold
+      internal: true
+    max_move_distance_gate:
+      name: Setup ${sensor_name} max move distance gate
+      internal: true
+    max_still_distance_gate:
+      name: Setup ${sensor_name} max still distance gate
+      internal: true
+    g0:
+      move_threshold:
+        name: Setup ${sensor_name} g0 move threshold
+        internal: true
+      still_threshold:
+        name: Setup ${sensor_name} g0 still threshold
+        internal: true
+    g1:
+      move_threshold:
+        name: Setup ${sensor_name} g1 move threshold
+        internal: true
+      still_threshold:
+        name: Setup ${sensor_name} g1 still threshold
+        internal: true
+    g2:
+      move_threshold:
+        name: Setup ${sensor_name} g2 move threshold
+        internal: true
+      still_threshold:
+        name: Setup ${sensor_name} g2 still threshold
+        internal: true
+    g3:
+      move_threshold:
+        name: Setup ${sensor_name} g3 move threshold
+        internal: true
+      still_threshold:
+        name: Setup ${sensor_name} g3 still threshold
+        internal: true
+    g4:
+      move_threshold:
+        name: Setup ${sensor_name} g4 move threshold
+        internal: true
+      still_threshold:
+        name: Setup ${sensor_name} g4 still threshold
+        internal: true
+    g5:
+      move_threshold:
+        name: Setup ${sensor_name} g5 move threshold
+        internal: true
+      still_threshold:
+        name: Setup ${sensor_name} g5 still threshold
+        internal: true
+    g6:
+      move_threshold:
+        name: Setup ${sensor_name} g6 move threshold
+        internal: true
+      still_threshold:
+        name: Setup ${sensor_name} g6 still threshold
+        internal: true
+    g7:
+      move_threshold:
+        name: Setup ${sensor_name} g7 move threshold
+        internal: true
+      still_threshold:
+        name: Setup ${sensor_name} g7 still threshold
+        internal: true
+    g8:
+      move_threshold:
+        name: Setup ${sensor_name} g8 move threshold
+        internal: true
+      still_threshold:
+        name: Setup ${sensor_name} g8 still threshold
+        internal: true
+
+select:
+  - platform: ld2410
+    distance_resolution:
+      name: "Setup ${sensor_name} distance resolution"
+      internal: true
+    baud_rate:
+      name: "Setup ${sensor_name} baud rate"
+      internal: true
+    light_function:
+      name: Setup ${sensor_name} light function
+      internal: true
+    out_pin_level:
+      name: Setup ${sensor_name} out pin level
+      internal: true

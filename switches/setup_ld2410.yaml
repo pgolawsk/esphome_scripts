@@ -1,0 +1,13 @@
+---
+#* Setup modes for LD2410 sensor
+# Pawelo, 20230024, created based on https://esphome.io/components/sensor/ld2410.html#switch
+
+platform: ld2410
+engineering_mode:
+  name: "Setup ${sensor_name} Engineering Mode"
+  internal: true
+  icon: mdi:tune
+bluetooth:
+  name: "Setup ${sensor_name} Bluetooth"
+  internal: true
+  icon: mdi:bluetooth

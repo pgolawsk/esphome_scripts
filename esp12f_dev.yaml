@@ -10,6 +10,8 @@
 # Pawelo 20221127, 1.1.4, moved i2c configuration to separate include file
 # Pawelo 20221203, 1.1.5, added Restart button on web
 # Pawelo 20230923, 1.1.5, added HA Connected binary sensor
+# Pawelo 20230924, 1.1.5, added Sun Direction and Time Of Day sensors text sensors
+# Pawelo 20230924, 1.1.5, updated LD2410 component - include sensor_name
 
 #! run with this command to override substitutions
 # esphome -s devicename espXX -s updates 1min -s room <Room name> -s mqtt_room <room> run esp12f_MMmm_SSss__PP.yaml --device 192.168.x.x
@@ -61,8 +63,8 @@ substitutions:
 # <<: !include { file: interfaces/dallasng.yaml, vars: { gpio: "GPIO10" } }
 <<: !include { file: interfaces/rtttl.yaml, vars: { ix: "" } }
 # <<: !include { file: interfaces/debug.yaml, vars: { update_interval: "15s" } }
-# <<: !include { file: interfaces/uart_ld2410.yaml, vars: { ix: "ld", tx_pin: "TX", rx_pin: "RX", max_distance: "4.5m" } }
-# <<: !include { file: interfaces/uart_ld2410.yaml, vars: { ix: "ld", tx_pin: "GPIO1", rx_pin: "GPIO3", max_distance: "4.5m" } }
+# <<: !include { file: interfaces/uart_ld2410.yaml, vars: { ix: "ld", tx_pin: "TX", rx_pin: "RX", max_distance: "4.5m", sensor_name: "LD2420" } }
+# <<: !include { file: interfaces/uart_ld2410.yaml, vars: { ix: "ld", tx_pin: "GPIO1", rx_pin: "GPIO3", max_distance: "4.5m", sensor_name: "LD2420" } }
 
 text_sensor:
   - !include sensors/text_uptime.yaml
@@ -72,9 +74,14 @@ text_sensor:
   # - !include sensors/text_debug.yaml
   - !include sensors/text_sun_sunrise.yaml
   - !include sensors/text_sun_sunset.yaml
+  - !include sensors/text_sun_time_of_day.yaml
+  - !include sensors/text_sun_direction.yaml
 
   # # Gesture sensor
   # - !include { file: sensors/text_gesture_apds9960.yaml }
+
+  # Distance sensor
+  - !include { file: sensors/text_version_ld2410.yaml, vars: { sensor_name: "LD2420" } }
 
 binary_sensor:
   # HA Connected
@@ -130,7 +137,7 @@ sensor:
   # - !include { file: sensors/water_usage_YF-B10.yaml, vars: { ix: "" } }
 
   # # Distance sensor
-  # - !include { file: sensors/distance_ld2410.yaml, vars: { ix: "" } }
+  # - !include { file: sensors/distance_ld2410.yaml, vars: { ix: "", sensor_name: "LD2420" } }
 
   # DC Current, Power, Voltage
   # - !include { file: sensors/current_power_voltage_INA226.yaml, vars: { ix: "", bus_id: "bus_a", address: "0x40", max_current: "1.2A" } }
@@ -183,6 +190,9 @@ switch:
 
   # # Gate switch
   # - !include { file: switches/gate.yaml, vars: { ix: "", gpio: "GPIO12", off_delay: "5s", room: "Entry" } }
+
+  # # Distance sensor setup
+  # - !include { file: switches/setup_ld2410.yaml, vars: { sensor_name: "LD2420" } }
 
 button:
   # Restart, reset and shutdown buttons

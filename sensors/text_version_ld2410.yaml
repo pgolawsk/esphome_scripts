@@ -1,0 +1,13 @@
+---
+#* LD2410 version information sensor configuration
+# Pawelo, 20230924, created based on https://esphome.io/components/sensor/ld2410.html#text-sensor
+platform: ld2410
+version:
+  name: "${sensor_name} Firmware Version"
+  internal: true
+  icon: mdi:cog-outline
+mac_address:
+  name: "${sensor_name} MAC Address"
+  internal: true
+  icon: mdi:ip
+

@@ -2,6 +2,7 @@
 #* Presence sensor on LD2410
 #! Do not include this if LD2410 sensor is not connected as it makes device unstable
 # Pawelo, 20230305, created based on https://esphome.io/components/sensor/ld2410.html
+# Pawelo, 20230924, updated based on fres esphome version - added out pin
 
 platform: ld2410
 has_target:
@@ -34,3 +35,6 @@ has_still_target:
         topic: "$mqtt_location/$mqtt_room/still${ix}"
         payload: !lambda |-
           return to_string(id(still${ix}).state);
+out_pin_presence_status:
+  name: $room Out Pin Presence Status
+  state_topic: $devicename/pin${ix}

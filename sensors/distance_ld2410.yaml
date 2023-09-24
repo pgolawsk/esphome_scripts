@@ -2,8 +2,22 @@
 #* Distance sensor LD2410 configuration
 #! Do not include this if LD2410 sensor is not connected as it makes device unstable
 # Pawelo, 20230305, created based on https://esphome.io/components/sensor/ld2410.html
+# Pawelo, 20230924, updated based on fresh esphome version - added light and gX energy levels
 
 platform: ld2410
+light:
+  name: "$room Light${ix}"
+  accuracy_decimals: 1
+  # filters:
+  #   - multiply: 1.0
+  id: ld_light${ix}
+  icon: mdi:lightbulb-outline
+  state_topic: $devicename/ld_light{ix}
+  on_value:
+    - mqtt.publish:
+        topic: "$mqtt_location/$mqtt_room/ld_light${ix}"
+        payload: !lambda |-
+          return to_string(id(ld_light${ix}).state);
 moving_distance:
   name: "$room Moving Distance${ix}"
   accuracy_decimals: 1
@@ -69,3 +83,48 @@ detection_distance:
         topic: "$mqtt_location/$mqtt_room/detection_distance${ix}"
         payload: !lambda |-
           return to_string(id(ddistance${ix}).state);
+g0:
+  move_energy:
+    name: ${sensor_name} g0 move energy
+  still_energy:
+    name: ${sensor_name} g0 still energy
+g1:
+  move_energy:
+    name: ${sensor_name} g1 move energy
+  still_energy:
+    name: ${sensor_name} g1 still energy
+g2:
+  move_energy:
+    name: ${sensor_name} g2 move energy
+  still_energy:
+    name: ${sensor_name} g2 still energy
+g3:
+  move_energy:
+    name: ${sensor_name} g3 move energy
+  still_energy:
+    name: ${sensor_name} g3 still energy
+g4:
+  move_energy:
+    name: ${sensor_name} g4 move energy
+  still_energy:
+    name: ${sensor_name} g4 still energy
+g5:
+  move_energy:
+    name: ${sensor_name} g5 move energy
+  still_energy:
+    name: ${sensor_name} g5 still energy
+g6:
+  move_energy:
+    name: ${sensor_name} g6 move energy
+  still_energy:
+    name: ${sensor_name} g6 still energy
+g7:
+  move_energy:
+    name: ${sensor_name} g7 move energy
+  still_energy:
+    name: ${sensor_name} g7 still energy
+g8:
+  move_energy:
+    name: ${sensor_name} g8 move energy
+  still_energy:
+    name: ${sensor_name} g8 still energy
