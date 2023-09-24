@@ -1,0 +1,24 @@
+---
+#* Sun Time Of Day sensor configuration
+# Pawelo, 20230924, created based on my own idea
+
+platform: template
+name: Sun Direction
+id: sun_direction
+icon: mdi:theme-light-dark
+internal: true
+state_topic: $devicename/sun_direction
+lambda: |-
+  if ( int(id(sun_elevation).state) > 0  ) {
+    if ( int(id(sun_azimuth).state) > 180  ) {
+      return to_string("DOWN");
+    }
+    return to_string("UP");
+  }
+  return to_string("");
+on_value:
+  - mqtt.publish:
+      topic: "$mqtt_location/$mqtt_room/sun_direction"
+      payload: !lambda |-
+        return to_string(id(sun_direction).state);
+update_interval: ${updates}
