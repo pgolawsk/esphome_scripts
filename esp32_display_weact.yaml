@@ -5,6 +5,8 @@
 ###
 # Pawelo 20230921, created based on esp32_display.yaml and https://github.com/esphome/feature-requests/issues/2101
 # Pawelo 20230923, 1.1.5, added HA Connected binary sensor
+# Pawelo 20230924, 1.1.5, added Sun Direction and Time Of Day sensors text sensors
+# Pawelo 20230924, 1.1.5, ssuport for physical buttons
 #
 #! run with this command to override substitutions
 # esphome -s devicename espXX -s updates 1min -s room <Room name> -s mqtt_room <room> run esp32_MMmm_SSss__PP.yaml --device 192.168.x.x
@@ -57,8 +59,10 @@ text_sensor:
   - !include sensors/text_version.yaml
   - !include sensors/text_wifi_info.yaml
   # Sun component
-  - !include { file: sensors/text_sun_sunrise.yaml, vars: { updates: "${updates}" } }
-  - !include { file: sensors/text_sun_sunset.yaml, vars: { updates: "${updates}" } }
+  - !include sensors/text_sun_sunrise.yaml
+  - !include sensors/text_sun_sunset.yaml
+  - !include sensors/text_sun_time_of_day.yaml
+  - !include sensors/text_sun_direction.yaml
 
 binary_sensor:
   # HA Connected
