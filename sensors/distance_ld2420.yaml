@@ -1,0 +1,18 @@
+---
+#* Distance sensor LD2420 configuration
+# Pawelo, 20230924, created based on https://github.com/esphome/esphome/pull/4847
+
+platform: ld2420
+moving_distance:
+  name: "$room Moving Distance${ix}"
+  accuracy_decimals: 1
+  # filters:
+  #   - multiply: 1.0
+  id: mdistance${ix}
+  icon: mdi:walk
+  state_topic: $devicename/moving_distance${ix}
+  on_value:
+    - mqtt.publish:
+        topic: "$mqtt_location/$mqtt_room/moving_distance${ix}"
+        payload: !lambda |-
+          return to_string(id(mdistance${ix}).state);

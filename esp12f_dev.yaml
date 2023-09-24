@@ -63,8 +63,9 @@ substitutions:
 # <<: !include { file: interfaces/dallasng.yaml, vars: { gpio: "GPIO10" } }
 <<: !include { file: interfaces/rtttl.yaml, vars: { ix: "" } }
 # <<: !include { file: interfaces/debug.yaml, vars: { update_interval: "15s" } }
-# <<: !include { file: interfaces/uart_ld2410.yaml, vars: { ix: "ld", tx_pin: "TX", rx_pin: "RX", max_distance: "4.5m", sensor_name: "LD2420" } }
-# <<: !include { file: interfaces/uart_ld2410.yaml, vars: { ix: "ld", tx_pin: "GPIO1", rx_pin: "GPIO3", max_distance: "4.5m", sensor_name: "LD2420" } }
+# <<: !include { file: interfaces/uart_ld2410.yaml, vars: { ix: "ld", tx_pin: "TX", rx_pin: "RX", baud_rate: 256000, sensor_name: "LD2410" } }
+# <<: !include { file: interfaces/uart_ld2410.yaml, vars: { ix: "ld", tx_pin: "GPIO1", rx_pin: "GPIO3", baud_rate: 256000, sensor_name: "LD2410" } }
+# <<: !include { file: interfaces/uart_ld2420.yaml, vars: { ix: "ld", tx_pin: "TX", rx_pin: "RX", baud_rate: 256000 } }
 
 text_sensor:
   - !include sensors/text_uptime.yaml
@@ -80,8 +81,8 @@ text_sensor:
   # # Gesture sensor
   # - !include { file: sensors/text_gesture_apds9960.yaml }
 
-  # Distance sensor
-  - !include { file: sensors/text_version_ld2410.yaml, vars: { sensor_name: "LD2420" } }
+  # # Distance sensor
+  # - !include { file: sensors/text_version_ld2410.yaml, vars: { sensor_name: "LD2410" } }
 
 binary_sensor:
   # HA Connected
@@ -96,6 +97,7 @@ binary_sensor:
 
   # # Distance sensor
   # - !include { file: sensors/binary_presence_ld2410.yaml, vars: { ix: "" } }
+  # - !include { file: sensors/binary_presence_ld2420.yaml, vars: { ix: "" } }
 
   # # Gesture sensor
   # - !include { file: sensors/binary_gesture_apds9960.yaml, vars: { direction: "UP", mdi_icon: 'gesture-swipe-up' } }
@@ -137,7 +139,8 @@ sensor:
   # - !include { file: sensors/water_usage_YF-B10.yaml, vars: { ix: "" } }
 
   # # Distance sensor
-  # - !include { file: sensors/distance_ld2410.yaml, vars: { ix: "", sensor_name: "LD2420" } }
+  # - !include { file: sensors/distance_ld2410.yaml, vars: { ix: "", sensor_name: "LD2410" } }
+  # - !include { file: sensors/distance_ld2420.yaml, vars: { ix: "" } }
 
   # DC Current, Power, Voltage
   # - !include { file: sensors/current_power_voltage_INA226.yaml, vars: { ix: "", bus_id: "bus_a", address: "0x40", max_current: "1.2A" } }
@@ -192,7 +195,7 @@ switch:
   # - !include { file: switches/gate.yaml, vars: { ix: "", gpio: "GPIO12", off_delay: "5s", room: "Entry" } }
 
   # # Distance sensor setup
-  # - !include { file: switches/setup_ld2410.yaml, vars: { sensor_name: "LD2420" } }
+  # - !include { file: switches/setup_ld2410.yaml, vars: { sensor_name: "LD2410" } }
 
 button:
   # Restart, reset and shutdown buttons

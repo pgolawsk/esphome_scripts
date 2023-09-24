@@ -1,0 +1,15 @@
+---
+#* Presence sensor on LD2420
+# Pawelo, 20230924, created based on https://github.com/esphome/esphome/pull/4847
+
+platform: ld2420
+has_target:
+  name: "$room Presence"
+  id: presence${ix}
+  icon: mdi:human-handsdown
+  state_topic: $devicename/presence${ix}
+  on_state:
+    - mqtt.publish:
+        topic: "$mqtt_location/$mqtt_room/presence${ix}"
+        payload: !lambda |-
+          return to_string(id(presence${ix}).state);

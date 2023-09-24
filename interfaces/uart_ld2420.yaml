@@ -1,0 +1,68 @@
+---
+#* UART interface for LD2420 radar sensor
+#! PINOUT: 3V3, GND, RX -> TX on ESP, TX -> RX on ESP (TX is OT2 for firmware < 1.5.3 OR OT2 for firmware >= 1.5.3)
+# Pawelo, 20230924, created based on https://github.com/esphome/esphome/pull/4847
+
+external_components:
+  - source: github://pr#4847
+    components: [ ld2420 ]
+    refresh: 0s
+
+uart:
+  id: uart_${ix}
+  # recommended to use hardware uart
+  tx_pin:
+    number: ${tx_pin} # TX for hardware UART
+    # mode:
+    #   output: true
+    #   open_drain: true
+  rx_pin:
+    number: ${rx_pin} # RX for hardware UART
+    # mode:
+    #   input: true
+    #   pullup: true
+  baud_rate: ${baud_rate} # 256000 for firmware < 1.5.3 or 115200 for firmware 1.5.3 and newer
+  parity: NONE
+  stop_bits: 1
+
+# ld2410:
+#   uart_id: uart_${ix}
+
+# The LD2420 has 16 time gate intervals (0-15) with a gate resolution of 0.75 meters
+ld2420:
+  uart_id: uart_${ix}
+  presence_time_window: 120s
+  detection_gate_min: 1
+  detection_gate_max: 12
+  g0_move_threshold: 60000
+  g0_still_threshold: 40000
+  g1_move_threshold: 30000
+  g1_still_threshold: 20000
+  g2_move_threshold: 400
+  g2_still_threshold: 200
+  g3_move_threshold: 250
+  g3_still_threshold: 200
+  g4_move_threshold: 250
+  g4_still_threshold: 200
+  g5_move_threshold: 250
+  g5_still_threshold: 200
+  g6_move_threshold: 250
+  g6_still_threshold: 200
+  g7_move_threshold: 250
+  g7_still_threshold: 150
+  g8_move_threshold: 250
+  g8_still_threshold: 150
+  g9_move_threshold: 250
+  g9_still_threshold: 100
+  g10_move_threshold: 250
+  g10_still_threshold: 100
+  g11_move_threshold: 250
+  g11_still_threshold: 100
+  g12_move_threshold: 250
+  g12_still_threshold: 100
+  g13_move_threshold: 200
+  g13_still_threshold: 100
+  g14_move_threshold: 200
+  g14_still_threshold: 100
+  g15_move_threshold: 200
+  g15_still_threshold: 100
