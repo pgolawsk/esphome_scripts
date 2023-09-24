@@ -7,16 +7,16 @@ uart:
   id: uart_${ix}
   # recommended to use hardware uart
   tx_pin:
-    number: ${tx_pin}
+    number: ${tx_pin} # TX for hardware UART
     # mode:
     #   output: true
     #   open_drain: true
   rx_pin:
-    number: ${rx_pin}
+    number: ${rx_pin} # RX for hardware UART
     # mode:
     #   input: true
     #   pullup: true
-  baud_rate: 256000
+  baud_rate: ${baud_rate} # 256000
   parity: NONE
   stop_bits: 1
 
