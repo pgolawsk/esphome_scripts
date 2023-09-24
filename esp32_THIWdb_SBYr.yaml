@@ -9,6 +9,7 @@
 # Pawelo 20230917, 1.1.5, added temp & humid via SHT30
 # Pawelo 20230919, 1.1.5, added sunrise and sunset text sensors
 # Pawelo 20230923, 1.1.5, added HA Connected binary sensor
+# Pawelo 20230923, 1.1.5, added (and disabled after testing) support for LD2410, LD2420 and APDS-9960
 #
 #! run with this command to override substitutions
 # esphome -s devicename espXX -s updates 1min -s room <Room name> -s mqtt_room <room> run esp32_MMmm_SSss__PP.yaml --device 192.168.x.x
@@ -39,6 +40,9 @@ substitutions:
 #<<: !include { file: interfaces/dallas.yaml, vars: { gpio: "GPIO27" } }
 # <<: !include { file: interfaces/rtttl.yaml, vars: { ix: "" } }
 <<: !include { file: interfaces/dallasng.yaml, vars: { gpio: "GPIO27" } }
+# <<: !include { file: interfaces/uart_ld2410.yaml, vars: { ix: "ld", tx_pin: "TX", rx_pin: "RX", baud_rate: 256000, sensor_name: "LD2420" } }
+# <<: !include { file: interfaces/uart_ld2420.yaml, vars: { ix: "ld", tx_pin: "TX", rx_pin: "RX", baud_rate: 256000 } }
+# <<: !include { file: interfaces/i2c_apds9960.yaml, vars: { address: "0x39" } }
 
 # # reinclude MQTT as a bug in ESPHOME, see: https://github.com/esphome/issues/issues/2180, https://github.com/esphome/issues/issues/1487
 # mqtt:
@@ -60,9 +64,25 @@ text_sensor:
   - !include { file: sensors/text_sun_time_of_day.yaml, vars: { updates: "${updates}" } }
   - !include { file: sensors/text_sun_direction.yaml, vars: { updates: "${updates}" } }
 
+  # # Gesture sensor
+  # - !include { file: sensors/text_gesture_apds9960.yaml }
+
+  # Distance sensor
+  # - !include { file: sensors/text_version_ld2410.yaml, vars: { sensor_name: "LD2410" } }
+
 binary_sensor:
   # HA Connected
   - !include sensors/binary_ha_connected.yaml
+
+  # Distance sensor
+  # - !include { file: sensors/binary_presence_ld2410.yaml, vars: { ix: "" } }
+  # - !include { file: sensors/binary_presence_ld2420.yaml, vars: { ix: "" } }
+
+  # # Gesture sensor
+  # - !include { file: sensors/binary_gesture_apds9960.yaml, vars: { direction: "UP", mdi_icon: 'gesture-swipe-up' } }
+  # - !include { file: sensors/binary_gesture_apds9960.yaml, vars: { direction: "DOWN", mdi_icon: 'gesture-swipe-down' } }
+  # - !include { file: sensors/binary_gesture_apds9960.yaml, vars: { direction: "LEFT", mdi_icon: 'gesture-swipe-left' } }
+  # - !include { file: sensors/binary_gesture_apds9960.yaml, vars: { direction: "RIGHT", mdi_icon: 'gesture-swipe-right' } }
 
 sensor:
   - !include sensors/temp_internal.yaml
@@ -94,9 +114,24 @@ sensor:
   - !include { file: sensors/water_total_diff_YF-B10.yaml, vars: { ix: "_home",  ix_A: "_all", ix_B: "_garden", operator: "-"} }
   - !include { file: sensors/water_used_diff_YF-B10.yaml, vars: { ix: "_home",  ix_A: "_all", ix_B: "_garden", operator: "-"} }
 
+  # Distance sensor
+  # - !include { file: sensors/distance_ld2410.yaml, vars: { ix: "", sensor_name: "LD2410" } }
+  # - !include { file: sensors/distance_ld2420.yaml, vars: { ix: "" } }
+
+# switch:
+#     # Distance sensor setup
+#     - !include { file: switches/setup_ld2410.yaml, vars: { sensor_name: "LD2410" } }
+
 button:
   # Restart button
   - !include { file: buttons/restart_button.yaml }
 
   # # Save button
   # - !include { file: buttons/save_watertotal_button.yaml }
+
+# # override section from includes - temp fix
+# external_components:
+#   - source: github://pr#4847
+#     components: [ ld2420 ]
+#     refresh: 0s
+#   - source: github://nrandell/dallasng
