@@ -9,7 +9,7 @@ icon: mdi:theme-light-dark
 internal: true
 state_topic: $devicename/time_of_day
 lambda: |-
-  if ( int(id(sun_azimuth).state) > 0  ) { return to_string("DAY"); } return to_string("NIGHT");
+  if ( int(id(sun_elevation).state) > 0  ) { return to_string("DAY"); } return to_string("NIGHT");
 on_value:
   - mqtt.publish:
       topic: "$mqtt_location/$mqtt_room/time_of_day"
