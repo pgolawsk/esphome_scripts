@@ -58,6 +58,7 @@ text_sensor:
   - !include { file: sensors/text_sun_sunrise.yaml, vars: { updates: "${updates}" } }
   - !include { file: sensors/text_sun_sunset.yaml, vars: { updates: "${updates}" } }
   - !include { file: sensors/text_sun_time_of_day.yaml, vars: { updates: "${updates}" } }
+  - !include { file: sensors/text_sun_direction.yaml, vars: { updates: "${updates}" } }
 
 binary_sensor:
   # HA Connected
