@@ -2,6 +2,7 @@
 #* Base configuration for ESP-32-CAM-MB board
 # Pawelo 20230112, created as copy of board_esp32.yaml
 # Pawelo 20230305, added time_sntp amd sun by default
+# Pawelo 20230924, increased flash_write_interval to 15min
 
 esphome:
   name: $devicename
@@ -16,7 +17,7 @@ esp32:
 #  restore_from_flash: true
 
 preferences:
-  flash_write_interval: 1min
+  flash_write_interval: 15min
 
 <<: !include wifi.yaml
 <<: !include api.yaml

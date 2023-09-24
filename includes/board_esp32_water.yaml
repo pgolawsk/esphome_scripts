@@ -4,17 +4,18 @@
 # Pawelo 20230101, created as copy of board_esp12f.yaml
 # Pawelo 20230305, added time_sntp amd sun by default
 # Pawelo 20230305, forked as separate for water device
+# Pawelo 20230924, increased flash_write_interval to 15min
 
-globals:
-  - id: global_watertotal_all
-    type: float
-    restore_value: true
-  - id: global_watertotal_garden
-    type: float
-    restore_value: true
-  # - id: global_watertotal_home
-  #   type: float
-  #   restore_value: true
+# globals:
+#   - id: global_watertotal_all
+#     type: float
+#     restore_value: true
+#   - id: global_watertotal_garden
+#     type: float
+#     restore_value: true
+#   # - id: global_watertotal_home
+#   #   type: float
+#   #   restore_value: true
 
 esphome:
   name: $devicename
@@ -23,22 +24,22 @@ esphome:
   project:
     name: $project_name
     version: $version
-  on_boot:
-    then:
-      - pulse_meter.set_total_pulses:
-          id: water_flow_all
-          value: !lambda 'return (id(global_watertotal_all) * ${pulses_per_liter});'
-      - pulse_meter.set_total_pulses:
-          id: water_flow_garden
-          value: !lambda 'return (id(global_watertotal_garden) * ${pulses_per_liter});'
-  on_shutdown:
-    then:
-      - globals.set:
-          id: global_watertotal_all
-          value: !lambda 'return id(water_flow_all).state / ${pulses_per_liter};'
-      - globals.set:
-          id: global_watertotal_garden
-          value: !lambda 'return id(water_flow_garden).state / ${pulses_per_liter};'
+  # on_boot:
+  #   then:
+  #     - pulse_meter.set_total_pulses:
+  #         id: water_flow_all
+  #         value: !lambda 'return (id(global_watertotal_all) * ${pulses_per_liter});'
+  #     - pulse_meter.set_total_pulses:
+  #         id: water_flow_garden
+  #         value: !lambda 'return (id(global_watertotal_garden) * ${pulses_per_liter});'
+  # on_shutdown:
+  #   then:
+  #     - globals.set:
+  #         id: global_watertotal_all
+  #         value: !lambda 'return id(water_flow_all).state / ${pulses_per_liter};'
+  #     - globals.set:
+  #         id: global_watertotal_garden
+  #         value: !lambda 'return id(water_flow_garden).state / ${pulses_per_liter};'
 
 esp32:
   board: esp32dev
@@ -47,14 +48,14 @@ esp32:
   #   type: arduino
 
 preferences:
-  flash_write_interval: 5min
+  flash_write_interval: 15min
 
 <<: !include wifi.yaml
 <<: !include api.yaml
 <<: !include ota.yaml
 <<: !include logger.yaml
 <<: !include { file: web_server.yaml, vars: { ota_enabled: false } }
-<<: !include time_sntp.yaml
+<<: !include time_sntp_with_sun.yaml
 <<: !include sun.yaml
 <<: !include prometheus.yaml
 #! as mqtt cannot be overwriten later in the code need to include in in each script (to facilitate "on_message" customization)
