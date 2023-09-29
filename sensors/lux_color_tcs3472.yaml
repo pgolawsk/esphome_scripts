@@ -5,6 +5,7 @@
 # Pawelo, 20230121, add variables to configure sensor
 # Pawelo, 20230728, set integration time to 24ms (no effect) to get rid of warning that sensor check should not be longer than 200-300ms
 # Pawelo, 20230728, set integration time to auto to get rid of another warning message "[W][tcs34725:162]: No light detected on red channel, switch to auto gain or adjust timing, values will be unreliable"
+# Pawelo, 20230929, added filters based on https://github.com/esphome/issues/issues/3575
 
 platform: tcs34725
 illuminance:
@@ -18,16 +19,34 @@ illuminance:
         topic: "$mqtt_location/$mqtt_room/illuminance${ix}"
         payload: !lambda |-
           return to_string(id(lux${ix}).state);
+  filters:
+    - exponential_moving_average:
+        alpha: 0.05
+        send_every: 2
+        send_first_at: 2
+    - or:
+      - throttle: 10s
+      - delta: 0.5
 red_channel:
   name: "$room Channel Red"
   id: red
   icon: mdi:palette
   state_topic: $devicename/red
+  # filters:
+  #   - lambda: if(id(lux${ix}).state > 0) { return x; } return 0;
   on_value:
     - mqtt.publish:
         topic: "$mqtt_location/$mqtt_room/red"
         payload: !lambda |-
           return to_string(id(red).state);
+  filters:
+    - exponential_moving_average:
+        alpha: 0.05
+        send_every: 2
+        send_first_at: 2
+    - or:
+      - throttle: 10s
+      - delta: 0.5
 green_channel:
   name: "$room Channel Green"
   id: green
@@ -38,6 +57,14 @@ green_channel:
         topic: "$mqtt_location/$mqtt_room/green"
         payload: !lambda |-
           return to_string(id(green).state);
+  filters:
+    - exponential_moving_average:
+        alpha: 0.05
+        send_every: 2
+        send_first_at: 2
+    - or:
+      - throttle: 10s
+      - delta: 0.5
 blue_channel:
   name: "$room Channel Blue"
   id: blue
@@ -48,6 +75,14 @@ blue_channel:
         topic: "$mqtt_location/$mqtt_room/blue"
         payload: !lambda |-
           return to_string(id(blue).state);
+  filters:
+    - exponential_moving_average:
+        alpha: 0.05
+        send_every: 2
+        send_first_at: 2
+    - or:
+      - throttle: 10s
+      - delta: 0.5
 clear_channel:
   name: "$room Channel Clear"
   id: clear
@@ -58,6 +93,14 @@ clear_channel:
         topic: "$mqtt_location/$mqtt_room/clear"
         payload: !lambda |-
           return to_string(id(clear).state);
+  filters:
+    - exponential_moving_average:
+        alpha: 0.05
+        send_every: 2
+        send_first_at: 2
+    - or:
+      - throttle: 10s
+      - delta: 0.5
 color_temperature:
   name: "$room Color Temperature"
   id: color
@@ -68,6 +111,14 @@ color_temperature:
         topic: "$mqtt_location/$mqtt_room/color_temp"
         payload: !lambda |-
           return to_string(id(color).state);
+  filters:
+    - exponential_moving_average:
+        alpha: 0.05
+        send_every: 2
+        send_first_at: 2
+    - or:
+      - throttle: 10s
+      - delta: 0.5
 glass_attenuation_factor: 1.0
 # integration_time: 24ms
 i2c_id: ${bus_id}
