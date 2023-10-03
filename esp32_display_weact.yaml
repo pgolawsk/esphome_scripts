@@ -1,12 +1,15 @@
 ---
 #* ESP32 WeAct 2.9' display
-#! NOT CONFIRMED AS WORKING YET
 #* Please read README.md for details
 ###
 # Pawelo 20230921, created based on esp32_display.yaml and https://github.com/esphome/feature-requests/issues/2101
 # Pawelo 20230923, 1.1.5, added HA Connected binary sensor
 # Pawelo 20230924, 1.1.5, added Sun Direction and Time Of Day sensors text sensors
-# Pawelo 20230924, 1.1.5, ssuport for physical buttons
+# Pawelo 20230924, 1.1.5, support for physical buttons
+# Pawelo 20231003, 1.1.5, confirmed working WeAct epaper with mode: 2.90inbs
+# Pawelo 20231003, 1.1.5, added page with Temp/Hum sensors
+# Pawelo 20231004, 1.1.5, added cycle the pages, while there is some light
+# Pawelo 20231004, 1.1.5, prevent cycle for 1 min when using buttons manually
 #
 #! run with this command to override substitutions
 # esphome -s devicename espXX -s updates 1min -s room <Room name> -s mqtt_room <room> run esp32_MMmm_SSss__PP.yaml --device 192.168.x.x
@@ -104,6 +107,8 @@ sensor:
   - !include { file: sensors/value_mqtt_subscribe.yaml, vars: { topic: "home/upstairs/humidity", id: "hum_upstairs", name: "Humidity Upstairs", unit: "%", mdi_icon: "water-percent" } }
   - !include { file: sensors/value_mqtt_subscribe.yaml, vars: { topic: "measures/underfloor/humidity", id: "hum_underfloor", name: "Humidity Underfloor", unit: "%", mdi_icon: "water-percent" } }
   - !include { file: sensors/value_mqtt_subscribe.yaml, vars: { topic: "measures/aquarium_window/humidity", id: "hum_aquariumW", name: "Humidity Aquarium Window", unit: "%", mdi_icon: "water-percent" } }
+
+  - !include { file: sensors/value_mqtt_subscribe.yaml, vars: { topic: "measures/garage/illuminance", id: "lux_garage", name: "Garage Illuminance", unit: "lx", mdi_icon: "decagram-outline" } }
 
     # on_value: # Actions to perform once data for the last sensor has been received
     #   then:
@@ -291,7 +296,7 @@ display:
     dc_pin: GPIO19
     rotation: ${display_rotation}
     full_update_every: 10
-    update_interval: 60s
+    update_interval: never
 
     pages:
       - id: blank
@@ -302,7 +307,7 @@ display:
           #define yRes ${display_yRes}
           //draw clear background
           it.filled_rectangle(0, 0, xRes, yRes, COLOR_OFF);
-          it.print(xRes/2, yRes/2, id(size_14_font), COLOR_ON, TextAlign::CENTER, "Refreshing...");
+          //it.print(xRes/2, yRes/2, id(size_14_font), COLOR_ON, TextAlign::CENTER, "Refreshing...");
 
       - id: page0
         lambda: |-
@@ -434,3 +439,49 @@ display:
             it.printf(x+70, y, id(units_22_font), TextAlign::BASELINE_LEFT , "\U000F03F0");
           }
 
+interval:
+  - interval: 15s
+    then:
+      - if:
+          condition:
+            not:
+              - script.is_running: manual_pages
+          then:
+            - script.execute: cycle_pages_in_lux
+
+script:
+  - id: cycle_pages
+    then:
+      - display.page.show_next: weact_display
+      - component.update: weact_display
+  - id: cycle_pages_in_day
+    then:
+      - if:
+          condition:
+            text_sensor.state:
+              id: time_of_day
+              state: "DAY"
+          then:
+            - display.page.show_next: weact_display
+            - component.update: weact_display
+          else:
+            - display.page.show: blank
+            - component.update: weact_display
+  - id: cycle_pages_in_lux
+    # parameters:
+    #   sensor_name: string
+    then:
+      - if:
+          condition:
+            sensor.in_range:
+              id: lux_garage
+              above: 0.5
+          then:
+            - display.page.show_next: weact_display
+            - component.update: weact_display
+          else:
+            - display.page.show: blank
+            - component.update: weact_display
+  - id: manual_pages
+    then:
+      - delay: 1min
