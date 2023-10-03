@@ -31,7 +31,7 @@ substitutions:
   pulses_per_liter: "476"
 
   # Include basics of a board
-<<: !include includes/board_esp32.yaml
+<<: !include includes/board_esp32_sith_sun.yaml
 # Include/Override mqtt with/without RTTTL support if needed
 <<: !include includes/mqtt.yaml
 #<<: !include includes/mqtt_with_rtttl.yaml
@@ -58,8 +58,10 @@ text_sensor:
   - !include sensors/text_version.yaml
   - !include sensors/text_wifi_info.yaml
   # Sun component
-  - !include { file: sensors/text_sun_sunrise.yaml, vars: { updates: "${updates}" } }
-  - !include { file: sensors/text_sun_sunset.yaml, vars: { updates: "${updates}" } }
+  - !include sensors/text_sun_sunrise.yaml
+  - !include sensors/text_sun_sunset.yaml
+  - !include sensors/text_sun_time_of_day.yaml
+  - !include sensors/text_sun_direction.yaml
 
 binary_sensor:
   # HA Connected
@@ -69,6 +71,10 @@ sensor:
   - !include sensors/temp_internal.yaml
   - !include sensors/uptime.yaml
   - !include sensors/wifi_signal.yaml
+
+  # Sun component
+  - !include sensors/sun_elevation.yaml
+  - !include sensors/sun_azimuth.yaml
 
   # Temperature Dallas sensor
   #- !include { file: sensors/temp_DS18B20.yaml, vars: { ix: "Floor", address: "0x450417c411e3ff28" } }
@@ -93,6 +99,11 @@ sensor:
 button:
   # Restart button
   - !include { file: buttons/restart_button.yaml }
+
+  # display buttons
+  - !include { file: buttons/display_button.yaml, vars: { ix: "Refresh", display_id: "weact_display", command: "", mdi_icon: "refresh" } }
+  - !include { file: buttons/display_button.yaml, vars: { ix: "Next", display_id: "weact_display", command: "next", mdi_icon: "page-next" } }
+  - !include { file: buttons/display_button.yaml, vars: { ix: "Prev", display_id: "weact_display", command: "previous", mdi_icon: "page-previous" } }
 
   # # Save button
   # - !include { file: buttons/save_watertotal_button.yaml }
@@ -213,22 +224,22 @@ spi:
 
 display:
   - platform: waveshare_epaper
-    model: 2.90inV2
+    model: 2.90inbs
     cs_pin: GPIO33
     busy_pin: GPIO32
     reset_pin: GPIO4
     dc_pin: GPIO25
-    rotation: 180
-    full_update_every: 5
-    update_interval: 30s
+    rotation: 270
+    full_update_every: 10
+    update_interval: 60s
     lambda: |-
       int x, y;
 
       //sun set-rise
-      it.printf(85, 22, id(sun_icon_font), TextAlign::BASELINE_RIGHT, "\U000F059C");
-      it.printf(135, 22, id(size_20_font), TextAlign::BASELINE_RIGHT, "%s", id(sunset).state.c_str());
-      it.printf(85, 44, id(sun_icon_font), TextAlign::BASELINE_RIGHT, "\U000F059B");
-      it.printf(135, 44, id(size_20_font), TextAlign::BASELINE_RIGHT, "%s", id(sunrise).state.c_str());
+      it.printf(45, 22, id(sun_icon_font), TextAlign::BASELINE_RIGHT, "\U000F059C");
+      it.printf(135, 22, id(size_20_font), TextAlign::BASELINE_RIGHT, "%s", id(sunrise).state.c_str());
+      it.printf(45, 44, id(sun_icon_font), TextAlign::BASELINE_RIGHT, "\U000F059B");
+      it.printf(135, 44, id(size_20_font), TextAlign::BASELINE_RIGHT, "%s", id(sunset).state.c_str());
       //date
 
       it.strftime(210, 43, id(size_50_font), TextAlign::BASELINE_RIGHT, "%d", id(sntp_time).now());
@@ -252,9 +263,9 @@ display:
           it.printf(x, y, id(wlan_icon_font), TextAlign::BASELINE_CENTER , "\U000F0928");
         } else if (id(wifi_rssi).state >= -60) {
           it.printf(x, y, id(wlan_icon_font), TextAlign::BASELINE_CENTER , "\U000F0925");
-        } else if (id(wifi_rssi).state >= -67) {
-          it.printf(x, y, id(wlan_icon_font), TextAlign::BASELINE_CENTER , "\U000F0922");
         } else if (id(wifi_rssi).state >= -70) {
+          it.printf(x, y, id(wlan_icon_font), TextAlign::BASELINE_CENTER , "\U000F0922");
+        } else if (id(wifi_rssi).state >= -80) {
           it.printf(x, y, id(wlan_icon_font), TextAlign::BASELINE_CENTER , "\U000F0920");
         } else {
           it.printf(x, y, id(wlan_icon_font), TextAlign::BASELINE_CENTER , "\U000F092E");
