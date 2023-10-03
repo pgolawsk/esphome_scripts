@@ -15,6 +15,8 @@ icon: "mdi:${mdi_icon}"
 state_topic: $devicename/button${ix}
 on_press:
   then:
+    - script.stop: manual_pages
+    - script.execute: manual_pages
     - if:
         condition:
           lambda: 'return "${command}" == "next";'
