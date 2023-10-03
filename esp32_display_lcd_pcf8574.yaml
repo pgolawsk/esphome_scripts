@@ -1,0 +1,190 @@
+---
+#* ESP32 LCD PCF8574 (16x2) display
+#* Please read README.md for details
+###
+# Pawelo 20230921, created based on esp32_display.yaml and https://github.com/esphome/feature-requests/issues/2101
+# Pawelo 20230923, 1.1.5, added HA Connected binary sensor
+# Pawelo 20230924, 1.1.5, added Sun Direction and Time Of Day sensors text sensors
+# Pawelo 20230924, 1.1.5, support for physical buttons
+# Pawelo 20230930, 1.1.5, addeld LCD PCF8574 display over I2C
+#
+#! run with this command to override substitutions
+# esphome -s devicename espXX -s updates 1min -s room <Room name> -s mqtt_room <room> run esp32_MMmm_SSss__PP.yaml --device 192.168.x.x
+# heare are default values if those are not given via command line
+substitutions:
+#  devices: "Temperature and Humidity via SHTx30 and Illuminance via BH1750"
+  devices: "LCD PCF8574 Display and MQTT sensors"
+  project_name: "pgolawsk.esp_home"
+  version: "1.1.5"
+
+  devicename: esp32-xx
+  updates: "30s"
+  room: Room # friendly name of room to display in HA/Web
+  # this is ADDITIONAL topic and sub-topic for MQTT - it publishes under <topic>/<sub-topic>/<sensor>
+  # by default it's also published under <devicename>/<id_sensor>
+  mqtt_location: home
+  mqtt_room: room
+
+  run_time: 20s #needs to be as long as needed to get data
+  sleep_time: 2min # normal sleep time
+  away_sleep_time: 1h # sleep time when nobody's at home
+  night_sleep_time: 6.5h # 1st sleep time after midnight
+  refresh_interval: ${updates} #refresh when on USB power
+
+# Include basics of a board
+<<: !include includes/board_esp32_with_sun.yaml
+# Include/Override mqtt with/without RTTTL support if needed
+<<: !include includes/mqtt.yaml
+#<<: !include includes/mqtt_with_rtttl.yaml
+#<<: !include includes/qr_guestwifi.yaml
+
+# Include interfaces needed
+<<: !include { file: interfaces/i2c.yaml, vars: { bus_id: "bus_a", sda: "GPIO21", scl: "GPIO22" } }
+# <<: !include { file: interfaces/i2c.yaml, vars: { bus_id: "bus_b", sda: "GPIO14", scl: "GPIO15" } }
+# <<: !include { file: interfaces/dallas.yaml, vars: { gpio: "GPIO10" } }
+# <<: !include { file: interfaces/rtttl.yaml, vars: { ix: "" } }
+<<: !include { file: interfaces/dallasng.yaml, vars: { gpio: "GPIO27" } }
+
+# # reinclude MQTT as a bug in ESPHOME, see: https://github.com/esphome/issues/issues/2180, https://github.com/esphome/issues/issues/1487
+# mqtt:
+#   broker: !secret mqtt_ip
+#   port: !secret mqtt_port
+# #  username: $devicename
+#   username: !secret mqtt_user
+#   password: !secret mqtt_password
+#   client_id: $devicename
+# # id: $devicename
+
+text_sensor:
+  - !include sensors/text_uptime.yaml
+  - !include sensors/text_version.yaml
+  - !include sensors/text_wifi_info.yaml
+
+  # Sun component
+  - !include sensors/text_sun_sunrise.yaml
+  - !include sensors/text_sun_sunset.yaml
+  - !include sensors/text_sun_time_of_day.yaml
+  - !include sensors/text_sun_direction.yaml
+
+binary_sensor:
+  # HA Connected
+  - !include sensors/binary_ha_connected.yaml
+
+  # # Physical buttons
+  # - !include { file: sensors/binary_display_button.yaml, vars: { ix: "Refresh", gpio: "GPIO39" } }
+  # - !include { file: sensors/binary_display_button.yaml, vars: { ix: "Next", gpio: "GPIO34" } }
+  # - !include { file: sensors/binary_display_button.yaml, vars: { ix: "Prev", gpio: "GPIO35" } }
+
+  # Display LCD backlight
+  # - !include { file: sensors/binary_display_pcf_backlight.yaml, vars: { ix: "", gpio: "GPIO35" } }
+  - !include { file: sensors/binary_display_backlight.yaml, vars: { ix: "", display_id: "pcf_display", off_delay: "20s" } }
+
+
+sensor:
+  - !include sensors/temp_internal.yaml
+  - !include sensors/uptime.yaml
+  - !include sensors/wifi_signal.yaml
+
+  # Sun component
+  - !include sensors/sun_elevation.yaml
+  - !include sensors/sun_azimuth.yaml
+
+  # Temperature Dallas sensor
+  #- !include { file: sensors/temp_DS18B20.yaml, vars: { ix: "Floor", address: "0x450417c411e3ff28" } }
+  - !include { file: sensors/temp_DS18B20_on_dallasng.yaml, vars: { ix: "Floor", address: "0x450417c411e3ff28" } }
+
+  # Temperature and Humidity sensor
+  - !include { file: sensors/temp_hum_SHT3x.yaml, vars: { ix: "", bus_id: "bus_a", address: "0x44" } }
+  # Illuminance sensor
+  - !include { file: sensors/lux_BH1750.yaml, vars: { ix: "", bus_id: "bus_a", address: "0x23" } }
+
+  # Various MQTT sensors
+  - !include { file: sensors/value_mqtt_subscribe.yaml, vars: { topic: "home/entrance/temperature", id: "temp_entrance", name: "Temperature Entrance", unit: "°C", mdi_icon: "thermometer" } }
+  - !include { file: sensors/value_mqtt_subscribe.yaml, vars: { topic: "home/upstairs/temperature", id: "temp_upstairs", name: "Temperature Upstairs", unit: "°C", mdi_icon: "thermometer" } }
+
+  - !include { file: sensors/value_mqtt_subscribe.yaml, vars: { topic: "measures/underfloor/temperature", id: "temp_underfloor", name: "Temperature Underfloor", unit: "°C", mdi_icon: "thermometer" } }
+  - !include { file: sensors/value_mqtt_subscribe.yaml, vars: { topic: "measures/underfloor/temperature_Dwall", id: "temp_underfloorW", name: "Temperature Underfloor Wall", unit: "°C", mdi_icon: "thermometer" } }
+  - !include { file: sensors/value_mqtt_subscribe.yaml, vars: { topic: "measures/underfloor/temperature_Dboiler", id: "temp_underfloorB", name: "Temperature Underfloor Boiler", unit: "°C", mdi_icon: "thermometer" } }
+  - !include { file: sensors/value_mqtt_subscribe.yaml, vars: { topic: "measures/aquarium_window/temperature", id: "temp_aquariumW", name: "Temperature Aquarium Window", unit: "°C", mdi_icon: "thermometer" } }
+
+  - !include { file: sensors/value_mqtt_subscribe.yaml, vars: { topic: "home/entrance/humidity", id: "hum_entrance", name: "Humidity Entrance", unit: "%", mdi_icon: "water-percent" } }
+  - !include { file: sensors/value_mqtt_subscribe.yaml, vars: { topic: "home/upstairs/humidity", id: "hum_upstairs", name: "Humidity Upstairs", unit: "%", mdi_icon: "water-percent" } }
+  - !include { file: sensors/value_mqtt_subscribe.yaml, vars: { topic: "measures/underfloor/humidity", id: "hum_underfloor", name: "Humidity Underfloor", unit: "%", mdi_icon: "water-percent" } }
+  - !include { file: sensors/value_mqtt_subscribe.yaml, vars: { topic: "measures/aquarium_window/humidity", id: "hum_aquariumW", name: "Humidity Aquarium Window", unit: "%", mdi_icon: "water-percent" } }
+
+    # on_value: # Actions to perform once data for the last sensor has been received
+    #   then:
+    #     - script.execute: all_data_received
+
+switch:
+#   # Restart button
+#   - !include switches/platform_restart.yaml
+
+  # Display LCD backlight
+  - !include { file: switches/display_pcf_backlight.yaml, vars: { ix: "", display_id: "pcf_display", off_delay: "20s" } }
+
+button:
+  # Restart button
+  - !include { file: buttons/restart_button.yaml }
+
+  # # display buttons
+  # - !include { file: buttons/display_button.yaml, vars: { ix: "Refresh", display_id: "weact_display", command: "", mdi_icon: "refresh" } }
+  # - !include { file: buttons/display_button.yaml, vars: { ix: "Next", display_id: "weact_display", command: "next", mdi_icon: "page-next" } }
+  # - !include { file: buttons/display_button.yaml, vars: { ix: "Prev", display_id: "weact_display", command: "previous", mdi_icon: "page-previous" } }
+
+  # Display LCD backlight
+  - !include { file: buttons/display_pcf_backlight_button.yaml, vars: { ix: "", display_id: "pcf_display", off_delay: "20s", action: "ON" } }
+  - !include { file: buttons/display_pcf_backlight_button.yaml, vars: { ix: "", display_id: "pcf_display", off_delay: "20s", action: "OFF" } }
+
+  # - platform: template
+  #   name: "${devicename} Refresh"
+  #   icon: "mdi:update"
+  #   on_press:
+  #     then:
+  #     - component.update: t5_display
+
+
+display:
+  - platform: lcd_pcf8574
+    dimensions: 16x2
+    id: pcf_display
+    address: 0x27
+    update_interval: 5s
+    # update_interval: ${updates}
+
+    lambda: |-
+      // it.print("Hello World!");
+      // it.strftime(0, 1, "%H:%M %d.%m.%Y", id(sntp_time).now());
+      // it.no_backlight();
+      it.strftime(0, 0, "%H:%M %d.%m.%Y", id(sntp_time).now());
+      if (id(lux).state > 99) {
+        it.printf(0, 1 , "%2.1f %2.1f %2.0f%% ++", id(temp).state, id(tempFloor).state, id(hum).state);
+      } else {
+        it.printf(0, 1 , "%2.1f %2.1f %2.0f%% %2.0f", id(temp).state, id(tempFloor).state, id(hum).state, id(lux).state);
+      }
+
+    # pages:
+    #   - id: blank
+    #     lambda: |-
+    #       it.print("Hello World!");
+    #       it.strftime(1, 0, "Time: %H:%M on %d.%m.%Y", id(sntp_time).now());
+
+    #   - id: page0
+    #     lambda: |-
+    #       it.strftime(0, 0, "Time: %H:%M on %d.%m.%Y", id(sntp_time).now());
+    #       it.printf(1, 0 , "Temperature: %2.1f", id(temp).state);
+
+    #   - id: page1
+    #     lambda: |-
+    #       it.strftime(0, 0, "Time: %H:%M on %d.%m.%Y", id(sntp_time).now());
+    #       it.printf(1, 0 , "Humidity: %2.1f", id(hum).state);
+
+    #   - id: page2
+    #     lambda: |-
+    #       it.strftime(0, 0, "Time: %H:%M on %d.%m.%Y", id(sntp_time).now());
+    #       it.printf(1, 0 , "Illuminance: %2.1f", id(lux).state);
+
+    #   - id: page3
+    #     lambda: |-
+    #       it.strftime(0, 0, "Time: %H:%M on %d.%m.%Y", id(sntp_time).now());
+    #       it.printf(1, 0 , "Temp Floor : %2.1f", id(tempFloor).state);

@@ -1,0 +1,20 @@
+---
+#* Display Backlight button for LCD PCF8574
+# Pawelo, 20230930, created based on https://esphome.io/components/display/lcd_display#backlight-control
+
+platform: template
+name: "$room LCD Backlight ${ix} ${action}"
+id: backlight_button${ix}_${action}
+icon: "mdi:brightness-6"
+state_topic: $devicename/backlight_button${ix}_${action}
+on_press:
+  then:
+    # - lambda: |-
+    #     if ("${action}" == "ON") {
+    #       id(${display_id}).backlight();
+    #     } else {
+    #       id(${display_id}).no_backlight();
+    #     }
+    - binary_sensor.template.publish:
+        id: backlight${ix}
+        state: ${action}

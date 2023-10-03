@@ -1,0 +1,37 @@
+---
+#* Display Backlight switch for LCD PCF8574
+# Pawelo, 20230930, created based on https://esphome.io/components/display/lcd_display#backlight-control
+
+platform: template
+name: "$room LCD Backlight Switch ${ix}"
+id: sbacklight${ix}
+icon: "mdi:brightness-6"
+state_topic: $devicename/sbacklight${ix}
+lambda: |-
+  if (id(backlight${ix}).state) {
+    return true;
+  } else {
+    return false;
+  }
+turn_on_action:
+  then:
+    # - lambda: |-
+    #     id(${display_id}).backlight();
+    #     // id(sbacklight${ix}).state = true;
+    - binary_sensor.template.publish:
+        id: backlight${ix}
+        # state: ON
+        state: !lambda 'return true;'
+    # - delay: ${off_delay}
+    # - lambda: |-
+    #     id(${display_id}).no_backlight();
+turn_off_action:
+  then:
+    # - lambda: |-
+    #     id(${display_id}).no_backlight();
+    #     // id(sbacklight${ix}).state = false;
+    - binary_sensor.template.publish:
+        id: backlight${ix}
+        # state: OFF
+        state: !lambda 'return false;'
+
