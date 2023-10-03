@@ -15,4 +15,4 @@ logger:
     mqtt.component: INFO
     mqtt.client: INFO
     component: ERROR
-#    waveshare_epaper: WARN
+    waveshare_epaper: WARN
