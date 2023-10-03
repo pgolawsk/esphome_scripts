@@ -5,13 +5,14 @@
 # Pawelo, 20230929, back to WARN log level, as seams 2023.9.1 resolved issue with sensor warnings taken too long to operate
 logger:
 #  level: NONE, ERROR, WARN, INFO, DEBUG (default), VERBOSE, VERY_VERBOSE
-#  level: INFO
-  level: WARN
+  level: INFO
+#  level: WARN
 #  level: DEBUG
 #  level: VERY_VERBOSE
   # disable UART logging
   baud_rate: 0
-  # logs:
-  #   mqtt.component: WARN
-  #   mqtt.client: WARN
-  #   component: WARN
+  logs:
+    mqtt.component: INFO
+    mqtt.client: INFO
+    component: ERROR
+#    waveshare_epaper: WARN
