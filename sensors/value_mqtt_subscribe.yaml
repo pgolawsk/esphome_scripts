@@ -5,7 +5,7 @@
 platform: mqtt_subscribe
 # name: "Office Temperature"
 name: ${name}
-accuracy_decimals: 2
+accuracy_decimals: ${accuracy_decimals}
 # unit_of_measurement: "°C"
 unit_of_measurement: ${unit}
 # id: temp_office

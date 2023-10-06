@@ -21,6 +21,8 @@ substitutions:
   mqtt_location: home
   mqtt_room: room
 
+  # default variable values for !include statements
+  accuracy_decimals: "2"
   # how much time to wait till relay will bw switched off
   dalay_off: 10min
 

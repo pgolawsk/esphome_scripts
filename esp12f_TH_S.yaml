@@ -34,6 +34,9 @@ substitutions:
   mqtt_location: home
   mqtt_room: room
 
+  # default variable values for !include statements
+  accuracy_decimals: "2"
+
 # Include basics of a board
 <<: !include includes/board_esp12f.yaml
 # Include/Override mqtt with/without RTTTL support if needed
