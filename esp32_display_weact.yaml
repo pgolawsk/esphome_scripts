@@ -580,7 +580,7 @@ display:
 
           //* Pump Water
           x = 148; y = 18;
-          it.printf(x, y, id(size_15_font), TextAlign::BASELINE_CENTER , "Water Measure");
+          it.printf(x, y, id(size_15_font), TextAlign::BASELINE_CENTER , "WATER Used");
 
           //* Water
           x = 20; y = 64;
@@ -591,7 +591,7 @@ display:
           // it.printf(x, y, id(home_icon_font), TextAlign::BASELINE_CENTER , "\U000F06D9");
           if (id(water_used_all).has_state()) {
             it.printf(x+70, y, id(size_40_font), TextAlign::BASELINE_RIGHT , "%.3f", id(water_used_all).state);
-            it.printf(x+74, y, id(size_20_font), TextAlign::BASELINE_LEFT , "M");
+            it.printf(x+74, y-4, id(size_20_font), TextAlign::BASELINE_LEFT , "M");
             it.printf(x+94, y-12, id(size_12_font), TextAlign::BASELINE_LEFT , "3");
           }
 
@@ -605,7 +605,7 @@ display:
           x = 170; y = 94;
           if (id(water_used_home).has_state()) {
             it.printf(x+70, y, id(size_30_font), TextAlign::BASELINE_RIGHT , "%.3f", id(water_used_home).state);
-            it.printf(x+74, y, id(size_20_font), TextAlign::BASELINE_LEFT , "M");
+            it.printf(x+74, y-4, id(size_20_font), TextAlign::BASELINE_LEFT , "M");
             it.printf(x+94, y-12, id(size_12_font), TextAlign::BASELINE_LEFT , "3");
           }
 
@@ -616,6 +616,6 @@ display:
           x = 170; y = 128;
           if (id(water_used_garden).has_state()) {
             it.printf(x+70, y, id(size_30_font), TextAlign::BASELINE_RIGHT , "%.3f", id(water_used_garden).state);
-            it.printf(x+74, y, id(size_20_font), TextAlign::BASELINE_LEFT , "M");
+            it.printf(x+74, y-4, id(size_20_font), TextAlign::BASELINE_LEFT , "M");
             it.printf(x+94, y-12, id(size_12_font), TextAlign::BASELINE_LEFT , "3");
           }
