@@ -9,7 +9,11 @@
 # Pawelo 20231003, 1.1.5, confirmed working WeAct epaper with mode: 2.90inbs
 # Pawelo 20231003, 1.1.5, added page with Temp/Hum sensors
 # Pawelo 20231004, 1.1.5, added cycle the pages, while there is some light
-# Pawelo 20231004, 1.1.5, prevent cycle for 1 min when using buttons manually
+# Pawelo 20231004, 1.1.5, prevent cycle for 5 min when using buttons manually
+# Pawelo 20231006, 1.1.5, skip blank and qr pages while cycle pages automatically
+# Pawelo 20231006, 1.1.5, moced interval script for page cycles to separate yaml in scripts/
+# Pawelo 20231006, 1.1.5, reduce no of digits displayed when illuminance is 100+ or 1000+
+
 #
 #! run with this command to override substitutions
 # esphome -s devicename espXX -s updates 1min -s room <Room name> -s mqtt_room <room> run esp32_MMmm_SSss__PP.yaml --device 192.168.x.x
@@ -35,6 +39,9 @@ substitutions:
   display_xRes: "296"
   display_yRes: "128"
   display_rotation: "270"
+  display_updates_interval: 1min
+  display_updates_manual_cycle_delay: 5min
+
   run_time: 20s #needs to be as long as needed to get data
   sleep_time: 2min # normal sleep time
   away_sleep_time: 1h # sleep time when nobody's at home
@@ -302,52 +309,68 @@ font:
       "\U000F092E", # wifi-strength-off-outline
       ]
 
-interval:
-  - interval: 1min
-    then:
-      - if:
-          condition:
-            not:
-              - script.is_running: manual_pages
-          then:
-            - script.execute: cycle_pages_in_lux
+# interval:
+#   - interval: ${display_updates_interval}
+#     then:
+#       - if:
+#           condition:
+#             not:
+#               - script.is_running: manual_pages
+#           then:
+#             - script.execute: cycle_pages_in_lux
 
-script:
-  - id: cycle_pages
-    then:
-      - display.page.show_next: weact_display
-      - component.update: weact_display
-  - id: cycle_pages_in_day
-    then:
-      - if:
-          condition:
-            text_sensor.state:
-              id: time_of_day
-              state: "DAY"
-          then:
-            - display.page.show_next: weact_display
-            - component.update: weact_display
-          else:
-            - display.page.show: page_blank
-            - component.update: weact_display
-  - id: cycle_pages_in_lux
-    # parameters:
-    #   sensor_name: string
-    then:
-      - if:
-          condition:
-            sensor.in_range:
-              id: lux_garage
-              above: 11
-          then:
-            - display.page.show_next: weact_display
-            - component.update: weact_display
-          else:
-            - display.page.show: page_blank
-            - component.update: weact_display
-  - id: manual_pages
-    then:
-      - delay: 5min
+# script:
+#   - id: cycle_pages
+#     then:
+#       - display.page.show_next: weact_display
+#       - component.update: weact_display
+#   - id: cycle_pages_in_day
+#     then:
+#       - if:
+#           condition:
+#             text_sensor.state:
+#               id: time_of_day
+#               state: "DAY"
+#           then:
+#             - display.page.show_next: weact_display
+#             - while:
+#                 condition:
+#                   or:
+#                     - display.is_displaying_page: page_blank
+#                     - display.is_displaying_page: page_wifi_qr
+#                 then:
+#                   - display.page.show_next: weact_display
+#             - component.update: weact_display
+#           else:
+#             - display.page.show: page_blank
+#             - component.update: weact_display
+#   - id: cycle_pages_in_lux
+#     # parameters:
+#     #   sensor_name: string
+#     then:
+#       - if:
+#           condition:
+#             sensor.in_range:
+#               id: lux_garage
+#               above: 11
+#           then:
+#             - display.page.show_next: weact_display
+#             - while:
+#                 condition:
+#                   or:
+#                     - display.is_displaying_page: page_blank
+#                     - display.is_displaying_page: page_wifi_qr
+#                 then:
+#                   - display.page.show_next: weact_display
+#             - component.update: weact_display
+#           else:
+#             - display.page.show: page_blank
+#             - component.update: weact_display
+#   - id: manual_pages
+#     then:
+#       - delay: ${display_updates_manual_cycle_delay}
+
+<<: !include { file: scripts/interval_display_cycle_pages.yaml, vars: { display_id: weact_display, cycle_script: cycle_pages_in_lux, lux_sensor: lux_garage, lux_dark_threshold: 11, page_to_skip: page_wifi_qr } }
 
 
 external_components:
@@ -556,7 +579,7 @@ display:
 
           x = 70; y = 124;
           // it.printf(x, y, id(home_icon_font), TextAlign::BASELINE_CENTER , "\U000F058F");
-          if (id(hum_pump).has_state()) {
+          if (id(hum_pump).has_state() and not isnan(id(hum_pump).state)) {
             it.printf(x+70, y, id(size_50_font), TextAlign::BASELINE_RIGHT , "%.1f", id(hum_pump).state);
             // it.printf(x+74, y, id(size_20_font), TextAlign::BASELINE_LEFT , "°");
             // it.printf(x+80, y, id(size_20_font), TextAlign::BASELINE_LEFT , "C");
@@ -569,8 +592,17 @@ display:
 
           x = 200; y = 124;
           // it.printf(x, y, id(home_icon_font), TextAlign::BASELINE_CENTER , "\U000F058F");
-          if (id(lux_garage).has_state()) {
-            it.printf(x+70, y, id(size_50_font), TextAlign::BASELINE_RIGHT , "%.1f", id(lux_garage).state);
+          if (id(lux_garage).has_state() and not isnan(id(lux_garage).state)) {
+            if(int(id(lux_garage).state) < 99) {
+              it.printf(x+70, y, id(size_50_font), TextAlign::BASELINE_RIGHT , "%.1f", id(lux_garage).state);
+            } else {
+              if(int(id(lux_garage).state) > 9999) {
+                it.printf(x+70, y, id(size_50_font), TextAlign::BASELINE_RIGHT , "%.0fK", id(lux_garage).state / 1000);
+              } else {
+                it.printf(x+70, y, id(size_50_font), TextAlign::BASELINE_RIGHT , "%.0f", id(lux_garage).state);
+              }
+            }
+            // it.printf(x+70, y, id(size_50_font), TextAlign::BASELINE_RIGHT , "%.1f", id(lux_garage).state);
             it.printf(x+74, y, id(size_20_font), TextAlign::BASELINE_LEFT , "LX");
             // it.printf(x+80, y, id(size_20_font), TextAlign::BASELINE_LEFT , "C");
           }
