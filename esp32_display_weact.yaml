@@ -110,6 +110,14 @@ sensor:
 
   - !include { file: sensors/value_mqtt_subscribe.yaml, vars: { topic: "measures/garage/illuminance", id: "lux_garage", name: "Garage Illuminance", unit: "lx", mdi_icon: "decagram-outline" } }
 
+  # Pump sensors
+  - !include { file: sensors/value_mqtt_subscribe.yaml, vars: { topic: "measures/pump/temperature", id: "temp_pump", name: "Pump Temperature", unit: "°C", mdi_icon: "thermometer" } }
+  - !include { file: sensors/value_mqtt_subscribe.yaml, vars: { topic: "measures/pump/temperature_Floor", id: "temp_pumpFloor", name: "Pump Temperature Floor", unit: "°C", mdi_icon: "thermometer" } }
+  - !include { file: sensors/value_mqtt_subscribe.yaml, vars: { topic: "measures/pump/humidity", id: "hum_pump", name: "Pump Humidity", unit: "%", mdi_icon: "water-percent" } }
+  - !include { file: sensors/value_mqtt_subscribe.yaml, vars: { topic: "measures/pump/water_used_all", id: "water_used_all", name: "Pump Water Total", unit: "m³", mdi_icon: "water-plus" } }
+  - !include { file: sensors/value_mqtt_subscribe.yaml, vars: { topic: "measures/pump/water_used_home", id: "water_used_home", name: "Pump Water Home", unit: "m³", mdi_icon: "water-plus" } }
+  - !include { file: sensors/value_mqtt_subscribe.yaml, vars: { topic: "measures/pump/water_used_garden", id: "water_used_garden", name: "Pump Water Garden", unit: "m³", mdi_icon: "water-plus" } }
+
     # on_value: # Actions to perform once data for the last sensor has been received
     #   then:
     #     - script.execute: all_data_received
@@ -155,31 +163,37 @@ font:
   - file: 'fonts/Roboto-Medium.ttf'
     id: size_50_font
     size: 50
-  - file: 'fonts/Roboto-Light.ttf'
-    id: size_12_font
-    size: 12
+  - file: 'fonts/Roboto-Medium.ttf'
+    id: size_40_font
+    size: 40
+  - file: 'fonts/Roboto-Medium.ttf'
+    id: size_30_font
+    size: 30
+  - file: 'fonts/Roboto-Medium.ttf'
+    id: size_25_font
+    size: 25
+  - file: 'fonts/Roboto-Medium.ttf'
+    id: size_20_font
+    # glyphs:
+    #   ['&', '@', '!', ',', '.', '?', '"', '%', '(', ')', '+', '-', '_', ':', '°', '0',
+    #     '1', '2', '3', '4', '5', '6', '7', '8', '9', 'A', 'B', 'C', 'D', 'E',
+    #     'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S',
+    #     'T', 'U', 'V', 'W', 'X', 'Y', 'Z', ' ', 'a', 'b', 'c', 'd', 'e', 'f',
+    #     'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't',
+    #     'u', 'v', 'w', 'x', 'y', 'z', '/']
+    size: 20
   - file: 'fonts/Roboto-Medium.ttf'
     id: size_15_font
     size: 15
   - file: 'fonts/Roboto-Medium.ttf'
     id: size_14_font
     size: 14
-  - file: 'fonts/Roboto-Medium.ttf'
-    id: size_20_font
-    glyphs:
-      ['&', '@', '!', ',', '.', '?', '"', '%', '(', ')', '+', '-', '_', ':', '°', '0',
-        '1', '2', '3', '4', '5', '6', '7', '8', '9', 'A', 'B', 'C', 'D', 'E',
-        'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S',
-        'T', 'U', 'V', 'W', 'X', 'Y', 'Z', ' ', 'a', 'b', 'c', 'd', 'e', 'f',
-        'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't',
-        'u', 'v', 'w', 'x', 'y', 'z', '/']
-    size: 20
-  - file: 'fonts/Roboto-Medium.ttf'
-    id: size_25_font
-    size: 25
-  - file: 'fonts/Roboto-Medium.ttf'
-    id: size_30_font
-    size: 30
+  - file: 'fonts/Roboto-Light.ttf'
+    id: size_12_font
+    size: 12
+  - file: 'fonts/Roboto-Light.ttf'
+    id: size_6_font
+    size: 6
   - file: 'fonts/materialdesignicons-webfont.ttf'
     id: weather_font
     size: 120
@@ -242,6 +256,13 @@ font:
       "\U000F112B", # mdi-home-roof
       "\U000F081A", # mdi-door
       "\U000F0DD3", # home-floor-negative-1
+      "\U000F0DD2", # home-floor-0
+      "\U000F0D80", # home-floor-1
+      "\U000F02DC", # home
+      "\U000F06A1", # home-outline
+      "\U000F0710", # shovel (garden)
+      "\U000F09F2", # flower-tulip-outline (garden)
+      "\U000F058F", # water-pump (water)
       ]
   - file: 'fonts/materialdesignicons-webfont.ttf'
     id: weather_font_45
@@ -276,6 +297,54 @@ font:
       "\U000F0928", # wifi-strenght-4
       "\U000F092E", # wifi-strength-off-outline
       ]
+
+interval:
+  - interval: 1min
+    then:
+      - if:
+          condition:
+            not:
+              - script.is_running: manual_pages
+          then:
+            - script.execute: cycle_pages_in_lux
+
+script:
+  - id: cycle_pages
+    then:
+      - display.page.show_next: weact_display
+      - component.update: weact_display
+  - id: cycle_pages_in_day
+    then:
+      - if:
+          condition:
+            text_sensor.state:
+              id: time_of_day
+              state: "DAY"
+          then:
+            - display.page.show_next: weact_display
+            - component.update: weact_display
+          else:
+            - display.page.show: blank
+            - component.update: weact_display
+  - id: cycle_pages_in_lux
+    # parameters:
+    #   sensor_name: string
+    then:
+      - if:
+          condition:
+            sensor.in_range:
+              id: lux_garage
+              above: 11
+          then:
+            - display.page.show_next: weact_display
+            - component.update: weact_display
+          else:
+            - display.page.show: blank
+            - component.update: weact_display
+  - id: manual_pages
+    then:
+      - delay: 5min
+
 
 external_components:
   - source: github://pr#4579
@@ -439,49 +508,114 @@ display:
             it.printf(x+70, y, id(units_22_font), TextAlign::BASELINE_LEFT , "\U000F03F0");
           }
 
-interval:
-  - interval: 15s
-    then:
-      - if:
-          condition:
-            not:
-              - script.is_running: manual_pages
-          then:
-            - script.execute: cycle_pages_in_lux
+      - id: page2
+        lambda: |-
+          // Pump Temperatures and Humidity Page
+          #define xRes ${display_xRes}
+          #define yRes ${display_yRes}
+          int x, y;
 
-script:
-  - id: cycle_pages
-    then:
-      - display.page.show_next: weact_display
-      - component.update: weact_display
-  - id: cycle_pages_in_day
-    then:
-      - if:
-          condition:
-            text_sensor.state:
-              id: time_of_day
-              state: "DAY"
-          then:
-            - display.page.show_next: weact_display
-            - component.update: weact_display
-          else:
-            - display.page.show: blank
-            - component.update: weact_display
-  - id: cycle_pages_in_lux
-    # parameters:
-    #   sensor_name: string
-    then:
-      - if:
-          condition:
-            sensor.in_range:
-              id: lux_garage
-              above: 0.5
-          then:
-            - display.page.show_next: weact_display
-            - component.update: weact_display
-          else:
-            - display.page.show: blank
-            - component.update: weact_display
-  - id: manual_pages
-    then:
-      - delay: 1min
+          //* Pump Temperatures
+          x = 148; y = 18;
+          it.printf(x, y, id(size_15_font), TextAlign::BASELINE_CENTER , "PUMP Temperatures");
+
+          //* Temperature
+          x = 20; y = 64;
+          it.printf(x, y-12, id(measures_50_font), TextAlign::BASELINE_CENTER , "\U000F050F");
+
+          // Pump
+          x = 70; y = 60;
+          // it.printf(x, y, id(home_icon_font), TextAlign::BASELINE_CENTER , "\U000F06D9");
+          if (id(temp_pump).has_state()) {
+            it.printf(x+70, y, id(size_50_font), TextAlign::BASELINE_RIGHT , "%.1f", id(temp_pump).state);
+            it.printf(x+70, y, id(units_22_font), TextAlign::BASELINE_LEFT , "\U000F0504");
+          }
+
+          // Pump Floor
+          x = 200; y = 60;
+          // it.printf(x, y, id(home_icon_font), TextAlign::BASELINE_CENTER , "\U000F058F");
+          if (id(temp_pumpFloor).has_state()) {
+            it.printf(x+70, y, id(size_50_font), TextAlign::BASELINE_RIGHT , "%.1f", id(temp_pumpFloor).state);
+            it.printf(x+70, y, id(units_22_font), TextAlign::BASELINE_LEFT , "\U000F0504");
+          }
+
+          //line
+          it.line(0, 63, 296, 63);
+
+          //* Pump Humidity and Illuminance
+          x = 148; y = 64+18;
+          it.printf(x, y, id(size_15_font), TextAlign::BASELINE_CENTER , "PUMP Humidity and Illuminance");
+
+          //* Humidity
+          x = 20; y = 128;
+          it.printf(x, y-12, id(measures_50_font), TextAlign::BASELINE_CENTER , "\U000F058E");
+
+          x = 70; y = 124;
+          // it.printf(x, y, id(home_icon_font), TextAlign::BASELINE_CENTER , "\U000F058F");
+          if (id(hum_pump).has_state()) {
+            it.printf(x+70, y, id(size_50_font), TextAlign::BASELINE_RIGHT , "%.1f", id(hum_pump).state);
+            // it.printf(x+74, y, id(size_20_font), TextAlign::BASELINE_LEFT , "°");
+            // it.printf(x+80, y, id(size_20_font), TextAlign::BASELINE_LEFT , "C");
+            it.printf(x+70, y, id(units_22_font), TextAlign::BASELINE_LEFT , "\U000F03F0");
+          }
+
+          //* Illuminance
+          // x = 148+24; y = 128;
+          // it.printf(x, y-12, id(measures_50_font), TextAlign::BASELINE_CENTER , "\U000F17FE");
+
+          x = 200; y = 124;
+          // it.printf(x, y, id(home_icon_font), TextAlign::BASELINE_CENTER , "\U000F058F");
+          if (id(lux_garage).has_state()) {
+            it.printf(x+70, y, id(size_50_font), TextAlign::BASELINE_RIGHT , "%.1f", id(lux_garage).state);
+            it.printf(x+74, y, id(size_20_font), TextAlign::BASELINE_LEFT , "LX");
+            // it.printf(x+80, y, id(size_20_font), TextAlign::BASELINE_LEFT , "C");
+          }
+
+      - id: page3
+        lambda: |-
+          // Water
+          #define xRes ${display_xRes}
+          #define yRes ${display_yRes}
+          int x, y;
+
+          //* Pump Water
+          x = 148; y = 18;
+          it.printf(x, y, id(size_15_font), TextAlign::BASELINE_CENTER , "Water Measure");
+
+          //* Water
+          x = 20; y = 64;
+          it.printf(x, y-12, id(measures_50_font), TextAlign::BASELINE_CENTER , "\U000F058F");
+
+          // All Used
+          x = 170; y = 60;
+          // it.printf(x, y, id(home_icon_font), TextAlign::BASELINE_CENTER , "\U000F06D9");
+          if (id(water_used_all).has_state()) {
+            it.printf(x+70, y, id(size_40_font), TextAlign::BASELINE_RIGHT , "%.3f", id(water_used_all).state);
+            it.printf(x+74, y, id(size_20_font), TextAlign::BASELINE_LEFT , "M");
+            it.printf(x+94, y-12, id(size_12_font), TextAlign::BASELINE_LEFT , "3");
+          }
+
+          //line
+          it.line(70, 64, 296, 64);
+
+          // Home Used
+          x = 284; y = 94;
+          it.printf(x, y-2, id(home_icon_font), TextAlign::BASELINE_CENTER , "\U000F06A1");
+
+          x = 170; y = 94;
+          if (id(water_used_home).has_state()) {
+            it.printf(x+70, y, id(size_30_font), TextAlign::BASELINE_RIGHT , "%.3f", id(water_used_home).state);
+            it.printf(x+74, y, id(size_20_font), TextAlign::BASELINE_LEFT , "M");
+            it.printf(x+94, y-12, id(size_12_font), TextAlign::BASELINE_LEFT , "3");
+          }
+
+          // Garden Used
+          x = 284; y = 128;
+          it.printf(x, y-2, id(home_icon_font), TextAlign::BASELINE_CENTER , "\U000F09F2");
+
+          x = 170; y = 128;
+          if (id(water_used_garden).has_state()) {
+            it.printf(x+70, y, id(size_30_font), TextAlign::BASELINE_RIGHT , "%.3f", id(water_used_garden).state);
+            it.printf(x+74, y, id(size_20_font), TextAlign::BASELINE_LEFT , "M");
+            it.printf(x+94, y-12, id(size_12_font), TextAlign::BASELINE_LEFT , "3");
+          }
