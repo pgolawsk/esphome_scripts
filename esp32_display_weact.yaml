@@ -28,6 +28,9 @@ substitutions:
   mqtt_location: home
   mqtt_room: room
 
+  # default variable values for !include statements
+  accuracy_decimals: "2"
+
   # Display setup variables
   display_xRes: "296"
   display_yRes: "128"
@@ -108,15 +111,15 @@ sensor:
   - !include { file: sensors/value_mqtt_subscribe.yaml, vars: { topic: "measures/underfloor/humidity", id: "hum_underfloor", name: "Humidity Underfloor", unit: "%", mdi_icon: "water-percent" } }
   - !include { file: sensors/value_mqtt_subscribe.yaml, vars: { topic: "measures/aquarium_window/humidity", id: "hum_aquariumW", name: "Humidity Aquarium Window", unit: "%", mdi_icon: "water-percent" } }
 
-  - !include { file: sensors/value_mqtt_subscribe.yaml, vars: { topic: "measures/garage/illuminance", id: "lux_garage", name: "Garage Illuminance", unit: "lx", mdi_icon: "decagram-outline" } }
+  - !include { file: sensors/value_mqtt_subscribe.yaml, vars: { topic: "measures/garage/illuminance", id: "lux_garage", name: "Garage Illuminance", unit: "lx", mdi_icon: "decagram-outline", accuracy_decimals: 1 } }
 
   # Pump sensors
   - !include { file: sensors/value_mqtt_subscribe.yaml, vars: { topic: "measures/pump/temperature", id: "temp_pump", name: "Pump Temperature", unit: "°C", mdi_icon: "thermometer" } }
   - !include { file: sensors/value_mqtt_subscribe.yaml, vars: { topic: "measures/pump/temperature_Floor", id: "temp_pumpFloor", name: "Pump Temperature Floor", unit: "°C", mdi_icon: "thermometer" } }
   - !include { file: sensors/value_mqtt_subscribe.yaml, vars: { topic: "measures/pump/humidity", id: "hum_pump", name: "Pump Humidity", unit: "%", mdi_icon: "water-percent" } }
-  - !include { file: sensors/value_mqtt_subscribe.yaml, vars: { topic: "measures/pump/water_used_all", id: "water_used_all", name: "Pump Water Total", unit: "m³", mdi_icon: "water-plus" } }
-  - !include { file: sensors/value_mqtt_subscribe.yaml, vars: { topic: "measures/pump/water_used_home", id: "water_used_home", name: "Pump Water Home", unit: "m³", mdi_icon: "water-plus" } }
-  - !include { file: sensors/value_mqtt_subscribe.yaml, vars: { topic: "measures/pump/water_used_garden", id: "water_used_garden", name: "Pump Water Garden", unit: "m³", mdi_icon: "water-plus" } }
+  - !include { file: sensors/value_mqtt_subscribe.yaml, vars: { topic: "measures/pump/water_used_all", id: "water_used_all", name: "Pump Water Total", unit: "m³", mdi_icon: "water-plus", accuracy_decimals: 3 } }
+  - !include { file: sensors/value_mqtt_subscribe.yaml, vars: { topic: "measures/pump/water_used_home", id: "water_used_home", name: "Pump Water Home", unit: "m³", mdi_icon: "water-plus", accuracy_decimals: 3 } }
+  - !include { file: sensors/value_mqtt_subscribe.yaml, vars: { topic: "measures/pump/water_used_garden", id: "water_used_garden", name: "Pump Water Garden", unit: "m³", mdi_icon: "water-plus", accuracy_decimals: 3 } }
 
     # on_value: # Actions to perform once data for the last sensor has been received
     #   then:

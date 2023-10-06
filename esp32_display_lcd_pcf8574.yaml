@@ -7,6 +7,7 @@
 # Pawelo 20230924, 1.1.5, added Sun Direction and Time Of Day sensors text sensors
 # Pawelo 20230924, 1.1.5, support for physical buttons
 # Pawelo 20230930, 1.1.5, addeld LCD PCF8574 display over I2C
+# Pawelo 20231006, 1.1.5, added display variables
 #
 #! run with this command to override substitutions
 # esphome -s devicename espXX -s updates 1min -s room <Room name> -s mqtt_room <room> run esp32_MMmm_SSss__PP.yaml --device 192.168.x.x
@@ -25,11 +26,12 @@ substitutions:
   mqtt_location: home
   mqtt_room: room
 
-  run_time: 20s #needs to be as long as needed to get data
-  sleep_time: 2min # normal sleep time
-  away_sleep_time: 1h # sleep time when nobody's at home
-  night_sleep_time: 6.5h # 1st sleep time after midnight
-  refresh_interval: ${updates} #refresh when on USB power
+  # default variable values for !include statements
+  accuracy_decimals: "2"
+
+  # Display setup variables
+  display_address: 0x27
+  display_update_interval: 5s
 
 # Include basics of a board
 <<: !include includes/board_esp32_with_sun.yaml
@@ -148,9 +150,8 @@ display:
   - platform: lcd_pcf8574
     dimensions: 16x2
     id: pcf_display
-    address: 0x27
-    update_interval: 5s
-    # update_interval: ${updates}
+    address: ${display_address}
+    update_interval: ${display_update_interval}
 
     lambda: |-
       // it.print("Hello World!");
@@ -162,29 +163,3 @@ display:
       } else {
         it.printf(0, 1 , "%2.1f %2.1f %2.0f%% %2.0f", id(temp).state, id(tempFloor).state, id(hum).state, id(lux).state);
       }
-
-    # pages:
-    #   - id: blank
-    #     lambda: |-
-    #       it.print("Hello World!");
-    #       it.strftime(1, 0, "Time: %H:%M on %d.%m.%Y", id(sntp_time).now());
-
-    #   - id: page0
-    #     lambda: |-
-    #       it.strftime(0, 0, "Time: %H:%M on %d.%m.%Y", id(sntp_time).now());
-    #       it.printf(1, 0 , "Temperature: %2.1f", id(temp).state);
-
-    #   - id: page1
-    #     lambda: |-
-    #       it.strftime(0, 0, "Time: %H:%M on %d.%m.%Y", id(sntp_time).now());
-    #       it.printf(1, 0 , "Humidity: %2.1f", id(hum).state);
-
-    #   - id: page2
-    #     lambda: |-
-    #       it.strftime(0, 0, "Time: %H:%M on %d.%m.%Y", id(sntp_time).now());
-    #       it.printf(1, 0 , "Illuminance: %2.1f", id(lux).state);
-
-    #   - id: page3
-    #     lambda: |-
-    #       it.strftime(0, 0, "Time: %H:%M on %d.%m.%Y", id(sntp_time).now());
-    #       it.printf(1, 0 , "Temp Floor : %2.1f", id(tempFloor).state);

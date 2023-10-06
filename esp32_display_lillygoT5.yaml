@@ -5,6 +5,8 @@
 # Pawelo 20230308, created based on https://github.com/danuw/esphome-configs/blob/epd-multipage/epd47-1.yaml
 # Pawelo 20230310, added battery sensor based on https://github.com/esphome/feature-requests/issues/1109#issuecomment-1408376503
 # Pawelo 20230923, 1.1.5, added HA Connected binary sensor
+# Pawelo 20231006, 1.1.5, added display variables
+
 #TODO: good example to deep_sleep: https://gist.github.com/Plawasan/8e27956db016eb5158311b94d096509b
 #                                  https://gist.github.com/Plawasan/4ae826b05aaa7812f3a191714ca47a50
 #                                  https://pastebin.com/Yd7xhtCQ
@@ -25,6 +27,15 @@ substitutions:
   # by default it's also published under <devicename>/<id_sensor>
   mqtt_location: home
   mqtt_room: room
+
+  # default variable values for !include statements
+  accuracy_decimals: "2"
+
+  # Display setup variables
+  display_xRes: "960"
+  display_yRes: "540"
+  display_rotation: "180"
+  display_update_interval: ${updates}
 
   run_time: 20s #needs to be as long as needed to get data
   sleep_time: 2min # normal sleep time
@@ -390,9 +401,8 @@ font:
 display:
   - platform: lilygo_t5_47
     id: t5_display
-    rotation: 180
-    update_interval: $updates
-    # update_interval: 300s
+    rotation: ${display_rotation}
+    update_interval: ${display_update_interval}
     full_update_every: 1 # optional (default:  1): 0 - never, 1 (default) - every, 2+ - throttled
     cycles_render: 20    # optional (default: 20): higher number -> less ghosting, crisper image, more time
     cycles_invert: 40    # optional (default: 20): higher number -> more timef or full update, but mor burn-in protection
@@ -421,28 +431,28 @@ display:
       #     it.filled_rectangle(0, 0, xRes, yRes, COLOR_ON);
       #     it.print(xRes/2, yRes/2, id(font_name), COLOR_OFF, TextAlign::CENTER, "Refreshing...");
 
-      - id: page0
+      - id: page_blank
         lambda: |-
           // positioning constants
-          #define xRes 960
-          #define yRes 540
+          #define xRes ${display_xRes}
+          #define yRes ${display_yRes}
           #define xCenter (xRes/2 + 40) // X position center
           id(t5_display).clear();
-      - id: page1
+      - id: page_time
         lambda: |-
           // positioning constants
-          #define xRes 960
-          #define yRes 540
+          #define xRes ${display_xRes}
+          #define yRes ${display_yRes}
           #define xCenter (xRes/2 + 40) // X position center
           //id(t5_display).clear();
           it.strftime(15, 310, id(font_big), TextAlign::BASELINE_LEFT, "%H:%M", id(sntp_time).now());
           it.strftime(50, 500, id(font_med), TextAlign::BASELINE_LEFT, "%Y-%m-%d %a", id(sntp_time).now());
           it.print(xRes - 40, yRes - 40, id(font_small), TextAlign::BOTTOM_LEFT, "1");
-      - id: page2
+      - id: page_time_with_sun
         lambda: |-
           // positioning constants
-          #define xRes 960
-          #define yRes 540
+          #define xRes ${display_xRes}
+          #define yRes ${display_yRes}
           #define xCenter (xRes/2 + 40) // X position center
           //id(t5_display).clear();
           it.strftime(xCenter + 100, 40, id(font_small), TextAlign::BASELINE_LEFT, "%Y-%m-%d %a", id(sntp_time).now());
@@ -450,11 +460,11 @@ display:
           it.printf(50, 380, id(font_small), TextAlign::BASELINE_LEFT, "Sunrise at %s and sunset at %s.", id(sunrise).state.c_str(), id(sunset).state.c_str());
           it.strftime(50, 500, id(font_med), TextAlign::BASELINE_LEFT, "%Y-%m-%d %a", id(sntp_time).now());
           it.print(xRes - 40, yRes - 40, id(font_small), TextAlign::BOTTOM_LEFT, "2");
-      - id: page3
+      - id: page_some_text
         lambda: |-
           // positioning constants
-          #define xRes 960
-          #define yRes 540
+          #define xRes ${display_xRes}
+          #define yRes ${display_yRes}
           #define xCenter (xRes/2 + 40) // X position center
           //id(t5_display).clear();
           it.fill(COLOR_ON);
@@ -462,8 +472,8 @@ display:
       - id: page4
         lambda: |-
           // positioning constants
-          #define xRes 960
-          #define yRes 540
+          #define xRes ${display_xRes}
+          #define yRes ${display_yRes}
           #define xCenter (xRes/2 + 40) // X position center
           //id(t5_display).clear();
           it.fill(COLOR_ON);
@@ -502,17 +512,17 @@ display:
             i++;
           }
           it.print(xRes - 40, yRes - 40, id(font_small), TextAlign::BASELINE_LEFT, "4");
-      - id: page5
+      - id: page_wifi_qr
         lambda: |-
           // positioning constants
-          #define xRes 960
-          #define yRes 540
+          #define xRes ${display_xRes}
+          #define yRes ${display_yRes}
           #define xCenter (xRes/2 + 40) // X position center
           //id(t5_display).clear();
           it.print(60, 60, id(font_small), TextAlign::BASELINE_LEFT, "Join Guest WIFI");
           it.print(xRes - 40, yRes - 40, id(font_small), TextAlign::BASELINE_LEFT, "5");
           // guest wifi
           // WIFI:S:<WIFI NAME HERE>;T:WPA;P:<WIFI PASSWOD HERE>;H:false;;
-          // Draw the QR-code at position [x=50,y=100] with white color and a 2x scale
+          // Draw the QR-code at position [x=50,y=100] with white color and a 14x scale
           it.qr_code(50, 100, id(guestwifi_qr), COLOR_ON, 14);
 
