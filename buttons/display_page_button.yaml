@@ -1,0 +1,15 @@
+---
+#* Display button on interface
+# Pawelo, 20221006, created based on display_button.yaml
+
+platform: template
+name: "$room Button Page ${page_ix}"
+id: "page_button_${page_ix}"
+icon: "mdi:book-open-page-variant-outline"
+state_topic: $devicename/page_button_${page_ix}
+on_press:
+  then:
+    - script.stop: manual_pages
+    - script.execute: manual_pages
+    - display.page.show: "page_${page_ix}"
+    - component.update: ${display_id}
