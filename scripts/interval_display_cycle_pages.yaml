@@ -1,0 +1,74 @@
+---
+#* Sun interface enanble
+# Pawelo, 20231006, created based on https://esphome.io/components/display/index.html#display-pages
+
+interval:
+  - interval: ${display_updates_interval}
+    then:
+      - if:
+          condition:
+            not:
+              - script.is_running: manual_pages
+          then:
+            # - script.execute: cycle_pages_in_lux
+            - script.execute: ${cycle_script}
+
+script:
+  - id: cycle_pages
+    then:
+      - display.page.show_next: ${display_id}
+      - while:
+          condition:
+            or:
+              - display.is_displaying_page: page_blank
+              # - display.is_displaying_page: page_wifi_qr
+              - display.is_displaying_page: ${page_to_skip}
+          then:
+            - display.page.show_next: ${display_id}
+      - component.update: ${display_id}
+  - id: cycle_pages_in_day
+    then:
+      - if:
+          condition:
+            text_sensor.state:
+              id: time_of_day
+              state: "DAY"
+          then:
+            - display.page.show_next: ${display_id}
+            - while:
+                condition:
+                  or:
+                    - display.is_displaying_page: page_blank
+                    - display.is_displaying_page: ${page_to_skip}
+                then:
+                  - display.page.show_next: ${display_id}
+            - component.update: ${display_id}
+          else:
+            - display.page.show: page_blank
+            - component.update: ${display_id}
+  - id: cycle_pages_in_lux
+    # parameters:
+    #   sensor_name: string
+    then:
+      - if:
+          condition:
+            sensor.in_range:
+              # id: lux_garage
+              id: ${lux_sensor}
+              above: ${lux_dark_threshold}
+          then:
+            - display.page.show_next: ${display_id}
+            - while:
+                condition:
+                  or:
+                    - display.is_displaying_page: page_blank
+                    - display.is_displaying_page: ${page_to_skip}
+                then:
+                  - display.page.show_next: ${display_id}
+            - component.update: ${display_id}
+          else:
+            - display.page.show: page_blank
+            - component.update: ${display_id}
+  - id: manual_pages
+    then:
+      - delay: ${display_updates_manual_cycle_delay}
