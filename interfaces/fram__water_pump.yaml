@@ -1,0 +1,60 @@
+---
+#* Enable FRAM to store preferences in FRAM instead in flash
+# Pawelo, 20231007, created based on https://github.com/esphome/esphome/pull/4880 and https://deploy-preview-2950--esphome.netlify.app/components/fram.html#fram-types
+
+external_components:
+  - source: github://pr#4880
+    components: [ fram, fram_pref ]
+
+fram:
+  - id: fram_a
+    i2c_id: ${bus_id}
+    address: 0x50
+    type: FRAM # for MB85RC256V
+    # size: 32KB # for MB85RC256V # no value mewas auto-detect
+
+fram_pref:
+  id: fram_pref_a
+  fram_id: fram_a
+  pool_start: 2048
+  pool_size: 2KiB
+  static_prefs:
+    - key: global_watertotal_all
+      lambda: return 210044532; // read from logs in DEBUG mode
+      addr: 12
+      size: 6
+      persist_key: true
+    - key: global_watertotal_garden
+      lambda: return 1166242707; // read from logs in DEBUG mode
+      addr: 24
+      size: 6
+      persist_key: true
+    # - key: global_watertotal_home
+    #   lambda: return fnv1_hash("watertotal_home");
+    #   # addr: 12
+    #   # size: 4
+    #   persist_key: true
+#     - key: wifi
+#       lambda: return fnv1_hash(App.get_compilation_time());
+#     - key: foo
+#       lambda: return 1234;
+#       addr: 4000
+#       size: 1KiB
+#   static_prefs:
+#     - key: sw1
+#       lambda: return id(switch_1).get_object_id_hash();
+#       addr: 12
+#       size: 3
+#       persist_key: true
+#     - key: wifi
+#       lambda: return fnv1_hash(App.get_compilation_time());
+#     - key: foo
+#       lambda: return 1234;
+#       addr: 4000
+#       size: 1KiB
+# switch:
+#   - platform: gpio
+#     pin: 3
+#     name: "Test switch"
+#     id: switch_1
+#     restore_mode: RESTORE_DEFAULT_OFF

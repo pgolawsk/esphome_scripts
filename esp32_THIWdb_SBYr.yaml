@@ -10,6 +10,7 @@
 # Pawelo 20230919, 1.1.5, added sunrise and sunset text sensors
 # Pawelo 20230923, 1.1.5, added HA Connected binary sensor
 # Pawelo 20230923, 1.1.5, added (and disabled after testing) support for LD2410, LD2420 and APDS-9960
+# Pawelo 20231007, 1.1.5, added FRAM to store preferences
 #
 #! run with this command to override substitutions
 # esphome -s devicename espXX -s updates 1min -s room <Room name> -s mqtt_room <room> run esp32_MMmm_SSss__PP.yaml --device 192.168.x.x
@@ -32,7 +33,7 @@ substitutions:
   pulses_per_liter: "476"
 
   # Include basics of a board
-<<: !include includes/board_esp32_water.yaml
+<<: !include includes/board_esp32__water_pump.yaml
 # Include/Override mqtt with/without RTTTL support if needed
 <<: !include includes/mqtt.yaml
 #<<: !include includes/mqtt_with_rtttl.yaml
@@ -45,6 +46,7 @@ substitutions:
 # <<: !include { file: interfaces/uart_ld2410.yaml, vars: { ix: "ld", tx_pin: "TX", rx_pin: "RX", baud_rate: 256000, sensor_name: "LD2420" } }
 # <<: !include { file: interfaces/uart_ld2420.yaml, vars: { ix: "ld", tx_pin: "TX", rx_pin: "RX", baud_rate: 256000 } }
 # <<: !include { file: interfaces/i2c_apds9960.yaml, vars: { address: "0x39" } }
+<<: !include { file: interfaces/fram__water_pump.yaml, vars: { bus_id: "bus_a" } }
 
 # # reinclude MQTT as a bug in ESPHOME, see: https://github.com/esphome/issues/issues/2180, https://github.com/esphome/issues/issues/1487
 # mqtt:
@@ -134,6 +136,16 @@ sensor:
   - !include { file: sensors/value_mqtt_subscribe.yaml, vars: { topic: "measures/underfloor/humidity", id: "hum_underfloor", name: "Humidity Underfloor", unit: "%", mdi_icon: "water-percent" } }
   - !include { file: sensors/value_mqtt_subscribe.yaml, vars: { topic: "measures/aquarium_window/humidity", id: "hum_aquariumW", name: "Humidity Aquarium Window", unit: "%", mdi_icon: "water-percent" } }
 
+  # #! for test purpose only
+  # - platform: template
+  #   name: Test global_watertotal_all
+  #   lambda: return id(global_watertotal_all);
+  #   accuracy_decimals: 5
+  # - platform: template
+  #   name: Test global_watertotal_garden
+  #   lambda: return id(global_watertotal_garden);
+  #   accuracy_decimals: 5
+
 # switch:
 #     # Distance sensor setup
 #     - !include { file: switches/setup_ld2410.yaml, vars: { sensor_name: "LD2410" } }
@@ -151,3 +163,8 @@ button:
 #     components: [ ld2420 ]
 #     refresh: 0s
 #   - source: github://nrandell/dallasng
+
+external_components:
+  - source: github://pr#4880
+    components: [ fram, fram_pref ]
+  - source: github://nrandell/dallasng
