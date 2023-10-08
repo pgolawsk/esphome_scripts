@@ -32,7 +32,7 @@ substitutions:
   accuracy_decimals: "2"
   pulses_per_liter: "476"
 
-  # Include basics of a board
+# Include basics of a board
 <<: !include includes/board_esp32__water_pump.yaml
 # Include/Override mqtt with/without RTTTL support if needed
 <<: !include includes/mqtt.yaml
