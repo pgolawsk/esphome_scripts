@@ -1,6 +1,7 @@
 ---
 #* Enable FRAM to store preferences in FRAM instead in flash
 # Pawelo, 20231007, created based on https://github.com/esphome/esphome/pull/4880 and https://deploy-preview-2950--esphome.netlify.app/components/fram.html#fram-types
+# Pawelo, 20231012, added select_display_cycle_interval preservation
 
 external_components:
   - source: github://pr#4880
@@ -27,6 +28,11 @@ fram_pref:
     - key: global_watertotal_garden
       lambda: return 1166242707; // read from logs in DEBUG mode
       addr: 24
+      size: 6
+      persist_key: true
+    - key: select_display_cycle_interval
+      lambda: return id(select_display_cycle_interval).get_object_id_hash();
+      addr: 128
       size: 6
       persist_key: true
     # - key: global_watertotal_home

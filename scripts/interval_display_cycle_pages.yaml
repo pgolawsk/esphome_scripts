@@ -1,6 +1,7 @@
 ---
 #* Sun interface enanble
 # Pawelo, 20231006, created based on https://esphome.io/components/display/index.html#display-pages
+# Pawelo, 20231012, added manageable interval for cycle display pages
 
 interval:
   - interval: ${display_updates_interval}
@@ -12,6 +13,15 @@ interval:
           then:
             # - script.execute: cycle_pages_in_lux
             - script.execute: ${cycle_script}
+          else:
+            # refresh only current page as per manual interval
+            - lambda: if (id(global_display_cycle_page) > 0 ) { id(global_display_current_cycle) += 1; }
+            - if:
+                condition:
+                  lambda: return id(global_display_cycle_page) > 0 && id(global_display_current_cycle) > id(global_display_cycle_page);
+                then:
+                  - lambda: id(global_display_current_cycle) = 1;
+                  - component.update: ${display_id}
 
 script:
   - id: cycle_pages
@@ -46,7 +56,7 @@ script:
           else:
             - display.page.show: page_blank
             - component.update: ${display_id}
-  - id: cycle_pages_in_lux
+  - id: cycle_pages_in_lux2
     # parameters:
     #   sensor_name: string
     then:
@@ -66,6 +76,35 @@ script:
                 then:
                   - display.page.show_next: ${display_id}
             - component.update: ${display_id}
+          else:
+            - display.page.show: page_blank
+            - component.update: ${display_id}
+  - id: cycle_pages_in_lux
+    # parameters:
+    #   sensor_name: string
+    then:
+      - lambda: if (id(global_display_cycle_page) > 0 ) { id(global_display_current_cycle) += 1; }
+      - if:
+          condition:
+            sensor.in_range:
+              # id: lux_garage
+              id: ${lux_sensor}
+              above: ${lux_dark_threshold}
+          then:
+            - if:
+                condition:
+                  lambda: return id(global_display_cycle_page) > 0 && id(global_display_current_cycle) > id(global_display_cycle_page);
+                then:
+                  - lambda: id(global_display_current_cycle) = 1;
+                  - display.page.show_next: ${display_id}
+                  - while:
+                      condition:
+                        or:
+                          - display.is_displaying_page: page_blank
+                          - display.is_displaying_page: ${page_to_skip}
+                      then:
+                        - display.page.show_next: ${display_id}
+                  - component.update: ${display_id}
           else:
             - display.page.show: page_blank
             - component.update: ${display_id}

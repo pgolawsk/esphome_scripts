@@ -1,12 +1,12 @@
 ---
 #* Base configuration for ESP-32-WROOM board
-#! NOT TESTED
 # Pawelo 20230101, created as copy of board_esp12f.yaml
 # Pawelo 20230305, added time_sntp amd sun by default
 # Pawelo 20230305, forked as separate for water device
 # Pawelo 20230924, increased flash_write_interval to 15min
 # Pawelo 20231006, added global variables to preserve totals beetween boots
 # Pawelo 20231008, removed flash_write_interval as it's preserved in FRAM
+# Pawelo 20231010, added display refresh interval global variable
 
 globals:
   - id: global_watertotal_all
@@ -21,6 +21,14 @@ globals:
   #   type: float
   #   restore_value: true
   #   initial_value: "0.0"
+  - id: global_display_cycle_page
+    type: int
+    # restore_value: true
+    initial_value: "3"
+  - id: global_display_current_cycle
+    type: int
+    # restore_value: true
+    initial_value: "0"
 
 esphome:
   name: $devicename

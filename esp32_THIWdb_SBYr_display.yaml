@@ -14,7 +14,9 @@
 # Pawelo 20231007, 1.1.5, added display WeAct 2.9'
 # Pawelo 20231012, 1.1.5, added rtttl buzzer and led
 # Pawelo 20231012, 1.1.5, added physical buttons for Refresh and Next
-# Pawelo 20231012, 1.1.5, added Displat Cycle Interval select
+# Pawelo 20231012, 1.1.5, added Display Cycle Interval select
+# Pawelo 20231012, 1.1.5, added cycle print on ePaper
+# Pawelo 20231012, 1.1.5, added manageable cycle display pages interval
 #
 #! run with this command to override substitutions
 # esphome -s devicename espXX -s updates 1min -s room <Room name> -s mqtt_room <room> run esp32_MMmm_SSss__PP.yaml --device 192.168.x.x
@@ -40,7 +42,7 @@ substitutions:
   display_xRes: "296"
   display_yRes: "128"
   display_rotation: "270"
-  display_updates_interval: 1min
+  display_updates_interval: 5s # need to be small for display manageable interval cycle
   display_updates_manual_cycle_delay: 5min
 
 # Include basics of a board
@@ -99,6 +101,12 @@ text_sensor:
   # - platform: template
   #   name: Test HASH of ID of global_watertotal_all
   #   lambda: return to_string(fnv1_hash(to_string(id(global_watertotal_all))));
+  # - platform: template
+  #   name: TEST global_display_cycle_page
+  #   lambda: return id(global_display_cycle_page);
+  # - platform: template
+  #   name: TEST global_display_current_cycle
+  #   lambda: return id(global_display_current_cycle);
 
 binary_sensor:
   # HA Connected
@@ -220,7 +228,7 @@ switch:
 
 select:
   # Display Cycle Interval selection
-  - !include { file: selects/display_cycle_interval.yaml, vars: { } }
+  - !include { file: selects/display_cycle_interval.yaml, vars: { global_variable: "global_display_cycle_page", display_id: "weact_display" } }
 
 external_components:
   - source: github://pr#4880
@@ -369,6 +377,15 @@ font:
       "\U000F0928", # wifi-strenght-4
       "\U000F092E", # wifi-strength-off-outline
       ]
+  - file: 'fonts/materialdesignicons-webfont.ttf'
+    id: cycle_icon_font
+    size: 16
+    glyphs: [
+      "\U000F00E8", # autorenew
+      "\U000F19E7", # autorenew-off
+      "\U000F04E6", # sync
+      "\U000F04E8", # sync-off
+      ]
 
 <<: !include { file: scripts/interval_display_cycle_pages.yaml, vars: { display_id: weact_display, cycle_script: cycle_pages_in_lux, lux_sensor: lux, lux_dark_threshold: 11, page_to_skip: page_wifi_qr } }
 
@@ -427,14 +444,17 @@ display:
           it.line(0, 54, 296, 54);
 
           //Time
-          it.strftime(20, 45, id(size_85_font), "%H:%M", id(sntp_time).now());
+          it.strftime(70, 45, id(size_85_font), "%H:%M", id(sntp_time).now());
           /* it.strftime(225, 68, id(size_60_font), "%S", id(sntp_time).now()); */
 
-          it.strftime(250, 58, id(size_20_font), "%a", id(sntp_time).now());
+          //Weekday
+          it.strftime(15, 58, id(size_20_font), "%a", id(sntp_time).now());
+          // it.strftime(250, 58, id(size_20_font), "%a", id(sntp_time).now());
 
           //wifi
           if (id(wifi_rssi).has_state()) {
-            x = 265, y = 120;
+            x = 35, y = 105;
+            // x = 265, y = 120;
             if (id(wifi_rssi).state >= -50) {
               it.printf(x, y, id(wlan_icon_font), TextAlign::BASELINE_CENTER , "\U000F0928");
             } else if (id(wifi_rssi).state >= -60) {
@@ -446,6 +466,15 @@ display:
             } else {
               it.printf(x, y, id(wlan_icon_font), TextAlign::BASELINE_CENTER , "\U000F092E");
             }
+          }
+          //* Display Cycle
+          x = 0; y = 126;
+          if (id(select_display_cycle_interval).state != "Never") {
+            it.printf(x, y, id(cycle_icon_font), TextAlign::BASELINE_LEFT, "\U000F04E6");
+            x = 16; y = 126;
+            it.printf(x, y, id(size_12_font), TextAlign::BASELINE_LEFT, "%s", id(select_display_cycle_interval).state.c_str());
+          } else {
+            it.printf(x, y, id(cycle_icon_font), TextAlign::BASELINE_LEFT, "\U000F04E8");
           }
 
       - id: page_home_temps
@@ -534,6 +563,16 @@ display:
             it.printf(x+70, y, id(units_22_font), TextAlign::BASELINE_LEFT , "\U000F03F0");
           }
 
+          //* Display Cycle
+          x = 0; y = 126;
+          if (id(select_display_cycle_interval).state != "Never") {
+            it.printf(x, y, id(cycle_icon_font), TextAlign::BASELINE_LEFT, "\U000F04E6");
+            x = 16; y = 126;
+            it.printf(x, y, id(size_12_font), TextAlign::BASELINE_LEFT, "%s", id(select_display_cycle_interval).state.c_str());
+          } else {
+            it.printf(x, y, id(cycle_icon_font), TextAlign::BASELINE_LEFT, "\U000F04E8");
+          }
+
       - id: page_pump_temps
         lambda: |-
           // Pump Temperatures and Humidity Page
@@ -606,6 +645,16 @@ display:
             // it.printf(x+80, y, id(size_20_font), TextAlign::BASELINE_LEFT , "C");
           }
 
+          //* Display Cycle
+          x = 0; y = 126;
+          if (id(select_display_cycle_interval).state != "Never") {
+            it.printf(x, y, id(cycle_icon_font), TextAlign::BASELINE_LEFT, "\U000F04E6");
+            x = 16; y = 126;
+            it.printf(x, y, id(size_12_font), TextAlign::BASELINE_LEFT, "%s", id(select_display_cycle_interval).state.c_str());
+          } else {
+            it.printf(x, y, id(cycle_icon_font), TextAlign::BASELINE_LEFT, "\U000F04E8");
+          }
+
       - id: page_water
         lambda: |-
           // Water
@@ -655,12 +704,24 @@ display:
             it.printf(x+94, y-12, id(size_12_font), TextAlign::BASELINE_LEFT , "3");
           }
 
+          //* Display Cycle
+          x = 0; y = 126;
+          if (id(select_display_cycle_interval).state != "Never") {
+            it.printf(x, y, id(cycle_icon_font), TextAlign::BASELINE_LEFT, "\U000F04E6");
+            x = 16; y = 126;
+            it.printf(x, y, id(size_12_font), TextAlign::BASELINE_LEFT, "%s", id(select_display_cycle_interval).state.c_str());
+          } else {
+            it.printf(x, y, id(cycle_icon_font), TextAlign::BASELINE_LEFT, "\U000F04E8");
+          }
+
       - id: page_wifi_qr
         lambda: |-
           // QR Code for Guest WiFi
           #define xRes ${display_xRes}
           #define yRes ${display_yRes}
           #define xCenter (xRes/2 + 40) // X position center
+          int x, y;
+
           //id(t5_display).clear();
           it.print(10, 20, id(size_14_font), TextAlign::BASELINE_LEFT, "Join Guest WIFI");
           // it.print(xRes - 40, yRes - 40, id(font_small), TextAlign::BASELINE_LEFT, "5");
@@ -668,3 +729,13 @@ display:
           // WIFI:S:<WIFI NAME HERE>;T:WPA;P:<WIFI PASSWOD HERE>;H:false;;
           // Draw the QR-code at position [x=120,y=5] with white color and a 4x scale
           it.qr_code(120, 5, id(guestwifi_qr), COLOR_ON, 4);
+
+          //* Display Cycle
+          x = 0; y = 126;
+          if (id(select_display_cycle_interval).state != "Never") {
+            it.printf(x, y, id(cycle_icon_font), TextAlign::BASELINE_LEFT, "\U000F04E6");
+            x = 16; y = 126;
+            it.printf(x, y, id(size_12_font), TextAlign::BASELINE_LEFT, "%s", id(select_display_cycle_interval).state.c_str());
+          } else {
+            it.printf(x, y, id(cycle_icon_font), TextAlign::BASELINE_LEFT, "\U000F04E8");
+          }

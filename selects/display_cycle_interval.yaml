@@ -1,6 +1,7 @@
 ---
 #* Select for Display Refresh Interval
 # Pawelo, 20231010, created based on https://esphome.io/components/select/index.html
+# Pawelo, 20231012, added seting global variable and refresh display on select change
 
 platform: template
 name: "$room Display Refresh Interval"
@@ -12,6 +13,28 @@ options:
  - "1min"
  - "5min"
  - "15min"
+ - "1h"
 initial_option: "15s"
 restore_value: true
 optimistic: true
+on_value:
+  - lambda: |-
+      if(x == "Never") {
+        id(${global_variable}) = -1;
+      } else if(x == "5s") {
+        id(${global_variable}) = 1;
+      } else if(x == "15s") {
+        id(${global_variable}) = 3;
+      } else if(x == "1min") {
+        id(${global_variable}) = 12;
+      } else if(x == "5min") {
+        id(${global_variable}) = 60;
+      } else if(x == "15min") {
+        id(${global_variable}) = 180;
+      } else if(x == "1h") {
+        id(${global_variable}) = 720;
+      } else {
+          id(${global_variable}) = 3;
+          ESP_LOGW("select", "Unknown value on the list, assuming 15s.");
+      }
+  - component.update: ${display_id}
