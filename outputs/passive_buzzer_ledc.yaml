@@ -1,0 +1,12 @@
+---
+#* Passive Buzzer output on ESP32 LEDC
+# Pawelo, 20231012, created based on https://esphome.io/components/rtttl.html
+
+platform: ledc
+pin:
+  number: ${gpio} # GPIO2 with inverted
+#  mode: INPUT_PULLUP
+frequency: 500Hz
+id: p_buz${ix}
+# icon: mdi:volume-vibrate
+inverted: false
