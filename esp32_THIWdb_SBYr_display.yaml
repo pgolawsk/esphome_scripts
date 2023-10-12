@@ -13,6 +13,8 @@
 # Pawelo 20231007, 1.1.5, added FRAM to store preferences
 # Pawelo 20231007, 1.1.5, added display WeAct 2.9'
 # Pawelo 20231012, 1.1.5, added rtttl buzzer and led
+# Pawelo 20231012, 1.1.5, added physical buttons for Refresh and Next
+# Pawelo 20231012, 1.1.5, added Displat Cycle Interval select
 #
 #! run with this command to override substitutions
 # esphome -s devicename espXX -s updates 1min -s room <Room name> -s mqtt_room <room> run esp32_MMmm_SSss__PP.yaml --device 192.168.x.x
@@ -111,6 +113,10 @@ binary_sensor:
   # - !include { file: sensors/binary_gesture_apds9960.yaml, vars: { direction: "DOWN", mdi_icon: 'gesture-swipe-down' } }
   # - !include { file: sensors/binary_gesture_apds9960.yaml, vars: { direction: "LEFT", mdi_icon: 'gesture-swipe-left' } }
   # - !include { file: sensors/binary_gesture_apds9960.yaml, vars: { direction: "RIGHT", mdi_icon: 'gesture-swipe-right' } }
+
+  # Phuysical buttons
+  - !include { file: sensors/binary_display_button__pullup.yaml, vars: { ix: "Refresh", gpio: "GPIO33" } }
+  - !include { file: sensors/binary_display_button__pullup.yaml, vars: { ix: "Next", gpio: "GPIO32" } }
 
 sensor:
   - !include sensors/temp_internal.yaml
@@ -211,6 +217,10 @@ switch:
 #     components: [ ld2420 ]
 #     refresh: 0s
 #   - source: github://nrandell/dallasng
+
+select:
+  # Display Cycle Interval selection
+  - !include { file: selects/display_cycle_interval.yaml, vars: { } }
 
 external_components:
   - source: github://pr#4880

@@ -1,0 +1,17 @@
+---
+#* Select for Display Refresh Interval
+# Pawelo, 20231010, created based on https://esphome.io/components/select/index.html
+
+platform: template
+name: "$room Display Refresh Interval"
+id: select_display_cycle_interval
+options:
+ - "Never"
+ - "5s"
+ - "15s"
+ - "1min"
+ - "5min"
+ - "15min"
+initial_option: "15s"
+restore_value: true
+optimistic: true
