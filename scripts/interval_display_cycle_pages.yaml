@@ -2,6 +2,7 @@
 #* Sun interface enanble
 # Pawelo, 20231006, created based on https://esphome.io/components/display/index.html#display-pages
 # Pawelo, 20231012, added manageable interval for cycle display pages
+# Pawelo, 20231012, fix for to frequent refresh of blank page
 
 interval:
   - interval: ${display_updates_interval}
@@ -15,7 +16,11 @@ interval:
             - script.execute: ${cycle_script}
           else:
             # refresh only current page as per manual interval
-            - lambda: if (id(global_display_cycle_page) > 0 ) { id(global_display_current_cycle) += 1; }
+            - lambda: |-
+                if (id(global_display_cycle_page) > 0 ) {
+                  id(global_display_current_cycle) += 1;
+                }
+                // ESP_LOGI("test","curr %d, pages %d.", id(global_display_current_cycle), id(global_display_cycle_page));
             - if:
                 condition:
                   lambda: return id(global_display_cycle_page) > 0 && id(global_display_current_cycle) > id(global_display_cycle_page);
@@ -106,8 +111,13 @@ script:
                         - display.page.show_next: ${display_id}
                   - component.update: ${display_id}
           else:
-            - display.page.show: page_blank
-            - component.update: ${display_id}
+            - if:
+                condition:
+                  lambda: return id(global_display_cycle_page) > 0 && id(global_display_current_cycle) > id(global_display_cycle_page);
+                then:
+                  - lambda: id(global_display_current_cycle) = 1;
+                  - display.page.show: page_blank
+                  - component.update: ${display_id}
   - id: manual_pages
     then:
       - delay: ${display_updates_manual_cycle_delay}
