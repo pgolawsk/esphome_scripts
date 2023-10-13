@@ -143,7 +143,8 @@ sensor:
   - !include { file: sensors/temp_hum_SHT3x.yaml, vars: { ix: "", bus_id: "bus_a", address: "0x44" } }
   # Illuminance sensor
   # - !include { file: sensors/lux_BH1750.yaml, vars: { ix: "", bus_id: "bus_a", address: "0x23" } }
-  - !include { file: sensors/lux_BH1750.yaml, vars: { ix: "", bus_id: "bus_a", address: "0x23", room: "Garage", mqtt_room: "garage" } }
+  # - !include { file: sensors/lux_BH1750.yaml, vars: { ix: "", bus_id: "bus_a", address: "0x23", room: "Garage", mqtt_room: "garage" } }
+  - !include { file: sensors/lux_BH1750.yaml, vars: { ix: "", bus_id: "bus_a", address: "0x23", room: "Garage", mqtt_room: "garage", updates: "${display_updates_interval}" } }
 
   # Water ussage YF-B10 sensor
   - !include { file: sensors/water_YF-B10.yaml, vars: { ix: "_all", gpio: "GPIO16" } }
