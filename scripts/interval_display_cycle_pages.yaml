@@ -111,9 +111,10 @@ script:
                         - display.page.show_next: ${display_id}
                   - component.update: ${display_id}
           else:
+            # make page blank every 60 intervals (ie. 5min if interval is 5s)
             - if:
                 condition:
-                  lambda: return id(global_display_cycle_page) > 0 && id(global_display_current_cycle) > id(global_display_cycle_page);
+                  lambda: return id(global_display_current_cycle) > 60;
                 then:
                   - lambda: id(global_display_current_cycle) = 1;
                   - display.page.show: page_blank
