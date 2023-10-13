@@ -29,6 +29,10 @@ globals:
     type: int
     # restore_value: true
     initial_value: "0"
+  - id: global_display_enabled
+    type: int
+    # restore_value: true
+    initial_value: "1"
 
 esphome:
   name: $devicename

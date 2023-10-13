@@ -3,6 +3,7 @@
 # Pawelo, 20231006, created based on https://esphome.io/components/display/index.html#display-pages
 # Pawelo, 20231012, added manageable interval for cycle display pages
 # Pawelo, 20231012, fix for to frequent refresh of blank page
+# Pawelo, 20231012, add wake-up of the display in first interval cycle if is enough light
 
 interval:
   - interval: ${display_updates_interval}
@@ -88,7 +89,6 @@ script:
     # parameters:
     #   sensor_name: string
     then:
-      - lambda: if (id(global_display_cycle_page) > 0 ) { id(global_display_current_cycle) += 1; }
       - if:
           condition:
             sensor.in_range:
@@ -96,10 +96,14 @@ script:
               id: ${lux_sensor}
               above: ${lux_dark_threshold}
           then:
+            - lambda: if (id(global_display_cycle_page) > 0 ) { id(global_display_current_cycle) += 1; }
             - if:
                 condition:
-                  lambda: return id(global_display_cycle_page) > 0 && id(global_display_current_cycle) > id(global_display_cycle_page);
+                  or:
+                    - lambda: return id(global_display_enabled) == 0;
+                    - lambda: return id(global_display_cycle_page) > 0 && id(global_display_current_cycle) > id(global_display_cycle_page);
                 then:
+                  - lambda: id(global_display_enabled) = 1;
                   - lambda: id(global_display_current_cycle) = 1;
                   - display.page.show_next: ${display_id}
                   - while:
@@ -111,12 +115,14 @@ script:
                         - display.page.show_next: ${display_id}
                   - component.update: ${display_id}
           else:
-            # make page blank every 60 intervals (ie. 5min if interval is 5s)
+            # make page blank if no light
             - if:
                 condition:
-                  lambda: return id(global_display_current_cycle) > 60;
+                  # lambda: return id(global_display_current_cycle) > 60;
+                  lambda: return id(global_display_enabled) == 1;
                 then:
-                  - lambda: id(global_display_current_cycle) = 1;
+                  - lambda: id(global_display_enabled) = 0;
+                  # - lambda: id(global_display_current_cycle) = 1;
                   - display.page.show: page_blank
                   - component.update: ${display_id}
   - id: manual_pages
