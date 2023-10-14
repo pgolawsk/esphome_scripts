@@ -41,7 +41,7 @@ substitutions:
   # Display setup variables
   display_xRes: "296"
   display_yRes: "128"
-  display_rotation: "270"
+  display_rotation: "90"
   display_updates_interval: 5s # need to be small for display manageable interval cycle
   display_updates_manual_cycle_delay: 5min
 
