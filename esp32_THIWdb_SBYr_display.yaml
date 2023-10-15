@@ -17,6 +17,7 @@
 # Pawelo 20231012, 1.1.5, added Display Cycle Interval select
 # Pawelo 20231012, 1.1.5, added cycle print on ePaper
 # Pawelo 20231012, 1.1.5, added manageable cycle display pages interval
+# Pawelo 20231012, 1.1.5, adjusted lux_dark_threshold to 2.9 based on experience (lux=4 if light is on, lux=2.5->4.4 when lamp is on)
 #
 #! run with this command to override substitutions
 # esphome -s devicename espXX -s updates 1min -s room <Room name> -s mqtt_room <room> run esp32_MMmm_SSss__PP.yaml --device 192.168.x.x
@@ -123,7 +124,8 @@ binary_sensor:
   # - !include { file: sensors/binary_gesture_apds9960.yaml, vars: { direction: "RIGHT", mdi_icon: 'gesture-swipe-right' } }
 
   # Phuysical buttons
-  - !include { file: sensors/binary_display_button__pullup.yaml, vars: { ix: "Refresh", gpio: "GPIO33" } }
+  # - !include { file: sensors/binary_display_button__pullup.yaml, vars: { ix: "Refresh", gpio: "GPIO33" } }
+  - !include { file: sensors/binary_select_cycle__pullup.yaml, vars: { ix: "Next", gpio: "GPIO33", select_id: "select_display_cycle_interval", command: "next" } }
   - !include { file: sensors/binary_display_button__pullup.yaml, vars: { ix: "Next", gpio: "GPIO32" } }
 
 sensor:
@@ -229,6 +231,7 @@ switch:
 
 select:
   # Display Cycle Interval selection
+  # id: select_display_cycle_interval
   - !include { file: selects/display_cycle_interval.yaml, vars: { global_variable: "global_display_cycle_page", display_id: "weact_display" } }
 
 external_components:
@@ -388,7 +391,7 @@ font:
       "\U000F04E8", # sync-off
       ]
 
-<<: !include { file: scripts/interval_display_cycle_pages.yaml, vars: { display_id: weact_display, cycle_script: cycle_pages_in_lux, lux_sensor: lux, lux_dark_threshold: 11, page_to_skip: page_wifi_qr } }
+<<: !include { file: scripts/interval_display_cycle_pages.yaml, vars: { display_id: weact_display, cycle_script: cycle_pages_in_lux, lux_sensor: lux, lux_dark_threshold: 2.9, page_to_skip: page_wifi_qr } }
 
 # external_components:
 #   - source: github://pr#4579

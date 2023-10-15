@@ -1,0 +1,23 @@
+---
+#* Cycle select via GPIO button with PULLUP resistor enabled
+# Pawelo, 20231015, created based on https://esphome.io/components/select/index.html#select-next-action
+#? allowed values for operation var: first, last, previous or next
+
+platform: gpio
+pin:
+  number: ${gpio}
+  mode:
+    input: true
+    pullup: true
+  inverted: true
+name: "$room Select Cycle ${ix}"
+id: cbutton${ix}
+icon: mdi:timer-sync-outline
+state_topic: $devicename/cbutton${ix}
+internal: true
+on_press:
+  then:
+    - select.operation:
+        id: ${select_id}
+        operation: ${command}
+        cycle: true
