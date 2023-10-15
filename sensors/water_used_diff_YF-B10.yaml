@@ -1,6 +1,7 @@
 ---
 #* Water flow sensor using YF-B10 valve configuration - based on difference of 2 pulse_counter's
 # Pawelo, 20230916, created
+# Pawelo, 20231015, added clamp filter to zero negative values
 
 platform: template
 name: "$room Water Total${ix} [m³]"
@@ -29,3 +30,6 @@ lambda: |-
     b = id(water_used${ix_B}).state;
   }
   return (a ${operator} b);
+filters:
+  - clamp:
+      min_value: 0
