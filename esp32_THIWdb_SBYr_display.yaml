@@ -10,7 +10,7 @@
 # Pawelo 20230919, 1.1.5, added sunrise and sunset text sensors
 # Pawelo 20230923, 1.1.5, added HA Connected binary sensor
 # Pawelo 20230923, 1.1.5, added (and disabled after testing) support for LD2410, LD2420 and APDS-9960
-# Pawelo 20231007, 1.1.5, added FRAM to store preferences
+# Pawelo 20231007, 1.1.5, added FRAM to store preferences between reboots
 # Pawelo 20231007, 1.1.5, added display WeAct 2.9'
 # Pawelo 20231012, 1.1.5, added rtttl buzzer and led
 # Pawelo 20231012, 1.1.5, added physical buttons for Refresh and Next
