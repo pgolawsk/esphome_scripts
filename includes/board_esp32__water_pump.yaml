@@ -7,6 +7,7 @@
 # Pawelo 20231006, added global variables to preserve totals beetween boots
 # Pawelo 20231008, removed flash_write_interval as it's preserved in FRAM
 # Pawelo 20231010, added display refresh interval global variable
+# Pawelo 20231016, adjusted pulses per liter for garden sensor
 
 globals:
   - id: global_watertotal_all
@@ -50,7 +51,7 @@ esphome:
       - pulse_meter.set_total_pulses:
           id: water_flow_garden
           value: !lambda 'return (id(global_watertotal_garden) * ${pulses_per_liter});'
-      - lambda: id(water_total_garden).publish_state(id(global_watertotal_garden) * ${pulses_per_liter});
+      - lambda: id(water_total_garden).publish_state(id(global_watertotal_garden) * ${pulses_per_liter_garden});
   # on_shutdown:
   #   then:
   #     - globals.set:

@@ -39,6 +39,7 @@ substitutions:
   # default variable values for !include statements
   accuracy_decimals: "2"
   pulses_per_liter: "476"
+  pulses_per_liter_garden: "431"
 
   # Display setup variables
   display_xRes: "296"
@@ -153,7 +154,7 @@ sensor:
   - !include { file: sensors/water_YF-B10.yaml, vars: { ix: "_all", gpio: "GPIO16" } }
   - !include { file: sensors/water_used_YF-B10.yaml, vars: { ix: "_all" } }
 
-  - !include { file: sensors/water_YF-B10.yaml, vars: { ix: "_garden", gpio: "GPIO17", pulses_per_liter: "440" } }
+  - !include { file: sensors/water_YF-B10.yaml, vars: { ix: "_garden", gpio: "GPIO17", pulses_per_liter: "${pulses_per_liter_garden}" } }
   - !include { file: sensors/water_used_YF-B10.yaml, vars: { ix: "_garden" } }
 
   - !include { file: sensors/water_flow_diff_YF-B10.yaml, vars: { ix: "_home",  ix_A: "_all", ix_B: "_garden", operator: "-"} }
