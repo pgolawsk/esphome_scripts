@@ -19,4 +19,6 @@ on_value:
         return to_string(id(water_total${ix}).state * 0.001);
 filters:
   - multiply: 0.001
-update_interval: $updates
+  - throttle: $updates
+  - filter_out: nan
+update_interval: 5s

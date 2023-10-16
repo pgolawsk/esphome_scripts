@@ -33,3 +33,6 @@ lambda: |-
 filters:
   - clamp:
       min_value: 0
+  - throttle: $updates
+  - filter_out: nan
+update_interval: 5s

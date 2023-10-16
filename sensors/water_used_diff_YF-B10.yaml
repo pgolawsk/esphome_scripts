@@ -16,7 +16,7 @@ on_value:
       payload: !lambda |-
         return to_string(x);
 #lambda: 'return id(water_used${ix_A}).state ${operator} id(water_used${ix_B}).state;'
-update_interval: $updates
+update_interval: 5s
 lambda: |-
   float a, b;
   if (isnan(id(water_used${ix_A}).state)) {
@@ -33,3 +33,5 @@ lambda: |-
 filters:
   - clamp:
       min_value: 0
+  - throttle: $updates
+  - filter_out: nan
