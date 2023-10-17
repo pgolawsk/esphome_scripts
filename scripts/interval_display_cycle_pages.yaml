@@ -4,6 +4,7 @@
 # Pawelo, 20231012, added manageable interval for cycle display pages
 # Pawelo, 20231012, fix for to frequent refresh of blank page
 # Pawelo, 20231012, add wake-up of the display in first interval cycle if is enough light
+# Pawelo, 20231012, add dynamic lux_threshold as per sun elevation
 
 interval:
   - interval: ${display_updates_interval}
@@ -68,10 +69,24 @@ script:
     then:
       - if:
           condition:
-            sensor.in_range:
-              # id: lux_garage
-              id: ${lux_sensor}
-              above: ${lux_dark_threshold}
+            # sensor.in_range:
+            #   # id: lux_garage
+            #   id: ${lux_sensor}
+            #   above: ${lux_dark_threshold}
+            lambda: |-
+              if(isnan(id(${lux_sensor}).state)) {
+                return false; // do not display pages when sensor deliver no values
+              } else {
+                if (isnan(id(sun_elevation).state) || id(sun_elevation).state < 0) {
+                  // when there is NIGHT then set min treshold to show pages
+                  return id(${lux_sensor}).state > ${lux_dark_threshold};
+                } else {
+                  // when there is DAY then adjust threshold as per 1/10 sun elevation
+                  // this is to make sure the pages are not displayed when there is no point
+                  return id(${lux_sensor}).state > (${lux_dark_threshold} + id(sun_elevation).state * ${lux_dark_threshold_elevation_multiplier});
+                }
+              }
+              return false;
           then:
             - display.page.show_next: ${display_id}
             - while:
