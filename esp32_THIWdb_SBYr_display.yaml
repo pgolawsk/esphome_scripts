@@ -19,6 +19,7 @@
 # Pawelo 20231012, 1.1.5, added manageable cycle display pages interval
 # Pawelo 20231012, 1.1.5, adjusted lux_dark_threshold to 2.9 based on experience (lux=4 if light is on, lux=2.5->4.4 when lamp is on)
 # Pawelo 20231012, 1.1.5, adjusted pulses per liter for _garage water sensor from 476 to 440 (measured 431)
+# Pawelo 20231017, 1.1.5, added water_updates_interval for water sensors updates (much offten than $updates)
 #
 #! run with this command to override substitutions
 # esphome -s devicename espXX -s updates 1min -s room <Room name> -s mqtt_room <room> run esp32_MMmm_SSss__PP.yaml --device 192.168.x.x
@@ -40,6 +41,7 @@ substitutions:
   accuracy_decimals: "2"
   pulses_per_liter: "476"
   pulses_per_liter_garden: "431"
+  water_updates_interval: 5s
 
   # Display setup variables
   display_xRes: "296"
