@@ -398,7 +398,7 @@ font:
       "\U000F04E8", # sync-off
       ]
 
-<<: !include { file: scripts/interval_display_cycle_pages.yaml, vars: { display_id: weact_display, cycle_script: cycle_pages_in_lux, lux_sensor: lux, lux_dark_threshold: 2.9, lux_dark_threshold_elevation_multiplier: 0.1, page_to_skip: page_wifi_qr } }
+<<: !include { file: scripts/interval_display_cycle_pages.yaml, vars: { display_id: weact_display, cycle_script: cycle_pages_in_lux_on_select, lux_sensor: lux, lux_dark_threshold: 2.9, lux_dark_threshold_elevation_multiplier: 0.1, page_to_skip: page_wifi_qr } }
 
 # external_components:
 #   - source: github://pr#4579

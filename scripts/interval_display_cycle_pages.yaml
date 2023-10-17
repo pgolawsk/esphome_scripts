@@ -1,10 +1,11 @@
 ---
-#* Sun interface enanble
+#* Script to cycle pages on display on interval
 # Pawelo, 20231006, created based on https://esphome.io/components/display/index.html#display-pages
 # Pawelo, 20231012, added manageable interval for cycle display pages
 # Pawelo, 20231012, fix for to frequent refresh of blank page
 # Pawelo, 20231012, add wake-up of the display in first interval cycle if is enough light
-# Pawelo, 20231012, add dynamic lux_threshold as per sun elevation
+# Pawelo, 20231017, add dynamic lux_threshold as per sun elevation
+# Pawelo, 20231017, added some comments
 
 interval:
   - interval: ${display_updates_interval}
@@ -32,6 +33,8 @@ interval:
 
 script:
   - id: cycle_pages
+    #* cycle display pages
+    #*  on static interval
     then:
       - display.page.show_next: ${display_id}
       - while:
@@ -44,6 +47,9 @@ script:
             - display.page.show_next: ${display_id}
       - component.update: ${display_id}
   - id: cycle_pages_in_day
+    #* cycle display pages
+    #*  on static interval
+    #*  on DAY only
     then:
       - if:
           condition:
@@ -63,7 +69,10 @@ script:
           else:
             - display.page.show: page_blank
             - component.update: ${display_id}
-  - id: cycle_pages_in_lux2
+  - id: cycle_pages_in_lux
+    #* cycle display pages
+    #*  on static interval
+    #*  on dynamic lux threshold
     # parameters:
     #   sensor_name: string
     then:
@@ -100,16 +109,33 @@ script:
           else:
             - display.page.show: page_blank
             - component.update: ${display_id}
-  - id: cycle_pages_in_lux
+  - id: cycle_pages_in_lux_on_select
+    #* cycle display pages
+    #*  on dynamic interval set via select and global var
+    #*  on dynamic lux threshold
     # parameters:
     #   sensor_name: string
     then:
       - if:
           condition:
-            sensor.in_range:
-              # id: lux_garage
-              id: ${lux_sensor}
-              above: ${lux_dark_threshold}
+            # sensor.in_range:
+            #   # id: lux_garage
+            #   id: ${lux_sensor}
+            #   above: ${lux_dark_threshold}
+            lambda: |-
+              if(isnan(id(${lux_sensor}).state)) {
+                return false; // do not display pages when sensor deliver no values
+              } else {
+                if (isnan(id(sun_elevation).state) || id(sun_elevation).state < 0) {
+                  // when there is NIGHT then set min treshold to show pages
+                  return id(${lux_sensor}).state > ${lux_dark_threshold};
+                } else {
+                  // when there is DAY then adjust threshold as per 1/10 sun elevation
+                  // this is to make sure the pages are not displayed when there is no point
+                  return id(${lux_sensor}).state > (${lux_dark_threshold} + id(sun_elevation).state * ${lux_dark_threshold_elevation_multiplier});
+                }
+              }
+              return false;
           then:
             - lambda: if (id(global_display_cycle_page) > 0 ) { id(global_display_current_cycle) += 1; }
             - if:
