@@ -1,0 +1,55 @@
+---
+#* UV and Ambient Light sensor LTR390 configuration
+# Pawelo, 20231017, created based on my temp sensor and https://esphome.io/components/sensor/ltr390.html?highlight=uv
+
+platform: ltr390
+uv_index:
+  name: "$room UV Index{ix}"
+  id: uv_index${ix}
+  accuracy_decimals: 0
+  icon: mdi:sun-wireless-outline
+  state_topic: $devicename/uv_index${ix}
+  on_value:
+    - mqtt.publish:
+        topic: "$mqtt_location/$mqtt_room/uv_index${ix}"
+        payload: !lambda |-
+          return to_string(id(uv_index${ix}).state);
+uv:
+  name: "$room UV{ix}"
+  id: uv{ix}
+  accuracy_decimals: 2
+  icon: mdi:sun-wireless-outline
+  state_topic: $devicename/uv{ix}
+  on_value:
+    - mqtt.publish:
+        topic: "$mqtt_location/$mqtt_room/uv{ix}"
+        payload: !lambda |-
+          return to_string(id(uv${ix}).state);
+light:
+  name: "$room Illuminance${ix}"
+  accuracy_decimals: 1
+  id: lux${ix}
+  icon: mdi:decagram-outline
+  state_topic: $devicename/illuminance${ix}
+  on_value:
+    - mqtt.publish:
+        topic: "$mqtt_location/$mqtt_room/illuminance${ix}"
+        payload: !lambda |-
+          return to_string(id(lux${ix}).state);
+ambient_light:
+  name: "$room Ambient Illuminance${ix}"
+  accuracy_decimals: 1
+  id: alux${ix}
+  icon: mdi:decagram-outline
+  state_topic: $devicename/ambient_illuminance${ix}
+  on_value:
+    - mqtt.publish:
+        topic: "$mqtt_location/$mqtt_room/ambient_illuminance${ix}"
+        payload: !lambda |-
+          return to_string(id(alux${ix}).state);
+# gain: X3
+# resolution: 18
+i2c_id: ${bus_id}
+#address: 0x53
+address: ${address}
+update_interval: $updates
