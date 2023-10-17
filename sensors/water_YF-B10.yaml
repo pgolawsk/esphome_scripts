@@ -7,6 +7,7 @@
 # Pawelo, 20231008, added to preserve total in global variable
 # Pawelo, 20231017, added water_updates_interval for water sensors updates (much offten than $updates)
 # Pawelo, 20231017, added delta filter to prevent very frequent mqtt messages on every pulse
+# Pawelo, 20231017, added water_flow_min_delta variable for water sensors updates (to have no publish on every pulse)
 
 platform: pulse_meter
 pin:
@@ -30,7 +31,7 @@ filters:
   - clamp:
       min_value: 0
       max_value: 80
-  - delta: 0.3
+  - delta: ${water_flow_min_delta}
 total:
   name: "$room Water Total${ix}"
   id: water_total${ix}
@@ -44,7 +45,7 @@ total:
   filters:
     - lambda: if (isnan(x)) { return 0; } return x / ${pulses_per_liter};
 #        - multiply: 0.001
-    - delta: 0.1
+    - delta: ${water_flow_min_delta}
   on_value:
     - mqtt.publish:
         topic: "$mqtt_location/$mqtt_room/water_total${ix}"

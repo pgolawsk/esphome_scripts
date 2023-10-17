@@ -4,6 +4,7 @@
 # Pawelo, 20231015, added clamp filter to zero negative values
 # Pawelo, 20231017, added water_updates_interval for water sensors updates (much offten than $updates)
 # Pawelo, 20231017, added delta filter to prevent very frequent mqtt messages on every pulse
+# Pawelo, 20231017, added water_flow_min_delta variable for water sensors updates (to have no publish on every pulse)
 
 platform: template
 name: "$room Water Total${ix}"
@@ -36,6 +37,6 @@ filters:
   - clamp:
       min_value: 0
   # - throttle: $updates
-  - delta: 0.1
+  - delta: ${water_flow_min_delta}
   - filter_out: nan
 update_interval: ${water_updates_interval}
