@@ -2,6 +2,8 @@
 #* Water used sensors using YF-B10 valve configuration
 # Pawelo, 20230111, created based on https://www.pieterbrinkman.com/2022/02/02/build-a-cheap-water-usage-sensor-using-esphome-home-assistant-and-a-proximity-sensor/
 # Pawelo, 20230121, final configuration with real sensor
+# Pawelo, 20231017, added water_updates_interval for water sensors updates (much offten than $updates)
+# Pawelo, 20231017, added delta filter to prevent very frequent mqtt messages on every pulse
 
 platform: template
 name: "$room Water Total${ix} [m³]"
@@ -18,7 +20,8 @@ on_value:
       payload: !lambda |-
         return to_string(id(water_total${ix}).state * 0.001);
 filters:
+  - delta: 1 # in liters here
   - multiply: 0.001
-  - throttle: $updates
+  # - throttle: $updates
   - filter_out: nan
-update_interval: 5s
+update_interval: ${water_updates_interval}

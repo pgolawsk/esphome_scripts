@@ -2,6 +2,8 @@
 #* Water flow sensor using YF-B10 valve configuration - based on difference of 2 pulse_counter's
 # Pawelo, 20230916, created
 # Pawelo, 20231015, added clamp filter to zero negative values
+# Pawelo, 20231017, added water_updates_interval for water sensors updates (much offten than $updates)
+# Pawelo, 20231017, added delta filter to prevent very frequent mqtt messages on every pulse
 
 platform: template
 name: "$room Water Total${ix} [m³]"
@@ -16,7 +18,6 @@ on_value:
       payload: !lambda |-
         return to_string(x);
 #lambda: 'return id(water_used${ix_A}).state ${operator} id(water_used${ix_B}).state;'
-update_interval: 5s
 lambda: |-
   float a, b;
   if (isnan(id(water_used${ix_A}).state)) {
@@ -33,5 +34,7 @@ lambda: |-
 filters:
   - clamp:
       min_value: 0
-  - throttle: $updates
+  # - throttle: $updates
   - filter_out: nan
+  - delta: 0.001
+update_interval: ${water_updates_interval}

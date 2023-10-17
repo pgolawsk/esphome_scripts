@@ -2,6 +2,8 @@
 #* Water total sensor using YF-B10 valve configuration - based on difference of 2 pulse_counter's
 # Pawelo, 20230916, created
 # Pawelo, 20231015, added clamp filter to zero negative values
+# Pawelo, 20231017, added water_updates_interval for water sensors updates (much offten than $updates)
+# Pawelo, 20231017, added delta filter to prevent very frequent mqtt messages on every pulse
 
 platform: template
 name: "$room Water Total${ix}"
@@ -33,6 +35,7 @@ lambda: |-
 filters:
   - clamp:
       min_value: 0
-  - throttle: $updates
+  # - throttle: $updates
+  - delta: 0.1
   - filter_out: nan
-update_interval: 5s
+update_interval: ${water_updates_interval}

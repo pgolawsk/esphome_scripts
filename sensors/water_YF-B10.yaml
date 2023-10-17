@@ -1,10 +1,12 @@
 ---
 #* Water usage sensors using YF-B10 valve configuration
+#? DONE: calibrate sensor on water, based on https://community.home-assistant.io/t/using-esphome-to-build-a-water-flow-rate-meter/119380/75
+#? DONE: CALIBRATION DONE: Looks like sensor measures  flow of 1.3L/min at minimum, so very slow move is not detected
 # Pawelo, 20230111, created based on https://www.pieterbrinkman.com/2022/02/02/build-a-cheap-water-usage-sensor-using-esphome-home-assistant-and-a-proximity-sensor/
 # Pawelo, 20230121, final configuration with real sensor
 # Pawelo, 20231008, added to preserve total in global variable
-# TODO: calibrate sensor on water, based on https://community.home-assistant.io/t/using-esphome-to-build-a-water-flow-rate-meter/119380/75
-# DONE: CALIBRATION DONE: Looks like sensor measures  flow of 1.3L/min at minimum, so very slow move is not detected
+# Pawelo, 20231017, added water_updates_interval for water sensors updates (much offten than $updates)
+# Pawelo, 20231017, added delta filter to prevent very frequent mqtt messages on every pulse
 
 platform: pulse_meter
 pin:
@@ -15,7 +17,7 @@ id: water_flow${ix}
 icon: "mdi:water"
 name: "$room Water Flow${ix}"
 unit_of_measurement: "liter/min"
-timeout: $updates
+timeout: ${water_updates_interval}
 internal: true
 state_topic: $devicename/water_flow${ix}
 on_value:
@@ -28,6 +30,7 @@ filters:
   - clamp:
       min_value: 0
       max_value: 80
+  - delta: 0.3
 total:
   name: "$room Water Total${ix}"
   id: water_total${ix}
@@ -41,6 +44,7 @@ total:
   filters:
     - lambda: if (isnan(x)) { return 0; } return x / ${pulses_per_liter};
 #        - multiply: 0.001
+    - delta: 0.1
   on_value:
     - mqtt.publish:
         topic: "$mqtt_location/$mqtt_room/water_total${ix}"

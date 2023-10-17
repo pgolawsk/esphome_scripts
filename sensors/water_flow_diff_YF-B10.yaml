@@ -3,6 +3,8 @@
 # Pawelo, 20230916, created
 # Pawelo, 20230917, set accuracy_decimals to 2
 # Pawelo, 20230919, calculate values from range (0;80)
+# Pawelo, 20231017, added water_updates_interval for water sensors updates (much offten than $updates)
+# Pawelo, 20231017, added delta filter to prevent very frequent mqtt messages on every pulse
 
 platform: template
 id: water_flow${ix}
@@ -35,3 +37,5 @@ filters:
   - clamp:
       min_value: 0
       max_value: 80
+  - delta: 0.3
+update_interval: ${water_updates_interval}
