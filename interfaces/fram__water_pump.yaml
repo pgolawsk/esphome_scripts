@@ -2,6 +2,7 @@
 #* Enable FRAM to store preferences in FRAM instead in flash
 # Pawelo, 20231007, created based on https://github.com/esphome/esphome/pull/4880 and https://deploy-preview-2950--esphome.netlify.app/components/fram.html#fram-types
 # Pawelo, 20231012, added select_display_cycle_interval preservation
+# Pawelo, 20231017, added customizable address for FRAM
 
 external_components:
   - source: github://pr#4880
@@ -10,7 +11,8 @@ external_components:
 fram:
   - id: fram_a
     i2c_id: ${bus_id}
-    address: 0x50
+    # address: 0x50
+    address: ${address}
     type: FRAM # for MB85RC256V
     # size: 32KB # for MB85RC256V # no value mewas auto-detect
 
