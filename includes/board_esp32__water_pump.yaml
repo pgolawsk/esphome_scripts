@@ -1,5 +1,5 @@
 ---
-#* Base configuration for ESP-32-WROOM board
+#* Base configuration for ESP-32-WROOM board with water sensors and global variables
 # Pawelo 20230101, created as copy of board_esp12f.yaml
 # Pawelo 20230305, added time_sntp amd sun by default
 # Pawelo 20230305, forked as separate for water device
@@ -8,6 +8,7 @@
 # Pawelo 20231008, removed flash_write_interval as it's preserved in FRAM
 # Pawelo 20231010, added display refresh interval global variable
 # Pawelo 20231016, adjusted pulses per liter for garden sensor
+# Pawelo 20231016, update water_total_home and water_used_home at boot
 
 globals:
   - id: global_watertotal_all
@@ -52,6 +53,8 @@ esphome:
           id: water_flow_garden
           value: !lambda 'return (id(global_watertotal_garden) * ${pulses_per_liter});'
       - lambda: id(water_total_garden).publish_state(id(global_watertotal_garden) * ${pulses_per_liter_garden});
+      - lambda: id(water_total_home).publish_state(id(global_watertotal_all) * ${pulses_per_liter}  - id(global_watertotal_garden) * ${pulses_per_liter_garden});
+      - lambda: id(water_used_home).publish_state((id(global_watertotal_all) * ${pulses_per_liter}  - id(global_watertotal_garden) * ${pulses_per_liter_garden})/1000);
   # on_shutdown:
   #   then:
   #     - globals.set:
