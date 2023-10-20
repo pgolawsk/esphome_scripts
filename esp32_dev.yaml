@@ -27,7 +27,8 @@ substitutions:
   accuracy_decimals: "2"
 
   # Include basics of a board
-<<: !include includes/board_esp32.yaml
+#<<: !include includes/board_esp32.yaml
+<<: !include includes/board_esp32_with_sun.yaml
 # Include/Override mqtt with/without RTTTL support if needed
 <<: !include includes/mqtt.yaml
 #<<: !include includes/mqtt_with_rtttl.yaml
@@ -51,6 +52,12 @@ text_sensor:
   - !include sensors/text_uptime.yaml
   - !include sensors/text_version.yaml
   - !include sensors/text_wifi_info.yaml
+
+  # Sun component
+  - !include sensors/text_sun_sunrise.yaml
+  - !include sensors/text_sun_sunset.yaml
+  - !include sensors/text_sun_time_of_day.yaml
+  - !include sensors/text_sun_direction.yaml
 
 binary_sensor:
   # HA Connected
