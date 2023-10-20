@@ -1,13 +1,14 @@
 ---
 #* HomeAssistant Connected status sensor
 # Pawelo, 20230923, created based on https://github.com/ageurtse/ESP-Home-SO-counter-with-persistant-memory-module/blob/main/102-fram.yaml
+# Pawelo, 20231020, fix for state_topic - removed $ at the end
 
 platform: status
 name: "$room $devicename HA Connected"
 id: ha_connected
 icon: mdi:connection
 internal: true
-state_topic: $devicename/ha_connected$
+state_topic: $devicename/ha_connected
 on_state:
   - mqtt.publish:
       topic: "$mqtt_location/$mqtt_room/ha_connected"
