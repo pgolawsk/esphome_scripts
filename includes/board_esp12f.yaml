@@ -38,7 +38,7 @@ esp8266:
 <<: !include ota.yaml
 <<: !include logger.yaml
 <<: !include { file: web_server.yaml, vars: { ota_enabled: false } }
-<<: !include time_sntp.yaml
+<<: !include time_sntp_with_sun.yaml
 <<: !include sun.yaml
 <<: !include prometheus.yaml
 #! as mqtt cannot be overwriten later in the code need to include in in each script (to facilitate "on_message" customization)

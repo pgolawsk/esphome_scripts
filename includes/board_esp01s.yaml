@@ -24,7 +24,7 @@ preferences:
 <<: !include mqtt.yaml
 <<: !include logger.yaml
 <<: !include { file: web_server.yaml, vars: { ota_enabled: false } }
-<<: !include time_sntp.yaml
+<<: !include time_sntp_with_sun.yaml
 <<: !include sun.yaml
 <<: !include prometheus.yaml
 
