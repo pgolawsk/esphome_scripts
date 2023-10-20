@@ -10,11 +10,10 @@
 # Pawelo 20221127, 1.1.3, added $devices variable to name configutation deployed
 # Pawelo 20221127, 1.1.4, moved i2c configuration to separate include file
 # Pawelo 20221127, 1.1.5, added preserving values in flash
-# Pawelo 20230305, added time_sntp and sun by default
+# Pawelo 20230305, added time_sntp amd sun by default
 # Pawelo 20230414, fix for compilation error: "firmware.elf section `.text1' will not fit in region `iram1_0_seg'"
 # Pawelo 20230923, disable restore from flash to prevent wearing of flash memory
-# Pawelo 20231020, removed sun, as there is separate board include with sun
-
+# Pawelo 20231020, moved sun component update on time sync only (every 5 min by default)
 
 esphome:
   name: $devicename
@@ -40,7 +39,8 @@ esp8266:
 <<: !include ota.yaml
 <<: !include logger.yaml
 <<: !include { file: web_server.yaml, vars: { ota_enabled: false } }
-<<: !include time_sntp.yaml
+<<: !include time_sntp_with_sun.yaml
+<<: !include sun.yaml
 <<: !include prometheus.yaml
 #! as mqtt cannot be overwriten later in the code need to include in in each script (to facilitate "on_message" customization)
 #<<: !include mqtt.yaml

@@ -185,14 +185,14 @@ sensor:
   - !include { file: sensors/value_mqtt_subscribe.yaml, vars: { topic: "measures/aquarium_window/humidity", id: "hum_aquariumW", name: "Humidity Aquarium Window", unit: "%", mdi_icon: "water-percent" } }
 
   # #! for test purpose only
-  # - platform: template
-  #   name: Test global_watertotal_all
-  #   lambda: return id(global_watertotal_all);
-  #   accuracy_decimals: 5
-  # - platform: template
-  #   name: Test global_watertotal_garden
-  #   lambda: return id(global_watertotal_garden);
-  #   accuracy_decimals: 5
+  - platform: template
+    name: Test global_watertotal_all
+    lambda: return id(global_watertotal_all);
+    accuracy_decimals: 5
+  - platform: template
+    name: Test global_watertotal_garden
+    lambda: return id(global_watertotal_garden);
+    accuracy_decimals: 5
 
 # switch:
 #     # Distance sensor setup
