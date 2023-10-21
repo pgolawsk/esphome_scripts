@@ -9,6 +9,7 @@
 # Pawelo 20231010, added display refresh interval global variable
 # Pawelo 20231016, adjusted pulses per liter for garden sensor
 # Pawelo 20231016, update water_total_home and water_used_home at boot
+# Pawelo 20231016, fix - use pulses_per_liter_garden for garden total
 
 globals:
   - id: global_watertotal_all
@@ -51,7 +52,7 @@ esphome:
       - lambda: id(water_total_all).publish_state(id(global_watertotal_all) * ${pulses_per_liter});
       - pulse_meter.set_total_pulses:
           id: water_flow_garden
-          value: !lambda 'return (id(global_watertotal_garden) * ${pulses_per_liter});'
+          value: !lambda 'return (id(global_watertotal_garden) * ${pulses_per_liter_garden});'
       - lambda: id(water_total_garden).publish_state(id(global_watertotal_garden) * ${pulses_per_liter_garden});
       - lambda: id(water_total_home).publish_state(id(global_watertotal_all) * ${pulses_per_liter}  - id(global_watertotal_garden) * ${pulses_per_liter_garden});
       - lambda: id(water_used_home).publish_state((id(global_watertotal_all) * ${pulses_per_liter}  - id(global_watertotal_garden) * ${pulses_per_liter_garden})/1000);
