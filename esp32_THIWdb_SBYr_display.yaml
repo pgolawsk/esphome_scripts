@@ -216,6 +216,13 @@ button:
   - !include { file: buttons/reset_watertotal_button.yaml, vars: { ix: "_all" } }
   - !include { file: buttons/reset_watertotal_button.yaml, vars: { ix: "_garden" } }
 
+  # Log water sensor values buttons (for DEBUGing)
+  - !include { file: buttons/log_sensor_value_button.yaml, vars: { id: "water_flow_all" } }
+  - !include { file: buttons/log_sensor_value_button.yaml, vars: { id: "water_total_all" } }
+  - !include { file: buttons/log_sensor_value_button.yaml, vars: { id: "water_flow_garden" } }
+  - !include { file: buttons/log_sensor_value_button.yaml, vars: { id: "water_total_garden" } }
+
+
 output:
   # Status LED
   - !include { file: outputs/status_led.yaml, vars: { ix: "", gpio: "GPIO0" } }
