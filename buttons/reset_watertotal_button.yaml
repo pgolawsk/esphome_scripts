@@ -1,0 +1,15 @@
+---
+#* Reset Water Total (global variable) button
+#! NEED RESTART after use to make set it up (as total sensor is preserving old value)
+# Pawelo, 20231021, created
+
+platform: template
+name: "$room Reset Water Total${ix}"
+id: button_reset_total${ix}
+icon: "mdi:water-off"
+state_topic: $devicename/button_reset_total${ix}
+on_press:
+  then:
+    - globals.set:
+        id: global_watertotal${ix}
+        value: "0"
