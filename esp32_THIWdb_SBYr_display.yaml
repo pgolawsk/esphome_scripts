@@ -202,14 +202,19 @@ button:
   # Restart button
   - !include { file: buttons/restart_button.yaml }
 
-  # display buttons
+  # Display buttons
   - !include { file: buttons/display_button.yaml, vars: { ix: "Refresh", display_id: "weact_display", command: "", mdi_icon: "refresh" } }
   - !include { file: buttons/display_button.yaml, vars: { ix: "Next", display_id: "weact_display", command: "next", mdi_icon: "page-next" } }
   - !include { file: buttons/display_button.yaml, vars: { ix: "Prev", display_id: "weact_display", command: "previous", mdi_icon: "page-previous" } }
   - !include { file: buttons/display_page_button.yaml, vars: { page_ix: "blank", display_id: "weact_display" } }
 
-  # # Save button
-  # - !include { file: buttons/save_watertotal_button.yaml }
+  # Water Save buttons
+  # - !include { file: buttons/save_watertotal_button.yaml, vars: { ix: "_all" } }
+  # - !include { file: buttons/save_watertotal_button.yaml, vars: { ix: "_garden", pulses_per_liter: "${pulses_per_liter_garden}" } }
+
+  # Water Reset (zero) buttons
+  - !include { file: buttons/reset_watertotal_button.yaml, vars: { ix: "_all" } }
+  - !include { file: buttons/reset_watertotal_button.yaml, vars: { ix: "_garden" } }
 
 output:
   # Status LED
