@@ -1,18 +1,19 @@
 ---
-#* Save water total button on interface
+#* Save Water Total (global variable) button
 #! NOT TESTED
 # Pawelo, 20230917, created
+# Pawelo, 20231021, parametrarized vi ${ix}
 
 platform: template
-name: "$room Button Save Totals"
-id: button_save
+name: "$room Button Save Total${ix}"
+id: button_save_total${ix}
 icon: "mdi:content-save-all"
-state_topic: $devicename/button_save
+state_topic: $devicename/button_save_total${ix}
 on_press:
   then:
     - globals.set:
-        id: global_watertotal_all
+        id: global_watertotal${ix}
         value: !lambda 'return id(water_flow_all).state / ${pulses_per_liter};'
-    - globals.set:
-        id: global_watertotal_garden
-        value: !lambda 'return id(water_flow_garden).state / ${pulses_per_liter};'
+    # - globals.set:
+    #     id: global_watertotal_garden
+    #     value: !lambda 'return id(water_flow_garden).state / ${pulses_per_liter_garden};'
