@@ -1,0 +1,13 @@
+---
+#* Log sensor value button
+# Pawelo, 20231021, created
+
+platform: template
+name: "$room Log Sensor ${id} Value"
+id: button_log_${id}
+icon: "mdi:counter"
+state_topic: $devicename/button_log_${id}
+on_press:
+  then:
+    - lambda: |-
+        ESP_LOGI("log sensor", "Value of ${id} sensor is %f.", id(${id}).state );
