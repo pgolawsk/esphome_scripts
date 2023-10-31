@@ -3,12 +3,18 @@
 # Pawelo, 20221119, created as my framework based on !include statements
 # Pawelo, 20221127, shortened WiFi SSID for fallback mode as it cannot be longer than 32 characters
 # Pawelo, 20230125, shortened further WiFi SSID for fallback mode by removing $room, as it cannot be longer than 32 characters
+# Pawelo, 20231031, added 2nd and 3rd WiFi network if primary is down
 
 wifi:
-  ssid: !secret wifi_ssid
-  password: !secret wifi_password
+  networks:
+    - ssid: !secret wifi_ssid
+      password: !secret wifi_password
+    - ssid: !secret wifi2_ssid
+      password: !secret wifi2_password
+    - ssid: !secret wifi3_ssid
+      password: !secret wifi3_password
   domain: ""
-  fast_connect: true
+  # fast_connect: true
   reboot_timeout: 45min
 
   # Enable fallback hotspot (captive portal) in case wifi connection fails
