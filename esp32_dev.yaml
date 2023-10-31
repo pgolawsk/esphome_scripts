@@ -68,6 +68,10 @@ sensor:
   - !include sensors/uptime.yaml
   - !include sensors/wifi_signal.yaml
 
+  # Sun component
+  - !include sensors/sun_elevation.yaml
+  - !include sensors/sun_azimuth.yaml
+
   # Temperature and Humidity sensor
   - !include { file: sensors/temp_hum_SHT3x.yaml, vars: { ix: "", bus_id: "bus_a", address: "0x44" } }
   # # Illuminance sensor
