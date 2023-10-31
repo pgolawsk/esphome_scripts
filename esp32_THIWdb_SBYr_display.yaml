@@ -22,6 +22,7 @@
 # Pawelo 20231017, 1.1.5, added water_updates_interval variable for water sensors updates (much offten than $updates)
 # Pawelo 20231017, 1.1.5, added water_flow_min_delta variable for water sensors updates (to have no publish on every pulse)
 # Pawelo 20231017, 1.1.5, added customizable address for FRAM
+# Pawelo 20231017, 1.1.5, removed boottons for log and reset to zero water total values
 #
 #! run with this command to override substitutions
 # esphome -s devicename espXX -s updates 1min -s room <Room name> -s mqtt_room <room> run esp32_MMmm_SSss__PP.yaml --device 192.168.x.x
@@ -184,15 +185,15 @@ sensor:
   - !include { file: sensors/value_mqtt_subscribe.yaml, vars: { topic: "measures/underfloor/humidity", id: "hum_underfloor", name: "Humidity Underfloor", unit: "%", mdi_icon: "water-percent" } }
   - !include { file: sensors/value_mqtt_subscribe.yaml, vars: { topic: "measures/aquarium_window/humidity", id: "hum_aquariumW", name: "Humidity Aquarium Window", unit: "%", mdi_icon: "water-percent" } }
 
-  # #! for test purpose only
-  - platform: template
-    name: Test global_watertotal_all
-    lambda: return id(global_watertotal_all);
-    accuracy_decimals: 5
-  - platform: template
-    name: Test global_watertotal_garden
-    lambda: return id(global_watertotal_garden);
-    accuracy_decimals: 5
+  #! for test purpose only
+  # - platform: template
+  #   name: Test global_watertotal_all
+  #   lambda: return id(global_watertotal_all);
+  #   accuracy_decimals: 5
+  # - platform: template
+  #   name: Test global_watertotal_garden
+  #   lambda: return id(global_watertotal_garden);
+  #   accuracy_decimals: 5
 
 # switch:
 #     # Distance sensor setup
@@ -213,14 +214,14 @@ button:
   # - !include { file: buttons/save_watertotal_button.yaml, vars: { ix: "_garden", pulses_per_liter: "${pulses_per_liter_garden}" } }
 
   # Water Reset (zero) buttons
-  - !include { file: buttons/reset_watertotal_button.yaml, vars: { ix: "_all" } }
-  - !include { file: buttons/reset_watertotal_button.yaml, vars: { ix: "_garden" } }
+  # - !include { file: buttons/reset_watertotal_button.yaml, vars: { ix: "_all" } }
+  # - !include { file: buttons/reset_watertotal_button.yaml, vars: { ix: "_garden" } }
 
   # Log water sensor values buttons (for DEBUGing)
-  - !include { file: buttons/log_sensor_value_button.yaml, vars: { id: "water_flow_all" } }
-  - !include { file: buttons/log_sensor_value_button.yaml, vars: { id: "water_total_all" } }
-  - !include { file: buttons/log_sensor_value_button.yaml, vars: { id: "water_flow_garden" } }
-  - !include { file: buttons/log_sensor_value_button.yaml, vars: { id: "water_total_garden" } }
+  # - !include { file: buttons/log_sensor_value_button.yaml, vars: { id: "water_flow_all" } }
+  # - !include { file: buttons/log_sensor_value_button.yaml, vars: { id: "water_total_all" } }
+  # - !include { file: buttons/log_sensor_value_button.yaml, vars: { id: "water_flow_garden" } }
+  # - !include { file: buttons/log_sensor_value_button.yaml, vars: { id: "water_total_garden" } }
 
 
 output:
