@@ -12,6 +12,7 @@
 # Pawelo 20230108, moved esp12f tests to esp12f_dev.yaml script
 # Pawelo 20230112, added flashing for generic esp32-cam-mb board
 # Pawelo 20230305, upgrade esphome to 2023.2 version and platformio
+# Pawelo 20231205, added esp32c3_dev flashing
 
 #TODO: Read more complicated AIQ measurement on https://github.com/nkitanov/iaq_board
 #TODO: Read about speaker with PAM8403 (amplifier) connection to ESP826 on: https://www.instructables.com/MQTT-Audio-Notifier-for-ESP8266-Play-MP3-TTS-RTTL/
@@ -141,6 +142,7 @@ esphome -s devicename esp32-35 -s updates 1min -s room Pump -s mqtt_location mea
 
 esphome -s devicename esp32-30 -s updates 1min -s room Test32 -s mqtt_location measures -s mqtt_room test32 run esp32_dev.yaml --device 192.168.x.x
 esphome -s devicename esp32-30 -s updates 60s -s room Test32Display -s mqtt_location measures -s mqtt_room test32disp run esp32_display_weact.yaml --device 192.168.x.x
+esphome -s devicename esp32-31 -s updates 1min -s room Test32c3 -s mqtt_location measures -s mqtt_room test32c3 run esp32c3_dev.yaml --device 192.168.x.x
 
 esphome -s devicename esp32-40 -s updates 1min -s room Test32cam -s mqtt_location measures -s mqtt_room test32cam run esp32_cam.yaml --device 192.168.x.x
 
