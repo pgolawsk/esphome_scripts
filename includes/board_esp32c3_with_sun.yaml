@@ -1,0 +1,34 @@
+---
+#* Base configuration for ESP32C3 SuperMini board (https://pl.aliexpress.com/item/1005006096717048.html)
+# Pawelo 20231205, created as copy of board_esp32_with_sun.yaml
+
+esphome:
+  name: $devicename
+  comment: $room ESP32c3 controller with $devices
+#  platform: ESP8266   # OLD notation
+  project:
+    name: $project_name
+    version: $version
+
+esp32:
+  board: esp32-c3-devkitm-1
+#  restore_from_flash: true
+  # framework:
+  #   type: arduino
+
+# preferences:
+#   flash_write_interval: 15min
+
+<<: !include wifi.yaml
+<<: !include api.yaml
+<<: !include ota.yaml
+<<: !include logger.yaml
+<<: !include { file: web_server.yaml, vars: { ota_enabled: false } }
+<<: !include time_sntp_with_sun.yaml
+<<: !include sun.yaml
+<<: !include prometheus.yaml
+#! as mqtt cannot be overwriten later in the code need to include in in each script (to facilitate "on_message" customization)
+#<<: !include mqtt.yaml
+
+# packages:
+#   network: !include mqtt.yaml

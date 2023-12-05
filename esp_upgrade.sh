@@ -1,5 +1,6 @@
 #* Upgrade of ESP version and active ESP sensors
 # Pawelo 20230923, created based on esp_setup.sh
+# Pawelo 20231205, added esp32-31
 
 #######################
 #*** OR Upgrade ESP Home on mac/win
@@ -23,3 +24,4 @@ esphome -s devicename esp32-35 -s updates 1min -s room Pump -s mqtt_location mea
 esphome -s devicename esp12f-29 -s updates 30s -s room Test -s mqtt_location measures -s mqtt_room test run esp12f_dev.yaml
 #esphome -s devicename esp32-30 -s updates 1min -s room Test32 -s mqtt_location measures -s mqtt_room test32 run esp32_display_weact.yaml
 esphome -s devicename esp32-30 -s updates 1min -s room Test32 -s mqtt_location measures -s mqtt_room test32 run esp32_dev.yaml
+esphome -s devicename esp32-31 -s updates 1min -s room Test32c3 -s mqtt_location measures -s mqtt_room test32c3 run esp32c3_dev.yaml
