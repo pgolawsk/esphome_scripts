@@ -66,7 +66,7 @@
     "liveNow": false,
     "panels": [
       {
-        "collapsed": true,
+        "collapsed": false,
         "gridPos": {
           "h": 1,
           "w": 24,
@@ -74,313 +74,312 @@
           "y": 0
         },
         "id": 5,
-        "panels": [
-          {
-            "datasource": {
-              "type": "loki",
-              "uid": "${DS_LOKI}"
-            },
-            "description": "",
-            "fieldConfig": {
-              "defaults": {
-                "color": {
-                  "mode": "palette-classic"
-                },
-                "custom": {
-                  "hideFrom": {
-                    "legend": false,
-                    "tooltip": false,
-                    "viz": false
-                  }
-                },
-                "mappings": [],
-                "unit": "none"
-              },
-              "overrides": []
-            },
-            "gridPos": {
-              "h": 9,
-              "w": 8,
-              "x": 0,
-              "y": 1
-            },
-            "id": 4,
-            "options": {
-              "displayLabels": [
-                "percent",
-                "name"
-              ],
-              "legend": {
-                "calcs": [],
-                "displayMode": "table",
-                "placement": "right",
-                "showLegend": true,
-                "values": [
-                  "percent",
-                  "value"
-                ]
-              },
-              "pieType": "donut",
-              "reduceOptions": {
-                "calcs": [
-                  "lastNotNull"
-                ],
-                "fields": "",
-                "values": true
-              },
-              "tooltip": {
-                "mode": "single",
-                "sort": "none"
-              }
-            },
-            "pluginVersion": "10.2.3",
-            "targets": [
-              {
-                "datasource": {
-                  "type": "loki",
-                  "uid": "${DS_LOKI}"
-                },
-                "editorMode": "code",
-                "expr": "sum by(mqtt_node) (count_over_time({mqtt_node=~\"esp.+\"} !~ `dallasnng\\.sensor` |= `$filter` [$__range]))",
-                "key": "Q-74fd4ba6-7447-4f46-b8e4-f143d784260c-0",
-                "legendFormat": "{{module}}",
-                "queryType": "instant",
-                "refId": "A"
-              }
-            ],
-            "title": "ALL Logs by node",
-            "transformations": [
-              {
-                "id": "organize",
-                "options": {
-                  "excludeByName": {
-                    "Time": true
-                  },
-                  "includeByName": {},
-                  "indexByName": {},
-                  "renameByName": {
-                    "Time": "",
-                    "Value #A": "",
-                    "module": ""
-                  }
-                }
-              }
-            ],
-            "type": "piechart"
-          },
-          {
-            "datasource": {
-              "type": "loki",
-              "uid": "${DS_LOKI}"
-            },
-            "fieldConfig": {
-              "defaults": {
-                "color": {
-                  "mode": "palette-classic"
-                },
-                "custom": {
-                  "hideFrom": {
-                    "legend": false,
-                    "tooltip": false,
-                    "viz": false
-                  }
-                },
-                "mappings": [
-                  {
-                    "options": {
-                      "D": {
-                        "color": "purple",
-                        "index": 3,
-                        "text": "Debug"
-                      },
-                      "E": {
-                        "color": "red",
-                        "index": 2,
-                        "text": "Error"
-                      },
-                      "I": {
-                        "color": "green",
-                        "index": 0,
-                        "text": "Information"
-                      },
-                      "W": {
-                        "color": "yellow",
-                        "index": 1,
-                        "text": "Warning"
-                      }
-                    },
-                    "type": "value"
-                  }
-                ],
-                "unit": "none"
-              },
-              "overrides": []
-            },
-            "gridPos": {
-              "h": 9,
-              "w": 8,
-              "x": 8,
-              "y": 1
-            },
-            "id": 1,
-            "options": {
-              "displayLabels": [
-                "percent",
-                "name"
-              ],
-              "legend": {
-                "displayMode": "table",
-                "placement": "right",
-                "showLegend": true,
-                "values": [
-                  "value",
-                  "percent"
-                ]
-              },
-              "pieType": "pie",
-              "reduceOptions": {
-                "calcs": [
-                  "lastNotNull"
-                ],
-                "fields": "",
-                "values": true
-              },
-              "tooltip": {
-                "mode": "single",
-                "sort": "none"
-              }
-            },
-            "pluginVersion": "10.2.3",
-            "targets": [
-              {
-                "datasource": {
-                  "type": "loki",
-                  "uid": "${DS_LOKI}"
-                },
-                "editorMode": "builder",
-                "expr": "sum by(level) (count_over_time({mqtt_node=~\"esp.+\"} !~ `dallasngg\\.sensor` |= `$filter` | decolorize | pattern `[<level>][<module>:<_>]: <_>` [$__range]))",
-                "key": "Q-74fd4ba6-7447-4f46-b8e4-f143d784260c-0",
-                "legendFormat": "{{level}}",
-                "queryType": "instant",
-                "refId": "A"
-              }
-            ],
-            "title": "ALL Logs by level",
-            "transformations": [
-              {
-                "id": "organize",
-                "options": {
-                  "excludeByName": {
-                    "Time": true,
-                    "Value #A": false
-                  },
-                  "includeByName": {},
-                  "indexByName": {},
-                  "renameByName": {
-                    "Time": "",
-                    "Value #A": "",
-                    "level": ""
-                  }
-                }
-              }
-            ],
-            "type": "piechart"
-          },
-          {
-            "datasource": {
-              "type": "loki",
-              "uid": "${DS_LOKI}"
-            },
-            "fieldConfig": {
-              "defaults": {
-                "color": {
-                  "mode": "palette-classic"
-                },
-                "custom": {
-                  "hideFrom": {
-                    "legend": false,
-                    "tooltip": false,
-                    "viz": false
-                  }
-                },
-                "mappings": [],
-                "unit": "none"
-              },
-              "overrides": []
-            },
-            "gridPos": {
-              "h": 9,
-              "w": 8,
-              "x": 16,
-              "y": 1
-            },
-            "id": 3,
-            "options": {
-              "displayLabels": [
-                "percent",
-                "name"
-              ],
-              "legend": {
-                "calcs": [],
-                "displayMode": "table",
-                "placement": "right",
-                "showLegend": true,
-                "values": [
-                  "percent",
-                  "value"
-                ]
-              },
-              "pieType": "donut",
-              "reduceOptions": {
-                "calcs": [
-                  "lastNotNull"
-                ],
-                "fields": "",
-                "values": true
-              },
-              "tooltip": {
-                "mode": "single",
-                "sort": "none"
-              }
-            },
-            "pluginVersion": "10.2.3",
-            "targets": [
-              {
-                "datasource": {
-                  "type": "loki",
-                  "uid": "${DS_LOKI}"
-                },
-                "editorMode": "code",
-                "expr": "sum by(module) (count_over_time({mqtt_node=~\"esp.+\"} !~ `dallasng\\.sensor` |= `$filter` | decolorize | pattern `[<level>][<module>:<_>]: <_>` [$__range]))",
-                "key": "Q-74fd4ba6-7447-4f46-b8e4-f143d784260c-0",
-                "legendFormat": "{{module}}",
-                "queryType": "instant",
-                "refId": "A"
-              }
-            ],
-            "title": "KEY Logs by module",
-            "transformations": [
-              {
-                "id": "organize",
-                "options": {
-                  "excludeByName": {
-                    "Time": true
-                  },
-                  "includeByName": {},
-                  "indexByName": {},
-                  "renameByName": {
-                    "Time": "",
-                    "Value #A": "",
-                    "module": ""
-                  }
-                }
-              }
-            ],
-            "type": "piechart"
-          }
-        ],
+        "panels": [],
         "title": "Stats",
         "type": "row"
+      },
+      {
+        "datasource": {
+          "type": "loki",
+          "uid": "${DS_LOKI}"
+        },
+        "description": "",
+        "fieldConfig": {
+          "defaults": {
+            "color": {
+              "mode": "palette-classic"
+            },
+            "custom": {
+              "hideFrom": {
+                "legend": false,
+                "tooltip": false,
+                "viz": false
+              }
+            },
+            "mappings": [],
+            "unit": "none"
+          },
+          "overrides": []
+        },
+        "gridPos": {
+          "h": 9,
+          "w": 8,
+          "x": 0,
+          "y": 1
+        },
+        "id": 4,
+        "options": {
+          "displayLabels": [
+            "percent",
+            "name"
+          ],
+          "legend": {
+            "calcs": [],
+            "displayMode": "table",
+            "placement": "right",
+            "showLegend": true,
+            "values": [
+              "percent",
+              "value"
+            ]
+          },
+          "pieType": "donut",
+          "reduceOptions": {
+            "calcs": [
+              "lastNotNull"
+            ],
+            "fields": "",
+            "values": true
+          },
+          "tooltip": {
+            "mode": "single",
+            "sort": "none"
+          }
+        },
+        "pluginVersion": "10.2.3",
+        "targets": [
+          {
+            "datasource": {
+              "type": "loki",
+              "uid": "${DS_LOKI}"
+            },
+            "editorMode": "code",
+            "expr": "sum by(mqtt_node) (count_over_time({mqtt_node=~\"esp.+\"} !~ `dallasnng\\.sensor` |= `$filter` [$__range]))",
+            "key": "Q-74fd4ba6-7447-4f46-b8e4-f143d784260c-0",
+            "legendFormat": "{{module}}",
+            "queryType": "instant",
+            "refId": "A"
+          }
+        ],
+        "title": "ALL Logs by node",
+        "transformations": [
+          {
+            "id": "organize",
+            "options": {
+              "excludeByName": {
+                "Time": true
+              },
+              "includeByName": {},
+              "indexByName": {},
+              "renameByName": {
+                "Time": "",
+                "Value #A": "",
+                "module": ""
+              }
+            }
+          }
+        ],
+        "type": "piechart"
+      },
+      {
+        "datasource": {
+          "type": "loki",
+          "uid": "${DS_LOKI}"
+        },
+        "fieldConfig": {
+          "defaults": {
+            "color": {
+              "mode": "palette-classic"
+            },
+            "custom": {
+              "hideFrom": {
+                "legend": false,
+                "tooltip": false,
+                "viz": false
+              }
+            },
+            "mappings": [
+              {
+                "options": {
+                  "D": {
+                    "color": "purple",
+                    "index": 3,
+                    "text": "Debug"
+                  },
+                  "E": {
+                    "color": "red",
+                    "index": 2,
+                    "text": "Error"
+                  },
+                  "I": {
+                    "color": "green",
+                    "index": 0,
+                    "text": "Information"
+                  },
+                  "W": {
+                    "color": "yellow",
+                    "index": 1,
+                    "text": "Warning"
+                  }
+                },
+                "type": "value"
+              }
+            ],
+            "unit": "none"
+          },
+          "overrides": []
+        },
+        "gridPos": {
+          "h": 9,
+          "w": 8,
+          "x": 8,
+          "y": 1
+        },
+        "id": 1,
+        "options": {
+          "displayLabels": [
+            "percent",
+            "name"
+          ],
+          "legend": {
+            "displayMode": "table",
+            "placement": "right",
+            "showLegend": true,
+            "values": [
+              "value",
+              "percent"
+            ]
+          },
+          "pieType": "pie",
+          "reduceOptions": {
+            "calcs": [
+              "lastNotNull"
+            ],
+            "fields": "",
+            "values": true
+          },
+          "tooltip": {
+            "mode": "single",
+            "sort": "none"
+          }
+        },
+        "pluginVersion": "10.2.3",
+        "targets": [
+          {
+            "datasource": {
+              "type": "loki",
+              "uid": "${DS_LOKI}"
+            },
+            "editorMode": "builder",
+            "expr": "sum by(level) (count_over_time({mqtt_node=~\"esp.+\"} !~ `dallasngg\\.sensor` |= `$filter` | decolorize | pattern `[<level>][<module>:<_>]: <_>` [$__range]))",
+            "key": "Q-74fd4ba6-7447-4f46-b8e4-f143d784260c-0",
+            "legendFormat": "{{level}}",
+            "queryType": "instant",
+            "refId": "A"
+          }
+        ],
+        "title": "ALL Logs by level",
+        "transformations": [
+          {
+            "id": "organize",
+            "options": {
+              "excludeByName": {
+                "Time": true,
+                "Value #A": false
+              },
+              "includeByName": {},
+              "indexByName": {},
+              "renameByName": {
+                "Time": "",
+                "Value #A": "",
+                "level": ""
+              }
+            }
+          }
+        ],
+        "type": "piechart"
+      },
+      {
+        "datasource": {
+          "type": "loki",
+          "uid": "${DS_LOKI}"
+        },
+        "fieldConfig": {
+          "defaults": {
+            "color": {
+              "mode": "palette-classic"
+            },
+            "custom": {
+              "hideFrom": {
+                "legend": false,
+                "tooltip": false,
+                "viz": false
+              }
+            },
+            "mappings": [],
+            "unit": "none"
+          },
+          "overrides": []
+        },
+        "gridPos": {
+          "h": 9,
+          "w": 8,
+          "x": 16,
+          "y": 1
+        },
+        "id": 3,
+        "options": {
+          "displayLabels": [
+            "percent",
+            "name"
+          ],
+          "legend": {
+            "calcs": [],
+            "displayMode": "table",
+            "placement": "right",
+            "showLegend": true,
+            "values": [
+              "percent",
+              "value"
+            ]
+          },
+          "pieType": "donut",
+          "reduceOptions": {
+            "calcs": [
+              "lastNotNull"
+            ],
+            "fields": "",
+            "values": true
+          },
+          "tooltip": {
+            "mode": "single",
+            "sort": "none"
+          }
+        },
+        "pluginVersion": "10.2.3",
+        "targets": [
+          {
+            "datasource": {
+              "type": "loki",
+              "uid": "${DS_LOKI}"
+            },
+            "editorMode": "code",
+            "expr": "sum by(module) (count_over_time({mqtt_node=~\"esp.+\"} !~ `dallasng\\.sensor` |= `$filter` | decolorize | pattern `[<level>][<module>:<_>]: <_>` [$__range]))",
+            "key": "Q-74fd4ba6-7447-4f46-b8e4-f143d784260c-0",
+            "legendFormat": "{{module}}",
+            "queryType": "instant",
+            "refId": "A"
+          }
+        ],
+        "title": "KEY Logs by module",
+        "transformations": [
+          {
+            "id": "organize",
+            "options": {
+              "excludeByName": {
+                "Time": true
+              },
+              "includeByName": {},
+              "indexByName": {},
+              "renameByName": {
+                "Time": "",
+                "Value #A": "",
+                "module": ""
+              }
+            }
+          }
+        ],
+        "type": "piechart"
       },
       {
         "collapsed": false,
@@ -388,7 +387,7 @@
           "h": 1,
           "w": 24,
           "x": 0,
-          "y": 1
+          "y": 10
         },
         "id": 6,
         "panels": [],
@@ -405,7 +404,7 @@
           "h": 20,
           "w": 24,
           "x": 0,
-          "y": 2
+          "y": 11
         },
         "id": 2,
         "options": {
@@ -436,7 +435,7 @@
         "type": "logs"
       }
     ],
-    "refresh": "30s",
+    "refresh": "",
     "schemaVersion": 39,
     "tags": [
       "MQTT",
@@ -474,6 +473,6 @@
     "timezone": "",
     "title": "Home ESP Logs",
     "uid": "H0tLIChVz",
-    "version": 11,
+    "version": 13,
     "weekStart": ""
   }
