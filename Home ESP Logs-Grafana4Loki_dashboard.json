@@ -144,7 +144,7 @@
               "uid": "${DS_LOKI}"
             },
             "editorMode": "code",
-            "expr": "sum by(mqtt_node) (count_over_time({mqtt_node=~\"esp.+\"} !~ `dallasnng\\.sensor` |= `$filter` [$__range]))",
+            "expr": "sum by(mqtt_node) (count_over_time({mqtt_node=~\"$node\"} !~ `dallasnng\\.sensor` |= `$filter` [$__auto]))",
             "key": "Q-74fd4ba6-7447-4f46-b8e4-f143d784260c-0",
             "legendFormat": "{{module}}",
             "queryType": "instant",
@@ -176,6 +176,7 @@
           "type": "loki",
           "uid": "${DS_LOKI}"
         },
+        "description": "",
         "fieldConfig": {
           "defaults": {
             "color": {
@@ -260,8 +261,8 @@
               "type": "loki",
               "uid": "${DS_LOKI}"
             },
-            "editorMode": "builder",
-            "expr": "sum by(level) (count_over_time({mqtt_node=~\"esp.+\"} !~ `dallasngg\\.sensor` |= `$filter` | decolorize | pattern `[<level>][<module>:<_>]: <_>` [$__range]))",
+            "editorMode": "code",
+            "expr": "sum by(level) (count_over_time({mqtt_node=~\"$node\"} !~ `dallasngg\\.sensor` |= `$filter` | decolorize | pattern `[<level>][<module>:<_>]: <_>` [$__range]))",
             "key": "Q-74fd4ba6-7447-4f46-b8e4-f143d784260c-0",
             "legendFormat": "{{level}}",
             "queryType": "instant",
@@ -294,6 +295,7 @@
           "type": "loki",
           "uid": "${DS_LOKI}"
         },
+        "description": "KEY logs omit dallasng sensor logs",
         "fieldConfig": {
           "defaults": {
             "color": {
@@ -354,7 +356,7 @@
               "uid": "${DS_LOKI}"
             },
             "editorMode": "code",
-            "expr": "sum by(module) (count_over_time({mqtt_node=~\"esp.+\"} !~ `dallasng\\.sensor` |= `$filter` | decolorize | pattern `[<level>][<module>:<_>]: <_>` [$__range]))",
+            "expr": "sum by(module) (count_over_time({mqtt_node=~\"$node\"} !~ `dallasng\\.sensor` |= `$filter` | decolorize | pattern `[<level>][<module>:<_>]: <_>` [$__range]))",
             "key": "Q-74fd4ba6-7447-4f46-b8e4-f143d784260c-0",
             "legendFormat": "{{module}}",
             "queryType": "instant",
@@ -391,7 +393,7 @@
         },
         "id": 6,
         "panels": [],
-        "title": "Details",
+        "title": "KEY logs - details",
         "type": "row"
       },
       {
@@ -423,15 +425,14 @@
               "type": "loki",
               "uid": "${DS_LOKI}"
             },
-            "editorMode": "builder",
-            "expr": "{mqtt_node=~\"esp.+\"} !~ `dallasng\\.sensor` |= `$filter`",
+            "editorMode": "code",
+            "expr": "{mqtt_node=~\"$node\"} !~ `dallasng\\.sensor` |= `$filter`",
             "key": "Q-74fd4ba6-7447-4f46-b8e4-f143d784260c-0",
             "legendFormat": "{{mqtt_node}}",
             "queryType": "range",
             "refId": "A"
           }
         ],
-        "title": "KEY logs",
         "type": "logs"
       }
     ],
@@ -443,6 +444,31 @@
     ],
     "templating": {
       "list": [
+        {
+          "current": {},
+          "datasource": {
+            "type": "loki",
+            "uid": "${DS_LOKI}"
+          },
+          "definition": "",
+          "hide": 0,
+          "includeAll": true,
+          "label": "Node",
+          "multi": true,
+          "name": "node",
+          "options": [],
+          "query": {
+            "label": "mqtt_node",
+            "refId": "LokiVariableQueryEditor-VariableQuery",
+            "stream": "",
+            "type": 1
+          },
+          "refresh": 2,
+          "regex": "esp.*",
+          "skipUrlSync": false,
+          "sort": 0,
+          "type": "query"
+        },
         {
           "current": {
             "selected": false,
@@ -473,6 +499,6 @@
     "timezone": "",
     "title": "Home ESP Logs",
     "uid": "H0tLIChVz",
-    "version": 13,
+    "version": 14,
     "weekStart": ""
   }
