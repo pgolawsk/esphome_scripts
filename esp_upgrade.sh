@@ -4,8 +4,10 @@
 
 #######################
 #*** OR Upgrade ESP Home on mac/win
+python3.11 -m pip install --upgrade pip
 pip3 install -U esphome
-pip3 install -U platformio
+# platformio is updated by esphome to minimum version required anyway
+# pip3 install -U platformio
 
 # clean unnesecary packages
 # pio system prune --dry-run
