@@ -1,0 +1,47 @@
+---
+#* TVOC and eCO2 sensor ENS160 configuration
+# Pawelo, 20240209, created as copy of tvoc_eco2_sgp30.yaml, based on https://esphome.io/components/sensor/ens160
+#! NOT TESTED
+
+platform: ens160
+tvoc:
+  name: "$room TVOC"
+  id: tvoc
+  icon: mdi:leaf-circle-outline
+  accuracy_decimals: 2
+  state_topic: $devicename/tvoc
+  on_value:
+    - mqtt.publish:
+        topic: "$mqtt_location/$mqtt_room/tvoc"
+        payload: !lambda |-
+          return to_string(id(tvoc).state);
+eco2:
+  name: "$room eCO2"
+  id: eco2
+  icon: mdi:molecule-co2
+  accuracy_decimals: 0
+  state_topic: $devicename/eco2
+  on_value:
+    - mqtt.publish:
+        topic: "$mqtt_location/$mqtt_room/eco2"
+        payload: !lambda |-
+          return to_string(id(eco2).state);
+aqi:
+  name: "$room AQI"
+  id: aqi
+  icon: mdi:air-filter
+  accuracy_decimals: 0
+  internal: true
+  state_topic: $devicename/aqi
+  on_value:
+    - mqtt.publish:
+        topic: "$mqtt_location/$mqtt_room/aqi"
+        payload: !lambda |-
+          return to_string(id(aqi).state);
+i2c_id: ${bus_id}
+#address: 0x53
+address: ${address}
+compensation:
+  temperature_source: temp${ix}
+  humidity_source: hum${ix}
+update_interval: $updates

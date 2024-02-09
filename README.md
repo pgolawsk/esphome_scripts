@@ -62,19 +62,21 @@ All available manipulators
 
 All available sensors
 
-* ```S``` - SHTx30 - Temperature and Humidity
+* ```A``` - APDS9660 - Illuminance, Color(s), Gesture and Motion
 * ```B``` - BH1750 - Illuminance
-* ```T``` - TCS3472 - Illuminance and Color(s)
-* ```P``` - BME280 - Temperature, Humidity, Pressure
-* ```G``` - BME680 - Temperature, Humidity, Pressure, Gas Ressistance
 * ```C``` - SCD40 - CO2, Temperature, Humidity
 * ```D``` - DS18B20 (Dallas) - Temperature
-* ```O``` - SGP30 - TVOC and eCO2
-* ```Y``` - YF-B10 G1 - Water Pulse sensor
-* ```L``` - LD2410 - Radar sensor 24GHz
 * ```E``` - INA226 - DC Current, Power, Voltage
 * ```F``` - INA3221 - 3-channel DC Current, Power, Voltage
-* ```A``` - APDS9660 - Illuminance, Color(s), Gesture and Motion
+* ```G``` - BME680 - Temperature, Humidity, Pressure, Gas Ressistance
+* ```H``` - AHTx21 - Temperature and Humidity
+* ```L``` - LD2410 - Radar sensor 24GHz
+* ```O``` - SGP30 - TVOC and eCO2
+* ```P``` - BME280 - Temperature, Humidity, Pressure
+* ```N``` - ENS160 - TVOC and eCO2
+* ```S``` - SHTx30 - Temperature and Humidity
+* ```T``` - TCS3472 - Illuminance and Color(s)
+* ```Y``` - YF-B10 G1 - Water Pulse sensor
 
 ### Switches (```ss```)
 

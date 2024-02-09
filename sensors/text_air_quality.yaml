@@ -1,0 +1,25 @@
+---
+#* AIR Quality Index (human readable) virtual sensor configuration
+# Pawelo, 20240209, created based on: https://esphome.io/components/sensor/ens160
+#! NOT TESTED
+
+platform: template
+name: $room Air Quality
+id: air_quality
+icon: mdi:air-filter
+internal: false
+state_topic: $devicename/air_quality
+lambda: |-
+  switch ( (int) (id(aqi).state) ) {
+    case 1: return {"Excellent"};
+    case 2: return {"Good"};
+    case 3: return {"Moderate"};
+    case 4: return {"Poor"};
+    case 5: return {"Unhealthy"};
+    default: return {"Not Available"};
+  }
+on_value:
+  - mqtt.publish:
+      topic: "$mqtt_location/$mqtt_room/air_quality"
+      payload: !lambda |-
+        return to_string(id(air_quality).state);

@@ -12,6 +12,7 @@
 # Pawelo 20230923, 1.1.5, added HA Connected binary sensor
 # Pawelo 20230924, 1.1.5, added Sun Direction and Time Of Day sensors text sensors
 # Pawelo 20230924, 1.1.5, updated LD2410 component - include sensor_name
+# Pawelo 20240209, 1.1.5, added ENS160 + AHT21 support
 
 #! run with this command to override substitutions
 # esphome -s devicename espXX -s updates 1min -s room <Room name> -s mqtt_room <room> run esp12f_MMmm_SSss__PP.yaml --device 192.168.x.x
@@ -75,18 +76,21 @@ text_sensor:
   - !include sensors/text_uptime.yaml
   - !include sensors/text_version.yaml
   - !include sensors/text_wifi_info.yaml
-#  - !include sensors/text_firmware.yaml
+  # - !include sensors/text_firmware.yaml
   # - !include sensors/text_debug.yaml
   - !include sensors/text_sun_sunrise.yaml
   - !include sensors/text_sun_sunset.yaml
   - !include sensors/text_sun_time_of_day.yaml
   - !include sensors/text_sun_direction.yaml
 
-  # # Gesture sensor
+  # Gesture sensor
   # - !include { file: sensors/text_gesture_apds9960.yaml }
 
-  # # Distance sensor
+  # Distance sensor
   # - !include { file: sensors/text_version_ld2410.yaml, vars: { sensor_name: "LD2410" } }
+
+  # Air Quality sensor
+  - !include { file: sensors/text_air_quality.yaml }
 
 binary_sensor:
   # HA Connected
@@ -122,7 +126,8 @@ sensor:
   #  - !include { file: sensors/temp_DS18B20_on_dallasng.yaml, vars: { ix: "Dtest", address: "0xc00000000c511a28" } }
 
   # Temperature and Humidity sensor
-  - !include { file: sensors/temp_hum_SHT3x.yaml, vars: { ix: "", bus_id: "bus_a", address: "0x44" } }
+  # - !include { file: sensors/temp_hum_SHT3x.yaml, vars: { ix: "", bus_id: "bus_a", address: "0x44" } }
+  - !include { file: sensors/temp_hum_AHT2x.yaml, vars: { ix: "", bus_id: "bus_a", address: "0x38" } }
   # # Temperature, Humidity and Pressure seensor
   # - !include { file: sensors/temp_hum_press_BME280.yaml, vars: { ix: "", bus_id: "bus_a", address: "0x76" } }
   # # Temperature, Humidity, Pressure and Gas Resistance seensor
@@ -132,12 +137,13 @@ sensor:
   # - !include { file: sensors/temp_hum_co2_SCD40.yaml, vars: { ix: "2", bus_id: "bus_a", address: "0x62" } }
 
   # Illuminance sensor
-  - !include { file: sensors/lux_BH1750.yaml, vars: { ix: "", bus_id: "bus_a", address: "0x23" } }
+  #- !include { file: sensors/lux_BH1750.yaml, vars: { ix: "", bus_id: "bus_a", address: "0x23" } }
   # - !include { file: sensors/lux_color_TCS3472.yaml, vars: { ix: "2", bus_id: "bus_a", address: "0x29" } }
   # - !include { file: sensors/lux_uv_ltr390.yaml, vars: { ix: "", bus_id: "bus_a", address: "0x53" } }
 
   # # TVOC and eCO2 sensor
   # - !include { file: sensors/tvoc_eco2_SGP30.yaml, vars: { ix: "", bus_id: "bus_a", address: "0x58" } }
+  - !include { file: sensors/tvoc_eco2_ENS160.yaml, vars: { ix: "", bus_id: "bus_a", address: "0x53" } }
 
   # Water ussage YF-B10 sensor
   # - !include { file: sensors/water_YF-B10.yaml, vars: { ix: "", gpio: "GPIO12" } }

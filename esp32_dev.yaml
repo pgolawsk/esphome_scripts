@@ -5,6 +5,7 @@
 ###
 # Pawelo 20230101, 1.1.5, created based on esp12f_.yaml
 # Pawelo 20230923, 1.1.5, added HA Connected binary sensor
+# Pawelo 20240209, 1.1.5, added ENS160 + AHT21 support
 #
 #! run with this command to override substitutions
 # esphome -s devicename espXX -s updates 1min -s room <Room name> -s mqtt_room <room> run esp32_MMmm_SSss__PP.yaml --device 192.168.x.x
@@ -59,6 +60,9 @@ text_sensor:
   - !include sensors/text_sun_time_of_day.yaml
   - !include sensors/text_sun_direction.yaml
 
+  # Air Quality sensor
+  - !include { file: sensors/text_air_quality.yaml }
+
 binary_sensor:
   # HA Connected
   - !include sensors/binary_ha_connected.yaml
@@ -73,9 +77,14 @@ sensor:
   - !include sensors/sun_azimuth.yaml
 
   # Temperature and Humidity sensor
-  - !include { file: sensors/temp_hum_SHT3x.yaml, vars: { ix: "", bus_id: "bus_a", address: "0x44" } }
-  # # Illuminance sensor
+  # - !include { file: sensors/temp_hum_SHT3x.yaml, vars: { ix: "", bus_id: "bus_a", address: "0x44" } }
+  - !include { file: sensors/temp_hum_AHT2x.yaml, vars: { ix: "", bus_id: "bus_a", address: "0x38" } }
+# # Illuminance sensor
   # - !include { file: sensors/lux_BH1750.yaml, vars: { ix: "", bus_id: "bus_a", address: "0x23" } }
+
+  # # TVOC and eCO2 sensor
+  # - !include { file: sensors/tvoc_eco2_SGP30.yaml, vars: { ix: "", bus_id: "bus_a", address: "0x58" } }
+  - !include { file: sensors/tvoc_eco2_ENS160.yaml, vars: { ix: "", bus_id: "bus_a", address: "0x53" } }
 
 # switch:
 #   # Restart button
