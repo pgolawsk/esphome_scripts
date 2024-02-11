@@ -1,14 +1,15 @@
 ---
 #* TVOC and eCO2 sensor ENS160 configuration
 # Pawelo, 20240209, created as copy of tvoc_eco2_sgp30.yaml, based on https://esphome.io/components/sensor/ens160
-#! NOT TESTED
+# Pawelo, 20240211, tested and updated icons based on debuf messages from https://github.com/esphome/feature-requests/issues/2035
 
 platform: ens160
 tvoc:
   name: "$room TVOC"
   id: tvoc
-  icon: mdi:leaf-circle-outline
-  accuracy_decimals: 2
+#  icon: mdi:leaf-circle-outline
+  icon: mdi:radiator
+  accuracy_decimals: 0
   state_topic: $devicename/tvoc
   on_value:
     - mqtt.publish:
@@ -29,7 +30,8 @@ eco2:
 aqi:
   name: "$room AQI"
   id: aqi
-  icon: mdi:air-filter
+  # icon: mdi:air-filter
+  icon: mdi:chemical-weapon
   accuracy_decimals: 0
   internal: true
   state_topic: $devicename/aqi
@@ -42,6 +44,6 @@ i2c_id: ${bus_id}
 #address: 0x53
 address: ${address}
 compensation:
-  temperature_source: temp${ix}
-  humidity_source: hum${ix}
+  temperature: temp${ix}
+  humidity: hum${ix}
 update_interval: $updates
