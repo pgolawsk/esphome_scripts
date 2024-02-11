@@ -19,7 +19,7 @@
 # heare are default values if those are not given via command line
 substitutions:
 #  devices: "Temperature, Humidity via SHTx30, Illuminance via BH1750,  and Doulbe Light Switch via AVT5713"
-  devices: "DEV board: Temperature and Humidity via SHTx30, Illuminance via BH1750"
+  devices: "DEV Kit"
   project_name: "pgolawsk.esp_home"
   version: "1.1.5"
 
