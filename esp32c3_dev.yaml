@@ -11,7 +11,7 @@
 # heare are default values if those are not given via command line
 substitutions:
 #  devices: "Temperature and Humidity via SHTx30 and Illuminance via BH1750"
-  devices: "Dev Kit"
+  devices: "DEV Kit"
   project_name: "pgolawsk.esp_home"
   version: "1.1.5"
 
@@ -60,7 +60,7 @@ text_sensor:
   - !include sensors/text_sun_direction.yaml
 
   # Air Quality sensor
-  - !include { file: sensors/text_air_quality.yaml }
+  # - !include { file: sensors/text_air_quality.yaml }
 
 binary_sensor:
   # HA Connected
@@ -77,13 +77,13 @@ sensor:
 
   # Temperature and Humidity sensor
   # - !include { file: sensors/temp_hum_SHT3x.yaml, vars: { ix: "", bus_id: "bus_a", address: "0x44" } }
-  - !include { file: sensors/temp_hum_AHT2x.yaml, vars: { ix: "", bus_id: "bus_a", address: "0x38" } }
+  # - !include { file: sensors/temp_hum_AHT2x.yaml, vars: { ix: "", bus_id: "bus_a", address: "0x38" } }
   # Illuminance sensor
   # - !include { file: sensors/lux_BH1750.yaml, vars: { ix: "", bus_id: "bus_a", address: "0x23" } }
 
   # TVOC and eCO2 sensor
   # - !include { file: sensors/tvoc_eco2_SGP30.yaml, vars: { ix: "", bus_id: "bus_a", address: "0x58" } }
-  - !include { file: sensors/tvoc_eco2_ENS160.yaml, vars: { ix: "", bus_id: "bus_a", address: "0x53" } }
+  # - !include { file: sensors/tvoc_eco2_ENS160.yaml, vars: { ix: "", bus_id: "bus_a", address: "0x53" } }
 
 # switch:
 #   # Restart button
