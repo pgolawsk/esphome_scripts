@@ -2,12 +2,14 @@
 #* TVOC and eCO2 sensor SGP30 configuration
 # Pawelo, 20221203, created based on framework and https://esphome.io/components/sensor/sgp30.html
 # Pawelo, 20230121, add variables to configure sensor
+# Pawelo, 20240211, updated icons
 
 platform: sgp30
 tvoc:
   name: "$room TVOC"
   id: tvoc
-  icon: mdi:leaf-circle-outline
+  # icon: mdi:leaf-circle-outline
+  icon: mdi:radiator
   accuracy_decimals: 0
   state_topic: $devicename/tvoc
   on_value:
