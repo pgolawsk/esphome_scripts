@@ -5,6 +5,7 @@
 # Pawelo, 20230121, add variables to configure sensor
 # Pawelo, 20230414, filtering out NaN values
 # Pawelo, 20230906, using external component as per https://github.com/nrandell/dallasng
+# Pawelo, 20240211, added "clamp" to filter out out of range values
 
 platform: dallasng
 name: "$room Temperature${ix}"
@@ -21,3 +22,7 @@ address: ${address} # change logger to DEBUG to discover available sensor addres
 #update_interval: $updates # no update interval as this is not I2C
 filters:
   - filter_out: NAN
+  - clamp:
+      min_value: -10
+      max_value: 50
+      ignore_out_of_range: true

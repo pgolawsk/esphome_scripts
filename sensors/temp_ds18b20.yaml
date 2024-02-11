@@ -4,6 +4,7 @@
 # Pawelo, 20221119, created based on https://esphome.io/components/sensor/dallas.html and hemp_hum_sht3xd.yaml
 # Pawelo, 20230121, add variables to configure sensor
 # Pawelo, 20230414, filtering out NaN values
+# Pawelo, 20240211, added "clamp" to filter out out of range values
 
 platform: dallas
 name: "$room Temperature${ix}"
@@ -20,3 +21,7 @@ address: ${address} # change logger to DEBUG to discover available sensor addres
 #update_interval: $updates # no update interval as this is not I2C
 filters:
   - filter_out: NAN
+  - clamp:
+    min_value: -10
+    max_value: 50
+    ignore_out_of_range: true
