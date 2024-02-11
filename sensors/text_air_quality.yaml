@@ -1,7 +1,7 @@
 ---
 #* AIR Quality Index (human readable) virtual sensor configuration
 # Pawelo, 20240209, created based on: https://esphome.io/components/sensor/ens160
-#! NOT TESTED
+# Pawelo, 20240211, tested - looks good
 
 platform: template
 name: $room Air Quality
