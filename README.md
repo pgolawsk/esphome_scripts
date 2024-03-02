@@ -1,6 +1,6 @@
 # esphome
 
-My configutation scripts for esp and similar devices within my home network, including multiple sensors, switches.
+My configuration scripts for esp and similar devices within my home network, including multiple sensors, switches.
 
 This repository contains YAML scripts for configuration of ESP devices (includes esp8266, esp32, bk7231n).
 
@@ -8,21 +8,21 @@ Author Pawel Golawski <pawel.golawski@2com.pl>
 
 ## Futures
 
-* This is modular repository, which means that sensors, manipulators, ... are embed into particular device script via ```!include <file>``` statements. Usualy those are single line includes.
-* Those includes may define or override variables, which make paricular configuration. For example for ```i2c.yaml``` variables given define GPIO pins which are serve as I2C interface.
+* This is modular repository, which means that sensors, manipulators, ... are embed into particular device script via ```!include <file>``` statements. Usually those are single line includes.
+* Those includes may define or override variables, which make particular configuration. For example for ```i2c.yaml``` variables given define GPIO pins which are serve as I2C interface.
 * Always available components:
   * Wifi
   * OTA (Over The Air) updates
   * MQTT publish sensor values, like ```esp-xx/temperature```
-  * Addittional MQTT topic for sensors with friendly structure, like ```home/office/temperature```
+  * Additional MQTT topic for sensors with friendly structure, like ```home/office/temperature```
   * Logger via MQTT
   * Prometheus
-  * Homeassistant API
+  * HomeAssistant API
   * Web server
   * Time (via SNTP)
   * Sun (to provide elevation, azimuth and sunrise sunset times)
 * Optional components:
-  * RTTTL - to play RTTTL melody via passive buzzer; melody can be recieved via MQTT (```esp-xx/play_rtttl``` topic)
+  * RTTTL - to play RTTTL melody via passive buzzer; melody can be received via MQTT (```esp-xx/play_rtttl``` topic)
 
 ## Available configurations
 
@@ -31,9 +31,9 @@ Author Pawel Golawski <pawel.golawski@2com.pl>
 All available measures
 
 * ```T``` - Temperature
-* ```H``` - Humidiy
+* ```H``` - Humidity
 * ```P``` - Pressure
-* ```G``` - Gas Resistnance
+* ```G``` - Gas Resistance
 * ```I``` - Illuminance
 * ```C``` - CO2 (Carbon Dioxide)
 * ```E``` - eCO2 (Equivalent Carbon Dioxide)
@@ -46,14 +46,14 @@ All available measures
 * ```W``` - Power (DC)
 * ```M``` - Motion
 * ```U``` - Gestures
-* ```B``` - RGB Colour
+* ```B``` - RGB Color
 
 ### Manipulators (```mm```)
 
 All available manipulators
 
 * ```1r``` - Single Switch/Relay
-* ```2l``` - Double Ligiht Switch
+* ```2l``` - Double Light Switch
 * ```b``` - Buzzer
 * ```d``` - Diode
 * ```s``` - Switch
@@ -68,7 +68,7 @@ All available sensors
 * ```D``` - DS18B20 (Dallas) - Temperature
 * ```E``` - INA226 - DC Current, Power, Voltage
 * ```F``` - INA3221 - 3-channel DC Current, Power, Voltage
-* ```G``` - BME680 - Temperature, Humidity, Pressure, Gas Ressistance
+* ```G``` - BME680 - Temperature, Humidity, Pressure, Gas Resistance
 * ```H``` - AHTx21 - Temperature and Humidity
 * ```L``` - LD2410 - Radar sensor 24GHz
 * ```O``` - SGP30 - TVOC and eCO2
@@ -84,8 +84,8 @@ All available switches boards
 
 * ```a``` - AVT5713 - Double Light Switch Board
 * ```x``` - Single Relay Board (generic from Aliexpress)
-* ```b``` - 9032A/9025A - Active Buzzer 9mm diameteer x 3.2/2.5mm height
-* ```r``` - 9032/9025 - Passive Buzzer 9mm diameteer x 3.2/2.5mm height
+* ```b``` - 9032A/9025A - Active Buzzer 9mm diameter x 3.2/2.5mm height
+* ```r``` - 9032/9025 - Passive Buzzer 9mm diameter x 3.2/2.5mm height
 
 ### Purpose (```PP```)
 
@@ -109,7 +109,7 @@ For example: ```esp12f_THIddb_STr.yaml``` script is for:
 
 * measures:
   * ```T``` - Temperature
-  * ```H``` - Humidiy
+  * ```H``` - Humidity
   * ```I``` - Illuminance
 * manipulators:
   * ```d``` - diode
@@ -134,8 +134,8 @@ You need to have
 
 Short instruction:
 
-* To install please use follwing: ```pip3 install esphome```
-* To install upgrade use follwing: ```pip3 install -U esphome```
+* To install please use following: ```pip3 install esphome```
+* To install upgrade use following: ```pip3 install -U esphome```
 
 To see full installation procedure please follow ```esp_setup.sh``` file and run specific commands. DO NOT RUN this script at once. The file includes:
 
@@ -144,7 +144,7 @@ To see full installation procedure please follow ```esp_setup.sh``` file and run
   * Example Grafana dashboard to display data from Prometheus is in ```Home Sensors-Grafana4Prometheus_dashboard.json``` file
 * ```esphome``` commands to flash specific configurations
 
-### Example ESP device flasing command
+### Example ESP device flashing command
 
 Before running it please:
 
