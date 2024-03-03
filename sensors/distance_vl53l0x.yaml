@@ -1,0 +1,25 @@
+---
+#* Distance sensor VL53L0x configuration
+#! not tested
+# Pawelo, 20240303, created based on https://esphome.io/components/sensor/vl53l0x
+
+platform: vl530x
+name: "$room Distance${ix}"
+# enable_pin: GPIO16
+# timeout: 200us
+accuracy_decimals: 2
+# unit_of_measurement: "m"
+# filters:
+#   - multiply: 1.0
+id: distance${ix}
+# icon: mdi:arrow-expand-vertical
+state_topic: $devicename/distance${ix}
+on_value:
+  - mqtt.publish:
+      topic: "$mqtt_location/$mqtt_room/distance${ix}"
+      payload: !lambda |-
+        return to_string(id(distance${ix}).state);
+i2c_id: ${bus_id}
+#address: 0x29
+address: ${address}
+update_interval: $updates
