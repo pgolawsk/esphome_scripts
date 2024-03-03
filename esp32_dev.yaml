@@ -61,7 +61,7 @@ text_sensor:
   - !include sensors/text_sun_direction.yaml
 
   # Air Quality sensor
-  - !include { file: sensors/text_air_quality.yaml }
+  # - !include { file: sensors/text_air_quality.yaml }
 
 binary_sensor:
   # HA Connected
@@ -77,14 +77,18 @@ sensor:
   - !include sensors/sun_azimuth.yaml
 
   # Temperature and Humidity sensor
-  - !include { file: sensors/temp_hum_SHT3x.yaml, vars: { ix: "2", bus_id: "bus_a", address: "0x44" } }
-  - !include { file: sensors/temp_hum_AHT2x.yaml, vars: { ix: "", bus_id: "bus_a", address: "0x38" } }
-# # Illuminance sensor
+  - !include { file: sensors/temp_hum_SHT3x.yaml, vars: { ix: "", bus_id: "bus_a", address: "0x44" } }
+  # - !include { file: sensors/temp_hum_AHT2x.yaml, vars: { ix: "", bus_id: "bus_a", address: "0x38" } }
+  # Illuminance sensor
   # - !include { file: sensors/lux_BH1750.yaml, vars: { ix: "", bus_id: "bus_a", address: "0x23" } }
 
-  # # TVOC and eCO2 sensor
+  # TVOC and eCO2 sensor
   # - !include { file: sensors/tvoc_eco2_SGP30.yaml, vars: { ix: "", bus_id: "bus_a", address: "0x58" } }
-  - !include { file: sensors/tvoc_eco2_ENS160.yaml, vars: { ix: "", bus_id: "bus_a", address: "0x53" } }
+  # - !include { file: sensors/tvoc_eco2_ENS160.yaml, vars: { ix: "", bus_id: "bus_a", address: "0x53" } }
+
+  # Distance sensor
+  - !include { file: sensors/distance_hc-sr04.yaml, vars: { ix: "", room: "Pellet", trigger_pin: "GPIO18", echo_pin: "GPIO17", updates: "5s" } }
+  - !include { file: sensors/percentage_distance.yaml, vars: { ix: "", thing: "Pellet", full_distance: "0.1", empty_distance: "0.6", updates: "5s" } }
 
 # switch:
 #   # Restart button
