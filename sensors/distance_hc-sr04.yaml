@@ -1,0 +1,20 @@
+---
+#* Distance sensor HC-SR04(P) configuration
+# Pawelo, 20240303, created based on https://esphome.io/components/sensor/ultrasonic
+
+platform: ultrasonic
+name: "$room Distance${ix}"
+trigger_pin: "${trigger_pin}"
+echo_pin: "${echo_pin}"
+accuracy_decimals: 2
+# filters:
+#   - multiply: 1.0
+id: distance${ix}
+# icon: mdi:walk
+state_topic: $devicename/distance${ix}
+on_value:
+  - mqtt.publish:
+      topic: "$mqtt_location/$mqtt_room/distance${ix}"
+      payload: !lambda |-
+        return to_string(id(distance${ix}).state);
+update_interval: $updates

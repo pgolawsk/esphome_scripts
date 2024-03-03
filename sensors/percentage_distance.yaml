@@ -1,0 +1,23 @@
+---
+#* Level percentage sensor on template, based on distance
+# Pawelo, 20240303, created based on https://www.tastethecode.com/making-a-pellet-level-monitor-with-hc-sr04-and-esp8266
+
+platform: template
+name: "${thing} Level"
+id: ${thing}_level
+icon: mdi:percent-box-outline
+unit_of_measurement: "%"
+accuracy_decimals: 0
+# device_class: battery
+lambda: |-
+  int y = (id(distance${ix})->state - ${empty_distance})/(${full_distance}-${empty_distance})*100;
+  if (y < 0) {return 0;}
+  if (y > 100) {return 100;}
+  return y;
+update_interval: ${updates}
+state_topic: $devicename/${thing}_level
+on_value:
+  - mqtt.publish:
+      topic: "$mqtt_location/$mqtt_room/${thing}_level"
+      payload: !lambda |-
+        return to_string(id(${thing}_level).state);
