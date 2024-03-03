@@ -7,10 +7,11 @@ name: "$room Distance${ix}"
 trigger_pin: "${trigger_pin}"
 echo_pin: "${echo_pin}"
 accuracy_decimals: 2
+# unit_of_measurement: "m"
 # filters:
 #   - multiply: 1.0
 id: distance${ix}
-# icon: mdi:walk
+# icon: mdi:arrow-expand-vertical
 state_topic: $devicename/distance${ix}
 on_value:
   - mqtt.publish:
