@@ -96,18 +96,18 @@ binary_sensor:
   # HA Connected
   - !include sensors/binary_ha_connected.yaml
 
-#   # Double light Switch on AVT5713
-#   - !include { file: sensors/binary_switch.yaml, vars: { ix: "A", gpio: "GPIO13" } }
-#   - !include { file: sensors/binary_switch.yaml, vars: { ix: "B", gpio: "GPIO14" } }
+  # Double light Switch on AVT5713
+  # - !include { file: sensors/binary_switch.yaml, vars: { ix: "A", gpio: "GPIO13" } }
+  # - !include { file: sensors/binary_switch.yaml, vars: { ix: "B", gpio: "GPIO14" } }
 
-#   # Doorbell at the gate
-#   - !include { file: sensors/binary_doorbell.yaml, vars: { ix: "", doorbell_name: "gate", gpio: "GPIO13", delay_on: '2s' } }
+  # Doorbell at the gate
+  # - !include { file: sensors/binary_doorbell.yaml, vars: { ix: "", doorbell_name: "gate", gpio: "GPIO13", delay_on: '2s' } }
 
-  # # Distance sensor
+  # Distance sensor
   # - !include { file: sensors/binary_presence_ld2410.yaml, vars: { ix: "" } }
   # - !include { file: sensors/binary_presence_ld2420.yaml, vars: { ix: "" } }
 
-  # # Gesture sensor
+  # Gesture sensor
   # - !include { file: sensors/binary_gesture_apds9960.yaml, vars: { direction: "UP", mdi_icon: 'gesture-swipe-up' } }
   # - !include { file: sensors/binary_gesture_apds9960.yaml, vars: { direction: "DOWN", mdi_icon: 'gesture-swipe-down' } }
   # - !include { file: sensors/binary_gesture_apds9960.yaml, vars: { direction: "LEFT", mdi_icon: 'gesture-swipe-left' } }
@@ -120,7 +120,7 @@ sensor:
   - !include sensors/sun_elevation.yaml
   - !include sensors/sun_azimuth.yaml
 
-  # # Temperature Dallas sensor
+  # Temperature Dallas sensor
   #  - !include { file: sensors/temp_DS18B20.yaml, vars: { ix: "Dtest", address: "0xc00000000c511a28" } }
   # OR
   #  - !include { file: sensors/temp_DS18B20_on_dallasng.yaml, vars: { ix: "Dtest", address: "0xc00000000c511a28" } }
@@ -133,7 +133,7 @@ sensor:
   # # Temperature, Humidity, Pressure and Gas Resistance seensor
   # - !include { file: sensors/temp_hum_press_gas_BME680.yaml, vars: { ix: "", bus_id: "bus_a", address: "0x77" } }
 
-  # # CO2, Temperature and Humidity sensor
+  # CO2, Temperature and Humidity sensor
   # - !include { file: sensors/temp_hum_co2_SCD40.yaml, vars: { ix: "2", bus_id: "bus_a", address: "0x62" } }
 
   # Illuminance sensor
@@ -141,7 +141,7 @@ sensor:
   # - !include { file: sensors/lux_color_TCS3472.yaml, vars: { ix: "2", bus_id: "bus_a", address: "0x29" } }
   # - !include { file: sensors/lux_uv_ltr390.yaml, vars: { ix: "", bus_id: "bus_a", address: "0x53" } }
 
-  # # TVOC and eCO2 sensor
+  # TVOC and eCO2 sensor
   # - !include { file: sensors/tvoc_eco2_SGP30.yaml, vars: { ix: "", bus_id: "bus_a", address: "0x58" } }
   - !include { file: sensors/tvoc_eco2_ENS160.yaml, vars: { ix: "", bus_id: "bus_a", address: "0x53" } }
 
@@ -149,7 +149,7 @@ sensor:
   # - !include { file: sensors/water_YF-B10.yaml, vars: { ix: "", gpio: "GPIO12" } }
   # - !include { file: sensors/water_usage_YF-B10.yaml, vars: { ix: "" } }
 
-  # # Distance sensor
+  # Distance sensor
   # - !include { file: sensors/distance_ld2410.yaml, vars: { ix: "", sensor_name: "LD2410" } }
   # - !include { file: sensors/distance_ld2420.yaml, vars: { ix: "" } }
 
@@ -157,7 +157,7 @@ sensor:
   # - !include { file: sensors/current_power_voltage_INA226.yaml, vars: { ix: "", bus_id: "bus_a", address: "0x40", max_current: "1.2A" } }
   # - !include { file: sensors/current_power_voltage_INA3221.yaml, vars: { ix: "", bus_id: "bus_a", address: "0x40" } }
 
-  # # Color and Proximity
+  # Color and Proximity
   # - !include { file: sensors/color_proximity_apds9960.yaml, vars: { type: "CLEAR" } }
   # - !include { file: sensors/color_proximity_apds9960.yaml, vars: { type: "RED" } }
   # - !include { file: sensors/color_proximity_apds9960.yaml, vars: { type: "GREEN" } }
@@ -168,13 +168,13 @@ output:
   # Status LED
   - !include { file: outputs/status_led.yaml, vars: { ix: "", gpio: "GPIO10" } }
 
-  # # Measurement LED
+  # Measurement LED
   # - !include { file: outputs/measurement_led.yaml, vars: { ix: "", gpio: "GPIO12" } }
 
   # RTTTL Buzzer (passive_buzzer)
   - !include { file: outputs/passive_buzzer.yaml, vars: { ix: "", gpio: "GPIO16" } }
 
-  # # Double relay on AVT5713
+  # Double relay on AVT5713
   # - !include { file: outputs/relay.yaml, vars: { ix: "A", gpio: "GPIO5", inverted: false } }
   # - !include { file: outputs/relay.yaml, vars: { ix: "B", gpio: "GPIO12", inverted: false } }
 
@@ -182,15 +182,15 @@ light:
   # Status LED
   - !include { file: lights/status_led.yaml, vars: { ix: "", off_delay: "5s" } }
 
-  # # Measurement LED
+  # Measurement LED
   # - !include { file: lights/measurement_led.yaml, vars: { ix: "", off_delay: "5s" } }
 
-  # # Double relay on AVT5713
+  # Double relay on AVT5713
   # - !include { file: lights/light_on_relay.yaml, vars: { ix: "A" } }
   # - !include { file: lights/light_on_relay.yaml, vars: { ix: "B" } }
 
 switch:
-  # # Restart button
+  # Restart button
   # - !include { file: switches/platform_restart.yaml }
 
   # Status LED cycle
@@ -199,13 +199,13 @@ switch:
   # RTTTL Play (passive_buzzer)
   - !include { file: switches/rtttl_play.yaml, vars: { ix: "" } }
 
-  # # Buzzer (active)
+  # Buzzer (active)
   # - !include { file: switches/active_buzzer.yaml, vars: { ix: "", gpio: "GPIO5", off_delay: "1100ms" } }
 
-  # # Gate switch
+  # Gate switch
   # - !include { file: switches/gate.yaml, vars: { ix: "", gpio: "GPIO12", off_delay: "5s", room: "Entry" } }
 
-  # # Distance sensor setup
+  # Distance sensor setup
   # - !include { file: switches/setup_ld2410.yaml, vars: { sensor_name: "LD2410" } }
 
 button:
