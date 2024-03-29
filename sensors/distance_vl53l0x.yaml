@@ -1,9 +1,9 @@
 ---
 #* Distance sensor VL53L0x configuration
-#! not tested
 # Pawelo, 20240303, created based on https://esphome.io/components/sensor/vl53l0x
+# Pawelo, 20240329, tested and added offset filtering
 
-platform: vl530x
+platform: vl53l0x
 name: "$room Distance${ix}"
 # enable_pin: GPIO16
 # timeout: 200us
@@ -23,3 +23,5 @@ i2c_id: ${bus_id}
 #address: 0x29
 address: ${address}
 update_interval: $updates
+filters:
+  offset: ${offset_filter}

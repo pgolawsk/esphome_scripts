@@ -88,7 +88,7 @@ sensor:
 
   # Distance sensor
   - !include { file: sensors/distance_hc-sr04.yaml, vars: { ix: "", room: "Pellet", trigger_pin: "GPIO18", echo_pin: "GPIO17", updates: "5s" } }
-  # - !include { file: sensors/distance_vl53L0x.yaml, vars: { ix: "", room: "Pellet", bus_id: "bus_a", address: "0x29", updates: "5s" } }
+  # - !include { file: sensors/distance_vl53L0x.yaml, vars: { ix: "", room: "Pellet", bus_id: "bus_a", address: "0x29", updates: "5s", offset_filter: -0.05 } }
   - !include { file: sensors/percentage_distance.yaml, vars: { ix: "", thing: "Pellet", full_distance: "0.1", empty_distance: "0.6", updates: "5s" } }
 
 # switch:
