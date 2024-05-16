@@ -23,6 +23,7 @@
 # Pawelo 20231017, 1.1.5, added water_flow_min_delta variable for water sensors updates (to have no publish on every pulse)
 # Pawelo 20231017, 1.1.5, added customizable address for FRAM
 # Pawelo 20231017, 1.1.5, removed boottons for log and reset to zero water total values
+# Pawelo 20240516, 1.1.5, adjusted pulses per liter for _garage water sensor from 431 to 442 (based on difference on 444L in total was the same as 456,4 in garage)
 #
 #! run with this command to override substitutions
 # esphome -s devicename espXX -s updates 1min -s room <Room name> -s mqtt_room <room> run esp32_MMmm_SSss__PP.yaml --device 192.168.x.x
@@ -43,7 +44,7 @@ substitutions:
   # default variable values for !include statements
   accuracy_decimals: "2"
   pulses_per_liter: "476"
-  pulses_per_liter_garden: "431"
+  pulses_per_liter_garden: "443"
   water_updates_interval: 5s
   water_flow_min_delta: "0.1"
 
@@ -258,7 +259,9 @@ external_components:
   - source: github://pr#4880
     components: [ fram, fram_pref ]
   - source: github://nrandell/dallasng
-  - source: github://pr#4579
+#  - source: github://pr#4579
+#    components: [waveshare_epaper]
+  - source: github://pr#6226
     components: [waveshare_epaper]
 
 font:
@@ -424,14 +427,15 @@ spi:
 
 display:
   - platform: waveshare_epaper
-    model: 2.90inbs
+    # model: 2.90inbs
+    model: 2.90in3c
     id: weact_display
     cs_pin: GPIO25
     busy_pin: GPIO5
     reset_pin: GPIO14
     dc_pin: GPIO19
     rotation: ${display_rotation}
-    full_update_every: 10
+    # full_update_every: 10
     update_interval: never
 
     pages:
