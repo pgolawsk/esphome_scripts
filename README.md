@@ -1,4 +1,4 @@
-# esphome
+# esphome_scripts
 
 My configuration scripts for esp and similar devices within my home network, including multiple sensors, switches.
 
@@ -186,9 +186,5 @@ The parameters are following ```-s``` argument. Those are:
   * ```text_senor:``` section, those with filenames starting as ```text_```
   * ```sensor:``` section, all remaining files
 * ```switches``` - list of switches intended to include them under ```switch:``` section
-
-### Other
-
-This is private repository, not intended to be public.
 
 [//]: # (None at the moment)
