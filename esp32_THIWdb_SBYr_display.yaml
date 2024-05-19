@@ -24,7 +24,7 @@
 # Pawelo 20231017, 1.1.5, added customizable address for FRAM
 # Pawelo 20231017, 1.1.5, removed boottons for log and reset to zero water total values
 # Pawelo 20240516, 1.1.5, adjusted pulses per liter for _garage water sensor from 431 to 442 (based on difference on 444L in total was the same as 456,4 in garage)
-# Pawelo 20240516, 1.1.5, moved display to use waveshare_epaper to pr#6336, as per
+# Pawelo 20240516, 1.1.5, moved display to use waveshare_epaper to pr#6226, as per https://github.com/esphome/feature-requests/issues/2191#issuecomment-2009352588
 #
 #! run with this command to override substitutions
 # esphome -s devicename espXX -s updates 1min -s room <Room name> -s mqtt_room <room> run esp32_MMmm_SSss__PP.yaml --device 192.168.x.x
