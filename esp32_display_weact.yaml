@@ -13,6 +13,7 @@
 # Pawelo 20231006, 1.1.5, skip blank and qr pages while cycle pages automatically
 # Pawelo 20231006, 1.1.5, moced interval script for page cycles to separate yaml in scripts/
 # Pawelo 20231006, 1.1.5, reduce no of digits displayed when illuminance is 100+ or 1000+
+# Pawelo 20240518, 1.1.5, moved display to use waveshare_epaper to pr#6226, as per https://github.com/esphome/feature-requests/issues/2191#issuecomment-2009352588
 
 #
 #! run with this command to override substitutions
@@ -373,9 +374,11 @@ font:
 <<: !include { file: scripts/interval_display_cycle_pages.yaml, vars: { display_id: weact_display, cycle_script: cycle_pages_in_lux, lux_sensor: lux_garage, lux_dark_threshold: 11, page_to_skip: page_wifi_qr } }
 
 
-external_components:
-  - source: github://pr#4579
-    components: [waveshare_epaper]
+# external_components:
+#   # - source: github://pr#4579
+#   #   components: [waveshare_epaper]
+#   - source: github://pr#6226
+#     components: [waveshare_epaper]
 
 spi:
   id: spi_v
@@ -384,14 +387,15 @@ spi:
 
 display:
   - platform: waveshare_epaper
-    model: 2.90inbs
+    # model: 2.90inbs
+    model: 2.90in-bv3
     id: weact_display
     cs_pin: GPIO25 # 16
     busy_pin: GPIO5
     reset_pin: GPIO14 # 17
     dc_pin: GPIO19
     rotation: ${display_rotation}
-    full_update_every: 10
+    # full_update_every: 10
     update_interval: never
 
     pages:
