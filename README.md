@@ -185,8 +185,8 @@ The parameters are following `-s` argument. Those are:
 * `includes` - basic scripts for ESP boards, wifi, mqtt, ota, ...
   * `boards` scripts mat contain wiring instructions - please READ those
 * `interfaces` - list of separate interfaces to include like `i2c`, `uart`, `dallas`
-* `lights` - list of switches intended to include them under `light:``` section
-* `outputs` - list of outputs intended to include them under `output:``` section
+* `lights` - list of switches intended to include them under `light:` section
+* `outputs` - list of outputs intended to include them under `output:` section
 * `sensors` - list of sensors intended to include them under:
   * `binary_senor:` section, those with filenames starting as `binary_`
   * `text_senor:` section, those with filenames starting as `text_`
