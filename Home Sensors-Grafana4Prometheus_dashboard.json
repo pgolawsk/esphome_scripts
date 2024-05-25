@@ -13,6 +13,12 @@
   "__requires": [
     {
       "type": "panel",
+      "id": "barchart",
+      "name": "Bar chart",
+      "version": ""
+    },
+    {
+      "type": "panel",
       "id": "gauge",
       "name": "Gauge",
       "version": ""
@@ -21,7 +27,7 @@
       "type": "grafana",
       "id": "grafana",
       "name": "Grafana",
-      "version": "10.2.0"
+      "version": "10.4.3"
     },
     {
       "type": "datasource",
@@ -1463,7 +1469,7 @@
           },
           "disableTextWrap": false,
           "editorMode": "builder",
-          "expr": "delta(esphome_sensor_value{id=~\".+water_total_.+[^m]$\"}[10m])",
+          "expr": "delta(esphome_sensor_value{id=~\".+water_total_[^_]+$\"}[10m])",
           "format": "time_series",
           "fullMetaSearch": false,
           "includeNullMetadata": true,
@@ -1566,7 +1572,7 @@
           },
           "disableTextWrap": false,
           "editorMode": "builder",
-          "expr": "delta(esphome_sensor_value{id=~\".+water_total_.+[^m]$\"}[1h])",
+          "expr": "delta(esphome_sensor_value{id=~\".+water_total_[^_]+$\"}[1h])",
           "fullMetaSearch": false,
           "includeNullMetadata": true,
           "legendFormat": "{{name}}",
@@ -1577,6 +1583,107 @@
       ],
       "title": "Water usage [1h delta]",
       "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "type": "prometheus",
+        "uid": "${DS_PROMETHEUS}"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "fillOpacity": 80,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "lineWidth": 1,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              }
+            ]
+          },
+          "unit": "litre"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 24,
+        "x": 0,
+        "y": 93
+      },
+      "id": 37,
+      "options": {
+        "barRadius": 0,
+        "barWidth": 0.97,
+        "fullHighlight": false,
+        "groupWidth": 0.7,
+        "legend": {
+          "calcs": [
+            "lastNotNull",
+            "range"
+          ],
+          "displayMode": "table",
+          "placement": "right",
+          "showLegend": true
+        },
+        "orientation": "auto",
+        "showValue": "auto",
+        "stacking": "none",
+        "tooltip": {
+          "mode": "single",
+          "sort": "none"
+        },
+        "xField": "Time",
+        "xTickLabelRotation": 0,
+        "xTickLabelSpacing": 100
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${DS_PROMETHEUS}"
+          },
+          "disableTextWrap": false,
+          "editorMode": "code",
+          "exemplar": false,
+          "expr": "delta(esphome_sensor_value{id=~\".+water_total_[^_]+$\"}[1h])",
+          "format": "time_series",
+          "fullMetaSearch": false,
+          "includeNullMetadata": true,
+          "instant": false,
+          "interval": "1h",
+          "legendFormat": "{{name}}",
+          "range": true,
+          "refId": "A",
+          "useBackend": false
+        }
+      ],
+      "title": "Water usage [1h delta]",
+      "type": "barchart"
     },
     {
       "datasource": {
@@ -1642,7 +1749,7 @@
         "h": 8,
         "w": 24,
         "x": 0,
-        "y": 93
+        "y": 101
       },
       "id": 27,
       "options": {
@@ -1742,7 +1849,7 @@
         "h": 8,
         "w": 24,
         "x": 0,
-        "y": 101
+        "y": 109
       },
       "id": 29,
       "options": {
@@ -1782,7 +1889,7 @@
   ],
   "refresh": "1m",
   "revision": 1,
-  "schemaVersion": 38,
+  "schemaVersion": 39,
   "tags": [
     "prometheus",
     "ESP"
@@ -1798,6 +1905,6 @@
   "timezone": "",
   "title": "Home Sensors",
   "uid": "DFFJKedVz",
-  "version": 29,
+  "version": 33,
   "weekStart": ""
 }
