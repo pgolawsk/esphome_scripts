@@ -1,0 +1,137 @@
+---
+#* ESP32 sensor board script name reflecting configuration esp32_MMmm_SSss__PP.yaml
+#* Please read README.md for details
+#? ESP32-WROOM-32 minimum wiring https://www.mischianti.org/2021/05/30/esp32-wroom-32-esp32-s-flash-pinout-specs-and-ide-configuration-1/
+###
+# Pawelo 20240525, 1.1.5, created based on esp32_dev.yaml
+#
+#! run with this command to override substitutions
+# esphome -s devicename espXX -s updates 1min -s room <Room name> -s mqtt_room <room> run esp32_MMmm_SSss__PP.yaml --device 192.168.x.x
+# heare are default values if those are not given via command line
+substitutions:
+  devices: "Temperature, Humidity, Pressure, Gas Resistance via BME680 and UV, Illuminance via LTR390"
+  project_name: "pgolawsk.esp_home"
+  version: "1.1.5"
+
+  devicename: esp32-xx
+  updates: "30s"
+  room: Room # friendly name of room to display in HA/Web
+  # this is ADDITIONAL topic and sub-topic for MQTT - it publishes under <topic>/<sub-topic>/<sensor>
+  # by default it's also published under <devicename>/<id_sensor>
+  mqtt_location: home
+  mqtt_room: room
+
+  # default variable values for !include statements
+  accuracy_decimals: "2"
+
+  # Include basics of a board
+#<<: !include includes/board_esp32.yaml
+<<: !include includes/board_esp32_with_sun.yaml
+# Include/Override mqtt with/without RTTTL support if needed
+<<: !include includes/mqtt.yaml
+#<<: !include includes/mqtt_with_rtttl.yaml
+
+# Include interfaces needed
+<<: !include { file: interfaces/i2c.yaml, vars: { bus_id: "bus_a", sda: "GPIO21", scl: "GPIO22" } }
+# <<: !include { file: interfaces/dallas.yaml, vars: { gpio: "GPIO10" } }
+# <<: !include { file: interfaces/rtttl.yaml, vars: { ix: "" } }
+
+# # reinclude MQTT as a bug in ESPHOME, see: https://github.com/esphome/issues/issues/2180, https://github.com/esphome/issues/issues/1487
+# mqtt:
+#   broker: !secret mqtt_ip
+#   port: !secret mqtt_port
+# #  username: $devicename
+#   username: !secret mqtt_user
+#   password: !secret mqtt_password
+#   client_id: $devicename
+# # id: $devicename
+
+text_sensor:
+  - !include sensors/text_uptime.yaml
+  - !include sensors/text_version.yaml
+  - !include sensors/text_wifi_info.yaml
+
+  # Sun component
+  - !include sensors/text_sun_sunrise.yaml
+  - !include sensors/text_sun_sunset.yaml
+  - !include sensors/text_sun_time_of_day.yaml
+  - !include sensors/text_sun_direction.yaml
+
+  # Air Quality sensor
+  # - !include { file: sensors/text_air_quality.yaml }
+
+binary_sensor:
+  # HA Connected
+  - !include sensors/binary_ha_connected.yaml
+
+sensor:
+  - !include sensors/temp_internal.yaml
+  - !include sensors/uptime.yaml
+  - !include sensors/wifi_signal.yaml
+
+  # Sun component
+  - !include sensors/sun_elevation.yaml
+  - !include sensors/sun_azimuth.yaml
+
+  # Temperature and Humidity sensor
+  # - !include { file: sensors/temp_hum_SHT3x.yaml, vars: { ix: "", bus_id: "bus_a", address: "0x44" } }
+  # - !include { file: sensors/temp_hum_AHT2x.yaml, vars: { ix: "", bus_id: "bus_a", address: "0x38" } }
+
+  # # Temperature, Humidity, Pressure and Gas Resistance seensor
+  - !include { file: sensors/temp_hum_press_gas_BME680.yaml, vars: { ix: "", bus_id: "bus_a", address: "0x77" } }
+
+  # Illuminance sensor
+  # - !include { file: sensors/lux_BH1750.yaml, vars: { ix: "", bus_id: "bus_a", address: "0x23" } }
+  - !include { file: sensors/lux_uv_ltr390.yaml, vars: { ix: "", bus_id: "bus_a", address: "0x53" } }
+
+  # TVOC and eCO2 sensor
+  # - !include { file: sensors/tvoc_eco2_SGP30.yaml, vars: { ix: "", bus_id: "bus_a", address: "0x58" } }
+  # - !include { file: sensors/tvoc_eco2_ENS160.yaml, vars: { ix: "", bus_id: "bus_a", address: "0x53" } }
+
+  # Distance sensor
+  # - !include { file: sensors/distance_hc-sr04.yaml, vars: { ix: "", room: "Pellet", trigger_pin: "GPIO18", echo_pin: "GPIO17", updates: "5s" } }
+  # - !include { file: sensors/distance_vl53L0x.yaml, vars: { ix: "", room: "Pellet", bus_id: "bus_a", address: "0x29", updates: "5s", offset_filter: -0.05 } }
+  # - !include { file: sensors/percentage_distance.yaml, vars: { ix: "", thing: "Pellet", full_distance: "0.1", empty_distance: "0.6", updates: "5s" } }
+
+output:
+  # Status LED
+  - !include { file: outputs/status_led.yaml, vars: { ix: "", gpio: "GPIO10" } }
+
+  # Measurement LED
+  # - !include { file: outputs/measurement_led.yaml, vars: { ix: "", gpio: "GPIO12" } }
+
+  # RTTTL Buzzer (passive_buzzer)
+  - !include { file: outputs/passive_buzzer.yaml, vars: { ix: "", gpio: "GPIO16" } }
+
+light:
+  # Status LED
+  - !include { file: lights/status_led.yaml, vars: { ix: "", off_delay: "5s" } }
+
+  # Measurement LED
+  # - !include { file: lights/measurement_led.yaml, vars: { ix: "", off_delay: "5s" } }
+
+switch:
+  # Restart button
+  # - !include { file: switches/platform_restart.yaml }
+
+  # Status LED cycle
+  - !include { file: switches/led_cycle.yaml, vars: { ID: "status_led", cycles: 3, on_delay: "1s" , off_delay: "500ms" } }
+
+  # RTTTL Play (passive_buzzer)
+  - !include { file: switches/rtttl_play.yaml, vars: { ix: "" } }
+
+  # Buzzer (active)
+  # - !include { file: switches/active_buzzer.yaml, vars: { ix: "", gpio: "GPIO5", off_delay: "1100ms" } }
+
+  # Gate switch
+  # - !include { file: switches/gate.yaml, vars: { ix: "", gpio: "GPIO12", off_delay: "5s", room: "Entry" } }
+
+  # Distance sensor setup
+  # - !include { file: switches/setup_ld2410.yaml, vars: { sensor_name: "LD2410" } }
+
+button:
+  # Restart, reset and shutdown buttons
+  - !include { file: buttons/restart_button.yaml }
+  - !include { file: buttons/safe_mode_restart_button.yaml }
+  - !include { file: buttons/factory_reset_button.yaml }
+  - !include { file: buttons/shutdown_button.yaml }
