@@ -50,7 +50,7 @@ substitutions:
   refresh_interval: ${updates} #refresh when on USB power
 
 # Include basics of a board
-<<: !include includes/board_esp32_with_sun.yaml
+<<: !include includes/board_esp32__water_pump.yaml
 # Include/Override mqtt with/without RTTTL support if needed
 <<: !include includes/mqtt.yaml
 #<<: !include includes/mqtt_with_rtttl.yaml
