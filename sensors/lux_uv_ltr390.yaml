@@ -1,10 +1,11 @@
 ---
 #* UV and Ambient Light sensor LTR390 configuration
 # Pawelo, 20231017, created based on my temp sensor and https://esphome.io/components/sensor/ltr390.html?highlight=uv
+# Pawelo, 20240608, fixes on first compilation - "${ix}" were missing in some places"
 
 platform: ltr390
 uv_index:
-  name: "$room UV Index{ix}"
+  name: "$room UV Index${ix}"
   id: uv_index${ix}
   accuracy_decimals: 0
   icon: mdi:sun-wireless-outline
@@ -15,14 +16,14 @@ uv_index:
         payload: !lambda |-
           return to_string(id(uv_index${ix}).state);
 uv:
-  name: "$room UV{ix}"
-  id: uv{ix}
+  name: "$room UV${ix}"
+  id: uv${ix}
   accuracy_decimals: 2
   icon: mdi:sun-wireless-outline
-  state_topic: $devicename/uv{ix}
+  state_topic: $devicename/uv${ix}
   on_value:
     - mqtt.publish:
-        topic: "$mqtt_location/$mqtt_room/uv{ix}"
+        topic: "$mqtt_location/$mqtt_room/uv${ix}"
         payload: !lambda |-
           return to_string(id(uv${ix}).state);
 light:
