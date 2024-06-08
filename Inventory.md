@@ -9,8 +9,8 @@ Author: Pawel Golawski, <pawel.golawski@2com.pl>
 ### Boards inventory
 
 - 10x ESP-12F
-- 7x ESP32-WROOM-32
-- 3x ESP32-WROOM-32 expansion board (to solder)
+- 6x ESP32-WROOM-32
+- 2x ESP32-WROOM-32 expansion board (to solder)
 - 1x ESP32-D1
 - 5x ESP32-C3
 - 2x ESP32-C6 (1x mini, 1x dev with 2x usb-c)
@@ -32,17 +32,17 @@ Author: Pawel Golawski, <pawel.golawski@2com.pl>
 - 1x 2m `D` - DS18B20 (Dallas) - Temperature
 - 2x `E` - INA226 - DC Current, Power, Voltage (max. 30V DC)
 - 2x `F` - INA3221 - 3-channel DC Current, Power, Voltage (max. 26V DC)
-- `G` - BME680 - Temperature, Humidity, Pressure, Gas Resistance
-- `H` - AHTx21 - Temperature and Humidity
+- 0x `G` - BME680 - Temperature, Humidity, Pressure, Gas Resistance
+- 0x `H` - AHTx21 - Temperature and Humidity
 - 2x `L` - LD2410B - Radar sensor 24GHz
 - 2x `L` - LD2410C - Radar sensor 24GHz
 - 2x `L` - LD2420 - Radar sensor 24GHz
 - 6x `O` - SGP30 - TVOC and eCO2
 - 2x `N` - ENS160 - TVOC and eCO2
-- `P` - BME280 - Temperature, Humidity, Pressure
+- 2x `P` - BME280 - Temperature, Humidity, Pressure
 - 6x `S` - SHTx30 - Temperature and Humidity
-- `T` - TCS3472 - Illuminance and Color(s)
-- 1x `U` - LTR390 - UV and Illuminance
+- 0x `T` - TCS3472 - Illuminance and Color(s)
+- 0x `U` - LTR390 - UV and Illuminance
 - 2x `V` - VL53L0x - Distance (laser)
 - 4x `W` - HC-SR04 - Distance (acoustic)
 - 1x `Y` - YF-B10 G1 - Water Pulse sensor
@@ -89,7 +89,7 @@ Author: Pawel Golawski, <pawel.golawski@2com.pl>
 - 1x AC 230V to DC 3.3V board (with Hi-Link module)
 - 7x AC 230V to DC 3.3V Hi-Link module
 - 9x AC 230V to DC 5V Hi-Link module
-- 4x DC 30V to DC 3.3V board
+- 3x DC 30V to DC 3.3V board
 - 8x DC 30V to DC 5V board
 - 14x single relay SRD-05DC-SL-C (5V)
 - 4x single relay HFD4-3V-S (3.3V)
@@ -100,6 +100,11 @@ Author: Pawel Golawski, <pawel.golawski@2com.pl>
 - 3x white plastic box 60mm x 30mm x 15mm
 - 5x white plastic box 90mm x 40mm x 15mm
 - 4x color buttons for a case
+
+#### Breadboards (X x Y pins)
+
+- Xx  X x Y pins (multicolor)
+- Xx  X x Y pins (multicolor)
 
 ## Device configurations
 
@@ -113,10 +118,27 @@ To be added
 
 #### Office
 
-#### Pump
+### Outside
+
+#### Shades
+
+Script `esp32_THIUGPdb_GUr.yaml`.
+
+ESP32 board with Temperature, Humidity, Pressure, Gas Resistance, UV and Illuminance sensors. Powered from alarm/security 12V bus.
+
+Components:
+
+- 1x ESP32-WROOM-32
+- 1x ESP32-WROOM-32 expansion board (to solder)
+- 1x `G` - BME680 - Temperature, Humidity, Pressure, Gas Resistance
+- 1x `U` - LTR390 - UV and Illuminance
+- 1x DC 30V to DC 3.3V board
+- 1x Transparent IP44 case (gray)
 
 ### Measures
 
-### Aquarium Window
+#### Garage, Pump
 
-### Under Floor
+#### Aquarium Window
+
+#### Under Floor
