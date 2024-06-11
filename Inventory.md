@@ -103,8 +103,9 @@ Author: Pawel Golawski, <pawel.golawski@2com.pl>
 
 #### Breadboards (X x Y pins)
 
-- Xx  X x Y pins (multicolor)
-- Xx  X x Y pins (multicolor)
+- 7x  17x10 pins, 47x35 mm (multicolor, black, white)
+- 7x  11x5 pins, 30x25 mm (multicolor)
+- 6x  5x5 pins, 20x15 mm (multicolor)
 
 ## Device configurations
 
