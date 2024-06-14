@@ -26,7 +26,7 @@ Author: Pawel Golawski, <pawel.golawski@2com.pl>
 ### Sensors inventory
 
 - 5x `A` - APDS9660 - Illuminance, Color(s), Gesture and Motion
-- 5x `B` - BH1750 - Illuminance
+- 5x + 5x `B` - BH1750 - Illuminance
 - `C` - SCD40 - CO2, Temperature, Humidity
 - 1x 1m `D` - DS18B20 (Dallas) - Temperature
 - 1x 2m `D` - DS18B20 (Dallas) - Temperature
@@ -40,7 +40,8 @@ Author: Pawel Golawski, <pawel.golawski@2com.pl>
 - 6x `O` - SGP30 - TVOC and eCO2
 - 2x `N` - ENS160 - TVOC and eCO2
 - 2x `P` - BME280 - Temperature, Humidity, Pressure
-- 6x `S` - SHTx30 - Temperature and Humidity
+- 2x `R` - RC522 - RFID tag sensor
+- 6x + 5x `S` - SHTx30 - Temperature and Humidity
 - 0x `T` - TCS3472 - Illuminance and Color(s)
 - 0x `U` - LTR390 - UV and Illuminance
 - 2x `V` - VL53L0x - Distance (laser)
@@ -97,6 +98,7 @@ Author: Pawel Golawski, <pawel.golawski@2com.pl>
 
 #### Cases (width x hight x thickness)
 
+- 1 + 4x white waterproof IP65 box (various sizes)
 - 3x white plastic box 60mm x 30mm x 15mm
 - 5x white plastic box 90mm x 40mm x 15mm
 - 4x color buttons for a case

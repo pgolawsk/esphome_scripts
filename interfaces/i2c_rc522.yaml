@@ -1,0 +1,6 @@
+---
+#* RC522 I2C  interface
+# Pawelo, 20240614, created based on https://esphome.io/components/binary_sensor/rc522.html
+
+# note: it needs i2c: to be included as well - please include separately
+rfc522_i2c:
