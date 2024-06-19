@@ -1,0 +1,33 @@
+---
+#* Temperature and Humidity sensor SHT40 configuration
+# Pawelo, 20240619, created based on SHT30 configuration and https://esphome.io/components/sensor/sht4x.html
+
+platform: sht4x
+temperature:
+  name: "$room Temperature${ix}"
+  id: temp${ix}
+  accuracy_decimals: 2
+  state_topic: $devicename/temperature${ix}
+  on_value:
+    - mqtt.publish:
+        topic: "$mqtt_location/$mqtt_room/temperature${ix}"
+        payload: !lambda |-
+          return to_string(id(temp${ix}).state);
+humidity:
+  name: "$room Humidity${ix}"
+  id: hum${ix}
+  accuracy_decimals: 2
+  state_topic: $devicename/humidity${ix}
+  on_value:
+    - mqtt.publish:
+        topic: "$mqtt_location/$mqtt_room/humidity${ix}"
+        payload: !lambda |-
+          return to_string(id(hum${ix}).state);
+precision: High
+# heater_max_duty: 0 # zero means heater is off
+# heater_power: High
+# heater_time: Long # Long = 1000ms, Short = 100ms
+i2c_id: ${bus_id}
+# address: 0x44
+address: ${address}
+update_interval: $updates
