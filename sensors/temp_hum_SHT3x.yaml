@@ -6,6 +6,7 @@
 #                   wiring: BLACK - GND, RED - 3.3V, YELLOW = CLK/SCL, WHITE - SDA/SAA
 # Pawelo, 20230111, added i2c bus identification
 # Pawelo, 20230121, add variables to configure sensor
+# Pawelo, 20240619, added commented "heter_enabled" option
 
 platform: sht3xd
 temperature:
@@ -28,7 +29,8 @@ humidity:
         topic: "$mqtt_location/$mqtt_room/humidity${ix}"
         payload: !lambda |-
           return to_string(id(hum${ix}).state);
+# heater_enabled: false
 i2c_id: ${bus_id}
-#address: 0x44
+# address: 0x44
 address: ${address}
 update_interval: $updates
