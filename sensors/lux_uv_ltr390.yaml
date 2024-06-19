@@ -2,6 +2,7 @@
 #* UV and Ambient Light sensor LTR390 configuration
 # Pawelo, 20231017, created based on my temp sensor and https://esphome.io/components/sensor/ltr390.html?highlight=uv
 # Pawelo, 20240608, fixes on first compilation - "${ix}" were missing in some places"
+# Pawelo, 20240618, fixes on first use - "uv" and "ambient_light" are "counts" - made them internal
 
 platform: ltr390
 uv_index:
@@ -16,16 +17,17 @@ uv_index:
         payload: !lambda |-
           return to_string(id(uv_index${ix}).state);
 uv:
-  name: "$room UV${ix}"
+  name: "$room UV Counts${ix}"
   id: uv${ix}
-  accuracy_decimals: 2
-  icon: mdi:sun-wireless-outline
-  state_topic: $devicename/uv${ix}
+  accuracy_decimals: 0
+  icon: mdi:sun-wireless
+  state_topic: $devicename/uv_counts${ix}
   on_value:
     - mqtt.publish:
-        topic: "$mqtt_location/$mqtt_room/uv${ix}"
+        topic: "$mqtt_location/$mqtt_room/uv_counts${ix}"
         payload: !lambda |-
           return to_string(id(uv${ix}).state);
+  internal: true
 light:
   name: "$room Illuminance${ix}"
   accuracy_decimals: 1
@@ -38,16 +40,17 @@ light:
         payload: !lambda |-
           return to_string(id(lux${ix}).state);
 ambient_light:
-  name: "$room Ambient Illuminance${ix}"
-  accuracy_decimals: 1
+  name: "$room Ambient Counts${ix}"
+  accuracy_decimals: 0
   id: alux${ix}
-  icon: mdi:decagram-outline
-  state_topic: $devicename/ambient_illuminance${ix}
+  icon: mdi:decagram
+  state_topic: $devicename/ambient_counts${ix}
   on_value:
     - mqtt.publish:
-        topic: "$mqtt_location/$mqtt_room/ambient_illuminance${ix}"
+        topic: "$mqtt_location/$mqtt_room/ambient_counts${ix}"
         payload: !lambda |-
           return to_string(id(alux${ix}).state);
+  internal: true
 # gain: X3
 # resolution: 18
 i2c_id: ${bus_id}
