@@ -5,8 +5,9 @@
 # Pawelo, 20230121, add variables to configure sensor
 # Pawelo, 20230414, filtering out NaN values
 # Pawelo, 20240211, added "clamp" to filter out out of range values
+# Pawelo, 20240621, updated interface as per change in ESPHome 2024.6, https://esphome.io/components/sensor/dallas_temp.html
 
-platform: dallas
+platform: dallas_temp
 name: "$room Temperature${ix}"
 id: temp${ix}
 accuracy_decimals: 2
@@ -18,7 +19,9 @@ on_value:
         return to_string(id(temp${ix}).state);
 #address: 0xc00000000c511a28 # change logger to DEBUG to discover available sensor addresses
 address: ${address} # change logger to DEBUG to discover available sensor addresses
-#update_interval: $updates # no update interval as this is not I2C
+resolution: 12 # 9-12
+update_interval: $updates
+one_wire_id: ${wire_id}
 filters:
   - filter_out: NAN
   - clamp:

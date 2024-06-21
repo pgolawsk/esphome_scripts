@@ -1,0 +1,18 @@
+---
+#* OneWire interface on given GPIO pin
+# Pawelo, 20230111, created based on https://esphome.io/components/sensor/dallas.html
+# Pawelo, 20230121, add variables to configure the interface
+#! remember to add pullup resistor 4.6kOhm between pin and 3.3V
+# Pawelo, 20240621, updated interface as per change in ESPHome 2024.6, https://esphome.io/components/one_wire
+
+one_wire:
+  - platform: gpio
+    id: ${wire_id}
+    pin:
+      number: ${gpio}
+      # mode:
+      #   input: true
+      #   pullup: true
+      # inverted: true
+  #  - pin: GPIO10
+    # update_interval: $updates
