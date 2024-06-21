@@ -27,7 +27,7 @@
       "type": "grafana",
       "id": "grafana",
       "name": "Grafana",
-      "version": "10.4.3"
+      "version": "11.0.0"
     },
     {
       "type": "datasource",
@@ -165,6 +165,7 @@
           "width": 450
         },
         "tooltip": {
+          "maxHeight": 600,
           "mode": "single",
           "sort": "none"
         }
@@ -266,6 +267,7 @@
           "width": 450
         },
         "tooltip": {
+          "maxHeight": 600,
           "mode": "single",
           "sort": "none"
         }
@@ -366,6 +368,7 @@
           "width": 450
         },
         "tooltip": {
+          "maxHeight": 600,
           "mode": "single",
           "sort": "none"
         }
@@ -793,6 +796,7 @@
           "width": 350
         },
         "tooltip": {
+          "maxHeight": 600,
           "mode": "single",
           "sort": "none"
         }
@@ -913,6 +917,7 @@
           "width": 350
         },
         "tooltip": {
+          "maxHeight": 600,
           "mode": "single",
           "sort": "none"
         }
@@ -933,7 +938,7 @@
           "refId": "A"
         }
       ],
-      "title": "Temp in rooms",
+      "title": "Temperature",
       "type": "timeseries"
     },
     {
@@ -1041,6 +1046,7 @@
           "width": 350
         },
         "tooltip": {
+          "maxHeight": 600,
           "mode": "single",
           "sort": "none"
         }
@@ -1058,7 +1064,7 @@
           "refId": "A"
         }
       ],
-      "title": "Humidity in rooms",
+      "title": "Humidity",
       "type": "timeseries"
     },
     {
@@ -1140,6 +1146,7 @@
           "width": 350
         },
         "tooltip": {
+          "maxHeight": 600,
           "mode": "single",
           "sort": "none"
         }
@@ -1157,7 +1164,111 @@
           "refId": "A"
         }
       ],
-      "title": "Illuminance in rooms",
+      "title": "Illuminance",
+      "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "type": "prometheus",
+        "uid": "${DS_PROMETHEUS}"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "drawStyle": "line",
+            "fillOpacity": 0,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": false,
+            "lineInterpolation": "smooth",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "auto",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "none"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 24,
+        "x": 0,
+        "y": 60
+      },
+      "id": 38,
+      "options": {
+        "legend": {
+          "calcs": [
+            "lastNotNull",
+            "max"
+          ],
+          "displayMode": "table",
+          "placement": "right",
+          "showLegend": true,
+          "width": 350
+        },
+        "tooltip": {
+          "maxHeight": 600,
+          "mode": "single",
+          "sort": "none"
+        }
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${DS_PROMETHEUS}"
+          },
+          "disableTextWrap": false,
+          "editorMode": "builder",
+          "expr": "esphome_sensor_value{id=~\".+uv_index.*\"}",
+          "fullMetaSearch": false,
+          "includeNullMetadata": true,
+          "legendFormat": "{{name}}",
+          "range": true,
+          "refId": "A",
+          "useBackend": false
+        }
+      ],
+      "title": "UV Index",
       "type": "timeseries"
     },
     {
@@ -1166,7 +1277,7 @@
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 60
+        "y": 68
       },
       "id": 24,
       "panels": [],
@@ -1237,7 +1348,7 @@
         "h": 8,
         "w": 24,
         "x": 0,
-        "y": 61
+        "y": 69
       },
       "id": 26,
       "options": {
@@ -1254,6 +1365,7 @@
           "width": 450
         },
         "tooltip": {
+          "maxHeight": 600,
           "mode": "single",
           "sort": "none"
         }
@@ -1271,7 +1383,7 @@
           "refId": "A"
         }
       ],
-      "title": "CO2 (Carbon Dioxide) and eCO2 (Equivalent Carbon Dioxide) in rooms",
+      "title": "CO2 (Carbon Dioxide) and eCO2 (Equivalent Carbon Dioxide)",
       "type": "timeseries"
     },
     {
@@ -1338,7 +1450,7 @@
         "h": 8,
         "w": 24,
         "x": 0,
-        "y": 69
+        "y": 77
       },
       "id": 28,
       "options": {
@@ -1355,6 +1467,7 @@
           "width": 450
         },
         "tooltip": {
+          "maxHeight": 600,
           "mode": "single",
           "sort": "none"
         }
@@ -1372,7 +1485,7 @@
           "refId": "A"
         }
       ],
-      "title": "TVOC (Total Volatile Organic Compounds) in rooms",
+      "title": "TVOC (Total Volatile Organic Compounds)",
       "type": "timeseries"
     },
     {
@@ -1442,7 +1555,7 @@
         "h": 8,
         "w": 24,
         "x": 0,
-        "y": 77
+        "y": 85
       },
       "id": 35,
       "options": {
@@ -1456,6 +1569,7 @@
           "showLegend": true
         },
         "tooltip": {
+          "maxHeight": 600,
           "mode": "single",
           "sort": "none"
         }
@@ -1546,7 +1660,7 @@
         "h": 8,
         "w": 24,
         "x": 0,
-        "y": 85
+        "y": 93
       },
       "id": 36,
       "options": {
@@ -1560,6 +1674,7 @@
           "showLegend": true
         },
         "tooltip": {
+          "maxHeight": 600,
           "mode": "single",
           "sort": "none"
         }
@@ -1633,7 +1748,7 @@
         "h": 8,
         "w": 24,
         "x": 0,
-        "y": 93
+        "y": 101
       },
       "id": 37,
       "options": {
@@ -1654,6 +1769,7 @@
         "showValue": "auto",
         "stacking": "none",
         "tooltip": {
+          "maxHeight": 600,
           "mode": "single",
           "sort": "none"
         },
@@ -1749,7 +1865,7 @@
         "h": 8,
         "w": 24,
         "x": 0,
-        "y": 101
+        "y": 109
       },
       "id": 27,
       "options": {
@@ -1765,6 +1881,7 @@
           "showLegend": true
         },
         "tooltip": {
+          "maxHeight": 600,
           "mode": "single",
           "sort": "none"
         }
@@ -1849,7 +1966,7 @@
         "h": 8,
         "w": 24,
         "x": 0,
-        "y": 109
+        "y": 117
       },
       "id": 29,
       "options": {
@@ -1866,6 +1983,7 @@
           "width": 450
         },
         "tooltip": {
+          "maxHeight": 600,
           "mode": "single",
           "sort": "none"
         }
@@ -1901,10 +2019,11 @@
     "from": "now-24h",
     "to": "now"
   },
+  "timeRangeUpdatedDuringEditOrView": false,
   "timepicker": {},
   "timezone": "",
   "title": "Home Sensors",
   "uid": "DFFJKedVz",
-  "version": 33,
+  "version": 34,
   "weekStart": ""
 }
