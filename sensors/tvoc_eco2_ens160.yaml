@@ -2,8 +2,9 @@
 #* TVOC and eCO2 sensor ENS160 configuration
 # Pawelo, 20240209, created as copy of tvoc_eco2_sgp30.yaml, based on https://esphome.io/components/sensor/ens160
 # Pawelo, 20240211, tested and updated icons based on debuf messages from https://github.com/esphome/feature-requests/issues/2035
+# Pawelo, 20240622, adjusted platform name due to ESPHome 2024.6 changes
 
-platform: ens160
+platform: ens160_i2c
 tvoc:
   name: "$room TVOC"
   id: tvoc
