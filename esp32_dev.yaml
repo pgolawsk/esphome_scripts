@@ -97,7 +97,7 @@ sensor:
   - !include { file: sensors/temp_hum_press_gas_BME680.yaml, vars: { ix: "", bus_id: "bus_a", address: "0x77" } }
 
   # Illuminance sensor
-  # - !include { file: sensors/lux_BH1750.yaml, vars: { ix: "2", bus_id: "bus_b", address: "0x23", room: "${room2}", mqtt_location: "${mqtt_location2}", mqtt_room: "${mqtt_room2}"  } }
+  - !include { file: sensors/lux_BH1750.yaml, vars: { ix: "2", bus_id: "bus_b", address: "0x23", room: "${room2}", mqtt_location: "${mqtt_location2}", mqtt_room: "${mqtt_room2}"  } }
   # - !include { file: sensors/lux_color_TCS3472.yaml, vars: { ix: "2", bus_id: "bus_a", address: "0x29" } }
   - !include { file: sensors/lux_uv_ltr390.yaml, vars: { ix: "", bus_id: "bus_a", address: "0x53" } }
 
