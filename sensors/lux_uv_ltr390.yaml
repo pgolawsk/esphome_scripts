@@ -3,6 +3,7 @@
 # Pawelo, 20231017, created based on my temp sensor and https://esphome.io/components/sensor/ltr390.html?highlight=uv
 # Pawelo, 20240608, fixes on first compilation - "${ix}" were missing in some places"
 # Pawelo, 20240618, fixes on first use - "uv" and "ambient_light" are "counts" - made them internal
+# Pawelo, 20240622, changed gain and resolution, since sensor reported UV=1 in noon only and tops lux on 8387lx...
 
 platform: ltr390
 uv_index:
@@ -51,8 +52,8 @@ ambient_light:
         payload: !lambda |-
           return to_string(id(alux${ix}).state);
   internal: true
-# gain: X3
-# resolution: 18
+gain: X3
+resolution: 20
 i2c_id: ${bus_id}
 #address: 0x53
 address: ${address}
