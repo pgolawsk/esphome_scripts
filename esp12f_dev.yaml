@@ -14,6 +14,7 @@
 # Pawelo 20230924, 1.1.5, updated LD2410 component - include sensor_name
 # Pawelo 20240209, 1.1.5, added ENS160 + AHT21 support
 # Pawelo 20240619, 1.1.5, added secondary room/mqtt
+# Pawelo 20240628, 1.1.5, moved filters offset adjustments for BME280, BME680, SCD40, ATH2x to variables
 
 #! run with this command to override substitutions
 # esphome -s devicename espXX -s updates 1min -s room <Room name> -s mqtt_room <room> run esp12f_MMmm_SSss__PP.yaml --device 192.168.x.x
@@ -132,16 +133,16 @@ sensor:
 
   # Temperature and Humidity sensor
   # - !include { file: sensors/temp_hum_SHT3x.yaml, vars: { ix: "", bus_id: "bus_a", address: "0x44" } }
-  - !include { file: sensors/temp_hum_AHT2x.yaml, vars: { ix: "", bus_id: "bus_a", address: "0x38" } }
+  - !include { file: sensors/temp_hum_AHT2x.yaml, vars: { ix: "", bus_id: "bus_a", address: "0x38", temp_offset: 0.0, hum_offset: 0.0 } }
 
   # # Temperature, Humidity and Pressure seensor
-  # - !include { file: sensors/temp_hum_press_BME280.yaml, vars: { ix: "", bus_id: "bus_a", address: "0x76" } }
+  # - !include { file: sensors/temp_hum_press_BME280.yaml, vars: { ix: "", bus_id: "bus_a", address: "0x76", temp_offset: 0.0, hum_offset: 0.0, pressure_offset: 0.0 } }
 
   # # Temperature, Humidity, Pressure and Gas Resistance seensor
-  # - !include { file: sensors/temp_hum_press_gas_BME680.yaml, vars: { ix: "", bus_id: "bus_a", address: "0x77" } }
+  # - !include { file: sensors/temp_hum_press_gas_BME680.yaml, vars: { ix: "", bus_id: "bus_a", address: "0x77", temp_offset: 0.0, hum_offset: 0.0, pressure_offset: 0.0 } }
 
   # CO2, Temperature and Humidity sensor
-  # - !include { file: sensors/temp_hum_co2_SCD40.yaml, vars: { ix: "2", bus_id: "bus_a", address: "0x62" } }
+  # - !include { file: sensors/temp_hum_co2_SCD40.yaml, vars: { ix: "2", bus_id: "bus_a", address: "0x62", temp_offset: 0.0, hum_offset: 0.0 } }
 
   # Illuminance sensor
   # - !include { file: sensors/lux_BH1750.yaml, vars: { ix: "", bus_id: "bus_a", address: "0x23" } }
