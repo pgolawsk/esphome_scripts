@@ -8,6 +8,7 @@
 # Pawelo 20240209, 1.1.5, added ENS160 + AHT21 support
 # Pawelo 20240619, 1.1.5, added 2nd i2c support, secondary room/mqtt
 # Pawelo 20240628, 1.1.5, moved filters offset adjustments for BME680 to variables
+# Pawelo 20240628, 1.1.5, move fonts to separate include file
 #
 #! run with this command to override substitutions
 # esphome -s devicename espXX -s updates 1min -s room <Room name> -s mqtt_room <room> run esp32_MMmm_SSss__PP.yaml --device 192.168.x.x
@@ -103,7 +104,7 @@ sensor:
   # - !include { file: sensors/temp_hum_press_BME280.yaml, vars: { ix: "", bus_id: "bus_a", address: "0x76" } }
 
   # Temperature, Humidity, Pressure and Gas Resistance seensor
-  - !include { file: sensors/temp_hum_press_gas_BME680.yaml, vars: { ix: "", bus_id: "bus_a", address: "0x77", temp_offset: 0.2, hum_offset: 5.2, pressure_offset: 5.7 } }
+  - !include { file: sensors/temp_hum_press_gas_BME680.yaml, vars: { ix: "", bus_id: "bus_a", address: "0x77", temp_offset: 0.05, hum_offset: 5.32, pressure_offset: 5.7 } }
 
   # Illuminance sensor
   - !include { file: sensors/lux_BH1750.yaml, vars: { ix: "2", bus_id: "bus_b", address: "0x23", room: "${room2}", mqtt_location: "${mqtt_location2}", mqtt_room: "${mqtt_room2}"  } }
@@ -181,178 +182,8 @@ switch:
   - !include { file: switches/rtttl_play.yaml, vars: { ix: "" } }
   - !include { file: switches/rtttl_play.yaml, vars: { ix: "2", mqtt_location: "${mqtt_location2}", mqtt_room: "${mqtt_room2}" } }
 
-font:
-  - file: 'fonts/Roboto-Medium.ttf'
-    id: size_85_font
-    size: 85
-  - file: 'fonts/Roboto-Medium.ttf'
-    id: size_75_font
-    size: 75
-  - file: 'fonts/Roboto-Medium.ttf'
-    id: size_60_font
-    size: 60
-  - file: 'fonts/Roboto-Medium.ttf'
-    id: size_50_font
-    size: 50
-  - file: 'fonts/Roboto-Medium.ttf'
-    id: size_45_font
-    size: 45
-  - file: 'fonts/Roboto-Medium.ttf'
-    id: size_40_font
-    size: 40
-  - file: 'fonts/Roboto-Medium.ttf'
-    id: size_30_font
-    size: 30
-  - file: 'fonts/Roboto-Medium.ttf'
-    id: size_25_font
-    size: 25
-  - file: 'fonts/Roboto-Medium.ttf'
-    id: size_20_font
-    size: 20
-  - file: 'fonts/Roboto-Medium.ttf'
-    id: size_15_font
-    size: 15
-  - file: 'fonts/Roboto-Medium.ttf'
-    id: size_14_font
-    size: 14
-  - file: 'fonts/Roboto-Light.ttf'
-    id: size_12_font
-    size: 12
-  - file: 'fonts/Roboto-Light.ttf'
-    id: size_6_font
-    size: 6
-  - file: 'fonts/materialdesignicons-webfont.ttf'
-    id: weather_font
-    size: 120
-    glyphs: [
-      # Weather
-      "\U000F0599", # mdi-weather-sunny
-      "\U000F0590", # mdi-weather-cloudy
-      "\U000F0596", # mdi-weather-pouring
-      "\U000F067F", # mdi-weather-snowy-rainy
-      "\U000F0F36", # mdi-weather-snowy-heavy
-      "\U000F059E", # mdi-weather-windy-variant
-      "\U000F0591", # mdi-weather-fog
-      "\U000F0F31", # mdi-weather-night-partly-cloudy
-      "\U000F0595", # mdi-weather-partly-cloudy
-      "\U000F0597", # mdi-weather-rainy
-      "\U000F0598", # mdi-weather-snowy
-      "\U000F0594", # mdi-weather-clear-night
-      "\U000F199F", # unknown
-      ]
-  - file: 'fonts/materialdesignicons-webfont.ttf'
-    id: weather_temp_icon_font
-    size: 25
-    glyphs: [
-      "\U000F0E03", # mdi-down
-      "\U000F0E02", # mdi-up
-      "\U000F058C", # raindrop
-      "\U000F059D", # wind
-      ]
-  - file: 'fonts/materialdesignicons-webfont.ttf'
-    id: measures_50_font
-    size: 45
-    glyphs: [
-      "\U000F050F", # thermomether (temperature)
-      "\U000F0F54", # home-thermomether (temperature)
-      "\U000F0F55", # home-thermomether-outline (temperature)
-      "\U000F058E", # water-percent (humidity)
-      "\U000F0336", # lightbulb-outline (illuminance)
-      "\U000F17FE", # sun-wireless (illuminance)
-      "\U000F17FF", # sun-wireless-outline (illuminance)
-      "\U000F058F", # water-pump (water)
-      ]
-  - file: 'fonts/materialdesignicons-webfont.ttf'
-    id: measures_30_font
-    size: 28
-    glyphs: [
-      "\U000F050F", # thermomether (temperature)
-      "\U000F0F54", # home-thermomether (temperature)
-      "\U000F0F55", # home-thermomether-outline (temperature)
-      "\U000F058E", # water-percent (humidity)
-      "\U000F0336", # lightbulb-outline (illuminance)
-      "\U000F17FE", # sun-wireless (illuminance)
-      "\U000F17FF", # sun-wireless-outline (illuminance)
-      "\U000F058F", # water-pump (water)
-      ]
-  - file: 'fonts/materialdesignicons-webfont.ttf'
-    id: units_22_font
-    size: 22
-    glyphs: [
-      "\U000F0504", # temperature-celcius
-      "\U000F03F0", # percent (humidity)
-      # "\U000", # illuminance
-      # "\U000", # water
-      ]
-  - file: 'fonts/materialdesignicons-webfont.ttf'
-    id: home_icon_font
-    size: 24
-    glyphs: [
-      "\U000F0F48", # mdi-chair-rolling
-      "\U000F02E3", # mdi-bed
-      "\U000F04B9", # mdi-sofa
-      "\U000F065A", # mdi-pot-steam
-      "\U000F06D9", # mdi-garage
-      "\U000F12BD", # mdi-stairs-up
-      "\U000F112B", # mdi-home-roof
-      "\U000F081A", # mdi-door
-      "\U000F0DD3", # home-floor-negative-1
-      "\U000F0DD2", # home-floor-0
-      "\U000F0D80", # home-floor-1
-      "\U000F02DC", # home
-      "\U000F06A1", # home-outline
-      "\U000F0710", # shovel (garden)
-      "\U000F09F2", # flower-tulip-outline (garden)
-      "\U000F058F", # water-pump (water)
-      ]
-  - file: 'fonts/materialdesignicons-webfont.ttf'
-    id: weather_font_45
-    size: 45
-    glyphs: [
-      # Moon
-      "\U000F0F64", # new_moon
-      "\U000F0F67", # waxing_crecent
-      "\U000F0F61", # first_quarter
-      "\U000F0F66", # waxing_gibbous
-      "\U000F0F62", # full_moon
-      "\U000F0F68", # waning_gibbous
-      "\U000F0F63", # last_quarter
-      "\U000F0F65", # waning_crescent
-      "\U000F199F", # mdi-timer-sand-complete
-      ]
-  - file: 'fonts/materialdesignicons-webfont.ttf'
-    id: sun_icon_font
-    size: 20
-    glyphs: [
-      "\U000F059C", # sun rise
-      "\U000F059B", # sun set
-      "\U000F059A", # weather-sunset
-      ]
-  - file: 'fonts/materialdesignicons-webfont.ttf'
-    id: wlan_icon_font
-    size: 25
-    glyphs: [
-      "\U000F0920", # wifi-strength-1-alert
-      "\U000F0922", # wifi-strenght-2
-      "\U000F0925", # wifi-strenght-3
-      "\U000F0928", # wifi-strenght-4
-      "\U000F092E", # wifi-strength-off-outline
-      ]
-  - file: 'fonts/materialdesignicons-webfont.ttf'
-    id: cycle_icon_font
-    size: 24
-    glyphs: [
-      "\U000F00E8", # autorenew
-      "\U000F19E7", # autorenew-off
-      "\U000F04E6", # sync
-      "\U000F04E8", # sync-off
-      ]
-
-color:
-  - id: color_red
-    hex: "FF0000"
-  - id: color_black
-    hex: "FFFFFF"
+# Include fonts for display
+<<: !include fonts/fonts_weeact_display.yaml
 
 select:
   # Display Cycle Interval selection
@@ -423,6 +254,8 @@ display:
         lambda: |-
           // Date & Time Page
           int x, y, y_m;
+          esphome::Color fi;
+          fi = id(color_black);
           #define xRes ${display_xRes}
           #define yRes ${display_yRes}
 
@@ -437,7 +270,12 @@ display:
 
           x = 0, y = y + 25;
           //Weekday
-          it.strftime(xRes / 2, y, id(size_25_font), TextAlign::BASELINE_CENTER ,"%A", id(sntp_time).now());
+          if (id(sntp_time).now().day_of_week == 1) {
+            fi = id(color_red); // Sunday show in red font
+          } else {
+            fi = id(color_black);
+          }
+          it.strftime(xRes / 2, y, id(size_25_font), fi, TextAlign::BASELINE_CENTER ,"%A", id(sntp_time).now());
           // it.strftime(250, 58, id(size_20_font), "%a", id(sntp_time).now());
 
           x = 0, y = y + 40;
@@ -464,19 +302,30 @@ display:
 
           //* TEMPERATURES
           x = 0, y = y + 30 + 3, y_m = y + 20;
+          // fi = id(color_black);
           // Outside
-          it.printf(x+15, y_m, id(measures_50_font), id(color_red), TextAlign::BASELINE_CENTER , "\U000F050F");
-          if (id(temp).has_state()) {
-            it.printf(x+100, y, id(size_30_font), id(color_black), TextAlign::BASELINE_RIGHT , "%.1f", id(temp).state);
-            it.printf(x+100, y, id(units_22_font), id(color_black), TextAlign::BASELINE_LEFT , "\U000F0504");
+          it.printf(x+12, y_m, id(measures_50_font), TextAlign::BASELINE_CENTER , "\U000F050F");
+          if (id(temp).has_state() and not isnan(id(temp).state)) {
+            if (id(temp).state <= 0.0 or id(temp).state >= 30.0) {
+              fi = id(color_red);
+            } else {
+              fi = id(color_black);
+            }
+            it.printf(x+100, y, id(size_30_font), fi, TextAlign::BASELINE_RIGHT , "%.1f", id(temp).state);
+            it.printf(x+100, y, id(units_22_font), TextAlign::BASELINE_LEFT , "\U000F0504");
           }
 
           x = 0, y = y + 30;
           // Inside
           // it.printf(x+10, y, id(measures_30_font), TextAlign::BASELINE_CENTER , "\U000F050F");
-          if (id(temp2).has_state()) {
-            it.printf(x+100, y, id(size_30_font), id(color_black), TextAlign::BASELINE_RIGHT , "%.1f", id(temp2).state);
-            it.printf(x+100, y, id(units_22_font), id(color_black), TextAlign::BASELINE_LEFT , "\U000F0504");
+          if (id(temp2).has_state() and not isnan(id(temp2).state)) {
+            if (id(temp2).state <= 0.0 or id(temp2).state >= 30.0) {
+              fi = id(color_red);
+            } else {
+              fi = id(color_black);
+            }
+            it.printf(x+100, y, id(size_30_font), fi, TextAlign::BASELINE_RIGHT , "%.1f", id(temp2).state);
+            it.printf(x+100, y, id(units_22_font), TextAlign::BASELINE_LEFT , "\U000F0504");
           }
 
 
@@ -499,7 +348,7 @@ display:
             } else if (id(wifi_rssi).state >= -80) {
               it.printf(x, y, id(wlan_icon_font), TextAlign::BASELINE_RIGHT , "\U000F0920");
             } else {
-              it.printf(x, y, id(wlan_icon_font), TextAlign::BASELINE_RIGHT , "\U000F092E");
+              it.printf(x, y, id(wlan_icon_font), id(color_red), TextAlign::BASELINE_RIGHT , "\U000F092E");
             }
           }
 
@@ -517,6 +366,7 @@ display:
         lambda: |-
           // Date & Time Page
           int x, y, y_m;
+          esphome::Color fi;
           #define xRes ${display_xRes}
           #define yRes ${display_yRes}
 
@@ -532,18 +382,28 @@ display:
           //* TEMPERATURES
           x = 0, y = y + 30 + 3, y_m = y + 20;
           // Outside
-          it.printf(x+15, y_m, id(measures_50_font), id(color_red), TextAlign::BASELINE_CENTER , "\U000F050F");
-          if (id(temp).has_state()) {
-            it.printf(x+100, y, id(size_30_font), id(color_black), TextAlign::BASELINE_RIGHT , "%.1f", id(temp).state);
-            it.printf(x+100, y, id(units_22_font), id(color_black), TextAlign::BASELINE_LEFT , "\U000F0504");
+          it.printf(x+12, y_m, id(measures_50_font), TextAlign::BASELINE_CENTER , "\U000F050F");
+          if (id(temp).has_state() and not isnan(id(temp).state)) {
+            if (id(temp).state <= 0.0 or id(temp).state >= 30.0) {
+              fi = id(color_red);
+            } else {
+              fi = id(color_black);
+            }
+            it.printf(x+100, y, id(size_30_font), fi, TextAlign::BASELINE_RIGHT , "%.1f", id(temp).state);
+            it.printf(x+100, y, id(units_22_font), TextAlign::BASELINE_LEFT , "\U000F0504");
           }
 
           x = 0, y = y + 30;
           // Inside
           // it.printf(x+10, y, id(measures_30_font), TextAlign::BASELINE_CENTER , "\U000F050F");
-          if (id(temp2).has_state()) {
-            it.printf(x+100, y, id(size_30_font), id(color_black), TextAlign::BASELINE_RIGHT , "%.1f", id(temp2).state);
-            it.printf(x+100, y, id(units_22_font), id(color_black), TextAlign::BASELINE_LEFT , "\U000F0504");
+          if (id(temp2).has_state() and not isnan(id(temp2).state)) {
+            if (id(temp2).state <= 0.0 or id(temp2).state >= 30.0) {
+              fi = id(color_red);
+            } else {
+              fi = id(color_black);
+            }
+            it.printf(x+100, y, id(size_30_font), fi, TextAlign::BASELINE_RIGHT , "%.1f", id(temp2).state);
+            it.printf(x+100, y, id(units_22_font), TextAlign::BASELINE_LEFT , "\U000F0504");
           }
 
           x = 0, y = y + 5;
@@ -553,17 +413,27 @@ display:
           //* HUMIDITY
           x = 0, y = y + 30 + 3, y_m = y + 20;
           // Outside
-          it.printf(x+15, y_m, id(measures_50_font), TextAlign::BASELINE_CENTER , "\U000F058E");
-          if (id(hum).has_state()) {
-            it.printf(x+100, y, id(size_30_font), TextAlign::BASELINE_RIGHT , "%.1f", id(hum).state);
+          it.printf(x+12, y_m, id(measures_50_font), TextAlign::BASELINE_CENTER , "\U000F058E");
+          if (id(hum).has_state() and not isnan(id(hum).state)) {
+            if (id(hum).state <= 20.0 or id(hum).state >= 95.0) {
+              fi = id(color_red);
+            } else {
+              fi = id(color_black);
+            }
+            it.printf(x+100, y, id(size_30_font), fi, TextAlign::BASELINE_RIGHT , "%.1f", id(hum).state);
             it.printf(x+100, y, id(units_22_font), TextAlign::BASELINE_LEFT , "\U000F03F0");
           }
 
           x = 0, y = y + 30;
           // Inside
           // it.printf(x+10, y, id(measures_30_font), TextAlign::BASELINE_CENTER , "\U000F058E");
-          if (id(hum2).has_state()) {
-            it.printf(x+100, y, id(size_30_font), TextAlign::BASELINE_RIGHT , "%.1f", id(hum2).state);
+          if (id(hum2).has_state() and not isnan(id(hum2).state)) {
+            if (id(hum2).state <= 20.0 or id(hum2).state >= 95.0) {
+              fi = id(color_red);
+            } else {
+              fi = id(color_black);
+            }
+            it.printf(x+100, y, id(size_30_font), fi, TextAlign::BASELINE_RIGHT , "%.1f", id(hum2).state);
             it.printf(x+100, y, id(units_22_font), TextAlign::BASELINE_LEFT , "\U000F03F0");
           }
 
@@ -572,9 +442,9 @@ display:
           it.line(x, y, xRes, y);
 
           //* ILLUMINANCE and UV
-          x = 0, y = y + 30 + 3, y_m = y + 20;
+          x = 0, y = y + 30 + 3, y_m = y + 30;
           // Illuminance
-          it.printf(x+15, y_m, id(measures_50_font), TextAlign::BASELINE_CENTER , "\U000F17FF");
+          it.printf(x+16, y_m, id(measures_50_font), TextAlign::BASELINE_CENTER , "\U000F17FF");
           if (id(lux).has_state() and not isnan(id(lux).state)) {
             if(int(id(lux).state) < 99) {
               it.printf(x+100, y, id(size_30_font), TextAlign::BASELINE_RIGHT , "%.1f", id(lux).state);
@@ -591,8 +461,13 @@ display:
           x = 0, y = y + 30;
           // UV
           // it.printf(x+15, y, id(measures_30_font), TextAlign::BASELINE_CENTER , "\U000F058E");
-          if (id(uv_index).has_state()) {
-            it.printf(x+90, y, id(size_30_font), TextAlign::BASELINE_RIGHT , "%.0f", id(uv_index).state);
+          if (id(uv_index).has_state() and not isnan(id(uv_index).state)) {
+            if (id(uv_index).state >= 7.0) {
+              fi = id(color_red);
+            } else {
+              fi = id(color_black);
+            }
+            it.printf(x+90, y, id(size_30_font), fi, TextAlign::BASELINE_RIGHT , "%.0f", id(uv_index).state);
             it.printf(x+94, y, id(size_20_font), TextAlign::BASELINE_LEFT , "UVI");
           }
 
@@ -614,7 +489,7 @@ display:
             } else if (id(wifi_rssi).state >= -80) {
               it.printf(x, y, id(wlan_icon_font), TextAlign::BASELINE_RIGHT , "\U000F0920");
             } else {
-              it.printf(x, y, id(wlan_icon_font), TextAlign::BASELINE_RIGHT , "\U000F092E");
+              it.printf(x, y, id(wlan_icon_font), id(color_red), TextAlign::BASELINE_RIGHT , "\U000F092E");
             }
           }
 
@@ -627,233 +502,6 @@ display:
           } else {
             it.printf(x, y, id(cycle_icon_font), TextAlign::BASELINE_LEFT, "\U000F04E8");
           }
-      # - id: page_home_temps
-      #   lambda: |-
-      #     // Main Home Temperatures and Humidity Page
-      #     #define xRes ${display_xRes}
-      #     #define yRes ${display_yRes}
-      #     int x, y;
-
-      #     //* Temperature
-      #     x = 24; y = 64;
-      #     it.printf(x, y-12, id(measures_50_font), TextAlign::BASELINE_CENTER , "\U000F0F55");
-
-      #     // Entrance
-      #     x = 70; y = 30;
-      #     it.printf(x, y, id(home_icon_font), TextAlign::BASELINE_CENTER , "\U000F081A");
-      #     if (id(temp_entrance).has_state()) {
-      #       it.printf(x+70, y, id(size_30_font), TextAlign::BASELINE_RIGHT , "%.1f", id(temp_entrance).state);
-      #       // it.printf(x+74, y, id(size_20_font), TextAlign::BASELINE_LEFT , "°");
-      #       // it.printf(x+80, y, id(size_20_font), TextAlign::BASELINE_LEFT , "C");
-      #       it.printf(x+70, y, id(units_22_font), TextAlign::BASELINE_LEFT , "\U000F0504");
-      #     }
-
-      #     // Upstairs
-      #     x = 200; y = 30;
-      #     it.printf(x, y, id(home_icon_font), TextAlign::BASELINE_CENTER , "\U000F12BD");
-      #     if (id(temp_upstairs).has_state()) {
-      #       it.printf(x+70, y, id(size_30_font), TextAlign::BASELINE_RIGHT , "%.1f", id(temp_upstairs).state);
-      #       it.printf(x+70, y, id(units_22_font), TextAlign::BASELINE_LEFT , "\U000F0504");
-      #     }
-
-      #     // Underfloor
-      #     x = 70; y = 60;
-      #     it.printf(x, y, id(home_icon_font), TextAlign::BASELINE_CENTER , "\U000F0DD3");
-      #     if (id(temp_underfloor).has_state()) {
-      #       it.printf(x+70, y, id(size_30_font), TextAlign::BASELINE_RIGHT , "%.1f", id(temp_underfloor).state);
-      #       it.printf(x+70, y, id(units_22_font), TextAlign::BASELINE_LEFT , "\U000F0504");
-      #     }
-
-      #     // Aquarium Window
-      #     x = 200; y = 60;
-      #     it.printf(x, y, id(home_icon_font), TextAlign::BASELINE_CENTER , "\U000F112B");
-      #     if (id(temp_aquariumW).has_state()) {
-      #       it.printf(x+70, y, id(size_30_font), TextAlign::BASELINE_RIGHT , "%.1f", id(temp_aquariumW).state);
-      #       it.printf(x+70, y, id(units_22_font), TextAlign::BASELINE_LEFT , "\U000F0504");
-      #     }
-
-      #     //line
-      #     it.line(0, 64, 296, 64);
-
-      #     //* Humidity
-      #     x = 24; y = 128;
-      #     it.printf(x, y-12, id(measures_50_font), TextAlign::BASELINE_CENTER , "\U000F058E");
-
-      #     // Entrance
-      #     x = 70; y = 94;
-      #     it.printf(x, y, id(home_icon_font), TextAlign::BASELINE_CENTER , "\U000F081A");
-      #     if (id(hum_entrance).has_state()) {
-      #       it.printf(x+70, y, id(size_30_font), TextAlign::BASELINE_RIGHT , "%.1f", id(hum_entrance).state);
-      #       // it.printf(x+74, y, id(size_20_font), TextAlign::BASELINE_LEFT , "°");
-      #       // it.printf(x+80, y, id(size_20_font), TextAlign::BASELINE_LEFT , "C");
-      #       it.printf(x+70, y, id(units_22_font), TextAlign::BASELINE_LEFT , "\U000F03F0");
-      #     }
-
-      #     // Upstairs
-      #     x = 200; y = 94;
-      #     it.printf(x, y, id(home_icon_font), TextAlign::BASELINE_CENTER , "\U000F12BD");
-      #     if (id(hum_upstairs).has_state()) {
-      #       it.printf(x+70, y, id(size_30_font), TextAlign::BASELINE_RIGHT , "%.1f", id(hum_upstairs).state);
-      #       it.printf(x+70, y, id(units_22_font), TextAlign::BASELINE_LEFT , "\U000F03F0");
-      #     }
-
-      #     // Underfloor
-      #     x = 70; y = 124;
-      #     it.printf(x, y, id(home_icon_font), TextAlign::BASELINE_CENTER , "\U000F0DD3");
-      #     if (id(hum_underfloor).has_state()) {
-      #       it.printf(x+70, y, id(size_30_font), TextAlign::BASELINE_RIGHT , "%.1f", id(hum_underfloor).state);
-      #       it.printf(x+70, y, id(units_22_font), TextAlign::BASELINE_LEFT , "\U000F03F0");
-      #     }
-
-      #     // Aquarium Window
-      #     x = 200; y = 124;
-      #     it.printf(x, y, id(home_icon_font), TextAlign::BASELINE_CENTER , "\U000F112B");
-      #     if (id(hum_aquariumW).has_state()) {
-      #       it.printf(x+70, y, id(size_30_font), TextAlign::BASELINE_RIGHT , "%.1f", id(hum_aquariumW).state);
-      #       it.printf(x+70, y, id(units_22_font), TextAlign::BASELINE_LEFT , "\U000F03F0");
-      #     }
-
-
-      # - id: page_pump_temps
-      #   lambda: |-
-      #     // Pump Temperatures and Humidity Page
-      #     #define xRes ${display_xRes}
-      #     #define yRes ${display_yRes}
-      #     int x, y;
-
-      #     //* Pump Temperatures
-      #     x = 148; y = 18;
-      #     it.printf(x, y, id(size_15_font), TextAlign::BASELINE_CENTER , "PUMP Temperatures");
-
-      #     //* Temperature
-      #     x = 20; y = 64;
-      #     it.printf(x, y-12, id(measures_50_font), TextAlign::BASELINE_CENTER , "\U000F050F");
-
-      #     // Pump
-      #     x = 70; y = 60;
-      #     // it.printf(x, y, id(home_icon_font), TextAlign::BASELINE_CENTER , "\U000F06D9");
-      #     if (id(temp).has_state()) {
-      #       it.printf(x+70, y, id(size_50_font), TextAlign::BASELINE_RIGHT , "%.1f", id(temp).state);
-      #       it.printf(x+70, y, id(units_22_font), TextAlign::BASELINE_LEFT , "\U000F0504");
-      #     }
-
-      #     // Pump Floor
-      #     x = 200; y = 60;
-      #     // it.printf(x, y, id(home_icon_font), TextAlign::BASELINE_CENTER , "\U000F058F");
-      #     if (id(tempFloor).has_state()) {
-      #       it.printf(x+70, y, id(size_50_font), TextAlign::BASELINE_RIGHT , "%.1f", id(tempFloor).state);
-      #       it.printf(x+70, y, id(units_22_font), TextAlign::BASELINE_LEFT , "\U000F0504");
-      #     }
-
-      #     //line
-      #     it.line(0, 63, 296, 63);
-
-      #     //* Pump Humidity and Illuminance
-      #     x = 148; y = 64+18;
-      #     it.printf(x, y, id(size_15_font), TextAlign::BASELINE_CENTER , "PUMP Humidity and Illuminance");
-
-      #     //* Humidity
-      #     x = 20; y = 128;
-      #     it.printf(x, y-12, id(measures_50_font), TextAlign::BASELINE_CENTER , "\U000F058E");
-
-      #     x = 70; y = 124;
-      #     // it.printf(x, y, id(home_icon_font), TextAlign::BASELINE_CENTER , "\U000F058F");
-      #     if (id(hum).has_state() and not isnan(id(hum).state)) {
-      #       it.printf(x+70, y, id(size_50_font), TextAlign::BASELINE_RIGHT , "%.1f", id(hum).state);
-      #       // it.printf(x+74, y, id(size_20_font), TextAlign::BASELINE_LEFT , "°");
-      #       // it.printf(x+80, y, id(size_20_font), TextAlign::BASELINE_LEFT , "C");
-      #       it.printf(x+70, y, id(units_22_font), TextAlign::BASELINE_LEFT , "\U000F03F0");
-      #     }
-
-      #     //* Illuminance
-      #     // x = 148+24; y = 128;
-      #     // it.printf(x, y-12, id(measures_50_font), TextAlign::BASELINE_CENTER , "\U000F17FE");
-
-      #     x = 200; y = 124;
-      #     // it.printf(x, y, id(home_icon_font), TextAlign::BASELINE_CENTER , "\U000F058F");
-      #     if (id(lux).has_state() and not isnan(id(lux).state)) {
-      #       if(int(id(lux).state) < 99) {
-      #         it.printf(x+70, y, id(size_50_font), TextAlign::BASELINE_RIGHT , "%.1f", id(lux).state);
-      #       } else {
-      #         if(int(id(lux).state) > 9999) {
-      #           it.printf(x+70, y, id(size_50_font), TextAlign::BASELINE_RIGHT , "%.0fK", id(lux).state / 1000);
-      #         } else {
-      #           it.printf(x+70, y, id(size_50_font), TextAlign::BASELINE_RIGHT , "%.0f", id(lux).state);
-      #         }
-      #       }
-      #       // it.printf(x+70, y, id(size_50_font), TextAlign::BASELINE_RIGHT , "%.1f", id(lux_garage).state);
-      #       it.printf(x+74, y, id(size_20_font), TextAlign::BASELINE_LEFT , "LX");
-      #       // it.printf(x+80, y, id(size_20_font), TextAlign::BASELINE_LEFT , "C");
-      #     }
-
-      #     //* Display Cycle
-      #     x = 0; y = 126;
-      #     if (id(select_display_cycle_interval).state != "Never") {
-      #       it.printf(x, y, id(cycle_icon_font), TextAlign::BASELINE_LEFT, "\U000F04E6");
-      #       x = 16; y = 126;
-      #       it.printf(x, y, id(size_12_font), TextAlign::BASELINE_LEFT, "%s", id(select_display_cycle_interval).state.c_str());
-      #     } else {
-      #       it.printf(x, y, id(cycle_icon_font), TextAlign::BASELINE_LEFT, "\U000F04E8");
-      #     }
-
-      # - id: page_water
-      #   lambda: |-
-      #     // Water
-      #     #define xRes ${display_xRes}
-      #     #define yRes ${display_yRes}
-      #     int x, y;
-
-      #     //* Pump Water
-      #     x = 148; y = 18;
-      #     it.printf(x, y, id(size_15_font), TextAlign::BASELINE_CENTER , "WATER Used");
-
-      #     //* Water
-      #     x = 20; y = 64;
-      #     it.printf(x, y-12, id(measures_50_font), TextAlign::BASELINE_CENTER , "\U000F058F");
-
-      #     // All Used
-      #     x = 170; y = 60;
-      #     // it.printf(x, y, id(home_icon_font), TextAlign::BASELINE_CENTER , "\U000F06D9");
-      #     if (id(water_used_all).has_state()) {
-      #       it.printf(x+70, y, id(size_40_font), TextAlign::BASELINE_RIGHT , "%.3f", id(water_used_all).state);
-      #       it.printf(x+74, y-4, id(size_20_font), TextAlign::BASELINE_LEFT , "M");
-      #       it.printf(x+94, y-12, id(size_12_font), TextAlign::BASELINE_LEFT , "3");
-      #     }
-
-      #     //line
-      #     it.line(70, 64, 296, 64);
-
-      #     // Home Used
-      #     x = 284; y = 94;
-      #     it.printf(x, y-2, id(home_icon_font), TextAlign::BASELINE_CENTER , "\U000F06A1");
-
-      #     x = 170; y = 94;
-      #     if (id(water_used_home).has_state()) {
-      #       it.printf(x+70, y, id(size_30_font), TextAlign::BASELINE_RIGHT , "%.3f", id(water_used_home).state);
-      #       it.printf(x+74, y-4, id(size_20_font), TextAlign::BASELINE_LEFT , "M");
-      #       it.printf(x+94, y-12, id(size_12_font), TextAlign::BASELINE_LEFT , "3");
-      #     }
-
-      #     // Garden Used
-      #     x = 284; y = 128;
-      #     it.printf(x, y-2, id(home_icon_font), TextAlign::BASELINE_CENTER , "\U000F09F2");
-
-      #     x = 170; y = 128;
-      #     if (id(water_used_garden).has_state()) {
-      #       it.printf(x+70, y, id(size_30_font), TextAlign::BASELINE_RIGHT , "%.3f", id(water_used_garden).state);
-      #       it.printf(x+74, y-4, id(size_20_font), TextAlign::BASELINE_LEFT , "M");
-      #       it.printf(x+94, y-12, id(size_12_font), TextAlign::BASELINE_LEFT , "3");
-      #     }
-
-      #     //* Display Cycle
-      #     x = 0; y = 126;
-      #     if (id(select_display_cycle_interval).state != "Never") {
-      #       it.printf(x, y, id(cycle_icon_font), TextAlign::BASELINE_LEFT, "\U000F04E6");
-      #       x = 16; y = 126;
-      #       it.printf(x, y, id(size_12_font), TextAlign::BASELINE_LEFT, "%s", id(select_display_cycle_interval).state.c_str());
-      #     } else {
-      #       it.printf(x, y, id(cycle_icon_font), TextAlign::BASELINE_LEFT, "\U000F04E8");
-      #     }
 
       - id: page_wifi_qr
         lambda: |-
@@ -889,7 +537,7 @@ display:
             } else if (id(wifi_rssi).state >= -80) {
               it.printf(x, y, id(wlan_icon_font), TextAlign::BASELINE_RIGHT , "\U000F0920");
             } else {
-              it.printf(x, y, id(wlan_icon_font), TextAlign::BASELINE_RIGHT , "\U000F092E");
+              it.printf(x, y, id(wlan_icon_font), id(color_red), TextAlign::BASELINE_RIGHT , "\U000F092E");
             }
           }
 
