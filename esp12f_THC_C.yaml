@@ -6,6 +6,7 @@
 ###
 # Pawelo 20230103, 1.1.5, created based on THI_SB.yaml
 # Pawelo 20230923, 1.1.5, added HA Connected binary sensor
+# Pawelo 20240628, 1.1.5, moved filters offset adjustments for SCD40 to variables
 
 #! run with this command to override substitutions
 # esphome -s devicename espXX -s updates 1min -s room <Room name> -s mqtt_room <room> run esp12f_MMmm_SSss__PP.yaml --device 192.168.x.x
@@ -65,7 +66,7 @@ sensor:
   # Illuminance sensor
   - !include { file: sensors/lux_BH1750.yaml, vars: { ix: "", bus_id: "bus_a", address: "0x23" } }
   # Temperature, Humidity adn CO2 sensor
-  - !include { file: sensors/temp_hum_co2_SCD40.yaml, vars: { ix: "", bus_id: "bus_a", address: "0x62" } }
+  - !include { file: sensors/temp_hum_co2_SCD40.yaml, vars: { ix: "", bus_id: "bus_a", address: "0x62", temp_offset: 0.0, hum_offset: 0.0 } }
 
 # switch:
 #   # Restart button

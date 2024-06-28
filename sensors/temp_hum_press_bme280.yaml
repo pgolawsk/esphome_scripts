@@ -7,15 +7,18 @@
 # Pawelo, 20230107, adjusted calibration pressure after 1w observations
 # Pawelo, 20230111, added i2c bus identification
 # Pawelo, 20230121, add variables to configure sensor
+# Pawelo, 20240628, change platform to bme280_i2c
+# Pawelo, 20240628, add variables for filter offsets (temp, hum, pressure)
 
-platform: bme280
+platform: bme280_i2c
 temperature:
   name: "$room Temperature${ix}"
   id: temp${ix}
   oversampling: 16x
   accuracy_decimals: 2
   filters:
-    - offset: -2.1
+    # - offset: -2.1
+    - offset: ${temp_offset}
   state_topic: $devicename/temperature${ix}
   on_value:
     - mqtt.publish:
@@ -28,7 +31,8 @@ humidity:
   oversampling: 16x
   accuracy_decimals: 2
   filters:
-    - offset: +9.2
+    # - offset: +9.2
+    - offset: ${hum_offset}
   state_topic: $devicename/humidity${ix}
   on_value:
     - mqtt.publish:
@@ -41,7 +45,8 @@ pressure:
   oversampling: 16x
   accuracy_decimals: 2
   filters:
-    - offset: 7.0
+    # - offset: 7.0
+    - offset: ${pressure_offset}
   state_topic: $devicename/pressure
   on_value:
     - mqtt.publish:

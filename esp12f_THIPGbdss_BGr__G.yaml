@@ -14,6 +14,7 @@
 # Pawelo 20221203, 1.1.5, added Restart button on web
 # Pawelo 20230923, 1.1.5, added HA Connected binary sensor
 # Pawelo 20240619, 1.1.5, added 2nd i2c support, secondary room/mqtt
+# Pawelo 20240628, 1.1.5, moved filters offset adjustments for BME680 to variables
 
 #! run with this command to override substitutions
 # esphome -s devicename espXX -s updates 1min -s room <Room name> -s mqtt_room <room> run esp12f_MMmm_SSss__PP.yaml --device 192.168.x.x
@@ -76,7 +77,7 @@ sensor:
   - !include sensors/wifi_signal.yaml
 
   # Temperature and Humidity and Preasure sensor
-  - !include { file: sensors/temp_hum_press_gas_BME680.yaml, vars: { ix: "", bus_id: "bus_a", address: "0x77" } }
+  - !include { file: sensors/temp_hum_press_gas_BME680.yaml, vars: { ix: "", bus_id: "bus_a", address: "0x77", temp_offset: -2.4, hum_offset: 4.4, pressure_offset: 7.0 } }
   # Illuminance sensor
   - !include { file: sensors/lux_BH1750.yaml, vars: { ix: "", bus_id: "bus_a", address: "0x23" } }
 

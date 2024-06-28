@@ -2,6 +2,7 @@
 #* Temperature and Humidity sensor AHT20-30 configuration
 # Pawelo, 20240209, created as copy of temp_hum_sht3x.yaml, based on: https://esphome.io/components/sensor/aht10.html
 # Pawelo, 20240211, tested and added offset to compensate for heating of ENS160 sensor on the same board
+# Pawelo, 20240628, add variables for filter offsets (temp, hum)
 
 platform: aht10
 variant: AHT20
@@ -16,7 +17,8 @@ temperature:
         payload: !lambda |-
           return to_string(id(temp${ix}).state);
   filters:
-    offset: -4.55
+    # - offset: -4.55
+    - offset: ${temp_offset}
 humidity:
   name: "$room Humidity${ix}"
   id: hum${ix}
@@ -28,7 +30,8 @@ humidity:
         payload: !lambda |-
           return to_string(id(hum${ix}).state);
   filters:
-    offset: 11.55
+    # - offset: 11.55
+    - offset: ${hum_offset}
 i2c_id: ${bus_id}
 #address: 0x38
 address: ${address}

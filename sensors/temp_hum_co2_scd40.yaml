@@ -4,6 +4,7 @@
 # Pawelo, 20230104, calibrated of temp sensor via temperature_offset value
 # Pawelo, 20230111, added i2c bus identification
 # Pawelo, 20230121, add variables to configure sensor
+# Pawelo, 20240628, add variables for filter offsets (temp, hum)
 
 platform: scd4x
 measurement_mode: low_power_periodic # available options: periodic (5s), low_power_periodic (30s), single_shot (5s) on update, single_shor_rht_only (50ms, only temp, hum)
@@ -12,8 +13,9 @@ temperature:
   name: "$room Temperature${ix}"
   id: temp${ix}
   accuracy_decimals: 2
-#  filters:
+  filters:
 #    - offset: -2.4
+    - offset: ${temp_offset}
   state_topic: $devicename/temperature${ix}
   on_value:
     - mqtt.publish:
@@ -24,8 +26,9 @@ humidity:
   name: "$room Humidity${ix}"
   id: hum${ix}
   accuracy_decimals: 2
-#  filters:
+  filters:
 #    - offset: 2.4
+    - offset: ${hum_offset}
   state_topic: $devicename/humidity${ix}
   on_value:
     - mqtt.publish:
