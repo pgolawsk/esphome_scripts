@@ -3,7 +3,7 @@
 # Pawelo, 20231017, created based on my temp sensor and https://esphome.io/components/sensor/ltr390.html?highlight=uv
 # Pawelo, 20240608, fixes on first compilation - "${ix}" were missing in some places"
 # Pawelo, 20240618, fixes on first use - "uv" and "ambient_light" are "counts" - made them internal
-# Pawelo, 20240622, changed gain and resolution, since sensor reported UV=1 in noon only and tops lux on 8387lx...
+# Pawelo, 20240622, changed gain and resolution, since sensor reported UV=1 in noon only and tops lux on 8387lx... (this is du to window glass...)
 
 platform: ltr390
 uv_index:
@@ -28,7 +28,7 @@ uv:
         topic: "$mqtt_location/$mqtt_room/uv_counts${ix}"
         payload: !lambda |-
           return to_string(id(uv${ix}).state);
-  internal: true
+#  internal: true
 light:
   name: "$room Illuminance${ix}"
   accuracy_decimals: 1
@@ -51,9 +51,10 @@ ambient_light:
         topic: "$mqtt_location/$mqtt_room/ambient_counts${ix}"
         payload: !lambda |-
           return to_string(id(alux${ix}).state);
-  internal: true
-gain: X3
+#  internal: true
+gain: X18
 resolution: 20
+window_correction_factor: 1.0
 i2c_id: ${bus_id}
 #address: 0x53
 address: ${address}
