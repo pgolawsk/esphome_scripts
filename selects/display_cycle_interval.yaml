@@ -2,31 +2,32 @@
 #* Select for Display Refresh Interval
 # Pawelo, 20231010, created based on https://esphome.io/components/select/index.html
 # Pawelo, 20231012, added seting global variable and refresh display on select change
+# Pawelo, 20240628, eliminated 5s and 15s as too short - due to display refresh min should be >30sec
 
 platform: template
 name: "$room Display Refresh Interval"
 id: select_display_cycle_interval
 options:
- - "Never"
- - "5s"
- - "15s"
- - "1min"
- - "5min"
- - "15min"
- - "1h"
-initial_option: "15s"
+  - "Never"
+  # - "5s"
+  # - "15s"
+  - "1min"
+  - "5min"
+  - "15min"
+  - "1h"
+initial_option: "1min"
 restore_value: true
 optimistic: true
 on_value:
   - lambda: |-
       if(x == "Never") {
         id(${global_variable}) = -1;
-      } else if(x == "5s") {
-        id(${global_variable}) = 1;
-      } else if(x == "15s") {
-        id(${global_variable}) = 3;
+      // } else if(x == "5s") {
+      //   id(${global_variable}) = 1;
+      // } else if(x == "15s") {
+      //   id(${global_variable}) = 3;
       } else if(x == "1min") {
-        id(${global_variable}) = 12;
+        id(${global_variable}) = 12; // multiply by 5s, so 12 x 5 = 60s = 1min
       } else if(x == "5min") {
         id(${global_variable}) = 60;
       } else if(x == "15min") {
@@ -34,7 +35,7 @@ on_value:
       } else if(x == "1h") {
         id(${global_variable}) = 720;
       } else {
-          id(${global_variable}) = 3;
-          ESP_LOGW("select", "Unknown value on the list, assuming 15s.");
+          id(${global_variable}) = 12;
+          ESP_LOGW("select", "Unknown value on the list, assuming 1min.");
       }
   - component.update: ${display_id}
