@@ -5,6 +5,10 @@
 
 #######################
 #*** OR Upgrade ESP Home on mac/win
+
+# check current version
+esphome version
+
 python3.11 -m pip install --upgrade pip
 pip3 install -U esphome
 # platformio is updated by esphome to minimum version required anyway
@@ -13,6 +17,9 @@ pip3 install -U esphome
 # clean unnesecary packages
 # pio system prune --dry-run
 pio system prune
+
+# check current version (after upgrade)
+esphome version
 
 #* Upgrade ESP devices via OTA
 esphome -s devicename esp12f-11 -s updates 30s -s room Entrance -s mqtt_room entrance -s room2 Entry -s mqtt_location2 outside -s mqtt_room2 entry run esp12f_THIPGbdss_BGr__G.yaml
