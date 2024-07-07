@@ -10,7 +10,7 @@ platform: template
 name: "$room Water Total${ix}"
 id: water_total${ix}
 icon: "mdi:water-plus"
-unit_of_measurement: "liter"
+unit_of_measurement: "L"
 accuracy_decimals: 2
 device_class: water
 state_class: total_increasing

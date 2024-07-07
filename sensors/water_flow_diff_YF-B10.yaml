@@ -11,7 +11,7 @@ platform: template
 id: water_flow${ix}
 icon: "mdi:water"
 name: "$room Water Flow${ix}"
-unit_of_measurement: "liter/min"
+unit_of_measurement: "L/min"
 accuracy_decimals: 2
 internal: true
 state_topic: $devicename/water_flow${ix}
