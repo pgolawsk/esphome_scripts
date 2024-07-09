@@ -9,26 +9,33 @@ Author: Pawel Golawski, <pawel.golawski@2com.pl>
 ### Boards inventory
 
 - 10x ESP-12F
-- 6x ESP32-WROOM-32
-- 2x ESP32-WROOM-32 expansion board (to solder)
+- 6x ESP32-WROOM-32D (build-in antenna)
+- 2x ESP32-WROOM-32U (IPEX, no built-in antenna)
+- 3x ESP32-WROOM-32UE (IPEX, no built-in antenna)
+- 1x ESP32S (IPEX or built-in antenna)
+- 13x ESP32-WROOM-32 expansion board (to solder)
 - 1x ESP32-D1
 - 5x ESP32-C3
-- 2x ESP32-C6 (1x mini, 1x dev with 2x usb-c)
+- 1x ESP32-C6-WROOM-1-N8 (dev board with 2x usb-c)
+- 1x ESP32-C6 mini (dev board with 1.27mm pins)
 
 ### Displays inventory
 
-- 1x WeAct Studio 2.90 inch ePaper module
-- 1x WeAct Studio 2.13 inch ePaper module
+- 1x WeAct Studio 2.90 inch ePaper module, 296 x 128 px (91.8 x 37.5 mm)
+- 1x WeAct Studio 2.13 inch ePaper module, 250 x 122 px (72 x 30 mm)
 - 1x LILYGO T5-4.7 ePaper with ESP32 full development board
 - 1x LILYGO TTGO LoRa32 with LCD display and ESP32 full development board
 - 1x LCD PCF8574 2x16 (line x character) display
+- 1x LCD SSD1306, 0.96 inch b-w I2C OLED, 128 x 64 px (22 x 10,9 mm) SSD1315?
+- 1x LCD SSD1306, SH-S091, 0.91 inch b-w I2C OLED, 128 x 32 px (22 x 5,6 mm)
+- 1x LCD ST7735, GMT130-v1.0, 1.3inch color SPI TFT, 240 x 240 px (23,4 x 23,4 mm)
 
 ### Sensors inventory
 
 - 5x `A` - APDS9660 - Illuminance, Color(s), Gesture and Motion
 - 5x + 5x `B` - BH1750 - Illuminance
 - `C` - SCD40 - CO2, Temperature, Humidity
-- 1x 1m `D` - DS18B20 (Dallas) - Temperature
+- 4x 1m `D` - DS18B20 (Dallas) - Temperature
 - 1x 2m `D` - DS18B20 (Dallas) - Temperature
 - 2x `E` - INA226 - DC Current, Power, Voltage (max. 30V DC)
 - 2x `F` - INA3221 - 3-channel DC Current, Power, Voltage (max. 26V DC)
