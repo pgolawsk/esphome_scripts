@@ -1,0 +1,10 @@
+---
+#* RC522 SPI interface
+# Pawelo, 20240716, created based on https://esphome.io/components/binary_sensor/rc522.html
+
+# note: it needs spi: to be included as well - please include separately
+
+rc522_spi:
+  cs_pin: ${cs}
+  reset_pin: ${reset}
+  spi_id: ${spi_id}

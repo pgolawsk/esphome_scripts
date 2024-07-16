@@ -3,4 +3,11 @@
 # Pawelo, 20240614, created based on https://esphome.io/components/binary_sensor/rc522.html
 
 # note: it needs i2c: to be included as well - please include separately
-rfc522_i2c:
+# info: connction as per https://forum.arduino.cc/t/rc522-rfid-rc522-switching-spi-to-uart-interface-or-i2c-possible/425741
+# SDA -> SDA
+# MISO -> SCL
+# 3.3V
+# GND
+
+rc522_i2c:
+  i2c_id: ${bus_id}
