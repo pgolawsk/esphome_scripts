@@ -52,8 +52,9 @@ substitutions:
 # <<: !include { file: interfaces/i2c.yaml, vars: { bus_id: "bus_a", sda: "GPIO21", scl: "GPIO22" } }
 # note: when more i2c interfaces are needed then need to include those separately
 i2c:
-  - !include { file: interfaces/i2c__include.yaml, vars: { bus_id: "bus_a", sda: "GPIO21", scl: "GPIO22" } }
-  - !include { file: interfaces/i2c__include.yaml, vars: { bus_id: "bus_b", sda: "GPIO17", scl: "GPIO18" } }
+  - !include { file: interfaces/i2c__include.yaml, vars: { bus_id: "bus_a", sda: "GPIO21", scl: "GPIO22" } } # outside
+  - !include { file: interfaces/i2c__include.yaml, vars: { bus_id: "bus_b", sda: "GPIO17", scl: "GPIO18" } } # inside
+# <<: !include { file: interfaces/i2c_rc522.yaml, vars: { bus_id: "bus_b" } }
 # <<: !include { file: interfaces/dallas.yaml, vars: { gpio: "GPIO10" } }
 <<: !include { file: interfaces/rtttl.yaml, vars: { ix: "" } }
 <<: !include includes/qr_guestwifi.yaml
