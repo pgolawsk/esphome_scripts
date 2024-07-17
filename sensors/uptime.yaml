@@ -3,11 +3,13 @@
 # Pawelo, 20221119, created as my framework based on !include statements
 # Pawelo, 20221222, added $devicename to friendly names of those sensors
 # Pawelo, 20221222, adjusted units displayed to "min"
+# Pawelo, 20240717, adjusted for 2024.07, added "type" as "seconds" property
 
 platform: uptime
 name: "$room $devicename Uptime [min]"
 id: uptime_sensor
 icon: mdi:clock-start
+type: seconds
 internal: true
 state_topic: $devicename/uptime
 # on_value:

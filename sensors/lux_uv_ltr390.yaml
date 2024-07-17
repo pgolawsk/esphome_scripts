@@ -4,6 +4,7 @@
 # Pawelo, 20240608, fixes on first compilation - "${ix}" were missing in some places"
 # Pawelo, 20240618, fixes on first use - "uv" and "ambient_light" are "counts" - made them internal
 # Pawelo, 20240622, changed gain and resolution, since sensor reported UV=1 in noon only and tops lux on 8387lx... (this is du to window glass...)
+# Pawelo, 20240717, fix for 2024.07 - separate gain and resolution for ambient_light and uv.
 
 platform: ltr390
 uv_index:
@@ -52,8 +53,12 @@ ambient_light:
         payload: !lambda |-
           return to_string(id(alux${ix}).state);
 #  internal: true
-gain: X18
-resolution: 20
+gain:
+  ambient_light: X18
+  uv: X18
+resolution:
+  ambient_light: 20
+  uv: 20
 window_correction_factor: 1.0
 i2c_id: ${bus_id}
 #address: 0x53

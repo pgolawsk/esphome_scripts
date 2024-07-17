@@ -1,0 +1,19 @@
+---
+#* Uptime Boot time sensor configuration
+# require min 2024.07
+# require Time Component to be included separately
+# Pawelo, 20240717, created based on https://esphome.io/components/sensor/uptime.html
+
+platform: uptime
+name: "$room $devicename Uptime Boot"
+id: uptime_boot
+icon: mdi:clock-start
+type: timestamp
+internal: true
+state_topic: $devicename/uptime_boot
+on_value:
+  - mqtt.publish:
+      topic: "$mqtt_location/$mqtt_room/uptime_boot_$devicename"
+      payload: !lambda |-
+        return to_string(id(uptime_boot).state);
+# update_interval: $updates
