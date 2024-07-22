@@ -1,11 +1,13 @@
 ---
 #* Cycle LED on and off multiple times
 # Pawelo, 20221130, created based on exampleas and https://esphome.io/guides/automations.html?highlight=switch+template#repeat-action
+# Pawelo, 20240722, fix for not switching off the switch via web - added optimistic mode;
 
 platform: template
 name: "$room LED ${ID} ${cycles} times"
 id: cycle_${ID}
 icon: "mdi:led-on"
+optimistic: true
 turn_on_action:
   - repeat:
       count: ${cycles}
