@@ -56,7 +56,7 @@ i2c:
   - !include { file: interfaces/i2c__include.yaml, vars: { bus_id: "bus_b", sda: "GPIO17", scl: "GPIO18" } } # inside
 # <<: !include { file: interfaces/i2c_rc522.yaml, vars: { bus_id: "bus_b" } }
 # <<: !include { file: interfaces/dallas.yaml, vars: { gpio: "GPIO10" } }
-<<: !include { file: interfaces/rtttl.yaml, vars: { ix: "" } }
+<<: !include { file: interfaces/rtttl.yaml, vars: { ix: "2" } }
 <<: !include includes/qr_guestwifi.yaml
 
 # # reinclude MQTT as a bug in ESPHOME, see: https://github.com/esphome/issues/issues/2180, https://github.com/esphome/issues/issues/1487
@@ -166,7 +166,7 @@ output:
   - !include { file: outputs/status_led.yaml, vars: { ix: "", gpio: "GPIO0" } }
   - !include { file: outputs/status_led.yaml, vars: { ix: "2", gpio: "GPIO1" } }
 
-  # RTTTL Buzzer (passive_buzzer)
+  # Passive/RTTTL Buzzer
   - !include { file: outputs/passive_buzzer_ledc.yaml, vars: { ix: "", gpio: "GPIO4" } }
   - !include { file: outputs/passive_buzzer_ledc.yaml, vars: { ix: "2", gpio: "GPIO5" } }
 
@@ -179,9 +179,14 @@ switch:
   # Status LED cycle
   - !include { file: switches/led_cycle.yaml, vars: { ID: "status_led", cycles: 5, on_delay: "1s", off_delay: "500ms" } }
   - !include { file: switches/led_cycle.yaml, vars: { ID: "status_led2", cycles: 5, on_delay: "1s", off_delay: "500ms", room: "${room2}", mqtt_location: "${mqtt_location2}", mqtt_room: "${mqtt_room2}" } }
+  # Buzzer (active)
+  - !include { file: switches/passive_buzzer.yaml, vars: { ix: "", off_delay: "500ms" } }
+  - !include { file: switches/passive_buzzer_cycle.yaml, vars: { ix: "", cycles: 2, freq: "1000Hz", on_delay: "500ms", off_delay: "200ms" } }
+  - !include { file: switches/passive_buzzer_cycle.yaml, vars: { ix: "", cycles: 3, freq: "2000Hz", on_delay: "500ms", off_delay: "200ms" } }
+  - !include { file: switches/passive_buzzer_cycle.yaml, vars: { ix: "", cycles: 4, freq: "800Hz", on_delay: "500ms", off_delay: "200ms" } }
 
   # RTTTL Play (passive_buzzer)
-  - !include { file: switches/rtttl_play.yaml, vars: { ix: "" } }
+#  - !include { file: switches/rtttl_play.yaml, vars: { ix: "" } }
   - !include { file: switches/rtttl_play.yaml, vars: { ix: "2", mqtt_location: "${mqtt_location2}", mqtt_room: "${mqtt_room2}" } }
 
 # Include fonts for display
