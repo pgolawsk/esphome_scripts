@@ -1,0 +1,34 @@
+---
+#* Passive buzzer switch
+# Pawelo, 20240722, created based on https://esphome.io/components/output/ledc.html and https://community.home-assistant.io/t/passive-buzzer-2-pin/230912
+
+# need passive buzzer 9032, diode 1N4001, transistor BC848 and resistor 220Ohm (?)
+platform: template
+id: pbuzzer${ix}
+icon: "mdi:volume-high"
+name: "$room Buzzer${ix}"
+optimistic: true
+state_topic: $devicename/pbuzzer${ix}
+turn_on_action:
+  - output.turn_on: "p_buz${ix}"
+  - output.ledc.set_frequency:
+      id: "p_buz${ix}"
+      frequency: "800Hz"
+  - output.set_level:
+      id: "p_buz${ix}"
+      level: 80%
+  - delay: 120ms
+  - output.turn_off: "p_buz${ix}"
+  - delay: ${off_delay}
+  - output.turn_on: "p_buz${ix}"
+  - output.ledc.set_frequency:
+      id: "p_buz${ix}"
+      frequency: "1000Hz"
+  - output.set_level:
+      id: "p_buz${ix}"
+      level: 70%
+  - delay: 120ms
+  - output.turn_off: "p_buz${ix}"
+  - switch.turn_off: "pbuzzer${ix}"
+turn_off_action:
+  - output.turn_off: "p_buz${ix}"

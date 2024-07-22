@@ -1,0 +1,29 @@
+---
+#* Passive buzzer cycle switch
+# Pawelo, 20240722, created based on https://esphome.io/components/output/ledc.html and https://community.home-assistant.io/t/passive-buzzer-2-pin/230912
+
+# need passive buzzer 9032, diode 1N4001, transistor BC848 and resistor 220Ohm (?)
+platform: template
+id: pbuzzer${ix}_${cycles}_${freq}
+icon: "mdi:volume-high"
+name: "$room Buzzer${ix} ${cycles}x${freq}"
+optimistic: true
+state_topic: $devicename/pbuzzer${ix}_${cycles}_${freq}
+turn_on_action:
+  - repeat:
+      count: ${cycles}
+      then:
+        - output.turn_on: "p_buz${ix}"
+        - output.ledc.set_frequency:
+            id: "p_buz${ix}"
+            frequency: "${freq}" # 800Hz
+        - output.set_level:
+            id: "p_buz${ix}"
+            level: 80%
+        - delay: ${off_delay} # 500ms
+        - output.turn_off: "p_buz${ix}"
+        - delay: ${on_delay} # 1000ms
+  - switch.turn_off: "pbuzzer${ix}_${cycles}_${freq}"
+turn_off_action:
+  - output.turn_off: "p_buz${ix}"
+#  - switch.turn_off: "pbuzzer${ix}_${cycles}_${freq}"
