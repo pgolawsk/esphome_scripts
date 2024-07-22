@@ -4,11 +4,11 @@
 # Pawelo, 20230728, added component as ERROR  to get rid of warning that sensor check should not be longer than 200-300ms
 # Pawelo, 20230929, back to WARN log level, as seams 2023.9.1 resolved issue with sensor warnings taken too long to operate
 logger:
-#  level: NONE, ERROR, WARN, INFO, DEBUG (default), VERBOSE, VERY_VERBOSE
+  #  level: NONE, ERROR, WARN, INFO, DEBUG (default), VERBOSE, VERY_VERBOSE
   level: INFO
-#  level: WARN
-#  level: DEBUG
-#  level: VERY_VERBOSE
+  #  level: WARN
+  # level: DEBUG
+  #  level: VERY_VERBOSE
   # disable UART logging
   baud_rate: 0
   logs:
