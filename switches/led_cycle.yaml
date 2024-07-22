@@ -12,9 +12,10 @@ turn_on_action:
   - repeat:
       count: ${cycles}
       then:
+        - delay: ${on_delay}
         - light.turn_on: ${ID}
         - delay: ${off_delay}
         - light.turn_off: ${ID}
-        - delay: ${on_delay}
+  - switch.turn_off: "cycle_${ID}"
 turn_off_action:
   - light.turn_off: ${ID}
