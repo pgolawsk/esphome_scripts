@@ -8,6 +8,7 @@ name: Sun Next Sunset
 type: sunset
 id: sunset
 icon: mdi:weather-sunset-down
+internal: true
 state_topic: $devicename/next_sunset
 # update_interval: ${updates}
 update_interval: never
