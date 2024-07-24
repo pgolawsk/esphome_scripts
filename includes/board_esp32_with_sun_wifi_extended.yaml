@@ -1,0 +1,35 @@
+---
+#* Base configuration for ESP-32-WROOM board with 2nd WiFi network
+# Pawelo 20240724, created as copy of board_esp32_with_sun.yaml, used wifi_extended network
+
+esphome:
+  name: $devicename
+  comment: $room ESP32 controller with $devices
+#  platform: ESP8266   # OLD notation
+  project:
+    name: $project_name
+    version: $version
+
+esp32:
+  board: esp32dev
+#  restore_from_flash: true
+  # framework:
+  #   type: arduino
+
+# preferences:
+#   flash_write_interval: 15min
+
+<<: !include { file: wifi_extended.yaml, vars: { extended: "_N" } }
+# <<: !include wifi.yaml
+<<: !include api.yaml
+<<: !include ota.yaml
+<<: !include logger.yaml
+<<: !include { file: web_server.yaml, vars: { ota_enabled: false } }
+<<: !include time_sntp_with_sun.yaml
+<<: !include sun.yaml
+<<: !include prometheus.yaml
+#! as mqtt cannot be overwriten later in the code need to include in in each script (to facilitate "on_message" customization)
+#<<: !include mqtt.yaml
+
+# packages:
+#   network: !include mqtt.yaml
