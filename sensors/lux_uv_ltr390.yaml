@@ -54,11 +54,11 @@ ambient_light:
           return to_string(id(alux${ix}).state);
 #  internal: true
 gain:
-  ambient_light: X18
+  ambient_light: X1
   uv: X18
 resolution:
-  ambient_light: 20
-  uv: 20
+  ambient_light: 16
+  uv: 16
 window_correction_factor: 1.0
 i2c_id: ${bus_id}
 #address: 0x53
