@@ -40,3 +40,4 @@ esphome -s devicename esp32-30 -s updates 1min -s room Test32D -s mqtt_location 
 # esphome -s devicename esp32-30 -s updates 1min -s room Test32 -s mqtt_location measures -s mqtt_room test32 run esp32_dev.yaml
 
 esphome -s devicename esp32-31 -s updates 1min -s room Test32c3 -s mqtt_location measures -s mqtt_room test32c3 run esp32c3_dev.yaml
+esphome -s devicename esp32-32 -s updates 1min -s room Test32c3rgb -s mqtt_location measures -s mqtt_room test32c3rgb run esp32c3_dev.yaml
