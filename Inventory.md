@@ -16,12 +16,13 @@ Author: Pawel Golawski, <pawel.golawski@2com.pl>
 - 13x ESP32-WROOM-32 expansion board (to solder)
 - 1x ESP32-D1
 - 5x ESP32-C3
+- 2x ESP32-C3 plus (RGB led + IPEX option)
 - 1x ESP32-C6-WROOM-1-N8 (dev board with 2x usb-c)
 - 1x ESP32-C6 mini (dev board with 1.27mm pins)
 
 ### Displays inventory
 
-- 1x WeAct Studio 2.90 inch ePaper module, 296 x 128 px (91.8 x 37.5 mm)
+- 0x WeAct Studio 2.90 inch ePaper module, 296 x 128 px (91.8 x 37.5 mm)
 - 1x WeAct Studio 2.13 inch ePaper module, 250 x 122 px (72 x 30 mm)
 - 1x LILYGO T5-4.7 ePaper with ESP32 full development board
 - 1x LILYGO TTGO LoRa32 with LCD display and ESP32 full development board
@@ -79,6 +80,7 @@ Author: Pawel Golawski, <pawel.golawski@2com.pl>
 
 - 1x ESP12 development board, fits ESP12E, ESP12F
 - 1x ESP32 development board
+- 4x ESP32C3 pin board (require ESP32C3 mini or ESP32C3 mini plus)
 
 #### USB modules
 
@@ -102,6 +104,9 @@ Author: Pawel Golawski, <pawel.golawski@2com.pl>
 - 14x single relay SRD-05DC-SL-C (5V)
 - 4x single relay HFD4-3V-S (3.3V)
 - 7x AVT5785 board (to put 230C to (5V or 3.3V) Hi-Link module)
+- 2x AC 110-240V to DC 12V 1A module in white indoor case
+- 1x AC 110-240V to DC 12V 1.5A module in white indoor case
+- 1x AC 110-240V to DC 12V 2A module in black outdoor case
 
 #### Cases (width x hight x thickness)
 
@@ -132,7 +137,7 @@ To be added
 
 #### Shades
 
-Script `esp32_THIUGPdb_GUr.yaml`.
+Script `esp32_THIUGPdb_GSUBr_display.yaml`.
 
 ESP32 board with Temperature, Humidity, Pressure, Gas Resistance, UV and Illuminance sensors. Powered from alarm/security 12V bus.
 
@@ -141,9 +146,12 @@ Components:
 - 1x ESP32-WROOM-32
 - 1x ESP32-WROOM-32 expansion board (to solder)
 - 1x `G` - BME680 - Temperature, Humidity, Pressure, Gas Resistance
+- 1x `S` - SHTx41 - Temperature and Humidity
 - 1x `U` - LTR390 - UV and Illuminance
+- 1x `B` - BH1750 - Illuminance
 - 1x DC 30V to DC 3.3V board
-- 1x Transparent IP44 case (gray)
+- 2x Transparent IP44 case (gray)
+- 1x WeAct Studio 2.90 inch ePaper module, 296 x 128 px (91.8 x 37.5 mm)
 
 ### Measures
 
