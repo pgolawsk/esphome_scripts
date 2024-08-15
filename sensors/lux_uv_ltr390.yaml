@@ -58,7 +58,7 @@ gain:
   uv: X18
 resolution:
   ambient_light: 16
-  uv: 16
+  uv: 20
 window_correction_factor: 1.0
 i2c_id: ${bus_id}
 #address: 0x53
