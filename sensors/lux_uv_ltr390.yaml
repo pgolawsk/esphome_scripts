@@ -55,7 +55,7 @@ ambient_light:
 #  internal: true
 gain:
   ambient_light: X1
-  uv: X18
+  uv: X6
 resolution:
   ambient_light: 16
   uv: 20
