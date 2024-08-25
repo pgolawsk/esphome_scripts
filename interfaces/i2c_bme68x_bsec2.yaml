@@ -1,0 +1,16 @@
+---
+#* BME680 interface on I2C
+#* requires ESPHOME 2024.8
+#! not working with esp2866
+# Pawelo, 20240825, created based on https://esphome.io/components/sensor/bme68x_bsec2
+
+bme68x_bsec2_i2c:
+  id: "i2c_bsec2${ix}"
+  address: ${address}
+  model: bme680
+  # algorithm_output: classification # classification or regression (only for BME688)
+  operating_age: 28d # 4d or 28d
+  sample_rate: LP
+  supply_voltage: 3.3V
+  # temperature_offset: 0.0
+  # state_save_interval: 6h

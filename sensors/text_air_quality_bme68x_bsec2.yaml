@@ -1,0 +1,42 @@
+---
+#*  Air Quality text sensor on BME68x BSEC2 configuration
+#* requires ESPHOME 2024.8
+#! not working with esp2866
+# Pawelo, 20240825, created based on https://esphome.io/components/sensor/bme68x_bsec2
+
+platform: template
+name: $room Air Quality
+id: air_quality
+icon: mdi:air-filter
+internal: false
+state_topic: $devicename/air_quality
+lambda: |-
+  if ( int(id(iaq).state) <= 50) {
+    return {"Excellent"};
+  }
+  else if (int(id(iaq).state) >= 51 && int(id(iaq).state) <= 100) {
+    return {"Good"};
+  }
+  else if (int(id(iaq).state) >= 101 && int(id(iaq).state) <= 150) {
+    return {"Lightly polluted"};
+  }
+  else if (int(id(iaq).state) >= 151 && int(id(iaq).state) <= 200) {
+    return {"Moderately polluted"};
+  }
+  else if (int(id(iaq).state) >= 201 && int(id(iaq).state) <= 250) {
+    return {"Heavily polluted"};
+  }
+  else if (int(id(iaq).state) >= 251 && int(id(iaq).state) <= 350) {
+    return {"Severely polluted"};
+  }
+  else if (int(id(iaq).state) >= 351) {
+    return {"Extremely polluted"};
+  }
+  else {
+    return {"error"};
+  }
+on_value:
+  - mqtt.publish:
+      topic: "$mqtt_location/$mqtt_room/air_quality"
+      payload: !lambda |-
+        return to_string(id(air_quality).state);

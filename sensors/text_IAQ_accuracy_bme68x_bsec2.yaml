@@ -1,0 +1,16 @@
+---
+#*  AQI Accuracy text sensor on BME68x BSEC2 configuration
+#* requires ESPHOME 2024.8
+#! not working with esp2866
+# Pawelo, 20240825, created based on https://esphome.io/components/sensor/bme68x_bsec2
+
+platform: bme68x_bsec2
+name: "$room AQI Accuracy"
+id: aqi_accuracy
+# icon: mdi:state-machine
+state_topic: $devicename/aqi_accuracy
+on_value:
+  - mqtt.publish:
+      topic: "$mqtt_location/$mqtt_room/aqi_accuracy"
+      payload: !lambda |-
+        return to_string(id(aqi_accuracy).state);

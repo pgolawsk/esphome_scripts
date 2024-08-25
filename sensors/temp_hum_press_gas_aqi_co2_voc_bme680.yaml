@@ -1,0 +1,113 @@
+---
+#* Temperature, Humidity, Pressure, Gas, AQI, CO2, VOC sensor BME68x on BSEC2 configuration
+#* requires ESPHOME 2024.8
+#! not working with esp2866
+# Pawelo, 20240825, created based on https://esphome.io/components/sensor/bme68x_bsec2
+
+platform: bme68x_bsec2
+temperature:
+  name: "$room Temperature${ix}"
+  id: temp${ix}
+  accuracy_decimals: 2
+  filters:
+    # - offset: -2.4
+    - offset: ${temp_offset}
+  state_topic: $devicename/temperature${ix}
+  on_value:
+    - mqtt.publish:
+        topic: "$mqtt_location/$mqtt_room/temperature${ix}"
+        payload: !lambda |-
+          return to_string(id(temp${ix}).state);
+humidity:
+  name: "$room Humidity${ix}"
+  id: hum${ix}
+  accuracy_decimals: 2
+  filters:
+    # - offset: 4.4
+    - offset: ${hum_offset}
+  state_topic: $devicename/humidity${ix}
+  on_value:
+    - mqtt.publish:
+        topic: "$mqtt_location/$mqtt_room/humidity${ix}"
+        payload: !lambda |-
+          return to_string(id(hum${ix}).state);
+pressure:
+  name: "$room Pressure"
+  id: press
+  accuracy_decimals: 2
+  filters:
+    # - offset: 7.0
+    - offset: ${pressure_offset}
+  state_topic: $devicename/pressure
+  on_value:
+    - mqtt.publish:
+        topic: "$mqtt_location/$mqtt_room/pressure"
+        payload: !lambda |-
+          return to_string(id(press).state);
+gas_resistance:
+  name: "$room Gas Resistance"
+  id: gas
+  accuracy_decimals: 2
+  state_topic: $devicename/pressure
+  on_value:
+    - mqtt.publish:
+        topic: "$mqtt_location/$mqtt_room/gas_resistance"
+        payload: !lambda |-
+          return to_string(id(gas).state);
+iaq:
+  name: "$room IAQ"
+  id: iaq
+  # accuracy_decimals: 2
+  state_topic: $devicename/iaq
+  on_value:
+    - mqtt.publish:
+        topic: "$mqtt_location/$mqtt_room/iaq"
+        payload: !lambda |-
+          return to_string(id(iaq).state);
+iaq_static:
+  name: "$room IAQ Static"
+  id: iaq_static
+  # accuracy_decimals: 2
+  state_topic: $devicename/iaq_static
+  on_value:
+    - mqtt.publish:
+        topic: "$mqtt_location/$mqtt_room/iaq_static"
+        payload: !lambda |-
+          return to_string(id(iaq_static).state);
+iaq_accuracy:
+  name: "$room IAQ Accuracy"
+  id: iaq_accuracy
+  # accuracy_decimals: 2
+  state_topic: $devicename/iaq_accuracy
+  on_value:
+    - mqtt.publish:
+        topic: "$mqtt_location/$mqtt_room/iaq_accuracy"
+        payload: !lambda |-
+          return to_string(id(iaq_accuracy).state);
+co2_equivalent:
+  name: "$room CO2"
+  id: co2
+  # accuracy_decimals: 2
+  icon: mdi:molecule-co2
+  state_topic: $devicename/co2
+  on_value:
+    - mqtt.publish:
+        topic: "$mqtt_location/$mqtt_room/co2"
+        payload: !lambda |-
+          return to_string(id(co2).state);
+breath_voc_equivalent:
+  name: "$room VOC"
+  id: voc
+  icon: mdi:radiator
+  # accuracy_decimals: 2
+  state_topic: $devicename/voc
+  on_value:
+    - mqtt.publish:
+        topic: "$mqtt_location/$mqtt_room/voc"
+        payload: !lambda |-
+          return to_string(id(voc).state);
+# bme68x_bsec2_id: i2c_bsec2
+# i2c_id: ${bus_id}
+#address: 0x77
+#address: ${address}
+#update_interval: $updates
