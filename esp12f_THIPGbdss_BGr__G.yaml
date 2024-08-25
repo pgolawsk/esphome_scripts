@@ -49,6 +49,8 @@ substitutions:
 <<: !include { file: interfaces/i2c.yaml, vars: { bus_id: "bus_a", sda: "GPIO4", scl: "GPIO5" } }
 # <<: !include { file: interfaces/dallas.yaml, vars: { gpio: "GPIO10" } }
 <<: !include { file: interfaces/rtttl.yaml, vars: { ix: "" } }
+# <<: !include { file: interfaces/i2c_bme68x_bsec2.yaml, vars: { ix: "", address: "0x77" } }  #!not working (bricked device)
+
 
 # # reinclude MQTT as a bug in ESPHOME, see: https://github.com/esphome/issues/issues/2180, https://github.com/esphome/issues/issues/1487
 # mqtt:
@@ -64,6 +66,8 @@ text_sensor:
   - !include sensors/text_uptime.yaml
   - !include sensors/text_version.yaml
   - !include sensors/text_wifi_info.yaml
+  # - !include sensors/text_air_quality_bme68x_bsec2.yaml #!not working (bricked device)
+  # - !include sensors/text_IAQ_accuracy_bme68x_bsec2.yaml #!not working (bricked device)
 
 binary_sensor:
   # HA Connected
@@ -78,6 +82,7 @@ sensor:
 
   # Temperature and Humidity and Preasure sensor
   - !include { file: sensors/temp_hum_press_gas_BME680.yaml, vars: { ix: "", bus_id: "bus_a", address: "0x77", temp_offset: -2.4, hum_offset: 4.4, pressure_offset: 7.0 } }
+  # - !include { file: sensors/temp_hum_press_gas_aqi_co2_voc_bme680.yaml, vars: { ix: "", bus_id: "bus_a", address: "0x77", temp_offset: -2.4, hum_offset: 4.4, pressure_offset: 7.0 } }  #!not working (bricked device)
   # Illuminance sensor
   - !include { file: sensors/lux_BH1750.yaml, vars: { ix: "", bus_id: "bus_a", address: "0x23" } }
 
