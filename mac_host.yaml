@@ -1,0 +1,93 @@
+---
+#* Mac host emulation for ESPHome
+# Pawelo, 20240830, created based on https://esphome.io/components/display/sdl#sdl
+
+#* FIRST install software run those:
+# brew install sdl2 libsodium (install step)
+# brew link sdl2 libsodium (optional step)
+# sdl2-config --libs --cflags (chacking installation step)
+
+#! run with this command
+# esphome run mac_host.yaml
+substitutions:
+#  devices: "Temperature, Humidity via SHTx30, Illuminance via BH1750,  and Doulbe Light Switch via AVT5713"
+  devices: "Mac Host"
+  project_name: "pgolawsk.esp_home"
+  version: "1.1.5"
+
+  devicename: mac1
+  updates: "30s"
+  room: Room # friendly name of room to display in HA/Web
+  # this is ADDITIONAL topic and sub-topic for MQTT - it publishes under <topic>/<sub-topic>/<sensor>
+  # by default it's also published under <devicename>/<id_sensor>
+  mqtt_location: home
+  mqtt_room: room
+  # (optional) secondary room/mqtt
+  room2: none
+  mqtt_location2: none
+  mqtt_room2: none
+
+  # default variable values for !include statements
+  accuracy_decimals: "2"
+
+esphome:
+  name: ${devicename}
+  comment: ${room} ${devices} emulator
+  project:
+    name: $project_name
+    version: $version
+host:
+
+# <<: !include includes/mqtt.yaml
+
+# text_sensor:
+#   - !include sensors/text_uptime.yaml
+#   - !include sensors/text_version.yaml
+  # - !include sensors/text_wifi_info.yaml
+
+  # Sun component
+  # - !include sensors/text_sun_sunrise.yaml
+  # - !include sensors/text_sun_sunset.yaml
+  # - !include sensors/text_sun_time_of_day.yaml
+  # - !include sensors/text_sun_direction.yaml
+
+
+# binary_sensor:
+  # HA Connected
+  # - !include sensors/binary_ha_connected.yaml
+
+# sensor:
+  # - !include sensors/temp_internal.yaml
+  # - !include sensors/uptime.yaml
+  # - !include sensors/wifi_signal.yaml
+
+  # Sun component
+  # - !include sensors/sun_elevation.yaml
+  # - !include sensors/sun_azimuth.yaml
+
+  # Various MQTT sensors
+  # - !include { file: sensors/value_mqtt_subscribe.yaml, vars: { topic: "home/entrance/temperature", id: "temp_entrance", name: "Temperature Entrance", unit: "°C", mdi_icon: "thermometer" } }
+  # - !include { file: sensors/value_mqtt_subscribe.yaml, vars: { topic: "home/upstairs/temperature", id: "temp_upstairs", name: "Temperature Upstairs", unit: "°C", mdi_icon: "thermometer" } }
+
+  # - !include { file: sensors/value_mqtt_subscribe.yaml, vars: { topic: "measures/underfloor/temperature", id: "temp_underfloor", name: "Temperature Underfloor", unit: "°C", mdi_icon: "thermometer" } }
+  # - !include { file: sensors/value_mqtt_subscribe.yaml, vars: { topic: "measures/underfloor/temperature_Dwall", id: "temp_underfloorW", name: "Temperature Underfloor Wall", unit: "°C", mdi_icon: "thermometer" } }
+  # - !include { file: sensors/value_mqtt_subscribe.yaml, vars: { topic: "measures/underfloor/temperature_Dboiler", id: "temp_underfloorB", name: "Temperature Underfloor Boiler", unit: "°C", mdi_icon: "thermometer" } }
+  # - !include { file: sensors/value_mqtt_subscribe.yaml, vars: { topic: "measures/aquarium_window/temperature", id: "temp_aquariumW", name: "Temperature Aquarium Window", unit: "°C", mdi_icon: "thermometer" } }
+
+  # - !include { file: sensors/value_mqtt_subscribe.yaml, vars: { topic: "home/entrance/humidity", id: "hum_entrance", name: "Humidity Entrance", unit: "%", mdi_icon: "water-percent" } }
+  # - !include { file: sensors/value_mqtt_subscribe.yaml, vars: { topic: "home/upstairs/humidity", id: "hum_upstairs", name: "Humidity Upstairs", unit: "%", mdi_icon: "water-percent" } }
+  # - !include { file: sensors/value_mqtt_subscribe.yaml, vars: { topic: "measures/underfloor/humidity", id: "hum_underfloor", name: "Humidity Underfloor", unit: "%", mdi_icon: "water-percent" } }
+  # - !include { file: sensors/value_mqtt_subscribe.yaml, vars: { topic: "measures/aquarium_window/humidity", id: "hum_aquariumW", name: "Humidity Aquarium Window", unit: "%", mdi_icon: "water-percent" } }
+
+# Include fonts for display
+<<: !include fonts/fonts_weeact_display.yaml
+
+display:
+  - platform: sdl
+    # show_test_card: true
+    dimensions:
+      width: 128
+      height: 296
+    lambda: |-
+      // Print the string "Hello World!" at [0,10]
+      it.print(0, 10, id(size_20_font), "Hello World!");
