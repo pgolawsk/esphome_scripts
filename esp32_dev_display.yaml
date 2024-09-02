@@ -9,7 +9,8 @@
 # Pawelo 20240619, 1.1.5, added 2nd i2c support, secondary room/mqtt
 # Pawelo 20240628, 1.1.5, moved filters offset adjustments for BME680 to variables
 # Pawelo 20240628, 1.1.5, move fonts to separate include file
-#
+# Pawelo, 20240902, refactoring: "status_led" renamed to "led"
+
 #! run with this command to override substitutions
 # esphome -s devicename espXX -s updates 1min -s room <Room name> -s mqtt_room <room> run esp32_MMmm_SSss__PP.yaml --device 192.168.x.x
 # heare are default values if those are not given via command line
@@ -17,7 +18,7 @@ substitutions:
 #  devices: "Temperature and Humidity via SHTx30 and Illuminance via BH1750"
   devices: "DEV Kit with ePaper display"
   project_name: "pgolawsk.esp_home"
-  version: "1.1.5"
+  version: "20240902"
 
   devicename: esp32-xx
   updates: "30s"
@@ -162,23 +163,24 @@ button:
   - !include { file: buttons/display_page_button.yaml, vars: { page_ix: "blank", display_id: "weact_display" } }
 
 output:
-  # Status LED
-  - !include { file: outputs/status_led.yaml, vars: { ix: "", gpio: "GPIO0" } }
-  - !include { file: outputs/status_led.yaml, vars: { ix: "2", gpio: "GPIO1" } }
+  # LEDs
+  - !include { file: outputs/led.yaml, vars: { ix: "", gpio: "GPIO0", inverted: false } }
+  - !include { file: outputs/led.yaml, vars: { ix: "2", gpio: "GPIO1", inverted: false } }
 
   # Passive/RTTTL Buzzer
   - !include { file: outputs/passive_buzzer_ledc.yaml, vars: { ix: "", gpio: "GPIO4" } }
   - !include { file: outputs/passive_buzzer_ledc.yaml, vars: { ix: "2", gpio: "GPIO5" } }
 
 light:
-  # Status LED
-  - !include { file: lights/status_led.yaml, vars: { ix: "", off_delay: "5s" } }
-  - !include { file: lights/status_led.yaml, vars: { ix: "2", off_delay: "5s", room: "${room2}", mqtt_location: "${mqtt_location2}", mqtt_room: "${mqtt_room2}" } }
+  # LEDs
+  - !include { file: lights/led.yaml, vars: { ix: "", platform: "binary", off_delay: "5s" } }
+  - !include { file: lights/led.yaml, vars: { ix: "2", platform: "binary", off_delay: "5s", room: "${room2}", mqtt_location: "${mqtt_location2}", mqtt_room: "${mqtt_room2}" } }
 
 switch:
-  # Status LED cycle
-  - !include { file: switches/led_cycle.yaml, vars: { ID: "status_led", cycles: 5, on_delay: "1s", off_delay: "500ms" } }
-  - !include { file: switches/led_cycle.yaml, vars: { ID: "status_led2", cycles: 5, on_delay: "1s", off_delay: "500ms", room: "${room2}", mqtt_location: "${mqtt_location2}", mqtt_room: "${mqtt_room2}" } }
+  # LEDs cycle
+  - !include { file: switches/led_cycle.yaml, vars: { ID: "led", cycles: 5, on_delay: "1s", off_delay: "500ms" } }
+  - !include { file: switches/led_cycle.yaml, vars: { ID: "led2", cycles: 5, on_delay: "1s", off_delay: "500ms", room: "${room2}", mqtt_location: "${mqtt_location2}", mqtt_room: "${mqtt_room2}" } }
+
   # Buzzer (active)
   - !include { file: switches/passive_buzzer.yaml, vars: { ix: "", off_delay: "500ms" } }
   - !include { file: switches/passive_buzzer_cycle.yaml, vars: { ix: "", cycles: 2, freq: "1000Hz", on_delay: "500ms", off_delay: "200ms" } }

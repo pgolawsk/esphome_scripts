@@ -27,14 +27,15 @@
 # Pawelo 20240516, 1.1.5, moved display to use waveshare_epaper to pr#6226, as per https://github.com/esphome/feature-requests/issues/2191#issuecomment-2009352588
 # Pawelo 20240619, 1.1.5, added secondary room/mqtt
 # Pawelo 20240628, 1.1.5, move fonts to separate include file
-#
+# Pawelo, 20240902, refactoring: "status_led" renamed to "led"
+
 #! run with this command to override substitutions
 # esphome -s devicename espXX -s updates 1min -s room <Room name> -s mqtt_room <room> run esp32_MMmm_SSss__PP.yaml --device 192.168.x.x
 # heare are default values if those are not given via command line
 substitutions:
   devices: "ePaper Temperature and Humidity via SHTx30, Illuminance via BH1750, Water via YF-B10 G1"
   project_name: "pgolawsk.esp_home"
-  version: "1.1.5"
+  version: "20240902"
 
   devicename: esp32-xx
   updates: "30s"
@@ -233,19 +234,19 @@ button:
 
 
 output:
-  # Status LED
-  - !include { file: outputs/status_led.yaml, vars: { ix: "", gpio: "GPIO0" } }
+  # LED
+  - !include { file: outputs/status_led.yaml, vars: { ix: "", gpio: "GPIO0", inverted: false } }
 
   # RTTTL Buzzer (passive_buzzer)
   - !include { file: outputs/passive_buzzer_ledc.yaml, vars: { ix: "", gpio: "GPIO4" } }
 
 light:
-  # Status LED
-  - !include { file: lights/status_led.yaml, vars: { ix: "", off_delay: "5s" } }
+  # LED
+  - !include { file: lights/status_led.yaml, vars: { ix: "", platform: "binary", off_delay: "5s" } }
 
 switch:
-  # Status LED cycle
-  - !include { file: switches/led_cycle.yaml, vars: { ID: "status_led", cycles: 5, on_delay: "1s", off_delay: "500ms" } }
+  # LED cycle
+  - !include { file: switches/led_cycle.yaml, vars: { ID: "led", cycles: 5, on_delay: "1s", off_delay: "500ms" } }
 
   # RTTTL Play (passive_buzzer)
   - !include { file: switches/rtttl_play.yaml, vars: { ix: "" } }

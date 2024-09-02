@@ -15,6 +15,7 @@
 # Pawelo 20230923, 1.1.5, added HA Connected binary sensor
 # Pawelo 20240619, 1.1.5, added 2nd i2c support, secondary room/mqtt
 # Pawelo 20240628, 1.1.5, moved filters offset adjustments for BME680 to variables
+# Pawelo, 20240902, refactoring: "status_led" renamed to "led"
 
 #! run with this command to override substitutions
 # esphome -s devicename espXX -s updates 1min -s room <Room name> -s mqtt_room <room> run esp12f_MMmm_SSss__PP.yaml --device 192.168.x.x
@@ -22,7 +23,7 @@
 substitutions:
   devices: "Temperature, Humidity, Preassure, Gas Resistance via BME680, Illuminance via BH1750 and Gate/Doorbell via GPIO"
   project_name: "pgolawsk.esp_home"
-  version: "1.1.5"
+  version: "20240902"
 
   devicename: esp12f-xx
   updates: "30s"
@@ -87,22 +88,22 @@ sensor:
   - !include { file: sensors/lux_BH1750.yaml, vars: { ix: "", bus_id: "bus_a", address: "0x23" } }
 
 output:
-  # Status LED
-  - !include { file: outputs/status_led.yaml, vars: { ix: "", gpio: "GPIO16" } }
+  # LED
+  - !include { file: outputs/led.yaml, vars: { ix: "", gpio: "GPIO16", inverted: false } }
 
   # RTTTL Buzzer (passive_buzzer)
   - !include { file: outputs/passive_buzzer.yaml, vars: { ix: "", gpio: "GPIO13" } }
 
 light:
-  # Status LED
-  - !include { file: lights/status_led.yaml, vars: { ix: "", off_delay: "5s" } }
+  # LED
+  - !include { file: lights/led.yaml, vars: { ix: "", platform: "binary", off_delay: "5s" } }
 
 switch:
   # # Restart button
   # - !include switches/platform_restart.yaml
 
-  # Status LED cycle
-  - !include { file: switches/led_cycle.yaml, vars: { ID: "status_led", cycles: 3, on_delay: "1s" , off_delay: "500ms" } }
+  # LED cycle
+  - !include { file: switches/led_cycle.yaml, vars: { ID: "led", cycles: 3, on_delay: "1s" , off_delay: "500ms" } }
 
   # RTTTL Play (passive_buzzer)
   - !include { file: switches/rtttl_play.yaml, vars: { ix: "" } }

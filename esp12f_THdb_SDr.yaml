@@ -18,6 +18,7 @@
 # Pawelo 20221203, 1.1.5, added Restart button on web
 # Pawelo 20230906, 1.1.5, switched Dallas to Dallasng custom component
 # Pawelo 20230923, 1.1.5, added HA Connected binary sensor
+# Pawelo, 20240902, refactoring: "status_led" renamed to "led"
 
 #! run with this command to override substitutions
 # esphome -s devicename espXX -s updates 1min -s room <Room name> -s mqtt_room <room> run esp12f_SSss_MMmm__PP.yaml --device 192.168.x.x
@@ -25,7 +26,7 @@
 substitutions:
   devices: "Temperatures via DS18B20, Temperature and Humidity via SHTx30"
   project_name: "pgolawsk.esp_home"
-  version: "1.1.5"
+  version: "20240902"
 
   devicename: esp12f-xx
   updates: "30s"
@@ -86,16 +87,16 @@ sensor:
 
 output:
   #! needed for RTTTL but its not connected to this device
-  # Status LED
-  - !include { file: outputs/status_led.yaml, vars: { ix: "", gpio: "GPIO10" } }
+  # LED
+  - !include { file: outputs/led.yaml, vars: { ix: "", gpio: "GPIO10", inverted: false } }
 
   # RTTTL Buzzer (passive_buzzer)
   - !include { file: outputs/passive_buzzer.yaml, vars: { ix: "", gpio: "GPIO16" } }
 
 light:
   #! needed for RTTTL but its not connected to this device
-  # Status LED
-  - !include { file: lights/status_led.yaml, vars: { ix: "", off_delay: "5s" } }
+  # LED
+  - !include { file: lights/led.yaml, vars: { ix: "", platform: "binary", off_delay: "5s" } }
 
 switch:
   # # Restart button

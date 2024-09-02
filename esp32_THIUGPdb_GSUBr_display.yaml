@@ -9,14 +9,15 @@
 # Pawelo 20240619, 1.1.5, added 2nd led as ix: "U"
 # Pawelo 20240625, 1.1.5, added 2nd i2c support, secondary room/mqtt
 # Pawelo 20240625, 1.1.5, added weeact 2.9 display
-#
+# Pawelo, 20240902, refactoring: "status_led" renamed to "led"
+
 #! run with this command to override substitutions
 # esphome -s devicename espXX -s updates 1min -s room <Room name> -s mqtt_room <room> run esp32_MMmm_SSss__PP.yaml --device 192.168.x.x
 # heare are default values if those are not given via command line
 substitutions:
   devices: "Temperature, Humidity, Pressure, Gas Resistance via BME680/SHT41 and UV, Illuminance via LTR390/BH1750"
   project_name: "pgolawsk.esp_home"
-  version: "1.1.5"
+  version: "20240902"
 
   devicename: esp32-xx
   updates: "30s"
@@ -124,11 +125,11 @@ sensor:
   - !include { file: sensors/value_mqtt_subscribe.yaml, vars: { topic: "measures/aquarium_window/humidity", id: "hum_aquariumW", name: "Humidity Aquarium Window", unit: "%", mdi_icon: "water-percent" } }
 
 output:
-  # Status LED
-  - !include { file: outputs/status_led.yaml, vars: { ix: "U_red", gpio: "GPIO0" } }
-  - !include { file: outputs/status_led.yaml, vars: { ix: "U_green", gpio: "GPIO15" } }
-  - !include { file: outputs/status_led.yaml, vars: { ix: "_red", gpio: "GPIO4" } }
-  - !include { file: outputs/status_led.yaml, vars: { ix: "_blue", gpio: "GPIO5" } }
+  # LEDs
+  - !include { file: outputs/led.yaml, vars: { ix: "U_red", gpio: "GPIO0", inverted: false } }
+  - !include { file: outputs/led.yaml, vars: { ix: "U_green", gpio: "GPIO15", inverted: false } }
+  - !include { file: outputs/led.yaml, vars: { ix: "_red", gpio: "GPIO4", inverted: false } }
+  - !include { file: outputs/led.yaml, vars: { ix: "_blue", gpio: "GPIO5", inverted: false } }
 
   # Measurement LED
   # - !include { file: outputs/measurement_led.yaml, vars: { ix: "", gpio: "GPIO12" } }
@@ -138,11 +139,11 @@ output:
   - !include { file: outputs/passive_buzzer_ledc.yaml, vars: { ix: "", gpio: "GPIO13" } }
 
 light:
-  # Status LED
-  - !include { file: lights/status_led.yaml, vars: { ix: "U_red", off_delay: "5s", room: "${room2}", mqtt_location: "${mqtt_location2}", mqtt_room: "${mqtt_room2}" } }
-  - !include { file: lights/status_led.yaml, vars: { ix: "U_green", off_delay: "5s", room: "${room2}", mqtt_location: "${mqtt_location2}", mqtt_room: "${mqtt_room2}" } }
-  - !include { file: lights/status_led.yaml, vars: { ix: "_red", off_delay: "5s" } }
-  - !include { file: lights/status_led.yaml, vars: { ix: "_blue", off_delay: "5s" } }
+  # LEDs
+  - !include { file: lights/led.yaml, vars: { ix: "U_red", platform: "binary", off_delay: "5s", room: "${room2}", mqtt_location: "${mqtt_location2}", mqtt_room: "${mqtt_room2}" } }
+  - !include { file: lights/led.yaml, vars: { ix: "U_green", platform: "binary", off_delay: "5s", room: "${room2}", mqtt_location: "${mqtt_location2}", mqtt_room: "${mqtt_room2}" } }
+  - !include { file: lights/led.yaml, vars: { ix: "_red", platform: "binary", off_delay: "5s" } }
+  - !include { file: lights/led.yaml, vars: { ix: "_blue", platform: "binary", off_delay: "5s" } }
 
   # Measurement LED
   # - !include { file: lights/measurement_led.yaml, vars: { ix: "", off_delay: "5s" } }
@@ -151,11 +152,11 @@ switch:
   # Restart button
   # - !include { file: switches/platform_restart.yaml }
 
-  # Status LED cycle
-  - !include { file: switches/led_cycle.yaml, vars: { ID: "status_ledU_red", cycles: 5, on_delay: "1s" , off_delay: "500ms", room: "${room2}", mqtt_location: "${mqtt_location2}", mqtt_room: "${mqtt_room2}" } }
-  - !include { file: switches/led_cycle.yaml, vars: { ID: "status_ledU_green", cycles: 5, on_delay: "1s" , off_delay: "500ms", room: "${room2}", mqtt_location: "${mqtt_location2}", mqtt_room: "${mqtt_room2}" } }
-  - !include { file: switches/led_cycle.yaml, vars: { ID: "status_led_red", cycles: 3, on_delay: "1s" , off_delay: "500ms" } }
-  - !include { file: switches/led_cycle.yaml, vars: { ID: "status_led_blue", cycles: 3, on_delay: "1s" , off_delay: "500ms" } }
+  # LEDs cycle
+  - !include { file: switches/led_cycle.yaml, vars: { ID: "ledU_red", cycles: 5, on_delay: "1s" , off_delay: "500ms", room: "${room2}", mqtt_location: "${mqtt_location2}", mqtt_room: "${mqtt_room2}" } }
+  - !include { file: switches/led_cycle.yaml, vars: { ID: "ledU_green", cycles: 5, on_delay: "1s" , off_delay: "500ms", room: "${room2}", mqtt_location: "${mqtt_location2}", mqtt_room: "${mqtt_room2}" } }
+  - !include { file: switches/led_cycle.yaml, vars: { ID: "led_red", cycles: 3, on_delay: "1s" , off_delay: "500ms" } }
+  - !include { file: switches/led_cycle.yaml, vars: { ID: "led_blue", cycles: 3, on_delay: "1s" , off_delay: "500ms" } }
 
   # RTTTL Play (passive_buzzer)
   - !include { file: switches/rtttl_play.yaml, vars: { ix: "U", room: "${room2}", mqtt_location: "${mqtt_location2}", mqtt_room: "${mqtt_room2}" } }
