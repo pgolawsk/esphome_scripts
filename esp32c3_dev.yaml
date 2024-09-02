@@ -29,6 +29,7 @@ substitutions:
   # Include basics of a board
 #<<: !include includes/board_esp32.yaml
 <<: !include includes/board_esp32c3_with_sun.yaml
+#<<: !include { file: includes/board_esp32_with_sun_wifi_extended.yaml, vars: { board: "esp32-c3-devkitm-1" } }
 # Include/Override mqtt with/without RTTTL support if needed
 <<: !include includes/mqtt.yaml
 #<<: !include includes/mqtt_with_rtttl.yaml
