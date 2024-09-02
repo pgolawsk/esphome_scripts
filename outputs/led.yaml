@@ -1,11 +1,12 @@
 ---
-# * Status LED output
+# * LED output
 # Pawelo, 20230128, created from examples
+# Pawelo, 20240902, renamed from "s_led" to "o_led"
 
 platform: gpio
 pin:
     number: ${gpio} # GPIO2 with inverted
   #  mode: INPUT_PULLUP
-id: s_led${ix}
+id: o_led${ix}
 # icon: mdi:led-off
-inverted: false
+inverted: ${inverted} # false
