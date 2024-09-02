@@ -11,7 +11,9 @@ esphome:
     version: $version
 
 esp32:
-  board: esp32dev
+  board: "${board}"
+  # board: esp32dev
+  # board: esp32-c3-devkitm-1
 #  restore_from_flash: true
   # framework:
   #   type: arduino
