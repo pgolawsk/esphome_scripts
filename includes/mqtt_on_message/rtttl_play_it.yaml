@@ -31,7 +31,7 @@ then:
   - repeat:
       count: ${led_cycles}
       then:
-        - light.turn_on: status_led
+        - light.turn_on: led
         - delay: 300ms
-        - light.turn_off: status_led
+        - light.turn_off: led
         - delay: 300ms
