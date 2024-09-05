@@ -21,6 +21,7 @@ esp32:
 
 <<: !include wifi.yaml
 # <<: !include wifi_extended.yaml
+# <<: !include wifi_main.yaml
 <<: !include api.yaml
 <<: !include ota.yaml
 <<: !include logger.yaml
