@@ -1,6 +1,6 @@
 ---
 #* LED light
-#*! using s_led<id> created by outputs/status_led.yaml
+#*! using o_led<id> created by outputs/led.yaml
 # Pawelo, 20230128, created from examples
 # Pawelo, 20240902, renamed from "status_led" to "led"
 # Pawelo, 20240902, added "platform" variable based on https://github.com/esphome/feature-requests/issues/2230
