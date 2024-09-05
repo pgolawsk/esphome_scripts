@@ -1,0 +1,19 @@
+---
+#* Enable WiFi Main network, including falback hotspot
+# Pawelo, 20230903, vreated as a copy of wifi.yaml
+
+wifi:
+  networks:
+    - ssid: !secret wifi_main_ssid
+      password: !secret wifi_main_password
+      hidden: true
+  domain: ""
+  fast_connect: true
+  reboot_timeout: 15min
+
+  # Enable fallback hotspot (captive portal) in case wifi connection fails
+  ap:
+    ssid: "$devicename Recovery"
+    password: !secret wifi_fallback_password
+
+captive_portal:
