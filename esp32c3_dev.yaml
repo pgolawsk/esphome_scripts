@@ -86,22 +86,27 @@ sensor:
   # - !include { file: sensors/tvoc_eco2_SGP30.yaml, vars: { ix: "", bus_id: "bus_a", address: "0x58" } }
   # - !include { file: sensors/tvoc_eco2_ENS160.yaml, vars: { ix: "", bus_id: "bus_a", address: "0x53" } }
 
-switch:
-  # Restart button
-  - !include switches/platform_restart.yaml
-
-  # LED cycle
-  - !include { file: switches/led_cycle.yaml, vars: { ID: "led", cycles: 3, on_delay: "1s" , off_delay: "500ms" } }
-
 button:
   # Restart button
   - !include { file: buttons/restart_button.yaml }
 
+switch:
+  # LED cycle
+  - !include { file: switches/led_cycle.yaml, vars: { ID: "led", cycles: 3, on_delay: "1s" , off_delay: "1000ms" } }
+
 output:
   # LED
-  - !include { file: outputs/led.yaml, vars: { ix: "", gpio: "GPIO8", inverted: true } }
+  # - !include { file: outputs/led.yaml, vars: { ix: "", gpio: "GPIO8", inverted: true } }
+
+  # LED RGB (blue only)
+#  - !include { file: outputs/led.yaml, vars: { ix: "", gpio: "GPIO7", inverted: false } }
+# OR
+  # LED RGB (multicolor)
+  - !include { file: outputs/led_rgb.yaml, vars: { ix: "", ID: "rgb_led" } }
 
 light:
   # LED
-  - !include { file: lights/led.yaml, vars: { ix: "", platform: "binary", off_delay: "5s" } }
+  - !include { file: lights/led.yaml, vars: { ix: "", platform: "status_led", off_delay: "1days" } }
+  # LED RGB
+  - !include { file: lights/led_rgb_neopixelbus.yaml, vars: { ix: "", gpio: "GPIO8" } }
 

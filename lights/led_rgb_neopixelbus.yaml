@@ -1,0 +1,14 @@
+---
+#* RGB LED light
+# Pawelo, 20240902, created based on https://github.com/esphome/feature-requests/issues/2230
+
+platform: neopixelbus
+variant: WS2812
+name: "$room RGB LED${ix}"
+icon: "mdi:led-outline"
+id: rgb_led${ix}
+state_topic: $devicename/rgb_led${ix}
+pin: ${gpio}
+num_leds: 1
+entity_category: config
+restore_mode: ALWAYS_OFF
