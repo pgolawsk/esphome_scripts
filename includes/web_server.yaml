@@ -10,3 +10,4 @@ web_server:
 #  auth:
 #    username: !secret web_username
 #    password: !secret web_password
+  version: 3
