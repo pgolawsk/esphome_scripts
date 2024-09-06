@@ -8,6 +8,8 @@
 # Pawelo 20240209, 1.1.5, added ENS160 + AHT21 support
 # Pawelo 20240619, 1.1.5, added 2nd i2c support, secondary room/mqtt
 # Pawelo 20240628, 1.1.5, moved filters offset adjustments for BME280, BME680, SCD40, ATH2x to variables
+# Pawelo 20240906, added/testing RFID RC522
+# Pawelo 20240906, added last_tag text sensor
 #
 #! run with this command to override substitutions
 # esphome -s devicename espXX -s updates 1min -s room <Room name> -s mqtt_room <room> run esp32_MMmm_SSss__PP.yaml --device 192.168.x.x
@@ -16,7 +18,7 @@ substitutions:
 #  devices: "Temperature and Humidity via SHTx30 and Illuminance via BH1750"
   devices: "DEV Kit"
   project_name: "pgolawsk.esp_home"
-  version: "1.1.5"
+  version: "2024.8"
 
   devicename: esp32-xx
   updates: "30s"
@@ -74,6 +76,9 @@ text_sensor:
 
   # Air Quality sensor
   # - !include { file: sensors/text_air_quality.yaml }
+
+# RFID tags
+  - !include sensors/text_last_tag.yaml
 
 binary_sensor:
   # HA Connected

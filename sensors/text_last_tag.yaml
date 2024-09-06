@@ -1,0 +1,14 @@
+---
+#* Last tag ID read on RC522
+# Pawelo, 20240907, created based on own idea
+
+platform: template
+id: "last_tag"
+name: "$room Last Tag ID"
+icon: mdi:access-point-check
+state_topic: $devicename/last_tag
+on_value:
+  - mqtt.publish:
+      topic: "$mqtt_location/$mqtt_room/last_tag"
+      payload: !lambda |-
+        return to_string(id(last_tag).state);

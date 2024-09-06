@@ -16,10 +16,13 @@ rc522_spi:
     then:
       # - lambda: 'ESP_LOGI("RFID","RFID tag scanned: %s", x);'
       - logger.log:
-          format: "RFID tag scanned: %x."
-          args: [ 'x' ]
+          format: "RFID tag scanned: %s."
+          args: [ 'x.c_str()' ]
           level: INFO
           tag: "RFID"
+      - text_sensor.template.publish:
+          id: last_tag
+          state: !lambda 'return x;'
       - mqtt.publish:
           topic: $devicename/tag_scanned
           payload: !lambda 'return x;'
@@ -35,8 +38,8 @@ rc522_spi:
   on_tag_removed:
     then:
       - logger.log:
-          format: "RFID tag removed: %o."
-          args: [ x ]
+          format: "RFID tag removed: %s."
+          args: [ 'x.c_str()' ]
           level: INFO
           tag: "RFID"
       - mqtt.publish:
