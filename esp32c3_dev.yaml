@@ -38,6 +38,8 @@ substitutions:
 # <<: !include { file: interfaces/i2c.yaml, vars: { bus_id: "bus_a", sda: "GPIO21", scl: "GPIO22" } }
 # <<: !include { file: interfaces/dallas.yaml, vars: { gpio: "GPIO10" } }
 # <<: !include { file: interfaces/rtttl.yaml, vars: { ix: "" } }
+# <<: !include { file: interfaces/spi.yaml, vars: { spi_id: "spi_a", clk: "GPIO6", mosi: "GPIO7", miso: "GPIO9" } }
+# <<: !include { file: interfaces/spi_rc522.yaml, vars: { spi_id: "spi_a", cs: "GPIO5", reset: "GPIO4" } }
 
 # # reinclude MQTT as a bug in ESPHOME, see: https://github.com/esphome/issues/issues/2180, https://github.com/esphome/issues/issues/1487
 # mqtt:

@@ -1,11 +1,12 @@
 ---
 #* SPI interface on given GPIO pins
 # Pawelo, 20240716, created based on https://esphome.io/components/spi#spi
+# Pawelo, 20240906, tested and added pin labels on the board
 
 spi:
   id: ${spi_id}
-  clk_pin: ${clk}
+  clk_pin: ${clk} #SCK
   type: "single" # could be "single or "quad"
-  mosi_pin: ${mosi}
-  miso_pin: ${miso}
+  mosi_pin: ${mosi} #MOSI
+  miso_pin: ${miso} #MISO
   interface: "any"

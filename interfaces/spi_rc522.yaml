@@ -1,10 +1,47 @@
 ---
 #* RC522 SPI interface
 # Pawelo, 20240716, created based on https://esphome.io/components/binary_sensor/rc522.html
+# Pawelo, 20240906, tested and added pin labels on the board
+# Pawelo, 20240907, added publish to mqtt and HA of tag UID
 
 # note: it needs spi: to be included as well - please include separately
 
 rc522_spi:
-  cs_pin: ${cs}
-  reset_pin: ${reset}
   spi_id: ${spi_id}
+  cs_pin: ${cs} # SDA
+  reset_pin: ${reset} # RST
+  # data_rate: 200kHz
+
+  on_tag:
+    then:
+      # - lambda: 'ESP_LOGI("RFID","RFID tag scanned: %s", x);'
+      - logger.log:
+          format: "RFID tag scanned: %x."
+          args: [ 'x' ]
+          level: INFO
+          tag: "RFID"
+      - mqtt.publish:
+          topic: $devicename/tag_scanned
+          payload: !lambda 'return x;'
+      - mqtt.publish:
+          topic: $mqtt_location/$mqtt_room/tag_scanned
+          payload: !lambda 'return x;'
+      - if:
+          condition:
+            binary_sensor.is_on: ha_connected
+          then:
+            - homeassistant.tag_scanned: !lambda 'return x;'
+
+  on_tag_removed:
+    then:
+      - logger.log:
+          format: "RFID tag removed: %o."
+          args: [ x ]
+          level: INFO
+          tag: "RFID"
+      - mqtt.publish:
+          topic: $devicename/tag_removed
+          payload: !lambda 'return x;'
+      - mqtt.publish:
+          topic: $mqtt_location/$mqtt_room/tag_removed
+          payload: !lambda 'return x;'

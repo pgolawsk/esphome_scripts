@@ -1,7 +1,7 @@
 ---
 #* Binary tag on RC522
-#! NOT tested
 # Pawelo, 20240614, created based on https://esphome.io/components/binary_sensor/rc522.html
+# Pawelo, 20240906, tested and works
 
 platform: rc522
 uid: "${uid}" # 74-10-37-94
@@ -9,15 +9,10 @@ name: "$room Tag ${name}"
 id: tag${ix}
 icon: mdi:access-point
 state_topic: $devicename/tag${ix}
-on_tag:
+on_state:
   then:
     - mqtt.publish:
         topic: "$mqtt_location/$mqtt_room/tag${ix}"
-        payload: !lambda |-
-          return true;
-on_tag_remove:
-  then:
-    - mqtt.publish:
-        topic: "$mqtt_location/$mqtt_room/tag${ix}"
-        payload: !lambda |-
-          return false;
+        # payload: !lambda |-
+        #   if(x) { return "ON"; } else { return "OFF"; }
+        payload: !lambda return to_string(x);

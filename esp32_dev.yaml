@@ -43,11 +43,13 @@ substitutions:
 # Include interfaces needed
 # <<: !include { file: interfaces/i2c.yaml, vars: { bus_id: "bus_a", sda: "GPIO21", scl: "GPIO22" } }
 # note: when more i2c interfaces are needed then need to include those separately
-i2c:
-  - !include { file: interfaces/i2c__include.yaml, vars: { bus_id: "bus_a", sda: "GPIO21", scl: "GPIO22" } }
-  - !include { file: interfaces/i2c__include.yaml, vars: { bus_id: "bus_b", sda: "GPIO17", scl: "GPIO18" } }
+# i2c:
+#   - !include { file: interfaces/i2c__include.yaml, vars: { bus_id: "bus_a", sda: "GPIO21", scl: "GPIO22" } }
+#   - !include { file: interfaces/i2c__include.yaml, vars: { bus_id: "bus_b", sda: "GPIO17", scl: "GPIO18" } }
 # <<: !include { file: interfaces/dallas.yaml, vars: { gpio: "GPIO10" } }
 # <<: !include { file: interfaces/rtttl.yaml, vars: { ix: "" } }
+<<: !include { file: interfaces/spi.yaml, vars: { spi_id: "spi_a", clk: "GPIO18", mosi: "GPIO23", miso: "GPIO19" } }
+<<: !include { file: interfaces/spi_rc522.yaml, vars: { spi_id: "spi_a", cs: "GPIO5", reset: "GPIO21" } }
 
 # # reinclude MQTT as a bug in ESPHOME, see: https://github.com/esphome/issues/issues/2180, https://github.com/esphome/issues/issues/1487
 # mqtt:
@@ -77,6 +79,12 @@ binary_sensor:
   # HA Connected
   - !include sensors/binary_ha_connected.yaml
 
+  # RFID tags
+  - !include { file: sensors/binary_tag.yaml, vars: { ix: "1", uid: !secret rfid_tag_1_uid, name: !secret rfid_tag_1_name } }
+  - !include { file: sensors/binary_tag.yaml, vars: { ix: "2", uid: !secret rfid_tag_2_uid, name: !secret rfid_tag_2_name } }
+  - !include { file: sensors/binary_tag.yaml, vars: { ix: "3", uid: !secret rfid_tag_3_uid, name: !secret rfid_tag_3_name } }
+  - !include { file: sensors/binary_tag.yaml, vars: { ix: "4", uid: !secret rfid_tag_4_uid, name: !secret rfid_tag_4_name } }
+
 sensor:
   - !include sensors/temp_internal.yaml
   - !include sensors/uptime.yaml
@@ -88,22 +96,22 @@ sensor:
 
   # Temperature and Humidity sensor
 #  - !include { file: sensors/temp_hum_SHT3x.yaml, vars: { ix: "", bus_id: "bus_a", address: "0x44" } }
-  - !include { file: sensors/temp_hum_SHT4x.yaml, vars: { ix: "2", bus_id: "bus_b", address: "0x44", room: "${room2}", mqtt_location: "${mqtt_location2}", mqtt_room: "${mqtt_room2}" } }
+  # - !include { file: sensors/temp_hum_SHT4x.yaml, vars: { ix: "2", bus_id: "bus_b", address: "0x44", room: "${room2}", mqtt_location: "${mqtt_location2}", mqtt_room: "${mqtt_room2}" } }
   # - !include { file: sensors/temp_hum_AHT2x.yaml, vars: { ix: "", bus_id: "bus_a", address: "0x38", temp_offset: 0.0, hum_offset: 0.0 } }
 
   # Temperature, Humidity and Pressure seensor
   # - !include { file: sensors/temp_hum_press_BME280.yaml, vars: { ix: "", bus_id: "bus_a", address: "0x76", temp_offset: 0.0, hum_offset: 0.0, pressure_offset: 0.0 } }
 
   # Temperature, Humidity, Pressure and Gas Resistance seensor
-  - !include { file: sensors/temp_hum_press_gas_BME680.yaml, vars: { ix: "", bus_id: "bus_a", address: "0x77", temp_offset: 0.0, hum_offset: 0.0, pressure_offset: 0.0 } }
+  # - !include { file: sensors/temp_hum_press_gas_BME680.yaml, vars: { ix: "", bus_id: "bus_a", address: "0x77", temp_offset: 0.0, hum_offset: 0.0, pressure_offset: 0.0 } }
 
   # CO2, Temperature and Humidity sensor
   # - !include { file: sensors/temp_hum_co2_SCD40.yaml, vars: { ix: "2", bus_id: "bus_a", address: "0x62", temp_offset: 0.0, hum_offset: 0.0 } }
 
   # Illuminance sensor
-  - !include { file: sensors/lux_BH1750.yaml, vars: { ix: "2", bus_id: "bus_b", address: "0x23", room: "${room2}", mqtt_location: "${mqtt_location2}", mqtt_room: "${mqtt_room2}"  } }
+  # - !include { file: sensors/lux_BH1750.yaml, vars: { ix: "2", bus_id: "bus_b", address: "0x23", room: "${room2}", mqtt_location: "${mqtt_location2}", mqtt_room: "${mqtt_room2}"  } }
   # - !include { file: sensors/lux_color_TCS3472.yaml, vars: { ix: "2", bus_id: "bus_a", address: "0x29" } }
-  - !include { file: sensors/lux_uv_ltr390.yaml, vars: { ix: "", bus_id: "bus_a", address: "0x53" } }
+  # - !include { file: sensors/lux_uv_ltr390.yaml, vars: { ix: "", bus_id: "bus_a", address: "0x53" } }
 
   # TVOC and eCO2 sensor
   # - !include { file: sensors/tvoc_eco2_SGP30.yaml, vars: { ix: "", bus_id: "bus_a", address: "0x58" } }
