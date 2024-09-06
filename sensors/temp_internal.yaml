@@ -1,10 +1,12 @@
 ---
 #* Internal Temperature of ESP device (ESP32 and RP2400 only)
 # Pawelo, 20230319, created based on https://esphome.io/components/sensor/internal_temperature.html
+# Pawelo, 20240907, addeed mdi icon
 
 platform: internal_temperature
-name: "$room $devicename Temperature"
 id: internal_temp
+name: "$room $devicename Temperature"
+icon: mdi:thermometer-check
 accuracy_decimals: 2
 state_topic: $devicename/internal_temperature
 on_value:
