@@ -1,10 +1,12 @@
 ---
 #* Sun Time Of Day sensor configuration
 # Pawelo, 20230924, created based on my own idea
+# Pawelo, 20240907, set entity_category for sensor to have it separateluy on web
 
 platform: template
 name: Time Of Day
 id: time_of_day
+entity_category: diagnostic
 icon: mdi:theme-light-dark
 internal: true
 state_topic: $devicename/time_of_day
