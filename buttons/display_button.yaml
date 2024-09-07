@@ -1,6 +1,7 @@
 ---
 #* Display button on interface
 # Pawelo, 20230308, created as new based on framework
+# Pawelo, 20240907, set entity_category and icon
 
 platform: template
 # pin:
@@ -11,6 +12,7 @@ platform: template
 #   inverted: true
 name: "$room Button ${ix}"
 id: button${ix}
+entity_category: config
 icon: "mdi:${mdi_icon}"
 state_topic: $devicename/button${ix}
 on_press:
