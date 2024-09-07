@@ -235,14 +235,14 @@ button:
 
 output:
   # LED
-  - !include { file: outputs/status_led.yaml, vars: { ix: "", gpio: "GPIO0", inverted: false } }
+  - !include { file: outputs/led.yaml, vars: { ix: "", gpio: "GPIO0", inverted: false } }
 
   # RTTTL Buzzer (passive_buzzer)
   - !include { file: outputs/passive_buzzer_ledc.yaml, vars: { ix: "", gpio: "GPIO4" } }
 
 light:
   # LED
-  - !include { file: lights/status_led.yaml, vars: { ix: "", platform: "binary", off_delay: "5s" } }
+  - !include { file: lights/led.yaml, vars: { ix: "", platform: "binary", off_delay: "5s" } }
 
 switch:
   # LED cycle
