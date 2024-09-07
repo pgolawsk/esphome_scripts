@@ -5,6 +5,7 @@
 # Pawelo, 20240618, fixes on first use - "uv" and "ambient_light" are "counts" - made them internal
 # Pawelo, 20240622, changed gain and resolution, since sensor reported UV=1 in noon only and tops lux on 8387lx... (this is du to window glass...)
 # Pawelo, 20240717, fix for 2024.07 - separate gain and resolution for ambient_light and uv.
+# Pawelo, 20240907, set entity_category and icon for counters sensor values
 
 platform: ltr390
 uv_index:
@@ -21,6 +22,7 @@ uv_index:
 uv:
   name: "$room UV Counts${ix}"
   id: uv${ix}
+  entity_category: diagnostic
   accuracy_decimals: 0
   icon: mdi:sun-wireless
   state_topic: $devicename/uv_counts${ix}
@@ -43,8 +45,9 @@ light:
           return to_string(id(lux${ix}).state);
 ambient_light:
   name: "$room Ambient Counts${ix}"
-  accuracy_decimals: 0
   id: alux${ix}
+  entity_category: diagnostic
+  accuracy_decimals: 0
   icon: mdi:decagram
   state_topic: $devicename/ambient_counts${ix}
   on_value:
