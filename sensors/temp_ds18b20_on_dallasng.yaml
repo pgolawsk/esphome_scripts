@@ -6,10 +6,13 @@
 # Pawelo, 20230414, filtering out NaN values
 # Pawelo, 20230906, using external component as per https://github.com/nrandell/dallasng
 # Pawelo, 20240211, added "clamp" to filter out out of range values
+# Pawelo, 20240907, set device_class and icon for sensor values
 
 platform: dallasng
 name: "$room Temperature${ix}"
 id: temp${ix}
+device_class: temperature
+icon: mdi:thermometer
 accuracy_decimals: 2
 state_topic: $devicename/temperature_${ix}
 on_value:

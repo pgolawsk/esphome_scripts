@@ -7,11 +7,14 @@
 # Pawelo, 20230111, added i2c bus identification
 # Pawelo, 20230121, add variables to configure sensor
 # Pawelo, 20240628, add variables for filter offsets (temp, hum, pressure)
+# Pawelo, 20240907, set device_class and icon for sensor values
 
 platform: bme680
 temperature:
   name: "$room Temperature${ix}"
   id: temp${ix}
+  device_class: temperature
+  icon: mdi:thermometer
   oversampling: 8x
   accuracy_decimals: 2
   filters:
@@ -26,6 +29,8 @@ temperature:
 humidity:
   name: "$room Humidity${ix}"
   id: hum${ix}
+  device_class: humidity
+  icon: mdi:water-percent
   oversampling: 8x
   accuracy_decimals: 2
   filters:
@@ -40,6 +45,8 @@ humidity:
 pressure:
   name: "$room Pressure"
   id: press
+  device_class: pressure
+  icon: mdi:gauge
   oversampling: 8x
   accuracy_decimals: 2
   filters:
@@ -54,6 +61,8 @@ pressure:
 gas_resistance:
   name: "$room Gas Resistance"
   id: gas
+  device_class: gas
+  icon: mdi:gas-cylinder
   accuracy_decimals: 2
   state_topic: $devicename/pressure
   on_value:

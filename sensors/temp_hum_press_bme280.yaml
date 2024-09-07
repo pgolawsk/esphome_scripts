@@ -9,11 +9,14 @@
 # Pawelo, 20230121, add variables to configure sensor
 # Pawelo, 20240628, change platform to bme280_i2c
 # Pawelo, 20240628, add variables for filter offsets (temp, hum, pressure)
+# Pawelo, 20240907, set device_class and icon for sensor values
 
 platform: bme280_i2c
 temperature:
   name: "$room Temperature${ix}"
   id: temp${ix}
+  device_class: temperature
+  icon: mdi:thermometer
   oversampling: 16x
   accuracy_decimals: 2
   filters:
@@ -28,6 +31,8 @@ temperature:
 humidity:
   name: "$room Humidity${ix}"
   id: hum${ix}
+  device_class: humidity
+  icon: mdi:water-percent
   oversampling: 16x
   accuracy_decimals: 2
   filters:
@@ -42,6 +47,8 @@ humidity:
 pressure:
   name: "$room Pressure"
   id: press
+  device_class: pressure
+  icon: mdi:gauge
   oversampling: 16x
   accuracy_decimals: 2
   filters:

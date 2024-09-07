@@ -5,6 +5,7 @@
 # Pawelo, 20230111, added i2c bus identification
 # Pawelo, 20230121, add variables to configure sensor
 # Pawelo, 20240628, add variables for filter offsets (temp, hum)
+# Pawelo, 20240907, set device_class and icon for sensor values
 
 platform: scd4x
 measurement_mode: low_power_periodic # available options: periodic (5s), low_power_periodic (30s), single_shot (5s) on update, single_shor_rht_only (50ms, only temp, hum)
@@ -12,6 +13,8 @@ temperature_offset: 1 # default is 4 - as the sensor heats to measure CO2, thus 
 temperature:
   name: "$room Temperature${ix}"
   id: temp${ix}
+  device_class: temperature
+  icon: mdi:thermometer
   accuracy_decimals: 2
   filters:
 #    - offset: -2.4
@@ -25,6 +28,8 @@ temperature:
 humidity:
   name: "$room Humidity${ix}"
   id: hum${ix}
+  device_class: humidity
+  icon: mdi:water-percent
   accuracy_decimals: 2
   filters:
 #    - offset: 2.4
@@ -38,6 +43,7 @@ humidity:
 co2:
   name: "$room CO2"
   id: co2
+  device_class: carbon_dioxide
   icon: mdi:molecule-co2
   accuracy_decimals: 2
   state_topic: $devicename/co2

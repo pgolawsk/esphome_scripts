@@ -1,11 +1,14 @@
 ---
 #* Temperature and Humidity sensor SHT40 configuration
 # Pawelo, 20240619, created based on SHT30 configuration and https://esphome.io/components/sensor/sht4x.html
+# Pawelo, 20240907, set device_class and icon for sensor values
 
 platform: sht4x
 temperature:
   name: "$room Temperature${ix}"
   id: temp${ix}
+  device_class: temperature
+  icon: mdi:thermometer
   accuracy_decimals: 2
   state_topic: $devicename/temperature${ix}
   on_value:
@@ -16,6 +19,8 @@ temperature:
 humidity:
   name: "$room Humidity${ix}"
   id: hum${ix}
+  device_class: humidity
+  icon: mdi:water-percent
   accuracy_decimals: 2
   state_topic: $devicename/humidity${ix}
   on_value:

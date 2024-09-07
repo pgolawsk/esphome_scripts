@@ -3,11 +3,14 @@
 #* requires ESPHOME 2024.8
 #! not working with esp2866
 # Pawelo, 20240825, created based on https://esphome.io/components/sensor/bme68x_bsec2
+# Pawelo, 20240907, set device_class and icon for sensor values
 
 platform: bme68x_bsec2
 temperature:
   name: "$room Temperature${ix}"
   id: temp${ix}
+  device_class: temperature
+  icon: mdi:thermometer
   accuracy_decimals: 2
   filters:
     # - offset: -2.4
@@ -21,6 +24,8 @@ temperature:
 humidity:
   name: "$room Humidity${ix}"
   id: hum${ix}
+  device_class: humidity
+  icon: mdi:water-percent
   accuracy_decimals: 2
   filters:
     # - offset: 4.4
@@ -34,6 +39,8 @@ humidity:
 pressure:
   name: "$room Pressure"
   id: press
+  device_class: pressure
+  icon: mdi:gauge
   accuracy_decimals: 2
   filters:
     # - offset: 7.0
@@ -47,6 +54,8 @@ pressure:
 gas_resistance:
   name: "$room Gas Resistance"
   id: gas
+  device_class: gas
+  icon: mdi:gas-cylinder
   accuracy_decimals: 2
   state_topic: $devicename/pressure
   on_value:
@@ -88,6 +97,7 @@ co2_equivalent:
   name: "$room CO2"
   id: co2
   # accuracy_decimals: 2
+  device_class: carbon_dioxide
   icon: mdi:molecule-co2
   state_topic: $devicename/co2
   on_value:

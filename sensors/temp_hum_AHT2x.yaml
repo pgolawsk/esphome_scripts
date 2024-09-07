@@ -3,12 +3,15 @@
 # Pawelo, 20240209, created as copy of temp_hum_sht3x.yaml, based on: https://esphome.io/components/sensor/aht10.html
 # Pawelo, 20240211, tested and added offset to compensate for heating of ENS160 sensor on the same board
 # Pawelo, 20240628, add variables for filter offsets (temp, hum)
+# Pawelo, 20240907, set device_class and icon for sensor values
 
 platform: aht10
 variant: AHT20
 temperature:
   name: "$room Temperature${ix}"
   id: temp${ix}
+  device_class: temperature
+  icon: mdi:thermometer
   accuracy_decimals: 2
   state_topic: $devicename/temperature${ix}
   on_value:
@@ -22,6 +25,8 @@ temperature:
 humidity:
   name: "$room Humidity${ix}"
   id: hum${ix}
+  device_class: humidity
+  icon: mdi:water-percent
   accuracy_decimals: 2
   state_topic: $devicename/humidity${ix}
   on_value:
