@@ -1,11 +1,12 @@
 ---
 #* Sun Time Of Day sensor configuration
 # Pawelo, 20230924, created based on my own idea
+# Pawelo, 20240907, changed icon for sensor
 
 platform: template
 name: Sun Direction
 id: sun_direction
-icon: mdi:theme-light-dark
+icon: mdi:unfold-more-horizontal
 internal: true
 state_topic: $devicename/sun_direction
 lambda: |-
