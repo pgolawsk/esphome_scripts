@@ -97,7 +97,7 @@ switch:
   - !include { file: switches/led_cycle.yaml, vars: { ID: "led", cycles: 3, on_delay: "1s" , off_delay: "1000ms" } }
 
 output:
-  # LED
+  # LED (blue on standard C3 mini)
   # - !include { file: outputs/led.yaml, vars: { ix: "", gpio: "GPIO8", inverted: true } }
 
   # LED RGB (blue only)
