@@ -2,6 +2,7 @@
 #* Cycle select via GPIO button with PULLUP resistor enabled
 # Pawelo, 20231015, created based on https://esphome.io/components/select/index.html#select-next-action
 #? allowed values for operation var: first, last, previous or next
+# Pawelo, 20240907, set entity_category: config
 
 platform: gpio
 pin:
@@ -12,6 +13,7 @@ pin:
   inverted: true
 name: "$room Select Cycle ${ix}"
 id: cbutton${ix}
+entity_category: config
 icon: mdi:timer-sync-outline
 state_topic: $devicename/cbutton${ix}
 internal: true
