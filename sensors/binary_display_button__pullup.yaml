@@ -1,6 +1,7 @@
 ---
 #* Display button on GPIO with PULLUP resistor enabled
 # Pawelo, 20231012, created based on binary_display_button.yaml
+# Pawelo, 20240907, set entity_category
 
 platform: gpio
 pin:
@@ -11,6 +12,7 @@ pin:
   inverted: true
 name: "$room Display Button ${ix}"
 id: dbutton${ix}
+entity_category: config
 icon: mdi:radiobox-blank
 state_topic: $devicename/dbutton${ix}
 on_press:

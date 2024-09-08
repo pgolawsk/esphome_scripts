@@ -1,10 +1,12 @@
 ---
 #* Display Backlight template for LCD PCF8574
 # Pawelo, 20230930, created based on https://esphome.io/components/display/lcd_display#backlight-control
+# Pawelo, 20240907, set entity_category
 
 platform: template
 name: "$room LCD Backlight ${ix}"
 id: backlight${ix}
+entity_category: config
 icon: mdi:television-ambient-light
 state_topic: $devicename/backlight${ix}
 filters:

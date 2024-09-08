@@ -1,6 +1,7 @@
 ---
 #* Display Backlight button on GPIO for LCD PCF8574
 # Pawelo, 20230930, created based on https://esphome.io/components/display/lcd_display#backlight-control
+# Pawelo, 20240907, set entity_category
 
 platform: gpio
 pin:
@@ -11,6 +12,7 @@ pin:
   inverted: true
 name: "$room LCD Backlight Button ${ix}"
 id: backlight_button${ix}
+entity_category: config
 icon: mdi:television-ambient-light
 state_topic: $devicename/backlight_button${ix}
 on_press:

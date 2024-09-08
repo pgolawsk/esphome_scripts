@@ -1,6 +1,7 @@
 ---
 #* Display button on GPIO
 # Pawelo, 20230308, created as new based on framework
+# Pawelo, 20240907, set entity_category
 
 platform: gpio
 pin:
@@ -11,6 +12,7 @@ pin:
   inverted: true
 name: "$room Display Button ${ix}"
 id: dbutton${ix}
+entity_category: config
 icon: mdi:radiobox-blank
 state_topic: $devicename/dbutton${ix}
 on_press:

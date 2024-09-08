@@ -1,7 +1,7 @@
 ---
 #* Display button on interface
 # Pawelo, 20221006, created based on display_button.yaml
-# Pawelo, 20240907, set entity_category and icon
+# Pawelo, 20240907, set entity_category
 
 platform: template
 name: "$room Button Page ${page_ix}"
