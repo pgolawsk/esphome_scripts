@@ -67,6 +67,7 @@ iaq:
   name: "$room IAQ"
   id: iaq
   # accuracy_decimals: 2
+  entity_category: diagnostic
   state_topic: $devicename/iaq
   on_value:
     - mqtt.publish:
@@ -77,6 +78,7 @@ iaq_static:
   name: "$room IAQ Static"
   id: iaq_static
   # accuracy_decimals: 2
+  entity_category: diagnostic
   state_topic: $devicename/iaq_static
   on_value:
     - mqtt.publish:
@@ -86,6 +88,7 @@ iaq_static:
 iaq_accuracy:
   name: "$room IAQ Accuracy"
   id: iaq_accuracy
+  entity_category: diagnostic
   # accuracy_decimals: 2
   state_topic: $devicename/iaq_accuracy
   on_value:

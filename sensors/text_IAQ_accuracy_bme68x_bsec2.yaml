@@ -5,12 +5,14 @@
 # Pawelo, 20240825, created based on https://esphome.io/components/sensor/bme68x_bsec2
 
 platform: bme68x_bsec2
-name: "$room AQI Accuracy"
-id: aqi_accuracy
-# icon: mdi:state-machine
-state_topic: $devicename/aqi_accuracy
-on_value:
-  - mqtt.publish:
-      topic: "$mqtt_location/$mqtt_room/aqi_accuracy"
-      payload: !lambda |-
-        return to_string(id(aqi_accuracy).state);
+#name: "$room AQI Accuracy"
+iaq_accuracy:
+  name: "$room AQI Accuracy"
+# id: aqi_accuracy_text
+# # icon: mdi:state-machine
+# state_topic: $devicename/aqi_accuracy_text
+# on_value:
+#   - mqtt.publish:
+#       topic: "$mqtt_location/$mqtt_room/aqi_accuracy_text"
+#       payload: !lambda |-
+#         return to_string(id(aqi_accuracy_text).state);
