@@ -87,7 +87,7 @@ sensor:
 
   # Temperature, Humidity, Pressure and Gas Resistance seensor
   # - !include { file: sensors/temp_hum_press_gas_BME680.yaml, vars: { ix: "", bus_id: "bus_a", address: "0x77", temp_offset: 0.0, hum_offset: 0.0, pressure_offset: 0.0 } }
-  - !include { file: sensors/temp_hum_press_gas_aqi_co2_voc_bme680.yaml, vars: { ix: "", bus_id: "bus_a", address: "0x77", temp_offset: 0, hum_offset: 0, pressure_offset: 0 } }  #!not working (bricked device)
+  - !include { file: sensors/temp_hum_press_gas_aqi_co2_voc_bme680.yaml, vars: { ix: "", bus_id: "bus_a", address: "0x77", temp_offset: -1.7, hum_offset: -3.0, pressure_offset: 7.0 } }  #!not working (bricked device)
 
   # Illuminance sensor
   # - !include { file: sensors/lux_BH1750.yaml, vars: { ix: "", bus_id: "bus_a", address: "0x23" } }
