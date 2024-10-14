@@ -10,6 +10,7 @@
 # Pawelo 20240628, 1.1.5, moved filters offset adjustments for BME280, BME680, SCD40, ATH2x to variables
 # Pawelo 20240906, added/testing RFID RC522
 # Pawelo 20240906, added last_tag text sensor
+# Pawelo 20241013, removed/commented  20240906 changes, prepared blank script for Dev32 generic device
 #
 #! run with this command to override substitutions
 # esphome -s devicename espXX -s updates 1min -s room <Room name> -s mqtt_room <room> run esp32_MMmm_SSss__PP.yaml --device 192.168.x.x
@@ -43,15 +44,15 @@ substitutions:
 #<<: !include includes/mqtt_with_rtttl.yaml
 
 # Include interfaces needed
-# <<: !include { file: interfaces/i2c.yaml, vars: { bus_id: "bus_a", sda: "GPIO21", scl: "GPIO22" } }
+<<: !include { file: interfaces/i2c.yaml, vars: { bus_id: "bus_a", sda: "GPIO21", scl: "GPIO22" } }
 # note: when more i2c interfaces are needed then need to include those separately
 # i2c:
 #   - !include { file: interfaces/i2c__include.yaml, vars: { bus_id: "bus_a", sda: "GPIO21", scl: "GPIO22" } }
 #   - !include { file: interfaces/i2c__include.yaml, vars: { bus_id: "bus_b", sda: "GPIO17", scl: "GPIO18" } }
 # <<: !include { file: interfaces/dallas.yaml, vars: { gpio: "GPIO10" } }
 # <<: !include { file: interfaces/rtttl.yaml, vars: { ix: "" } }
-<<: !include { file: interfaces/spi.yaml, vars: { spi_id: "spi_a", clk: "GPIO18", mosi: "GPIO23", miso: "GPIO19" } }
-<<: !include { file: interfaces/spi_rc522.yaml, vars: { spi_id: "spi_a", cs: "GPIO5", reset: "GPIO21" } }
+# <<: !include { file: interfaces/spi.yaml, vars: { spi_id: "spi_a", clk: "GPIO18", mosi: "GPIO23", miso: "GPIO19" } }
+# <<: !include { file: interfaces/spi_rc522.yaml, vars: { spi_id: "spi_a", cs: "GPIO5", reset: "GPIO21" } }
 
 # # reinclude MQTT as a bug in ESPHOME, see: https://github.com/esphome/issues/issues/2180, https://github.com/esphome/issues/issues/1487
 # mqtt:
@@ -78,17 +79,17 @@ text_sensor:
   # - !include { file: sensors/text_air_quality.yaml }
 
 # RFID tags
-  - !include sensors/text_last_tag.yaml
+#  - !include sensors/text_last_tag.yaml
 
 binary_sensor:
   # HA Connected
   - !include sensors/binary_ha_connected.yaml
 
   # RFID tags
-  - !include { file: sensors/binary_tag.yaml, vars: { ix: "1", uid: !secret rfid_tag_1_uid, name: !secret rfid_tag_1_name } }
-  - !include { file: sensors/binary_tag.yaml, vars: { ix: "2", uid: !secret rfid_tag_2_uid, name: !secret rfid_tag_2_name } }
-  - !include { file: sensors/binary_tag.yaml, vars: { ix: "3", uid: !secret rfid_tag_3_uid, name: !secret rfid_tag_3_name } }
-  - !include { file: sensors/binary_tag.yaml, vars: { ix: "4", uid: !secret rfid_tag_4_uid, name: !secret rfid_tag_4_name } }
+  # - !include { file: sensors/binary_tag.yaml, vars: { ix: "1", uid: !secret rfid_tag_1_uid, name: !secret rfid_tag_1_name } }
+  # - !include { file: sensors/binary_tag.yaml, vars: { ix: "2", uid: !secret rfid_tag_2_uid, name: !secret rfid_tag_2_name } }
+  # - !include { file: sensors/binary_tag.yaml, vars: { ix: "3", uid: !secret rfid_tag_3_uid, name: !secret rfid_tag_3_name } }
+  # - !include { file: sensors/binary_tag.yaml, vars: { ix: "4", uid: !secret rfid_tag_4_uid, name: !secret rfid_tag_4_name } }
 
 sensor:
   - !include sensors/temp_internal.yaml
