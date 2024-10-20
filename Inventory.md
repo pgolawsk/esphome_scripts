@@ -34,7 +34,7 @@ Author: Pawel Golawski, <pawel.golawski@2com.pl>
 ### Sensors inventory
 
 - 5x `A` - APDS9660 - Illuminance, Color(s), Gesture and Motion
-- 5x + 5x `B` - BH1750 - Illuminance
+- 10x (-1) `B` - BH1750 - Illuminance
 - `C` - SCD40 - CO2, Temperature, Humidity
 - 4x 1m `D` - DS18B20 (Dallas) - Temperature
 - 1x 2m `D` - DS18B20 (Dallas) - Temperature
@@ -47,9 +47,9 @@ Author: Pawel Golawski, <pawel.golawski@2com.pl>
 - 2x `L` - LD2420 - Radar sensor 24GHz
 - 6x `O` - SGP30 - TVOC and eCO2
 - 2x `N` - ENS160 - TVOC and eCO2
-- 2x `P` - BME280 - Temperature, Humidity, Pressure
+- 2x (-1) `P` - BME280 - Temperature, Humidity, Pressure
 - 2x `R` - RC522 - RFID tag sensor
-- 6x + 5x `S` - SHTx30 - Temperature and Humidity
+- 11x `S` - SHTx30 - Temperature and Humidity
 - 0x `T` - TCS3472 - Illuminance and Color(s)
 - 0x `U` - LTR390 - UV and Illuminance
 - 2x `V` - VL53L0x - Distance (laser)
@@ -113,7 +113,7 @@ Author: Pawel Golawski, <pawel.golawski@2com.pl>
 
 - 1 + 4x white waterproof IP65 box (various sizes)
 - 3x white plastic box 60mm x 30mm x 15mm
-- 5x white plastic box 90mm x 40mm x 15mm
+- 5x (-1) white plastic box 90mm x 40mm x 15mm
 - 4x color buttons for a case
 
 #### Breadboards (X x Y pins)
@@ -138,6 +138,7 @@ To be added
 
 #### Shades
 
+PRODUCTION since: June 2024
 Script `esp32_THIUGPdb_GSUBr_display.yaml`.
 
 ESP32 board with Temperature, Humidity, Pressure, Gas Resistance, UV and Illuminance sensors. Powered from alarm/security 12V bus.
@@ -153,6 +154,22 @@ Components:
 - 1x DC 30V to DC 3.3V board
 - 2x Transparent IP44 case (gray)
 - 1x WeAct Studio 2.90 inch ePaper module, 296 x 128 px (91.8 x 37.5 mm)
+
+#### Attic
+
+PRODUCTION since: TBD
+Script `esp32_THPI_PB.yaml`.
+
+ESP32 board with Temperature, Humidity, Pressure and Illuminance sensors. Powered from 230V.
+
+Components:
+
+- 1x ESP32-WROOM-32, with antenna connector
+- 1x ESP32-WROOM-32 expansion board (to solder)
+- 1x `P` - BME280 - Temperature, Humidity, Pressure
+- 1x `B` - BH1750 - Illuminance
+- 1x white plastic box 90mm x 40mm x 15mm
+- 1x AC 230V to DC 3.3V board (with Hi-Link module)
 
 ### Measures
 
