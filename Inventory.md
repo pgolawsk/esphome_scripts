@@ -40,7 +40,7 @@ Author: Pawel Golawski, <pawel.golawski@2com.pl>
 - 1x 2m `D` - DS18B20 (Dallas) - Temperature
 - 2x `E` - INA226 - DC Current, Power, Voltage (max. 30V DC)
 - 2x `F` - INA3221 - 3-channel DC Current, Power, Voltage (max. 26V DC)
-- 0x `G` - BME680 - Temperature, Humidity, Pressure, Gas Resistance
+- 1x `G` - BME680 - Temperature, Humidity, Pressure, Gas Resistance
 - 0x `H` - AHTx21 - Temperature and Humidity
 - 2x `L` - LD2410B - Radar sensor 24GHz
 - 2x `L` - LD2410C - Radar sensor 24GHz
@@ -107,6 +107,7 @@ Author: Pawel Golawski, <pawel.golawski@2com.pl>
 - 2x AC 110-240V to DC 12V 1A module in white indoor case
 - 1x AC 110-240V to DC 12V 1.5A module in white indoor case
 - 1x AC 110-240V to DC 12V 2A module in black outdoor case
+- 4x XL74610 ideal diode (1.5-30V, 15-30A max) - to protect against reversed polarity
 
 #### Cases (width x hight x thickness)
 
