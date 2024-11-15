@@ -4,6 +4,8 @@
 
 esphome:
   name: $devicename
+  friendly_name: $room
+  area: $room
   comment: $room ESP32c3 controller with $devices
 #  platform: ESP8266   # OLD notation
   project:

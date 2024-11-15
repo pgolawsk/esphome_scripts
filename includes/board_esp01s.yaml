@@ -3,9 +3,12 @@
 # Pawelo 20221222, created based on my framework and https://www.esphome-devices.com/devices/ESP-01S-1-channel-relay
 # Pawelo 20230305, added time_sntp and sun by default
 # Pawelo 20231020, removed sun, as there is separate board include with sun
+# Pawelo, 20241115, added area and friendly name
 
 esphome:
   name: $devicename
+  friendly_name: $room
+  area: $room
   comment: $room ESP01s controller with $devices
   project:
     name: $project_name

@@ -14,10 +14,12 @@
 # Pawelo 20230414, fix for compilation error: "firmware.elf section `.text1' will not fit in region `iram1_0_seg'"
 # Pawelo 20230923, disable restore from flash to prevent wearing of flash memory
 # Pawelo 20231020, removed sun, as there is separate board include with sun
-
+# Pawelo, 20241115, added area and friendly name
 
 esphome:
   name: $devicename
+  friendly_name: $room
+  area: $room
   comment: $room ESP12F controller with $devices
 #  platform: ESP8266   # OLD notation
   project:

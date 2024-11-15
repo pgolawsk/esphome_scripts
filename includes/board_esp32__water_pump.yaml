@@ -10,6 +10,8 @@
 # Pawelo 20231016, adjusted pulses per liter for garden sensor
 # Pawelo 20231016, update water_total_home and water_used_home at boot
 # Pawelo 20231016, fix - use pulses_per_liter_garden for garden total
+# Pawelo, 20241115, added area and friendly name
+
 
 globals:
   - id: global_watertotal_all
@@ -39,6 +41,8 @@ globals:
 
 esphome:
   name: $devicename
+  friendly_name: $room
+  area: $room
   comment: $room ESP32 controller with $devices
 #  platform: ESP8266   # OLD notation
   project:

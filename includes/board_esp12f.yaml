@@ -15,10 +15,12 @@
 # Pawelo 20230923, disable restore from flash to prevent wearing of flash memory
 # Pawelo 20231020, removed sun, as there is separate board include with sun
 # Pawelo 20231202, removed PLATFORMIO options
-
+# Pawelo, 20241115, added area and friendly name
 
 esphome:
   name: $devicename
+  friendly_name: $room
+  area: $room
   comment: $room ESP12F controller with $devices
 #  platform: ESP8266   # OLD notation
   project:

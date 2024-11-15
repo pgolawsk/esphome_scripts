@@ -1,9 +1,12 @@
 ---
 #* Base configuration for BK7231N board Mini Smart Switch
 # Pawelo 20230311, created as copy of board_esp32.yaml and https://www.elektroda.pl/rtvforum/topic3912748.html
+# Pawelo, 20241115, added area and friendly name
 
 esphome:
   name: $devicename
+  friendly_name: $room
+  area: $room
   comment: $room BK7231N controller with $devices
 #  platform: ESP8266   # OLD notation
   project:

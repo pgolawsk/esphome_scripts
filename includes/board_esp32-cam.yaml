@@ -3,9 +3,12 @@
 # Pawelo 20230112, created as copy of board_esp32.yaml
 # Pawelo 20230305, added time_sntp amd sun by default
 # Pawelo 20230924, increased flash_write_interval to 15min
+# Pawelo, 20241115, added area and friendly name
 
 esphome:
   name: $devicename
+  friendly_name: $room
+  area: $room
   comment: $room ESP32 Camera controller with $devices
 #  platform: ESP8266   # OLD notation
   project:
