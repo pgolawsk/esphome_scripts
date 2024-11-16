@@ -1,6 +1,6 @@
 ---
 #* Enable WiFi Main network, including falback hotspot
-# Pawelo, 20230903, vreated as a copy of wifi.yaml
+# Pawelo, 20230903, created as a copy of wifi.yaml
 
 wifi:
   networks:
