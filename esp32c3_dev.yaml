@@ -26,7 +26,10 @@ substitutions:
   # default variable values for !include statements
   accuracy_decimals: "2"
 
-  # Include basics of a board
+# Override some settings included in board setup
+#<<: !include includes/wifi_outside.yaml
+
+# Include basics of a board
 #<<: !include includes/board_esp32.yaml
 <<: !include includes/board_esp32c3_with_sun.yaml
 #<<: !include { file: includes/board_esp32_with_sun_wifi_extended.yaml, vars: { board: "esp32-c3-devkitm-1" } }
