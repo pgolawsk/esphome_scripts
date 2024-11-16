@@ -5,6 +5,7 @@
 # Pawelo, 20230125, shortened further WiFi SSID for fallback mode by removing $room, as it cannot be longer than 32 characters
 # Pawelo, 20231031, added 2nd and 3rd WiFi network if primary is down
 
+#! WARNING: some devices will not connect to any of the networks
 wifi:
   networks:
     - ssid: !secret wifi_ssid
