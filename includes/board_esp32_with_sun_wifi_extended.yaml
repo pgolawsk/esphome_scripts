@@ -24,6 +24,7 @@ esp32:
 #   flash_write_interval: 15min
 
 <<: !include { file: wifi_extended.yaml, vars: { extended: "_N" } }
+# <<: !include { file: wifi_multi.yaml }
 # <<: !include wifi.yaml
 <<: !include api.yaml
 <<: !include ota.yaml
