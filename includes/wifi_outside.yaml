@@ -1,0 +1,19 @@
+---
+#* Enable WiFi Outside network, including falback hotspot
+# Pawelo, 20241116, created as a copy of wifi_main.yaml
+
+wifi:
+  networks:
+    - ssid: !secret wifi_outside_ssid
+      password: !secret wifi_outside_password
+      hidden: true
+  domain: ""
+  fast_connect: true
+  reboot_timeout: 15min
+
+  # Enable fallback hotspot (captive portal) in case wifi connection fails
+  ap:
+    ssid: "$devicename Recovery"
+    password: !secret wifi_fallback_password
+
+captive_portal:
