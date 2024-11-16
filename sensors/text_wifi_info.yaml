@@ -2,6 +2,8 @@
 #* WiFi information virtual sensor configuration
 # Pawelo, 20221119, created based on https://github.com/AlexMekkering/esphome-config/blob/master/common/text_sensors.yaml
 # Pawelo, 20221222, added $devicename to friendly names of those sensors
+# Pawelo, 20241116, added mac_adress and scan_results
+
 platform: wifi_info
 ip_address:
   name: $room $devicename IP Address
@@ -14,4 +16,12 @@ ssid:
 bssid:
   name: $room $devicename BSSID
   icon: mdi:wifi-settings
+  internal: true
+mac_address:
+  name: $room $devicename MAC
+  icon: mdi:access-point-network
+  internal: true
+scan_results:
+  name: $room $devicename ScanResults
+  icon: mdi:access-point
   internal: true
