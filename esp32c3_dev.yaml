@@ -26,16 +26,14 @@ substitutions:
   # default variable values for !include statements
   accuracy_decimals: "2"
 
-# Override some settings included in board setup
-#<<: !include includes/wifi_outside.yaml
+# Override some settings included below in _board_ setup
+<<: !include includes/time_sntp_with_sun.yaml #WARN: this is to make sunrise and sunset sensor to be updated on every time sync event
+# <<: !include includes/wifi_outside.yaml #WARN: override wifi to connect to outside network instead of default
+# <<: !include includes/mqtt_with_rtttl.yaml #WARN: override mqtt with RTTTL support if needed (buzzer and status led)
+# <<: !include { file: includes/logger_level.yaml, vars: { level: DEBUG } } #WARN: override default log level to specific one
 
 # Include basics of a board
-#<<: !include includes/board_esp32.yaml
-<<: !include includes/board_esp32c3_with_sun.yaml
-#<<: !include { file: includes/board_esp32_with_sun_wifi_extended.yaml, vars: { board: "esp32-c3-devkitm-1" } }
-# Include/Override mqtt with/without RTTTL support if needed
-<<: !include includes/mqtt.yaml
-#<<: !include includes/mqtt_with_rtttl.yaml
+<<: !include includes/board_esp32c3.yaml
 
 # Include interfaces needed
 <<: !include { file: interfaces/i2c.yaml, vars: { bus_id: "bus_a", sda: "GPIO21", scl: "GPIO20" } }
@@ -44,16 +42,6 @@ substitutions:
 # <<: !include { file: interfaces/spi.yaml, vars: { spi_id: "spi_a", clk: "GPIO6", mosi: "GPIO7", miso: "GPIO9" } }
 # <<: !include { file: interfaces/spi_rc522.yaml, vars: { spi_id: "spi_a", cs: "GPIO5", reset: "GPIO4" } }
 <<: !include { file: interfaces/i2c_bme68x_bsec2.yaml, vars: { ix: "", address: "0x77" } }  #!not working (bricked device)
-
-# # reinclude MQTT as a bug in ESPHOME, see: https://github.com/esphome/issues/issues/2180, https://github.com/esphome/issues/issues/1487
-# mqtt:
-#   broker: !secret mqtt_ip
-#   port: !secret mqtt_port
-# #  username: $devicename
-#   username: !secret mqtt_user
-#   password: !secret mqtt_password
-#   client_id: $devicename
-# # id: $devicename
 
 text_sensor:
   - !include sensors/text_uptime.yaml
