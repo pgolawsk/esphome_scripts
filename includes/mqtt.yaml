@@ -12,6 +12,7 @@ mqtt:
   port: !secret mqtt_port
   username: !secret mqtt_user
   password: !secret mqtt_password
+  # skip_cert_cn_check: true
   # client_id: $devicename
   # discovery: false
   # discovery_retain: false
