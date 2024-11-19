@@ -1,15 +1,18 @@
 ---
 #* Base configuration for ESP-32-WROOM board
+#! in case diffrent setup needed please include components PRIOR the board itself
+
 # Pawelo 20230101, created as copy of board_esp12f.yaml
 # Pawelo 20230305, added time_sntp amd sun by default
 # Pawelo 20230924, increased flash_write_interval to 15min
 # Pawelo, 20241115, added area and friendly name
+# Pawelo, 20241119, simplified - added regular mqtt (no RTTL support), as it can be override PRIOR this file include
 
 esphome:
   name: $devicename
   friendly_name: $room
   area: $room
-  comment: $room ESP32 controller with $devices
+  comment: $room ESP32 with $devices
 #  platform: ESP8266   # OLD notation
   project:
     name: $project_name
@@ -32,8 +35,4 @@ preferences:
 <<: !include time_sntp.yaml
 <<: !include sun.yaml
 <<: !include prometheus.yaml
-#! as mqtt cannot be overwriten later in the code need to include in in each script (to facilitate "on_message" customization)
-#<<: !include mqtt.yaml
-
-# packages:
-#   network: !include mqtt.yaml
+<<: !include mqtt.yaml

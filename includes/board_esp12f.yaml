@@ -1,5 +1,7 @@
 ---
 #* Base configuration for ESP-12F board
+#! in case diffrent setup needed please include components PRIOR the board itself
+
 #? Minimum soldering from https://sktechworks.ca/2017/03/28/esp-12f-and-breakout-board/
 #? PINOUT diagram: https://www.mischianti.org/2021/05/04/esp-12-high-resolution-pinout-and-specs/
 #? PINOUT diagram: https://randomnerdtutorials.com/esp8266-pinout-reference-gpios/
@@ -16,6 +18,7 @@
 # Pawelo 20231020, removed sun, as there is separate board include with sun
 # Pawelo 20231202, removed PLATFORMIO options
 # Pawelo, 20241115, added area and friendly name
+# Pawelo, 20241119, simplified - added regular mqtt (no RTTL support), as it can be override PRIOR this file include
 
 esphome:
   name: $devicename
@@ -46,8 +49,4 @@ esp8266:
 <<: !include { file: web_server.yaml, vars: { ota_enabled: false } }
 <<: !include time_sntp.yaml
 <<: !include prometheus.yaml
-#! as mqtt cannot be overwriten later in the code need to include in in each script (to facilitate "on_message" customization)
-#<<: !include mqtt.yaml
-
-# packages:
-#   network: !include mqtt.yaml
+<<: !include mqtt.yaml
