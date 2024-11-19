@@ -1,13 +1,15 @@
 ---
 #* Base configuration for ESP32C3 SuperMini board (https://pl.aliexpress.com/item/1005006096717048.html)
+#! in case diffrent setup needed please include components PRIOR the board itself
 # Pawelo 20231205, created as copy of board_esp32_with_sun.yaml
 # Pawelo, 20241117, added regular mqtt (no RTTL support), regular time snmp (with no sun)
+# Pawelo, 20241119, shortened esphome comment
 
 esphome:
   name: $devicename
   friendly_name: $room
   area: $room
-  comment: $room ESP32c3 controller with $devices
+  comment: $room ESP32c3 with $devices
 #  platform: ESP8266   # OLD notation
   project:
     name: $project_name
@@ -34,6 +36,3 @@ esp32:
 <<: !include sun.yaml
 <<: !include prometheus.yaml
 <<: !include mqtt.yaml
-
-# packages:
-#   network: !include mqtt.yaml
