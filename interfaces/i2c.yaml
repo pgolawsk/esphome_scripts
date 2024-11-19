@@ -14,3 +14,4 @@ i2c:
   scan: true
   id: ${bus_id}
   frequency: 50kHz
+  # frequency: 400kHz

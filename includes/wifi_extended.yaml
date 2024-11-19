@@ -7,18 +7,19 @@
 
 wifi:
   networks:
+    # - ssid: !secret wifi_ssid
+    #   password: !secret wifi_password
+    #   hidden: true
     - ssid: !secret wifi2_ssid
       password: !secret wifi2_password
       hidden: true
-    # - ssid: !secret wifi2_ssid
-    #   password: !secret wifi2_password
-    #   hidden: true
     # - ssid: !secret wifi3_ssid
     #   password: !secret wifi3_password
     #   hidden: true
   domain: ""
   fast_connect: true
   reboot_timeout: 45min
+  # output_power: 8.5
 
   # Enable fallback hotspot (captive portal) in case wifi connection fails
   ap:
