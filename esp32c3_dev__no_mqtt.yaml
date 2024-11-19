@@ -1,0 +1,340 @@
+---
+#* ESP32c3 sensor board with no mqtt
+# Pawelo, 20241116, created as 'esphome config esp32c3_dev.yaml' command
+#
+#! run with this command to override substitutions
+# esphome -s devicename espXX -s updates 1min -s room <Room name> -s mqtt_room <room> run esp32_MMmm_SSss__PP.yaml --device 192.168.x.x
+# heare are default values if those are not given via command line
+substitutions:
+#  devices: "Temperature and Humidity via SHTx30 and Illuminance via BH1750"
+  devices: "DEV Kit"
+  project_name: "pgolawsk.esp_home"
+  version: "1.1.5"
+
+  devicename: esp32-xx
+  updates: "30s"
+  room: Room # friendly name of room to display in HA/Web
+  # this is ADDITIONAL topic and sub-topic for MQTT - it publishes under <topic>/<sub-topic>/<sensor>
+  # by default it's also published under <devicename>/<id_sensor>
+  mqtt_location: home
+  mqtt_room: room
+
+  # default variable values for !include statements
+  accuracy_decimals: "2"
+
+esphome:
+  name: $devicename
+  friendly_name: $room
+  area: $room
+  comment: $room ESP32c3 with $devices
+#  platform: ESP8266   # OLD notation
+  project:
+    name: $project_name
+    version: $version
+
+esp32:
+  board: esp32-c3-devkitm-1
+#  restore_from_flash: true
+  # framework:
+  #   # type: arduino
+  #   type: esp-idf
+
+# preferences:
+#   flash_write_interval: 15min
+
+
+time:
+- platform: sntp
+  id: sntp_time
+  on_time_sync:
+  - then:
+    - logger.log:
+        format: Synchronized system clock via SNTP
+        level: DEBUG
+        tag: main
+        args: []
+    - lambda: !lambda |-
+        if (sunrise) { id(sunrise).update(); }
+        if (sunset) { id(sunset).update(); }
+logger:
+  # level: VERY_VERBOSE
+  # level: DEBUG
+  level: INFO
+  baud_rate: 115200
+  logs:
+    mqtt.component: INFO
+    mqtt.client: INFO
+    component: ERROR
+    waveshare_epaper: INFO
+wifi:
+  networks:
+    # - ssid: !secret wifi_outside_ssid
+    #   password: !secret wifi_outside_password
+    #   hidden: true
+    - ssid: !secret wifi3_ssid
+      password: !secret wifi3_password
+      hidden: true
+  domain: ""
+  fast_connect: true
+  reboot_timeout: 15min
+  power_save_mode: none
+
+  # Enable fallback hotspot (captive portal) in case wifi connection fails
+  ap:
+    ssid: "$devicename Recovery"
+    password: !secret wifi_fallback_password
+
+captive_portal:
+
+api:
+  reboot_timeout: 0s # 0s will disable reboot if no HA connected
+  password: !secret api_password
+  # encryption:
+  #   key: !secret api_key
+
+ota:
+  platform: esphome
+  # safe_mode: true
+  password: !secret ota_password
+
+safe_mode:
+  # boot_is_good_after: 1min
+  # num_attempts: 10
+  # reboot_timeout: 5min
+
+web_server:
+  port: 80
+  include_internal: true
+  # ota: false # disable OTA via web
+  ota: false
+#  auth:
+#    username: !secret web_username
+#    password: !secret web_password
+  version: 3
+
+sun:
+  latitude: !secret latitude
+  longitude: !secret longitude
+
+prometheus:
+  include_internal: false
+
+# mqtt:
+#   id: mqtt_client
+#   broker: !secret mqtt_ip
+#   port: !secret mqtt_port
+#   username: !secret mqtt_user
+#   password: !secret mqtt_password
+
+text_sensor:
+
+- platform: template
+  name: $room $devicename Uptime
+  id: uptime_human
+  icon: mdi:clock-start
+  internal: true
+  entity_category: diagnostic
+  # state_topic: $devicename/uptime_text
+  # on_value:
+  #   - mqtt.publish:
+  #       topic: "$mqtt_location/$mqtt_room/uptime_$devicename"
+  #       payload: !lambda |-
+  #         return to_string(id(uptime_human).state);
+
+- platform: version
+  name: $room $devicename ESPHome Version
+  icon: mdi:information-outline
+  internal: true
+
+- platform: wifi_info
+  ip_address:
+    name: $room $devicename IP Address
+    icon: mdi:ip
+    internal: true
+  ssid:
+    name: $room $devicename SSID
+    icon: mdi:wifi
+    internal: true
+  bssid:
+    name: $room $devicename BSSID
+    icon: mdi:wifi-settings
+    internal: true
+  mac_address:
+    name: $room $devicename MAC
+    icon: mdi:access-point-network
+    internal: true
+  scan_results:
+    name: $room $devicename ScanResults
+    icon: mdi:access-point
+    internal: true
+  dns_address:
+    name: $room $devicename DNS Servers
+    icon: mdi:dns-outline
+    internal: true
+
+- platform: sun
+  name: Sun Next Sunrise
+  type: sunrise
+  id: sunrise
+  entity_category: diagnostic
+  icon: mdi:weather-sunset-up
+  internal: true
+  # state_topic: $devicename/next_sunrise
+  update_interval: never
+
+- platform: sun
+  name: Sun Next Sunset
+  type: sunset
+  id: sunset
+  entity_category: diagnostic
+  icon: mdi:weather-sunset-down
+  internal: true
+  # state_topic: $devicename/next_sunset
+  # update_interval: ${updates}
+  update_interval: never
+
+- platform: template
+  name: Time Of Day
+  id: time_of_day
+  entity_category: diagnostic
+  icon: mdi:theme-light-dark
+  internal: true
+  # state_topic: $devicename/time_of_day
+  lambda: |-
+    if ( int(id(sun_elevation).state) > 0  ) { return to_string("DAY"); } return to_string("NIGHT");
+  # on_value:
+  #   - mqtt.publish:
+  #       topic: "$mqtt_location/$mqtt_room/time_of_day"
+  #       payload: !lambda |-
+  #         return to_string(id(time_of_day).state);
+  update_interval: ${updates}
+
+- platform: template
+  name: Sun Direction
+  id: sun_direction
+  entity_category: diagnostic
+  icon: mdi:unfold-more-horizontal
+  internal: true
+  # state_topic: $devicename/sun_direction
+  lambda: |-
+    if ( int(id(sun_elevation).state) > 0  ) {
+      if ( int(id(sun_azimuth).state) > 180  ) {
+        return to_string("DOWN");
+      }
+      return to_string("UP");
+    }
+    return to_string("");
+  # on_value:
+  #   - mqtt.publish:
+  #       topic: "$mqtt_location/$mqtt_room/sun_direction"
+  #       payload: !lambda |-
+  #         return to_string(id(sun_direction).state);
+  update_interval: ${updates}
+
+binary_sensor:
+
+- platform: status
+  name: "$room $devicename HA Connected"
+  id: ha_connected
+  icon: mdi:connection
+  internal: true
+  # state_topic: $devicename/ha_connected
+  # on_state:
+  #   - mqtt.publish:
+  #       topic: "$mqtt_location/$mqtt_room/ha_connected"
+  #       payload: !lambda |-
+  #         return to_string(id(ha_connected).state);
+
+sensor:
+
+- platform: internal_temperature
+  id: internal_temp
+  name: "$room $devicename Temperature"
+  icon: mdi:thermometer-check
+  accuracy_decimals: 2
+  # state_topic: $devicename/internal_temperature
+  # on_value:
+  #   - mqtt.publish:
+  #       topic: "$mqtt_location/$mqtt_room/temperature_$devicename"
+  #       payload: !lambda |-
+  #         return to_string(id(internal_temp).state);
+  update_interval: $updates
+
+- platform: uptime
+  name: "$room $devicename Uptime [min]"
+  id: uptime_sensor
+  icon: mdi:clock-start
+  type: seconds
+  internal: true
+  # state_topic: $devicename/uptime
+  update_interval: $updates
+  on_raw_value:
+    then:
+      - text_sensor.template.publish:
+          id: uptime_human
+          state: !lambda |-
+            int seconds = round(id(uptime_sensor).raw_state);
+            int days = seconds / (24 * 3600);
+            seconds = seconds % (24 * 3600);
+            int hours = seconds / 3600;
+            seconds = seconds % 3600;
+            int minutes = seconds /  60;
+            seconds = seconds % 60;
+            return (
+              (days ? String(days) + "d " : "") +
+              (hours ? String(hours) + "h " : "") +
+              (minutes ? String(minutes) + "m " : "") +
+              (String(seconds) + "s")
+            ).c_str();
+  filters:
+    - lambda: return x / 60;
+  unit_of_measurement: "min"
+
+- platform: wifi_signal
+  name: "$room $devicename WiFi Signal"
+  id: wifi_rssi
+  icon: mdi:signal
+  update_interval: $updates
+  #    internal: true
+  # state_topic: $devicename/rssi
+  # on_value:
+  #   - mqtt.publish:
+  #       topic: "$mqtt_location/$mqtt_room/rssi_$devicename"
+  #       payload: !lambda |-
+  #         return to_string(id(wifi_rssi).state);
+
+- platform: sun
+  name: "Sun Elevation"
+  type: elevation
+  id: sun_elevation
+  entity_category: diagnostic
+  icon: mdi:sun-angle
+  # internal: true
+  # state_topic: $devicename/sun_elevation
+  # on_value:
+  #   - mqtt.publish:
+  #       topic: "$mqtt_location/$mqtt_room/sun_elevation"
+  #       payload: !lambda |-
+  #         return to_string(id(sun_elevation).state);
+
+- platform: sun
+  name: "Sun Azimuth"
+  type: azimuth
+  id: sun_azimuth
+  entity_category: diagnostic
+  icon: mdi:sun-compass
+  # internal: true
+  # state_topic: $devicename/sun_azimuth
+  # on_value:
+  #   - mqtt.publish:
+  #       topic: "$mqtt_location/$mqtt_room/sun_azimuth"
+  #       payload: !lambda |-
+  #         return to_string(id(sun_azimuth).state);
+
+button:
+
+- platform: restart
+  name: $room $devicename Restart
+  id: restart_button
+  icon: mdi:restart
+  internal: true
