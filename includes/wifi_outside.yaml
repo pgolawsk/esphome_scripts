@@ -1,6 +1,7 @@
 ---
 #* Enable WiFi Outside network, including falback hotspot
 # Pawelo, 20241116, created as a copy of wifi_main.yaml
+# Pawelo, 20241119, added power_save_mode option
 
 wifi:
   networks:
@@ -10,6 +11,7 @@ wifi:
   domain: ""
   fast_connect: true
   reboot_timeout: 15min
+  power_save_mode: none
 
   # Enable fallback hotspot (captive portal) in case wifi connection fails
   ap:
