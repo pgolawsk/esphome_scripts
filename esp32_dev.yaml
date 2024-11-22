@@ -12,6 +12,7 @@
 # Pawelo 20240906, added last_tag text sensor
 # Pawelo 20241013, removed/commented  20240906 changes, prepared blank script for Dev32 generic device
 # Pawelo, 20241116, include first OVERRIDEs and then BOARD itself
+# Pawelo, 20241122, cleanup of old/unused mqtt commented code
 #
 #! run with this command to override substitutions
 # esphome -s devicename espXX -s updates 1min -s room <Room name> -s mqtt_room <room> run esp32_MMmm_SSss__PP.yaml --device 192.168.x.x
@@ -47,10 +48,6 @@ substitutions:
 
 # Include basics of a board
 <<: !include includes/board_esp32.yaml
-#<<: !include includes/board_esp32_with_sun.yaml
-# # Include/Override mqtt with/without RTTTL support if needed
-# <<: !include includes/mqtt.yaml
-# #<<: !include includes/mqtt_with_rtttl.yaml
 
 # Include interfaces needed
 <<: !include { file: interfaces/i2c.yaml, vars: { bus_id: "bus_a", sda: "GPIO21", scl: "GPIO22" } }
@@ -62,16 +59,6 @@ substitutions:
 # <<: !include { file: interfaces/rtttl.yaml, vars: { ix: "" } }
 # <<: !include { file: interfaces/spi.yaml, vars: { spi_id: "spi_a", clk: "GPIO18", mosi: "GPIO23", miso: "GPIO19" } }
 # <<: !include { file: interfaces/spi_rc522.yaml, vars: { spi_id: "spi_a", cs: "GPIO5", reset: "GPIO21" } }
-
-# # reinclude MQTT as a bug in ESPHOME, see: https://github.com/esphome/issues/issues/2180, https://github.com/esphome/issues/issues/1487
-# mqtt:
-#   broker: !secret mqtt_ip
-#   port: !secret mqtt_port
-# #  username: $devicename
-#   username: !secret mqtt_user
-#   password: !secret mqtt_password
-#   client_id: $devicename
-# # id: $devicename
 
 text_sensor:
   - !include sensors/text_uptime.yaml
