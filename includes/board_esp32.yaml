@@ -7,6 +7,7 @@
 # Pawelo 20230924, increased flash_write_interval to 15min
 # Pawelo, 20241115, added area and friendly name
 # Pawelo, 20241119, simplified - added regular mqtt (no RTTL support), as it can be override PRIOR this file include
+# Pawelo, 20241122, removed flash_write_interval to no saves into flash
 
 esphome:
   name: $devicename
@@ -24,8 +25,8 @@ esp32:
   # framework:
   #   type: arduino
 
-preferences:
-  flash_write_interval: 15min
+# preferences:
+#   flash_write_interval: 15min
 
 <<: !include wifi.yaml
 <<: !include api.yaml
