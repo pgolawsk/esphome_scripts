@@ -84,6 +84,19 @@ font:
       "\U000F058F", # water-pump (water)
       ]
   - file: 'fonts/materialdesignicons-webfont.ttf'
+    id: measures_40_font
+    size: 37
+    glyphs: [
+      "\U000F050F", # thermomether (temperature)
+      "\U000F0F54", # home-thermomether (temperature)
+      "\U000F0F55", # home-thermomether-outline (temperature)
+      "\U000F058E", # water-percent (humidity)
+      "\U000F0336", # lightbulb-outline (illuminance)
+      "\U000F17FE", # sun-wireless (illuminance)
+      "\U000F17FF", # sun-wireless-outline (illuminance)
+      "\U000F058F", # water-pump (water)
+      ]
+  - file: 'fonts/materialdesignicons-webfont.ttf'
     id: measures_30_font
     size: 28
     glyphs: [
@@ -95,6 +108,15 @@ font:
       "\U000F17FE", # sun-wireless (illuminance)
       "\U000F17FF", # sun-wireless-outline (illuminance)
       "\U000F058F", # water-pump (water)
+      ]
+  - file: 'fonts/materialdesignicons-webfont.ttf'
+    id: units_30_font
+    size: 30
+    glyphs: [
+      "\U000F0504", # temperature-celcius
+      "\U000F03F0", # percent (humidity)
+      # "\U000", # illuminance
+      # "\U000", # water
       ]
   - file: 'fonts/materialdesignicons-webfont.ttf'
     id: units_22_font
