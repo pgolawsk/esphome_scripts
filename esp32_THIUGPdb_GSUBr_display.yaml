@@ -12,6 +12,7 @@
 # Pawelo, 20240902, refactoring: "status_led" renamed to "led"
 # Pawelo, 20241116, switched to wifi_extended
 # Pawelo, 20241122, include first OVERRIDEs and then BOARD itself, removed old/unused mqtt commented code
+# Pawelo, 20241123, added 1 page with bigger font and just time, data and temperatures, removed 2 pages with medium font
 
 #! run with this command to override substitutions
 # esphome -s devicename espXX -s updates 1min -s room <Room name> -s mqtt_room <room> run esp32_MMmm_SSss__PP.yaml --device 192.168.x.x
@@ -19,7 +20,7 @@
 substitutions:
   devices: "Temperature, Humidity, Pressure, Gas Resistance via BME680/SHT41 and UV, Illuminance via LTR390/BH1750"
   project_name: "pgolawsk.esp_home"
-  version: "20241122"
+  version: "20241123"
 
   devicename: esp32-xx
   updates: "30s"
@@ -181,7 +182,7 @@ select:
   # id: select_display_cycle_interval
   - !include { file: selects/display_cycle_interval.yaml, vars: { global_variable: "global_display_cycle_page", display_id: "weact_display" } }
 
-<<: !include { file: scripts/interval_display_cycle_pages.yaml, vars: { display_id: weact_display, cycle_script: cycle_pages_in_lux_on_select, lux_sensor: luxU, lux_dark_threshold: 9.9, lux_dark_threshold_elevation_multiplier: 0.1, page_to_skip: page_wifi_qr } }
+<<: !include { file: scripts/interval_display_cycle_pages.yaml, vars: { display_id: weact_display, cycle_script: cycle_pages_in_lux_on_select, lux_sensor: luxU, lux_dark_threshold: 3.9, lux_dark_threshold_elevation_multiplier: 0.1, page_to_skip: page_wifi_qr } }
 
 globals:
   - id: global_display_cycle_page
@@ -241,7 +242,119 @@ display:
           it.filled_rectangle(0, 0, xRes, yRes, COLOR_OFF);
           //it.print(xRes/2, yRes/2, id(size_14_font), COLOR_ON, TextAlign::CENTER, "Refreshing...");
 
-      - id: page_time
+      # - id: page_time
+      #   lambda: |-
+      #     // Date & Time Page
+      #     int x, y, y_m;
+      #     esphome::Color fi;
+      #     fi = id(color_black);
+      #     #define xRes ${display_xRes}
+      #     #define yRes ${display_yRes}
+
+      #     x = 0, y = 0;
+      #     //Time
+      #     it.strftime(x, y, id(size_50_font), "%H:%M", id(sntp_time).now());
+      #     /* it.strftime(225, 68, id(size_60_font), "%S", id(sntp_time).now()); */
+
+      #     x = 0, y = y + 50 + 5;
+      #     //line
+      #     it.line(x, y, xRes, y);
+
+      #     x = 0, y = y + 25;
+      #     //Weekday
+      #     if (id(sntp_time).now().day_of_week == 1) {
+      #       fi = id(color_red); // Sunday show in red font
+      #     } else {
+      #       fi = id(color_black);
+      #     }
+      #     it.strftime(xRes / 2, y, id(size_25_font), fi, TextAlign::BASELINE_CENTER ,"%A", id(sntp_time).now());
+      #     // it.strftime(250, 58, id(size_20_font), "%a", id(sntp_time).now());
+
+      #     x = 0, y = y + 40;
+      #     //date
+      #     it.strftime(x + 53, y, id(size_40_font), TextAlign::BASELINE_RIGHT, "%d", id(sntp_time).now());
+      #     it.printf(x + 53, y, id(size_14_font), TextAlign::BASELINE_LEFT, "D");
+      #     it.strftime(x + 113, y, id(size_40_font), TextAlign::BASELINE_RIGHT, "%m", id(sntp_time).now());
+      #     it.printf(x + 113, y, id(size_14_font), TextAlign::BASELINE_LEFT, "M");
+
+      #     x = 0, y = y + 5;
+      #     //line
+      #     it.line(x, y, xRes, y);
+
+      #     x = 0, y = y + 25 + 3;
+      #     //sun set-rise
+      #     it.printf(x + 25, y, id(sun_icon_font), TextAlign::BASELINE_RIGHT, "\U000F059C");
+      #     it.printf(x + 125, y, id(size_25_font), TextAlign::BASELINE_RIGHT, "%s", id(sunrise).state.c_str());
+      #     it.printf(x + 25, y + 25, id(sun_icon_font), TextAlign::BASELINE_RIGHT, "\U000F059A");
+      #     it.printf(x + 125, y + 25, id(size_25_font), TextAlign::BASELINE_RIGHT, "%s", id(sunset).state.c_str());
+
+      #     x = 0, y = y + 25 + 5;
+      #     //line
+      #     it.line(x, y, xRes, y);
+
+      #     //* TEMPERATURES
+      #     x = 0, y = y + 30 + 3, y_m = y + 20;
+      #     // fi = id(color_black);
+      #     // Outside
+      #     it.printf(x+12, y_m, id(measures_50_font), TextAlign::BASELINE_CENTER , "\U000F050F");
+      #     if (id(temp).has_state() and not isnan(id(temp).state)) {
+      #       if (id(temp).state <= 0.0 or id(temp).state >= 30.0) {
+      #         fi = id(color_red);
+      #       } else {
+      #         fi = id(color_black);
+      #       }
+      #       it.printf(x+100, y, id(size_30_font), fi, TextAlign::BASELINE_RIGHT , "%.1f", id(temp).state);
+      #       it.printf(x+100, y, id(units_22_font), TextAlign::BASELINE_LEFT , "\U000F0504");
+      #     }
+
+      #     x = 0, y = y + 30;
+      #     // Inside
+      #     // it.printf(x+10, y, id(measures_30_font), TextAlign::BASELINE_CENTER , "\U000F050F");
+      #     if (id(tempU).has_state() and not isnan(id(tempU).state)) {
+      #       if (id(tempU).state <= 0.0 or id(tempU).state >= 30.0) {
+      #         fi = id(color_red);
+      #       } else {
+      #         fi = id(color_black);
+      #       }
+      #       it.printf(x+100, y, id(size_30_font), fi, TextAlign::BASELINE_RIGHT , "%.1f", id(tempU).state);
+      #       it.printf(x+100, y, id(units_22_font), TextAlign::BASELINE_LEFT , "\U000F0504");
+      #     }
+
+
+
+      #     // ALIGN Y TO BOTTOM
+      #     x = 0, y = yRes - 25 - 5 - 3;
+      #     //line
+      #     it.line(x, y, xRes, y);
+
+      #     //wifi
+      #     if (id(wifi_rssi).has_state()) {
+      #       x = xRes - 5, y = yRes - 5;
+      #       // x = 265, y = 120;
+      #       if (id(wifi_rssi).state >= -50) {
+      #         it.printf(x, y, id(wlan_icon_font), TextAlign::BASELINE_RIGHT , "\U000F0928");
+      #       } else if (id(wifi_rssi).state >= -60) {
+      #         it.printf(x, y, id(wlan_icon_font), TextAlign::BASELINE_RIGHT , "\U000F0925");
+      #       } else if (id(wifi_rssi).state >= -70) {
+      #         it.printf(x, y, id(wlan_icon_font), TextAlign::BASELINE_RIGHT , "\U000F0922");
+      #       } else if (id(wifi_rssi).state >= -80) {
+      #         it.printf(x, y, id(wlan_icon_font), TextAlign::BASELINE_RIGHT , "\U000F0920");
+      #       } else {
+      #         it.printf(x, y, id(wlan_icon_font), id(color_red), TextAlign::BASELINE_RIGHT , "\U000F092E");
+      #       }
+      #     }
+
+      #     //* Display Cycle
+      #     x = 0; y = yRes - 5;
+      #     if (id(select_display_cycle_interval).state != "Never") {
+      #       it.printf(x, y, id(cycle_icon_font), TextAlign::BASELINE_LEFT, "\U000F04E6");
+      #       x = x + 24;
+      #       it.printf(x, y, id(size_25_font), TextAlign::BASELINE_LEFT, "%s", id(select_display_cycle_interval).state.c_str());
+      #     } else {
+      #       it.printf(x, y, id(cycle_icon_font), TextAlign::BASELINE_LEFT, "\U000F04E8");
+      #     }
+
+      - id: page_time_key_measures
         lambda: |-
           // Date & Time Page
           int x, y, y_m;
@@ -259,14 +372,15 @@ display:
           //line
           it.line(x, y, xRes, y);
 
-          x = 0, y = y + 25;
+          x = 0, y = y + 50;
           //Weekday
           if (id(sntp_time).now().day_of_week == 1) {
             fi = id(color_red); // Sunday show in red font
           } else {
             fi = id(color_black);
           }
-          it.strftime(xRes / 2, y, id(size_25_font), fi, TextAlign::BASELINE_CENTER ,"%A", id(sntp_time).now());
+          // it.strftime(xRes / 2, y, id(size_25_font), fi, TextAlign::BASELINE_CENTER ,"%A", id(sntp_time).now());
+          it.strftime(xRes / 2, y, id(size_50_font), fi, TextAlign::BASELINE_CENTER ,"%a", id(sntp_time).now());
           // it.strftime(250, 58, id(size_20_font), "%a", id(sntp_time).now());
 
           x = 0, y = y + 40;
@@ -280,33 +394,33 @@ display:
           //line
           it.line(x, y, xRes, y);
 
-          x = 0, y = y + 25 + 3;
-          //sun set-rise
-          it.printf(x + 25, y, id(sun_icon_font), TextAlign::BASELINE_RIGHT, "\U000F059C");
-          it.printf(x + 125, y, id(size_25_font), TextAlign::BASELINE_RIGHT, "%s", id(sunrise).state.c_str());
-          it.printf(x + 25, y + 25, id(sun_icon_font), TextAlign::BASELINE_RIGHT, "\U000F059A");
-          it.printf(x + 125, y + 25, id(size_25_font), TextAlign::BASELINE_RIGHT, "%s", id(sunset).state.c_str());
+          // x = 0, y = y + 25 + 3;
+          // //sun set-rise
+          // it.printf(x + 25, y, id(sun_icon_font), TextAlign::BASELINE_RIGHT, "\U000F059C");
+          // it.printf(x + 125, y, id(size_25_font), TextAlign::BASELINE_RIGHT, "%s", id(sunrise).state.c_str());
+          // it.printf(x + 25, y + 25, id(sun_icon_font), TextAlign::BASELINE_RIGHT, "\U000F059A");
+          // it.printf(x + 125, y + 25, id(size_25_font), TextAlign::BASELINE_RIGHT, "%s", id(sunset).state.c_str());
 
-          x = 0, y = y + 25 + 5;
-          //line
-          it.line(x, y, xRes, y);
+          // x = 0, y = y + 25 + 5;
+          // //line
+          // it.line(x, y, xRes, y);
 
           //* TEMPERATURES
-          x = 0, y = y + 30 + 3, y_m = y + 20;
+          x = 0, y = y + 50 + 3, y_m = y + 25;
           // fi = id(color_black);
           // Outside
-          it.printf(x+12, y_m, id(measures_50_font), TextAlign::BASELINE_CENTER , "\U000F050F");
+          // it.printf(x+8, y_m, id(measures_30_font), TextAlign::BASELINE_CENTER , "\U000F050F");
           if (id(temp).has_state() and not isnan(id(temp).state)) {
             if (id(temp).state <= 0.0 or id(temp).state >= 30.0) {
               fi = id(color_red);
             } else {
               fi = id(color_black);
             }
-            it.printf(x+100, y, id(size_30_font), fi, TextAlign::BASELINE_RIGHT , "%.1f", id(temp).state);
-            it.printf(x+100, y, id(units_22_font), TextAlign::BASELINE_LEFT , "\U000F0504");
+            it.printf(x+100, y, id(size_50_font), fi, TextAlign::BASELINE_RIGHT , "%.1f", id(temp).state);
+            it.printf(x+100, y, id(units_30_font), TextAlign::BASELINE_LEFT , "\U000F0504");
           }
 
-          x = 0, y = y + 30;
+          x = 0, y = y + 50;
           // Inside
           // it.printf(x+10, y, id(measures_30_font), TextAlign::BASELINE_CENTER , "\U000F050F");
           if (id(tempU).has_state() and not isnan(id(tempU).state)) {
@@ -315,8 +429,8 @@ display:
             } else {
               fi = id(color_black);
             }
-            it.printf(x+100, y, id(size_30_font), fi, TextAlign::BASELINE_RIGHT , "%.1f", id(tempU).state);
-            it.printf(x+100, y, id(units_22_font), TextAlign::BASELINE_LEFT , "\U000F0504");
+            it.printf(x+100, y, id(size_50_font), fi, TextAlign::BASELINE_RIGHT , "%.1f", id(tempU).state);
+            it.printf(x+100, y, id(units_30_font), TextAlign::BASELINE_LEFT , "\U000F0504");
           }
 
 
@@ -353,146 +467,146 @@ display:
             it.printf(x, y, id(cycle_icon_font), TextAlign::BASELINE_LEFT, "\U000F04E8");
           }
 
-      - id: page_measures
-        lambda: |-
-          // Date & Time Page
-          int x, y, y_m;
-          esphome::Color fi;
-          #define xRes ${display_xRes}
-          #define yRes ${display_yRes}
+      # - id: page_measures
+      #   lambda: |-
+      #     // Date & Time Page
+      #     int x, y, y_m;
+      #     esphome::Color fi;
+      #     #define xRes ${display_xRes}
+      #     #define yRes ${display_yRes}
 
-          x = 0, y = 0;
-          //Time
-          it.strftime(x, y, id(size_50_font), "%H:%M", id(sntp_time).now());
-          /* it.strftime(225, 68, id(size_60_font), "%S", id(sntp_time).now()); */
+      #     x = 0, y = 0;
+      #     //Time
+      #     it.strftime(x, y, id(size_50_font), "%H:%M", id(sntp_time).now());
+      #     /* it.strftime(225, 68, id(size_60_font), "%S", id(sntp_time).now()); */
 
-          x = 0, y = y + 50 + 5;
-          //line
-          it.line(x, y, xRes, y);
+      #     x = 0, y = y + 50 + 5;
+      #     //line
+      #     it.line(x, y, xRes, y);
 
-          //* TEMPERATURES
-          x = 0, y = y + 30 + 3, y_m = y + 20;
-          // Outside
-          it.printf(x+12, y_m, id(measures_50_font), TextAlign::BASELINE_CENTER , "\U000F050F");
-          if (id(temp).has_state() and not isnan(id(temp).state)) {
-            if (id(temp).state <= 0.0 or id(temp).state >= 30.0) {
-              fi = id(color_red);
-            } else {
-              fi = id(color_black);
-            }
-            it.printf(x+100, y, id(size_30_font), fi, TextAlign::BASELINE_RIGHT , "%.1f", id(temp).state);
-            it.printf(x+100, y, id(units_22_font), TextAlign::BASELINE_LEFT , "\U000F0504");
-          }
+      #     //* TEMPERATURES
+      #     x = 0, y = y + 30 + 3, y_m = y + 20;
+      #     // Outside
+      #     it.printf(x+12, y_m, id(measures_50_font), TextAlign::BASELINE_CENTER , "\U000F050F");
+      #     if (id(temp).has_state() and not isnan(id(temp).state)) {
+      #       if (id(temp).state <= 0.0 or id(temp).state >= 30.0) {
+      #         fi = id(color_red);
+      #       } else {
+      #         fi = id(color_black);
+      #       }
+      #       it.printf(x+100, y, id(size_30_font), fi, TextAlign::BASELINE_RIGHT , "%.1f", id(temp).state);
+      #       it.printf(x+100, y, id(units_22_font), TextAlign::BASELINE_LEFT , "\U000F0504");
+      #     }
 
-          x = 0, y = y + 30;
-          // Inside
-          // it.printf(x+10, y, id(measures_30_font), TextAlign::BASELINE_CENTER , "\U000F050F");
-          if (id(tempU).has_state() and not isnan(id(tempU).state)) {
-            if (id(tempU).state <= 0.0 or id(tempU).state >= 30.0) {
-              fi = id(color_red);
-            } else {
-              fi = id(color_black);
-            }
-            it.printf(x+100, y, id(size_30_font), fi, TextAlign::BASELINE_RIGHT , "%.1f", id(tempU).state);
-            it.printf(x+100, y, id(units_22_font), TextAlign::BASELINE_LEFT , "\U000F0504");
-          }
+      #     x = 0, y = y + 30;
+      #     // Inside
+      #     // it.printf(x+10, y, id(measures_30_font), TextAlign::BASELINE_CENTER , "\U000F050F");
+      #     if (id(tempU).has_state() and not isnan(id(tempU).state)) {
+      #       if (id(tempU).state <= 0.0 or id(tempU).state >= 30.0) {
+      #         fi = id(color_red);
+      #       } else {
+      #         fi = id(color_black);
+      #       }
+      #       it.printf(x+100, y, id(size_30_font), fi, TextAlign::BASELINE_RIGHT , "%.1f", id(tempU).state);
+      #       it.printf(x+100, y, id(units_22_font), TextAlign::BASELINE_LEFT , "\U000F0504");
+      #     }
 
-          x = 0, y = y + 5;
-          //line
-          it.line(x, y, xRes, y);
+      #     x = 0, y = y + 5;
+      #     //line
+      #     it.line(x, y, xRes, y);
 
-          //* HUMIDITY
-          x = 0, y = y + 30 + 3, y_m = y + 20;
-          // Outside
-          it.printf(x+12, y_m, id(measures_50_font), TextAlign::BASELINE_CENTER , "\U000F058E");
-          if (id(hum).has_state() and not isnan(id(hum).state)) {
-            if (id(hum).state <= 20.0 or id(hum).state >= 95.0) {
-              fi = id(color_red);
-            } else {
-              fi = id(color_black);
-            }
-            it.printf(x+100, y, id(size_30_font), fi, TextAlign::BASELINE_RIGHT , "%.1f", id(hum).state);
-            it.printf(x+100, y, id(units_22_font), TextAlign::BASELINE_LEFT , "\U000F03F0");
-          }
+      #     //* HUMIDITY
+      #     x = 0, y = y + 30 + 3, y_m = y + 20;
+      #     // Outside
+      #     it.printf(x+12, y_m, id(measures_50_font), TextAlign::BASELINE_CENTER , "\U000F058E");
+      #     if (id(hum).has_state() and not isnan(id(hum).state)) {
+      #       if (id(hum).state <= 20.0 or id(hum).state >= 95.0) {
+      #         fi = id(color_red);
+      #       } else {
+      #         fi = id(color_black);
+      #       }
+      #       it.printf(x+100, y, id(size_30_font), fi, TextAlign::BASELINE_RIGHT , "%.1f", id(hum).state);
+      #       it.printf(x+100, y, id(units_22_font), TextAlign::BASELINE_LEFT , "\U000F03F0");
+      #     }
 
-          x = 0, y = y + 30;
-          // Inside
-          // it.printf(x+10, y, id(measures_30_font), TextAlign::BASELINE_CENTER , "\U000F058E");
-          if (id(humU).has_state() and not isnan(id(humU).state)) {
-            if (id(humU).state <= 20.0 or id(humU).state >= 95.0) {
-              fi = id(color_red);
-            } else {
-              fi = id(color_black);
-            }
-            it.printf(x+100, y, id(size_30_font), fi, TextAlign::BASELINE_RIGHT , "%.1f", id(humU).state);
-            it.printf(x+100, y, id(units_22_font), TextAlign::BASELINE_LEFT , "\U000F03F0");
-          }
+      #     x = 0, y = y + 30;
+      #     // Inside
+      #     // it.printf(x+10, y, id(measures_30_font), TextAlign::BASELINE_CENTER , "\U000F058E");
+      #     if (id(humU).has_state() and not isnan(id(humU).state)) {
+      #       if (id(humU).state <= 20.0 or id(humU).state >= 95.0) {
+      #         fi = id(color_red);
+      #       } else {
+      #         fi = id(color_black);
+      #       }
+      #       it.printf(x+100, y, id(size_30_font), fi, TextAlign::BASELINE_RIGHT , "%.1f", id(humU).state);
+      #       it.printf(x+100, y, id(units_22_font), TextAlign::BASELINE_LEFT , "\U000F03F0");
+      #     }
 
-          x = 0, y = y + 5;
-          //line
-          it.line(x, y, xRes, y);
+      #     x = 0, y = y + 5;
+      #     //line
+      #     it.line(x, y, xRes, y);
 
-          //* ILLUMINANCE and UV
-          x = 0, y = y + 30 + 3, y_m = y + 30;
-          // Illuminance
-          it.printf(x+16, y_m, id(measures_50_font), TextAlign::BASELINE_CENTER , "\U000F17FF");
-          if (id(lux).has_state() and not isnan(id(lux).state)) {
-            if(int(id(lux).state) < 99) {
-              it.printf(x+100, y, id(size_30_font), TextAlign::BASELINE_RIGHT , "%.1f", id(lux).state);
-            } else {
-              if(int(id(lux).state) > 9999) {
-                it.printf(x+100, y, id(size_30_font), TextAlign::BASELINE_RIGHT , "%.0fK", id(lux).state / 1000);
-              } else {
-                it.printf(x+100, y, id(size_30_font), TextAlign::BASELINE_RIGHT , "%.0f", id(lux).state);
-              }
-            }
-            it.printf(x+104, y, id(size_20_font), TextAlign::BASELINE_LEFT , "LX");
-          }
+      #     //* ILLUMINANCE and UV
+      #     x = 0, y = y + 30 + 3, y_m = y + 30;
+      #     // Illuminance
+      #     it.printf(x+16, y_m, id(measures_50_font), TextAlign::BASELINE_CENTER , "\U000F17FF");
+      #     if (id(lux).has_state() and not isnan(id(lux).state)) {
+      #       if(int(id(lux).state) < 99) {
+      #         it.printf(x+100, y, id(size_30_font), TextAlign::BASELINE_RIGHT , "%.1f", id(lux).state);
+      #       } else {
+      #         if(int(id(lux).state) > 9999) {
+      #           it.printf(x+100, y, id(size_30_font), TextAlign::BASELINE_RIGHT , "%.0fK", id(lux).state / 1000);
+      #         } else {
+      #           it.printf(x+100, y, id(size_30_font), TextAlign::BASELINE_RIGHT , "%.0f", id(lux).state);
+      #         }
+      #       }
+      #       it.printf(x+104, y, id(size_20_font), TextAlign::BASELINE_LEFT , "LX");
+      #     }
 
-          x = 0, y = y + 30;
-          // UV
-          // it.printf(x+15, y, id(measures_30_font), TextAlign::BASELINE_CENTER , "\U000F058E");
-          if (id(uv_index).has_state() and not isnan(id(uv_index).state)) {
-            if (id(uv_index).state >= 7.0) {
-              fi = id(color_red);
-            } else {
-              fi = id(color_black);
-            }
-            it.printf(x+90, y, id(size_30_font), fi, TextAlign::BASELINE_RIGHT , "%.0f", id(uv_index).state);
-            it.printf(x+94, y, id(size_20_font), TextAlign::BASELINE_LEFT , "UVI");
-          }
+      #     x = 0, y = y + 30;
+      #     // UV
+      #     // it.printf(x+15, y, id(measures_30_font), TextAlign::BASELINE_CENTER , "\U000F058E");
+      #     if (id(uv_index).has_state() and not isnan(id(uv_index).state)) {
+      #       if (id(uv_index).state >= 7.0) {
+      #         fi = id(color_red);
+      #       } else {
+      #         fi = id(color_black);
+      #       }
+      #       it.printf(x+90, y, id(size_30_font), fi, TextAlign::BASELINE_RIGHT , "%.0f", id(uv_index).state);
+      #       it.printf(x+94, y, id(size_20_font), TextAlign::BASELINE_LEFT , "UVI");
+      #     }
 
-          // ALIGN Y TO BOTTOM
-          x = 0, y = yRes - 25 - 5 - 3;
-          //line
-          it.line(x, y, xRes, y);
+      #     // ALIGN Y TO BOTTOM
+      #     x = 0, y = yRes - 25 - 5 - 3;
+      #     //line
+      #     it.line(x, y, xRes, y);
 
-          //wifi
-          if (id(wifi_rssi).has_state()) {
-            x = xRes - 5, y = yRes - 5;
-            // x = 265, y = 120;
-            if (id(wifi_rssi).state >= -50) {
-              it.printf(x, y, id(wlan_icon_font), TextAlign::BASELINE_RIGHT , "\U000F0928");
-            } else if (id(wifi_rssi).state >= -60) {
-              it.printf(x, y, id(wlan_icon_font), TextAlign::BASELINE_RIGHT , "\U000F0925");
-            } else if (id(wifi_rssi).state >= -70) {
-              it.printf(x, y, id(wlan_icon_font), TextAlign::BASELINE_RIGHT , "\U000F0922");
-            } else if (id(wifi_rssi).state >= -80) {
-              it.printf(x, y, id(wlan_icon_font), TextAlign::BASELINE_RIGHT , "\U000F0920");
-            } else {
-              it.printf(x, y, id(wlan_icon_font), id(color_red), TextAlign::BASELINE_RIGHT , "\U000F092E");
-            }
-          }
+      #     //wifi
+      #     if (id(wifi_rssi).has_state()) {
+      #       x = xRes - 5, y = yRes - 5;
+      #       // x = 265, y = 120;
+      #       if (id(wifi_rssi).state >= -50) {
+      #         it.printf(x, y, id(wlan_icon_font), TextAlign::BASELINE_RIGHT , "\U000F0928");
+      #       } else if (id(wifi_rssi).state >= -60) {
+      #         it.printf(x, y, id(wlan_icon_font), TextAlign::BASELINE_RIGHT , "\U000F0925");
+      #       } else if (id(wifi_rssi).state >= -70) {
+      #         it.printf(x, y, id(wlan_icon_font), TextAlign::BASELINE_RIGHT , "\U000F0922");
+      #       } else if (id(wifi_rssi).state >= -80) {
+      #         it.printf(x, y, id(wlan_icon_font), TextAlign::BASELINE_RIGHT , "\U000F0920");
+      #       } else {
+      #         it.printf(x, y, id(wlan_icon_font), id(color_red), TextAlign::BASELINE_RIGHT , "\U000F092E");
+      #       }
+      #     }
 
-          //* Display Cycle
-          x = 0; y = yRes - 5;
-          if (id(select_display_cycle_interval).state != "Never") {
-            it.printf(x, y, id(cycle_icon_font), TextAlign::BASELINE_LEFT, "\U000F04E6");
-            x = x + 24;
-            it.printf(x, y, id(size_25_font), TextAlign::BASELINE_LEFT, "%s", id(select_display_cycle_interval).state.c_str());
-          } else {
-            it.printf(x, y, id(cycle_icon_font), TextAlign::BASELINE_LEFT, "\U000F04E8");
-          }
+      #     //* Display Cycle
+      #     x = 0; y = yRes - 5;
+      #     if (id(select_display_cycle_interval).state != "Never") {
+      #       it.printf(x, y, id(cycle_icon_font), TextAlign::BASELINE_LEFT, "\U000F04E6");
+      #       x = x + 24;
+      #       it.printf(x, y, id(size_25_font), TextAlign::BASELINE_LEFT, "%s", id(select_display_cycle_interval).state.c_str());
+      #     } else {
+      #       it.printf(x, y, id(cycle_icon_font), TextAlign::BASELINE_LEFT, "\U000F04E8");
+      #     }
 
       - id: page_wifi_qr
         lambda: |-
