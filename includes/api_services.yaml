@@ -1,10 +1,15 @@
 ---
 #* Enables native ESPHome API with services
-#! NOT TESTED
+# WARN: Performing the scan will disconnect device from current WiFi
 # Pawelo, 20221119, created as my framework based on !include statements
+# Pawelo, 20241124, added scan_wifi service
 api:
   reboot_timeout: 0s # 0s will disable reboot if no HA connected
   password: !secret api_password
   # encryption:
   #   key: !secret api_key
   services:
+    - service: scan_wifi
+      then:
+        - lambda: |-
+            wifi::global_wifi_component->start_scanning();
