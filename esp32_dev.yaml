@@ -14,7 +14,6 @@
 # Pawelo, 20241116, include first OVERRIDEs and then BOARD itself
 # Pawelo, 20241122, cleanup of old/unused mqtt commented code
 # Pawelo, 20241124, added wifi strength sensor and wifi_scan button
-
 #
 #! run with this command to override substitutions
 # esphome -s devicename espXX -s updates 1min -s room <Room name> -s mqtt_room <room> run esp32_MMmm_SSss__PP.yaml --device 192.168.x.x
