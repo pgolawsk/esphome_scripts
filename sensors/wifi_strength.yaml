@@ -1,0 +1,22 @@
+---
+#* WiFi signal strenght in % sensor configuration
+# Pawelo, 20241124, created as per https://esphome.io/components/sensor/wifi_signal.html
+
+platform: copy
+source_id: wifi_rssi
+name: "$room $devicename WiFi Strength"
+id: wifi_strength
+icon: mdi:signal
+# update_interval: $updates
+# internal: true
+filters:
+  - lambda: return min(max(2 * (x + 100.0), 0.0), 100.0);
+unit_of_measurement: "%"
+entity_category: "diagnostic"
+device_class: ""
+state_topic: $devicename/wifi
+on_value:
+  - mqtt.publish:
+      topic: "$mqtt_location/$mqtt_room/wifi_$devicename"
+      payload: !lambda |-
+        return to_string(id(wifi_strength).state);
