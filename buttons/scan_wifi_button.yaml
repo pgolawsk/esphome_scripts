@@ -1,0 +1,17 @@
+---
+#* Scan WiFi button
+# WARN: Performing the scan will disconnect device from current WiFi
+# Pawelo, 20241124, created
+
+platform: template
+name: "$room $devicename Scan WiFi"
+id: button_scan_wifi
+icon: "mdi:wifi-refresh"
+entity_category: "config"
+state_topic: $devicename/button_scan_wifi
+on_press:
+  then:
+    - lambda: |-
+        ESP_LOGI("scan_wifi", "Starting WiFi scan... please expect ${devicename} will be disconnected from current WiFi.");
+        ESP_LOGI("scan_wifi", "You will be able to review WiFi scan results after connection to current WiFi is back (please refresh).");
+        wifi::global_wifi_component->start_scanning();
