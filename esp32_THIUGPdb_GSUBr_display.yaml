@@ -14,6 +14,7 @@
 # Pawelo, 20241122, include first OVERRIDEs and then BOARD itself, removed old/unused mqtt commented code
 # Pawelo, 20241123, added 1 page with bigger font and just time, data and temperatures, removed 2 pages with medium font
 # Pawelo, 20241124, added wifi strength sensor and wifi_scan button
+# Pawelo, 20241124, switched to wifi_main, as nearby AP was added
 
 #! run with this command to override substitutions
 # esphome -s devicename espXX -s updates 1min -s room <Room name> -s mqtt_room <room> run esp32_MMmm_SSss__PP.yaml --device 192.168.x.x
@@ -49,7 +50,7 @@ substitutions:
 <<: !include includes/time_sntp_with_sun.yaml #WARN: this is to make sunrise and sunset sensor to be updated on every time sync event
 # <<: !include includes/mqtt_with_rtttl.yaml #WARN: override mqtt with RTTTL support if needed (buzzer and status led)
 # <<: !include { file: includes/logger_level.yaml, vars: { level: DEBUG, baud_rate: 115200 } } #WARN: override default log level to specific one
-<<: !include { file: includes/wifi_extended.yaml, vars: { } } #WARN: override wifi to connect to extended network instead of default
+# <<: !include { file: includes/wifi_extended.yaml, vars: { } } #WARN: override wifi to connect to extended network instead of default
 # <<: !include { file: includes/wifi_extended2.yaml, vars: { } } #WARN: override wifi to connect to extended network instead of default
 # <<: !include includes/wifi_outside.yaml #WARN: override wifi to connect to outside network instead of default
 
