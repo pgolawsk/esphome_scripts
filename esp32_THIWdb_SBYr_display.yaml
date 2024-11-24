@@ -29,6 +29,7 @@
 # Pawelo 20240628, 1.1.5, move fonts to separate include file
 # Pawelo, 20240902, refactoring: "status_led" renamed to "led"
 # Pawelo, 20241122, include first OVERRIDEs and then BOARD itself, removed old/unused mqtt commented code
+# Pawelo, 20241124, added wifi strength sensor and wifi_scan button
 
 #! run with this command to override substitutions
 # esphome -s devicename espXX -s updates 1min -s room <Room name> -s mqtt_room <room> run esp32_MMmm_SSss__PP.yaml --device 192.168.x.x
@@ -36,7 +37,7 @@
 substitutions:
   devices: "ePaper Temperature and Humidity via SHTx30, Illuminance via BH1750, Water via YF-B10 G1"
   project_name: "pgolawsk.esp_home"
-  version: "20241122"
+  version: "20241124"
 
   devicename: esp32-xx
   updates: "30s"
@@ -145,6 +146,7 @@ sensor:
   - !include sensors/temp_internal.yaml
   - !include sensors/uptime.yaml
   - !include sensors/wifi_signal.yaml
+  - !include sensors/wifi_strength.yaml
 
   # Sun component
   - !include sensors/sun_elevation.yaml
@@ -207,6 +209,10 @@ sensor:
 button:
   # Restart button
   - !include { file: buttons/restart_button.yaml }
+
+  # Scan Wifi button (require wifi_info text sensor to be present to display results)
+  # WARN: Performing the scan will disconnect device from current WiFi
+  - !include { file: buttons/scan_wifi_button.yaml }
 
   # Display buttons
   - !include { file: buttons/display_button.yaml, vars: { ix: "Refresh", display_id: "weact_display", command: "", mdi_icon: "refresh" } }
