@@ -16,6 +16,9 @@
 # Pawelo 20240619, 1.1.5, added secondary room/mqtt
 # Pawelo 20240628, 1.1.5, moved filters offset adjustments for BME280, BME680, SCD40, ATH2x to variables
 # Pawelo, 20240902, refactoring: "status_led" renamed to "led"
+# Pawelo, 20241125, include first OVERRIDEs and then BOARD itself
+# Pawelo, 20241125, cleanup of old/unused mqtt commented code
+# Pawelo, 20241125, added wifi strength sensor and wifi_scan button
 
 #! run with this command to override substitutions
 # esphome -s devicename espXX -s updates 1min -s room <Room name> -s mqtt_room <room> run esp12f_MMmm_SSss__PP.yaml --device 192.168.x.x
@@ -24,7 +27,7 @@ substitutions:
 #  devices: "Temperature, Humidity via SHTx30, Illuminance via BH1750,  and Doulbe Light Switch via AVT5713"
   devices: "DEV Kit"
   project_name: "pgolawsk.esp_home"
-  version: "20240902"
+  version: "20241125"
 
   devicename: esp12-xx
   updates: "30s"
@@ -41,31 +44,20 @@ substitutions:
   # default variable values for !include statements
   accuracy_decimals: "2"
 
+# Override some settings included below in _board_ setup
+# <<: !include includes/time_sntp_with_sun.yaml #WARN: this is to make sunrise and sunset sensor to be updated on every time sync event
+# <<: !include includes/mqtt_with_rtttl.yaml #WARN: override mqtt with RTTTL support if needed (buzzer and status led)
+# <<: !include { file: includes/logger_level.yaml, vars: { level: DEBUG, baud_rate: 115200 } } #WARN: override default log level to specific one
+# <<: !include { file: includes/logger_level.yaml, vars: { level: VERY_VERBOSE, baud_rate: 115200 } } #WARN: override default log level to specific one
+# <<: !include includes/wifi_outside.yaml #WARN: override wifi to connect to outside network instead of default
+# <<: !include { file: includes/wifi_main.yaml, vars: { } } #WARN: override wifi to connect to extended network instead of default
+# <<: !include { file: includes/wifi_extended.yaml, vars: { } } #WARN: override wifi to connect to extended network instead of default
+# <<: !include { file: includes/wifi_extended2.yaml, vars: { } } #WARN: override wifi to connect to extended network instead of default
+# <<: !include includes/api_services.yaml #WARN: this is to expose services like scan_wifi (results in scan_results sensor)
+
 # Include basics of a board
 #<<: !include includes/board_esp12f.yaml
 <<: !include includes/board_esp12f_with_sun.yaml
-# Include/Override mqtt with/without RTTTL support if needed
-#<<: !include includes/mqtt.yaml
-<<: !include includes/mqtt_with_rtttl.yaml
-
-# mqtt:
-#   id: mqtt_client
-#   broker: !secret mqtt_ip
-#   port: !secret mqtt_port
-#   username: !secret mqtt_user
-#   password: !secret mqtt_password
-#   client_id: $devicename
-#   discovery: false
-#   discovery_retain: false
-#   #discovery_unique_id_generator: mac
-#   #discovery_object_id_generator: device_name
-#   birth_message:
-#   will_message:
-#   shutdown_message:
-#   on_message:
-#     - !include { file: includes/mqtt_on_message/rtttl_play_it.yaml, vars: { topic_prefix: "$devicename", led_cycles: 1 } }
-#     - !include { file: includes/mqtt_on_message/rtttl_play_it.yaml, vars: { topic_prefix: "$mqtt_location/$mqtt_room", led_cycles: 3 } }
-
 
 # Include interfaces needed
 <<: !include { file: interfaces/i2c.yaml, vars: { bus_id: "bus_a", sda: "GPIO4", scl: "GPIO5" } }
@@ -124,6 +116,9 @@ sensor:
   - !include sensors/uptime.yaml
   - !include sensors/wifi_signal.yaml
   # - !include sensors/debug.yaml
+  - !include sensors/wifi_strength.yaml
+
+  # Sun component
   - !include sensors/sun_elevation.yaml
   - !include sensors/sun_azimuth.yaml
 
@@ -223,3 +218,7 @@ button:
   - !include { file: buttons/safe_mode_restart_button.yaml }
   - !include { file: buttons/factory_reset_button.yaml }
   - !include { file: buttons/shutdown_button.yaml }
+
+  # Scan Wifi button (require wifi_info text sensor to be present to display results)
+  # WARN: Performing the scan will disconnect device from current WiFi
+  - !include { file: buttons/scan_wifi_button.yaml }
