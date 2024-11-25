@@ -16,7 +16,7 @@ substitutions:
 #  devices: "Temperature and Humidity via SHTx30 and Illuminance via BH1750"
   devices: "DEV Kit"
   project_name: "pgolawsk.esp_home"
-  version: "20241122"
+  version: "20241124"
 
   devicename: esp32-xx
   updates: "30s"
