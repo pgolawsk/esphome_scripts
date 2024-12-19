@@ -53,6 +53,7 @@ substitutions:
 # <<: !include { file: interfaces/spi.yaml, vars: { spi_id: "spi_a", clk: "GPIO6", mosi: "GPIO7", miso: "GPIO9" } }
 # <<: !include { file: interfaces/spi_rc522.yaml, vars: { spi_id: "spi_a", cs: "GPIO5", reset: "GPIO4" } }
 <<: !include { file: interfaces/i2c_bme68x_bsec2.yaml, vars: { ix: "", address: "0x77" } }
+<<: !include { file: interfaces/ir_receiver.yaml, vars: { gpio: "GPIO3", dump: "nec", rmt_channel: 2 } } # for ESP32c3 can be 2-3, for ESP32 can be 0-7, for ESP32s2 0-3, for ESP32s3 4-7
 
 text_sensor:
   - !include sensors/text_uptime.yaml
