@@ -2,38 +2,30 @@
 # using buttons/rc_nec_button.yaml include
 # IR codes based on https://github.com/friendlyarm/kernel-rockchip/blob/nanopi6-v6.1.y/arch/arm64/boot/dts/rockchip/rk3588-nanopi6-common.dtsi
 # Pawelo, 20241219, created
+# Pawelo, 20241220, file spited into essential and non-essential (rest) buttons
 
 button:
-  # rockchip,usercode = <0xc43b>;
-  # <0xff KEY_POWER>,
+  # NanoPC Remote,POWER,Received NEC: address=0xC43B, command=0xFF00 command_repeats=1
   - !include { file: rc_nec_button.yaml, vars: { receiver: "NanoPC", action: "POWER", address: 0xC43B, command: 0xFF00 } }
-  # <0xef KEY_LEFT>,
-  - !include { file: rc_nec_button.yaml, vars: { receiver: "NanoPC", action: "LEFT", address: 0xC43B, command: 0xEF00 } }
-  # <0xed KEY_RIGHT>,
-  - !include { file: rc_nec_button.yaml, vars: { receiver: "NanoPC", action: "RIGHT", address: 0xC43B, command: 0xED00 } }
-  # <0xf2 KEY_UP>,
-  - !include { file: rc_nec_button.yaml, vars: { receiver: "NanoPC", action: "UP", address: 0xC43B, command: 0xF200 } }
-  # <0xea KEY_DOWN>,
-  - !include { file: rc_nec_button.yaml, vars: { receiver: "NanoPC", action: "DOWN", address: 0xC43B, command: 0xEA00 } }
-  # <0xee KEY_ENTER>,
-  - !include { file: rc_nec_button.yaml, vars: { receiver: "NanoPC", action: "ENTER", address: 0xC43B, command: 0xEE00 } }
-  - !include { file: rc_nec_button.yaml, vars: { receiver: "NanoPC", action: "OK", address: 0xC43B, command: 0xEE00 } }
-  # <0xe9 KEY_MUTE>,
+  # NanoPC Remote,LEFT,Received NEC: address=0xC43B, command=0xEF00 command_repeats=1
+  - !include { file: rc_nec_button.yaml, vars: { receiver: "NanoPC", action: "A_LEFT", address: 0xC43B, command: 0xEF00 } }
+  # NanoPC Remote,RIGHT,Received NEC: address=0xC43B, command=0xED00 command_repeats=1
+  - !include { file: rc_nec_button.yaml, vars: { receiver: "NanoPC", action: "A_RIGHT", address: 0xC43B, command: 0xED00 } }
+  # NanoPC Remote,UP,Received NEC: address=0xC43B, command=0xF200 command_repeats=1
+  - !include { file: rc_nec_button.yaml, vars: { receiver: "NanoPC", action: "A_UP", address: 0xC43B, command: 0xF200 } }
+  # NanoPC Remote,DOWN,Received NEC: address=0xC43B, command=0xEA00 command_repeats=1
+  - !include { file: rc_nec_button.yaml, vars: { receiver: "NanoPC", action: "A_DOWN", address: 0xC43B, command: 0xEA00 } }
+  # NanoPC Remote,?? OK,Received NEC: address=0xC43B, command=0xEE00 command_repeats=1
+  - !include { file: rc_nec_button.yaml, vars: { receiver: "NanoPC", action: "A_OK", address: 0xC43B, command: 0xEE00 } }
+  # NanoPC Remote,MUTE,Received NEC: address=0xC43B, command=0xE900 command_repeats=1
   - !include { file: rc_nec_button.yaml, vars: { receiver: "NanoPC", action: "MUTE", address: 0xC43B, command: 0xE900 } }
-  # <0xf1 KEY_VOLUMEDOWN>,
+  # NanoPC Remote,VOLUMEDOWN,Received NEC: address=0xC43B, command=0xF100 command_repeats=1
   - !include { file: rc_nec_button.yaml, vars: { receiver: "NanoPC", action: "VOLUME_DOWN", address: 0xC43B, command: 0xF100 } }
-  # <0xf3 KEY_VOLUMEUP>,
+  # NanoPC Remote,VOLUMEUP,Received NEC: address=0xC43B, command=0xF300 command_repeats=1
   - !include { file: rc_nec_button.yaml, vars: { receiver: "NanoPC", action: "VOLUME_UP", address: 0xC43B, command: 0xF300 } }
-  # <0xae KEY_MENU>,
+  # NanoPC Remote,MENU,Received NEC: address=0xC43B, command=0xAE00 command_repeats=1
   - !include { file: rc_nec_button.yaml, vars: { receiver: "NanoPC", action: "MENU", address: 0xC43B, command: 0xAE00 } }
-  # <0xeb KEY_LEFTMETA>,
-  - !include { file: rc_nec_button.yaml, vars: { receiver: "NanoPC", action: "LEFTMETA", address: 0xC43B, command: 0xEB00 } }
+  # NanoPC Remote,?? HOME,Received NEC: address=0xC43B, command=0xEB00 command_repeats=1
   - !include { file: rc_nec_button.yaml, vars: { receiver: "NanoPC", action: "HOME", address: 0xC43B, command: 0xEB00 } }
-  # <0xaf KEY_BACK>,
+  # NanoPC Remote,BACK,Received NEC: address=0xC43B, command=0xAF00 command_repeats=1
   - !include { file: rc_nec_button.yaml, vars: { receiver: "NanoPC", action: "BACK", address: 0xC43B, command: 0xAF00 } }
-  # <0xf7 KEY_MODE>,
-  - !include { file: rc_nec_button.yaml, vars: { receiver: "NanoPC", action: "MODE", address: 0xC43B, command: 0xF700 } }
-  # <0xe5 KEY_SYSRQ>,
-  - !include { file: rc_nec_button.yaml, vars: { receiver: "NanoPC", action: "SYSRQ", address: 0xC43B, command: 0xE500 } }
-  # <0xf5 KEY_ESC>;
-  - !include { file: rc_nec_button.yaml, vars: { receiver: "NanoPC", action: "ESC", address: 0xC43B, command: 0xF500 } }
