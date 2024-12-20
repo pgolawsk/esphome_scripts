@@ -10,6 +10,7 @@
 # Pawelo, 20241124, added wifi strength sensor and wifi_scan button
 # Pawelo, 20241219, added debug component and sensors
 # Pawelo, 20241219, added ir_receiver for remote code detection
+# Pawelo, 20241219, added ir_transmitter for remote code actions
 #
 #! run with this command to override substitutions
 # esphome -s devicename espXX -s updates 1min -s room <Room name> -s mqtt_room <room> run esp32_MMmm_SSss__PP.yaml --device 192.168.x.x
@@ -54,6 +55,12 @@ substitutions:
 # <<: !include { file: interfaces/spi_rc522.yaml, vars: { spi_id: "spi_a", cs: "GPIO5", reset: "GPIO4" } }
 <<: !include { file: interfaces/i2c_bme68x_bsec2.yaml, vars: { ix: "", address: "0x77" } }
 <<: !include { file: interfaces/ir_receiver.yaml, vars: { gpio: "GPIO3", dump: "nec", rmt_channel: 2 } } # for ESP32c3 can be 2-3, for ESP32 can be 0-7, for ESP32s2 0-3, for ESP32s3 4-7
+<<: !include { file: interfaces/ir_transmitter.yaml, vars: { gpio: "GPIO4", rmt_channel: 0 } } # for ESP32c3 can be 0-1, for ESP32 can be 0-7, for ESP32s2 0-3, for ESP32s3 0-3
+
+# IR Remote control buttons
+# Set of Apple TV buttons
+packages:
+  apple_tv: !include buttons/set_apple_tv_ir_remote.yaml
 
 text_sensor:
   - !include sensors/text_uptime.yaml
@@ -112,6 +119,11 @@ button:
   # Scan Wifi button (require wifi_info text sensor to be present to display results)
   # WARN: Performing the scan will disconnect device from current WiFi
   - !include { file: buttons/scan_wifi_button.yaml }
+
+  # IR Remote control buttons - include as a package
+  # single remote buttons can be included here separately
+  # # Apple TV Remote,MENU,Received NEC: address=0x87EE, command=0xB603 command_repeats=1
+  # - !include { file: buttons/rc_nec_button.yaml, vars: { receiver: "AppleTV", action: "MENU", address: 0x87EE, command: 0xB603 } }
 
 switch:
   # LED cycle
