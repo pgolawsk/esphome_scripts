@@ -1,6 +1,7 @@
 #* Remote control CODEs captured on ESP IR receiver with dump NEC enabled
 # Button names starting with "??" are not on remote, but remote behavior reflects it
-# Pawelo, 20241219, Capturing Apple TV remote codes
+# Pawelo, 20241219, Capturing Apple TV and Smart TV remote codes
+# Pawelo, 20241220, Capturing LG TV, Yamaha AV and Yamaha BD remote codes
 
 Remote Model,Button,CODE sent by remote
 Apple TV Remote,MENU,Received NEC: address=0x87EE, command=0xB603 command_repeats=1
@@ -40,8 +41,8 @@ Smart TV Remote,MENU,Received NEC: address=0x7F80, command=0xB649 command_repeat
 Smart TV Remote,BACK,Received NEC: address=0x7F80, command=0xE41B command_repeats=1
 Smart TV Remote,VOLUMEDOWN,Received NEC: address=0x7F80, command=0xA956 command_repeats=1
 Smart TV Remote,VOLUMEUP,Received NEC: address=0x7F80, command=0xB14E command_repeats=1
-Smart TV Remote,FORWARD,Received NEC: address=0x7F80, command=0x42BD command_repeats=1
-Smart TV Remote,REWIND,Received NEC: address=0x7F80, command=0x44BB command_repeats=1
+Smart TV Remote,SKIP_BACK,Received NEC: address=0x7F80, command=0x42BD command_repeats=1
+Smart TV Remote,SKIP_FORWARD,Received NEC: address=0x7F80, command=0x44BB command_repeats=1
 Smart TV Remote,MEDIA,Received NEC: address=0x7F80, command=0xF609 command_repeats=1
 Smart TV Remote,MUSIC,Received NEC: address=0x7F80, command=0xEE11 command_repeats=1
 Smart TV Remote,WEB,Received NEC: address=0x7F80, command=0xAB54 command_repeats=1
@@ -221,6 +222,7 @@ Yamaha A810 (RAV447) - 2nd ZONE,CHANNELDOWN,Received NEC: address=0x017F, comman
 Yamaha A810 (RAV447) - 2nd ZONE,TUNINGUP,Received NEC: address=0x017F, command=0x1D62 command_repeats=1
 Yamaha A810 (RAV447) - 2nd ZONE,TUNINGDOWN,Received NEC: address=0x017F, command=0x1A65 command_repeats=1
 Yamaha A810 (RAV447) - 2nd ZONE,SLEEP,Received NEC: address=0x857A, command=0xCE31 command_repeats=1
+Yamaha A810 (RAV447) - 2nd ZONE,PARTY,Received NEC: address=0x857A, command=0xCB34 command_repeats=1, same code on zone 2
 Yamaha A810 (RAV447) - 2nd ZONE,SCENE_DVD,Received NEC: address=0x857A, command=0x7E01 command_repeats=1
 Yamaha A810 (RAV447) - 2nd ZONE,SCENE_TV,Received NEC: address=0x857A, command=0x7B04 command_repeats=1
 Yamaha A810 (RAV447) - 2nd ZONE,SCENE_CD,Received NEC: address=0x857A, command=0x7807 command_repeats=1
