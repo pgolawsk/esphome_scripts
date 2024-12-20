@@ -60,13 +60,13 @@ substitutions:
 <<: !include includes/board_esp12f_with_sun.yaml
 
 # Include interfaces needed
+# <<: !include { file: interfaces/debug.yaml, vars: { update_interval: "15s" } }
 <<: !include { file: interfaces/i2c.yaml, vars: { bus_id: "bus_a", sda: "GPIO4", scl: "GPIO5" } }
 # <<: !include { file: interfaces/i2c_apds9960.yaml, vars: { address: "0x39" } }
 # <<: !include { file: interfaces/dallas.yaml, vars: { gpio: "GPIO10" } }
 # OR
 # <<: !include { file: interfaces/dallasng.yaml, vars: { gpio: "GPIO10" } }
 <<: !include { file: interfaces/rtttl.yaml, vars: { ix: "" } }
-# <<: !include { file: interfaces/debug.yaml, vars: { update_interval: "15s" } }
 # <<: !include { file: interfaces/uart_ld2410.yaml, vars: { ix: "ld", tx_pin: "TX", rx_pin: "RX", baud_rate: 256000, sensor_name: "LD2410" } }
 # <<: !include { file: interfaces/uart_ld2410.yaml, vars: { ix: "ld", tx_pin: "GPIO1", rx_pin: "GPIO3", baud_rate: 256000, sensor_name: "LD2410" } }
 # <<: !include { file: interfaces/uart_ld2420.yaml, vars: { ix: "ld", tx_pin: "TX", rx_pin: "RX", baud_rate: 256000 } }
@@ -76,7 +76,11 @@ text_sensor:
   - !include sensors/text_version.yaml
   - !include sensors/text_wifi_info.yaml
   # - !include sensors/text_firmware.yaml
+
+  # DEBUG component
   # - !include sensors/text_debug.yaml
+
+  # Sun component
   - !include sensors/text_sun_sunrise.yaml
   - !include sensors/text_sun_sunset.yaml
   - !include sensors/text_sun_time_of_day.yaml
@@ -115,8 +119,10 @@ binary_sensor:
 sensor:
   - !include sensors/uptime.yaml
   - !include sensors/wifi_signal.yaml
-  # - !include sensors/debug.yaml
   - !include sensors/wifi_strength.yaml
+
+  # DEBUG component
+  # - !include sensors/debug.yaml
 
   # Sun component
   - !include sensors/sun_elevation.yaml
