@@ -114,3 +114,200 @@ LG TV Remote (AKB72914048),FORWARD,Received NEC: address=0xFB04, command=0x718E 
 LG TV Remote (AKB72914048),?SIMPLINK,Received NEC: address=0xFB04, command=0x817E command_repeats=1
 LG TV Remote (AKB72914048),?RATIO,Received NEC: address=0xFB04, command=0x8679 command_repeats=1
 LG TV Remote (AKB72914048),?AD,Received NEC: address=0xFB04, command=0x6E91 command_repeats=1
+Yamaha A810 (RAV447) - Main ZONE,POWER,Received NEC: address=0x817E, command=0xD52A command_repeats=1
+Yamaha A810 (RAV447) - Main ZONE,HDMI1,Received NEC: address=0x857A, command=0x3847 command_repeats=1
+Yamaha A810 (RAV447) - Main ZONE,HDMI2,Received NEC: address=0x857A, command=0x354A command_repeats=1
+Yamaha A810 (RAV447) - Main ZONE,HDMI3,Received NEC: address=0x857A, command=0x324D command_repeats=1
+Yamaha A810 (RAV447) - Main ZONE,HDMI4,Received NEC: address=0x857A, command=0x2F50 command_repeats=1
+Yamaha A810 (RAV447) - Main ZONE,HDMI5,Received NEC: address=0x857A, command=0x0F70 command_repeats=1
+Yamaha A810 (RAV447) - Main ZONE,HDMI6,Received NEC: address=0x857A, command=0x0C73 command_repeats=1
+Yamaha A810 (RAV447) - Main ZONE,HDMI7,Received NEC: address=0x857A, command=0xE798 command_repeats=1
+Yamaha A810 (RAV447) - Main ZONE,V_AUX,Received NEC: address=0x857A, command=0xAA55 command_repeats=1
+Yamaha A810 (RAV447) - Main ZONE,AV1,Received NEC: address=0x857A, command=0x2C53 command_repeats=1
+Yamaha A810 (RAV447) - Main ZONE,AV2,Received NEC: address=0x857A, command=0x2956 command_repeats=1
+Yamaha A810 (RAV447) - Main ZONE,AV3,Received NEC: address=0x857A, command=0x2659 command_repeats=1
+Yamaha A810 (RAV447) - Main ZONE,AV4,Received NEC: address=0x857A, command=0x235C command_repeats=1
+Yamaha A810 (RAV447) - Main ZONE,AV5,Received NEC: address=0x857A, command=0x205F command_repeats=1
+Yamaha A810 (RAV447) - Main ZONE,AV6,Received NEC: address=0x857A, command=0x1D62 command_repeats=1
+Yamaha A810 (RAV447) - Main ZONE,AUDIO,Received NEC: address=0x857A, command=0xE49B command_repeats=1
+Yamaha A810 (RAV447) - Main ZONE,DOCK,Received NEC: address=0x017F, command=0xB54A command_repeats=1
+Yamaha A810 (RAV447) - Main ZONE,TUNER,Received NEC: address=0x857A, command=0xE916 command_repeats=1
+Yamaha A810 (RAV447) - Main ZONE,PHONO,Received NEC: address=0x857A, command=0xEB14 command_repeats=1
+Yamaha A810 (RAV447) - Main ZONE,NET,Received NEC: address=0x017F, command=0xC03F command_repeats=1
+Yamaha A810 (RAV447) - Main ZONE,USB,Received NEC: address=0x017F, command=0x0D72 command_repeats=1
+Yamaha A810 (RAV447) - Main ZONE,FM,Received NEC: address=0x017F, command=0x2758 command_repeats=1
+Yamaha A810 (RAV447) - Main ZONE,AM,Received NEC: address=0x017F, command=0x2A55 command_repeats=1
+Yamaha A810 (RAV447) - Main ZONE,INFO,Received NEC: address=0x857A, command=0x5827 command_repeats=1
+Yamaha A810 (RAV447) - Main ZONE,MEMORY,Received NEC: address=0x017F, command=0x1867 command_repeats=1
+Yamaha A810 (RAV447) - Main ZONE,CHANNELUP,Received NEC: address=0x017F, command=0x245B command_repeats=1
+Yamaha A810 (RAV447) - Main ZONE,CHANNELDOWN,Received NEC: address=0x017F, command=0x215E command_repeats=1
+Yamaha A810 (RAV447) - Main ZONE,TUNINGUP,Received NEC: address=0x017F, command=0x1E61 command_repeats=1
+Yamaha A810 (RAV447) - Main ZONE,TUNINGDOWN,Received NEC: address=0x017F, command=0x1B64 command_repeats=1
+Yamaha A810 (RAV447) - Main ZONE,MOVIE,Received NEC: address=0x857A, command=0x7788 command_repeats=1, not working on zone 2
+Yamaha A810 (RAV447) - Main ZONE,MUSIC,Received NEC: address=0x857A, command=0x7689 command_repeats=1, not working on zone 2
+Yamaha A810 (RAV447) - Main ZONE,SURROUND,Received NEC: address=0x857A, command=0x728D command_repeats=1, not working on zone 2
+Yamaha A810 (RAV447) - Main ZONE,STRAIGHT,Received NEC: address=0x857A, command=0xA956 command_repeats=1, not working on zone 2
+Yamaha A810 (RAV447) - Main ZONE,ENHANCER,Received NEC: address=0x857A, command=0x6B94 command_repeats=1, not working on zone 2
+Yamaha A810 (RAV447) - Main ZONE,PURE_DIRECT,Received NEC: address=0x857A, command=0x22DD command_repeats=1, not working on zone 2
+Yamaha A810 (RAV447) - Main ZONE,PARTY,Received NEC: address=0x857A, command=0xCB34 command_repeats=1, same code on zone 2
+Yamaha A810 (RAV447) - Main ZONE,SLEEP,Received NEC: address=0x857A, command=0xCF30 command_repeats=1
+Yamaha A810 (RAV447) - Main ZONE,SCENE_DVD,Received NEC: address=0x857A, command=0x7F00 command_repeats=1
+Yamaha A810 (RAV447) - Main ZONE,SCENE_TV,Received NEC: address=0x857A, command=0x7C03 command_repeats=1
+Yamaha A810 (RAV447) - Main ZONE,SCENE_CD,Received NEC: address=0x857A, command=0x7906 command_repeats=1
+Yamaha A810 (RAV447) - Main ZONE,SCENE_RADIO,Received NEC: address=0x857A, command=0x7609 command_repeats=1
+Yamaha A810 (RAV447) - Main ZONE,ON_SCREEN,Received NEC: address=0x857A, command=0x7B84 command_repeats=1, not working on zone 2
+Yamaha A810 (RAV447) - Main ZONE,OPTION,Received NEC: address=0x857A, command=0x146B command_repeats=1, not working on zone 2
+Yamaha A810 (RAV447) - Main ZONE,UP,Received NEC: address=0x857A, command=0x629D command_repeats=1
+Yamaha A810 (RAV447) - Main ZONE,DOWN,Received NEC: address=0x857A, command=0x639C command_repeats=1
+Yamaha A810 (RAV447) - Main ZONE,LEFT,Received NEC: address=0x857A, command=0x609F command_repeats=1
+Yamaha A810 (RAV447) - Main ZONE,RIGHT,Received NEC: address=0x857A, command=0x619E command_repeats=1
+Yamaha A810 (RAV447) - Main ZONE,ENTER,Received NEC: address=0x857A, command=0x21DE command_repeats=1
+Yamaha A810 (RAV447) - Main ZONE,?? OK,Received NEC: address=0x857A, command=0x21DE command_repeats=1
+Yamaha A810 (RAV447) - Main ZONE,RETURN,Received NEC: address=0x857A, command=0x55AA command_repeats=1
+Yamaha A810 (RAV447) - Main ZONE,DISPLAY,Received NEC: address=0x017F, command=0x9F60 command_repeats=1
+Yamaha A810 (RAV447) - Main ZONE,TOP_MENU,Received NEC: address=0x857A, command=0xDFA0 command_repeats=1
+Yamaha A810 (RAV447) - Main ZONE,POPUP_MENU,Received NEC: address=0x857A, command=0xDBA4 command_repeats=1
+Yamaha A810 (RAV447) - Main ZONE,VOLUMEUP,Received NEC: address=0x857A, command=0xE51A command_repeats=1
+Yamaha A810 (RAV447) - Main ZONE,VOLUMEDOWN,Received NEC: address=0x857A, command=0xE41B command_repeats=1
+Yamaha A810 (RAV447) - Main ZONE,MUTE,Received NEC: address=0x857A, command=0xE31C command_repeats=1
+Yamaha A810 (RAV447) - Main ZONE,MODE,Received NEC: address=0x017F, command=0x9966 command_repeats=1
+Yamaha A810 (RAV447) - Main ZONE,STOP,Received NEC: address=0x017F, command=0x9669 command_repeats=1
+Yamaha A810 (RAV447) - Main ZONE,PAUSE,Received NEC: address=0x017F, command=0x9867 command_repeats=1
+Yamaha A810 (RAV447) - Main ZONE,PLAY,Received NEC: address=0x017F, command=0x9768 command_repeats=1
+Yamaha A810 (RAV447) - Main ZONE,REWIND,Received NEC: address=0x017F, command=0x956A command_repeats=1
+Yamaha A810 (RAV447) - Main ZONE,FORWARD,Received NEC: address=0x017F, command=0x946B command_repeats=1
+Yamaha A810 (RAV447) - Main ZONE,SKIPBACK,Received NEC: address=0x017F, command=0x936C command_repeats=1
+Yamaha A810 (RAV447) - Main ZONE,SKIPFORWARD,Received NEC: address=0x017F, command=0x926D command_repeats=1
+Yamaha A810 (RAV447) - Main ZONE,1,Received NEC: address=0x017F, command=0xAE51 command_repeats=1
+Yamaha A810 (RAV447) - Main ZONE,2,Received NEC: address=0x017F, command=0xAD52 command_repeats=1
+Yamaha A810 (RAV447) - Main ZONE,3,Received NEC: address=0x017F, command=0xAC53 command_repeats=1
+Yamaha A810 (RAV447) - Main ZONE,4,Received NEC: address=0x017F, command=0xAB54 command_repeats=1
+Yamaha A810 (RAV447) - Main ZONE,5,Received NEC: address=0x017F, command=0xAA55 command_repeats=1
+Yamaha A810 (RAV447) - Main ZONE,6,Received NEC: address=0x017F, command=0xA956 command_repeats=1
+Yamaha A810 (RAV447) - Main ZONE,7,Received NEC: address=0x017F, command=0xA857 command_repeats=1
+Yamaha A810 (RAV447) - Main ZONE,8,Received NEC: address=0x017F, command=0xA758 command_repeats=1
+Yamaha A810 (RAV447) - Main ZONE,9,Received NEC: address=0x017F, command=0xA659 command_repeats=1
+Yamaha A810 (RAV447) - Main ZONE,0,Received NEC: address=0x017F, command=0xA55A command_repeats=1
+Yamaha A810 (RAV447) - Main ZONE,PLUS_10,Received NEC: address=0x017F, command=0xA45B command_repeats=1
+Yamaha A810 (RAV447) - Main ZONE,ENT,Received NEC: address=0x017F, command=0xA35C command_repeats=1
+Yamaha A810 (RAV447) - Main ZONE,HDMI_OUT,NEC: address=0x857A, command=0xCA35 command_repeats=1
+Yamaha A810 (RAV447) - 2nd ZONE,POWER,Received NEC: address=0x857A, command=0x3A45 command_repeats=1
+Yamaha A810 (RAV447) - 2nd ZONE,HDMI1,Received NEC: address=0x857A, command=0x3748 command_repeats=1
+Yamaha A810 (RAV447) - 2nd ZONE,HDMI2,Received NEC: address=0x857A, command=0x344B command_repeats=1
+Yamaha A810 (RAV447) - 2nd ZONE,HDMI3,Received NEC: address=0x857A, command=0x314E command_repeats=1
+Yamaha A810 (RAV447) - 2nd ZONE,HDMI4,Received NEC: address=0x857A, command=0x2E51 command_repeats=1
+Yamaha A810 (RAV447) - 2nd ZONE,HDMI5,Received NEC: address=0x857A, command=0x0E71 command_repeats=1
+Yamaha A810 (RAV447) - 2nd ZONE,HDMI6,Received NEC: address=0x857A, command=0x0B74 command_repeats=1
+Yamaha A810 (RAV447) - 2nd ZONE,HDMI7,Received NEC: address=0x857A, command=0xE699 command_repeats=1
+Yamaha A810 (RAV447) - 2nd ZONE,V_AUX,Received NEC: address=0x857A, command=0x27D8 command_repeats=1
+Yamaha A810 (RAV447) - 2nd ZONE,AV1,Received NEC: address=0x857A, command=0x2B54 command_repeats=1
+Yamaha A810 (RAV447) - 2nd ZONE,AV2,Received NEC: address=0x857A, command=0x2857 command_repeats=1
+Yamaha A810 (RAV447) - 2nd ZONE,AV3,Received NEC: address=0x857A, command=0x255A command_repeats=1
+Yamaha A810 (RAV447) - 2nd ZONE,AV4,Received NEC: address=0x857A, command=0x225D command_repeats=1
+Yamaha A810 (RAV447) - 2nd ZONE,AV5,Received NEC: address=0x857A, command=0x1F60 command_repeats=1
+Yamaha A810 (RAV447) - 2nd ZONE,AV6,Received NEC: address=0x857A, command=0x1C63 command_repeats=1
+Yamaha A810 (RAV447) - 2nd ZONE,AUDIO,Received NEC: address=0x857A, command=0xE39C command_repeats=1
+Yamaha A810 (RAV447) - 2nd ZONE,DOCK,Received NEC: address=0x017F, command=0xB44B command_repeats=1
+Yamaha A810 (RAV447) - 2nd ZONE,TUNER,Received NEC: address=0x857A, command=0x2DD2 command_repeats=1
+Yamaha A810 (RAV447) - 2nd ZONE,PHONO,Received NEC: address=0x857A, command=0x2FD0 command_repeats=1
+Yamaha A810 (RAV447) - 2nd ZONE,NET,Received NEC: address=0x017F, command=0xBF40 command_repeats=1
+Yamaha A810 (RAV447) - 2nd ZONE,USB,Received NEC: address=0x017F, command=0x0C73 command_repeats=1
+Yamaha A810 (RAV447) - 2nd ZONE,FM,Received NEC: address=0x017F, command=0x2659 command_repeats=1
+Yamaha A810 (RAV447) - 2nd ZONE,AM,Received NEC: address=0x017F, command=0x2956 command_repeats=1
+Yamaha A810 (RAV447) - 2nd ZONE,INFO,Received NEC: address=0x857A, command=0x5728 command_repeats=1
+Yamaha A810 (RAV447) - 2nd ZONE,MEMORY,Received NEC: address=0x017F, command=0x1768 command_repeats=1
+Yamaha A810 (RAV447) - 2nd ZONE,CHANNELUP,Received NEC: address=0x017F, command=0x235C command_repeats=1
+Yamaha A810 (RAV447) - 2nd ZONE,CHANNELDOWN,Received NEC: address=0x017F, command=0x205F command_repeats=1
+Yamaha A810 (RAV447) - 2nd ZONE,TUNINGUP,Received NEC: address=0x017F, command=0x1D62 command_repeats=1
+Yamaha A810 (RAV447) - 2nd ZONE,TUNINGDOWN,Received NEC: address=0x017F, command=0x1A65 command_repeats=1
+Yamaha A810 (RAV447) - 2nd ZONE,SLEEP,Received NEC: address=0x857A, command=0xCE31 command_repeats=1
+Yamaha A810 (RAV447) - 2nd ZONE,SCENE_DVD,Received NEC: address=0x857A, command=0x7E01 command_repeats=1
+Yamaha A810 (RAV447) - 2nd ZONE,SCENE_TV,Received NEC: address=0x857A, command=0x7B04 command_repeats=1
+Yamaha A810 (RAV447) - 2nd ZONE,SCENE_CD,Received NEC: address=0x857A, command=0x7807 command_repeats=1
+Yamaha A810 (RAV447) - 2nd ZONE,SCENE_RADIO,Received NEC: address=0x857A, command=0x750A command_repeats=1
+Yamaha A810 (RAV447) - 2nd ZONE,UP,Received NEC: address=0x857A, command=0x542B command_repeats=1
+Yamaha A810 (RAV447) - 2nd ZONE,DOWN,Received NEC: address=0x857A, command=0x532C command_repeats=1
+Yamaha A810 (RAV447) - 2nd ZONE,LEFT,Received NEC: address=0x857A, command=0x522D command_repeats=1
+Yamaha A810 (RAV447) - 2nd ZONE,RIGHT,Received NEC: address=0x857A, command=0x512E command_repeats=1
+Yamaha A810 (RAV447) - 2nd ZONE,ENTER,Received NEC: address=0x857A, command=0x502F command_repeats=1
+Yamaha A810 (RAV447) - 2nd ZONE,?? OK,Received NEC: address=0x857A, command=0x502F command_repeats=1
+Yamaha A810 (RAV447) - 2nd ZONE,RETURN,Received NEC: address=0x857A, command=0x433C command_repeats=1
+Yamaha A810 (RAV447) - 2nd ZONE,DISPLAY,Received NEC: address=0x017F, command=0x7F80 command_repeats=1
+Yamaha A810 (RAV447) - 2nd ZONE,TOP_MENU,Received NEC: address=0x857A, command=0xDEA1 command_repeats=1
+Yamaha A810 (RAV447) - 2nd ZONE,POPUP_MENU,Received NEC: address=0x857A, command=0xDAA5 command_repeats=1
+Yamaha A810 (RAV447) - 2nd ZONE,VOLUMEUP,Received NEC: address=0x857A, command=0x25DA command_repeats=1
+Yamaha A810 (RAV447) - 2nd ZONE,VOLUMEDOWN,Received NEC: address=0x857A, command=0x24DB command_repeats=1
+Yamaha A810 (RAV447) - 2nd ZONE,MUTE,Received NEC: address=0x857A, command=0x23DC command_repeats=1
+Yamaha A810 (RAV447) - 2nd ZONE,MODE,Received NEC: address=0x017F, command=0x7986 command_repeats=1
+Yamaha A810 (RAV447) - 2nd ZONE,STOP,Received NEC: address=0x017F, command=0x7689 command_repeats=1
+Yamaha A810 (RAV447) - 2nd ZONE,PAUSE,Received NEC: address=0x017F, command=0x7887 command_repeats=1
+Yamaha A810 (RAV447) - 2nd ZONE,PLAY,Received NEC: address=0x017F, command=0x7788 command_repeats=1
+Yamaha A810 (RAV447) - 2nd ZONE,REWIND,Received NEC: address=0x017F, command=0x758A command_repeats=1
+Yamaha A810 (RAV447) - 2nd ZONE,FORWARD,Received NEC: address=0x017F, command=0x748B command_repeats=1
+Yamaha A810 (RAV447) - 2nd ZONE,SKIPBACK,Received NEC: address=0x017F, command=0x738C command_repeats=1
+Yamaha A810 (RAV447) - 2nd ZONE,SKIPFORWARD,Received NEC: address=0x017F, command=0x728D command_repeats=1
+Yamaha A810 (RAV447) - 2nd ZONE,1,Received NEC: address=0x017F, command=0x8E71 command_repeats=1
+Yamaha A810 (RAV447) - 2nd ZONE,2,Received NEC: address=0x017F, command=0x8D72 command_repeats=1
+Yamaha A810 (RAV447) - 2nd ZONE,3,Received NEC: address=0x017F, command=0x8C73 command_repeats=1
+Yamaha A810 (RAV447) - 2nd ZONE,4,Received NEC: address=0x017F, command=0x8B74 command_repeats=1
+Yamaha A810 (RAV447) - 2nd ZONE,5,Received NEC: address=0x017F, command=0x8A75 command_repeats=1
+Yamaha A810 (RAV447) - 2nd ZONE,6,Received NEC: address=0x017F, command=0x8976 command_repeats=1
+Yamaha A810 (RAV447) - 2nd ZONE,7,Received NEC: address=0x017F, command=0x8877 command_repeats=1
+Yamaha A810 (RAV447) - 2nd ZONE,8,Received NEC: address=0x017F, command=0x8778 command_repeats=1
+Yamaha A810 (RAV447) - 2nd ZONE,9,Received NEC: address=0x017F, command=0x8679 command_repeats=1
+Yamaha A810 (RAV447) - 2nd ZONE,0,Received NEC: address=0x017F, command=0x857A command_repeats=1
+Yamaha A810 (RAV447) - 2nd ZONE,PLUS_10,Received NEC: address=0x017F, command=0x847B command_repeats=1
+Yamaha A810 (RAV447) - 2nd ZONE,ENT,Received NEC: address=0x017F, command=0x837C command_repeats=1
+Yamaha BDS671 (BDP118),POWER,Received NEC: address=0x837C, command=0x7F80 command_repeats=1
+Yamaha BDS671 (BDP118),EJECTCD,Received NEC: address=0x837C, command=0x7E81 command_repeats=1
+Yamaha BDS671 (BDP118),RED,Received NEC: address=0x837C, command=0x16E9 command_repeats=1
+Yamaha BDS671 (BDP118),PROGRAM,Received NEC: address=0x837C, command=0x16E9 command_repeats=1
+Yamaha BDS671 (BDP118),GREEN,Received NEC: address=0x837C, command=0x15EA command_repeats=1
+Yamaha BDS671 (BDP118),MARKER,Received NEC: address=0x837C, command=0x15EA command_repeats=1
+Yamaha BDS671 (BDP118),YELLOW,Received NEC: address=0x837C, command=0x13EC command_repeats=1
+Yamaha BDS671 (BDP118),DIGEST,Received NEC: address=0x837C, command=0x13EC command_repeats=1
+Yamaha BDS671 (BDP118),BLUE,Received NEC: address=0x837C, command=0x14EB command_repeats=1
+Yamaha BDS671 (BDP118),ZOOM,Received NEC: address=0x837C, command=0x14EB command_repeats=1
+Yamaha BDS671 (BDP118),1,Received NEC: address=0x837C, command=0x6B94 command_repeats=1
+Yamaha BDS671 (BDP118),2,Received NEC: address=0x837C, command=0x6A95 command_repeats=1
+Yamaha BDS671 (BDP118),3,Received NEC: address=0x837C, command=0x6996 command_repeats=1
+Yamaha BDS671 (BDP118),4,Received NEC: address=0x837C, command=0x6897 command_repeats=1
+Yamaha BDS671 (BDP118),5,Received NEC: address=0x837C, command=0x6798 command_repeats=1
+Yamaha BDS671 (BDP118),6,Received NEC: address=0x837C, command=0x6699 command_repeats=1
+Yamaha BDS671 (BDP118),7,Received NEC: address=0x837C, command=0x659A command_repeats=1
+Yamaha BDS671 (BDP118),8,Received NEC: address=0x837C, command=0x649B command_repeats=1
+Yamaha BDS671 (BDP118),9,Received NEC: address=0x837C, command=0x639C command_repeats=1
+Yamaha BDS671 (BDP118),0,Received NEC: address=0x837C, command=0x6C93 command_repeats=1
+Yamaha BDS671 (BDP118),STATUS,Received NEC: address=0x837C, command=0x57A8 command_repeats=1
+Yamaha BDS671 (BDP118),SUBTITLE,Received NEC: address=0x837C, command=0x54AB command_repeats=1
+Yamaha BDS671 (BDP118),ANGLE,Received NEC: address=0x837C, command=0x51AE command_repeats=1
+Yamaha BDS671 (BDP118),AUDIO,Received NEC: address=0x837C, command=0x52AD command_repeats=1
+Yamaha BDS671 (BDP118),CLEAR,Received NEC: address=0x837C, command=0x609F command_repeats=1
+Yamaha BDS671 (BDP118),SEARCH,Received NEC: address=0x837C, command=0x619E command_repeats=1
+Yamaha BDS671 (BDP118),PIP,Received NEC: address=0x837C, command=0x12ED command_repeats=1
+Yamaha BDS671 (BDP118),SETUP,Received NEC: address=0x837C, command=0x53AC command_repeats=1
+Yamaha BDS671 (BDP118),REPEAT,Received NEC: address=0x837C, command=0x5CA3 command_repeats=1
+Yamaha BDS671 (BDP118),2ND_AUDIO,Received NEC: address=0x837C, command=0x11EE command_repeats=1
+Yamaha BDS671 (BDP118),HOME,Received NEC: address=0x837C, command=0x10EF command_repeats=1
+Yamaha BDS671 (BDP118),A_B,Received NEC: address=0x837C, command=0x5BA4 command_repeats=1
+Yamaha BDS671 (BDP118),TOP_MENU,Received NEC: address=0x837C, command=0x4EB1 command_repeats=1
+Yamaha BDS671 (BDP118),POPUP_MENU,Received NEC: address=0x837C, command=0x30CF command_repeats=1
+Yamaha BDS671 (BDP118),RETURN,Received NEC: address=0x837C, command=0x48B7 command_repeats=1
+Yamaha BDS671 (BDP118),UP,Received NEC: address=0x837C, command=0x4BB4 command_repeats=1
+Yamaha BDS671 (BDP118),DOWN,Received NEC: address=0x837C, command=0x4CB3 command_repeats=1
+Yamaha BDS671 (BDP118),LEFT,Received NEC: address=0x837C, command=0x4AB5 command_repeats=1
+Yamaha BDS671 (BDP118),RIGHT,Received NEC: address=0x837C, command=0x49B6 command_repeats=1
+Yamaha BDS671 (BDP118),ENTER,Received NEC: address=0x837C, command=0x47B8 command_repeats=1
+Yamaha BDS671 (BDP118),?? OK,Received NEC: address=0x837C, command=0x47B8 command_repeats=1
+Yamaha BDS671 (BDP118),ON_SCREEN,Received NEC: address=0x837C, command=0x59A6 command_repeats=1
+Yamaha BDS671 (BDP118),STOP,Received NEC: address=0x837C, command=0x7A85 command_repeats=1
+Yamaha BDS671 (BDP118),PAUSE,Received NEC: address=0x837C, command=0x7C83 command_repeats=1
+Yamaha BDS671 (BDP118),PLAY,Received NEC: address=0x837C, command=0x7D82 command_repeats=1
+Yamaha BDS671 (BDP118),FRAMEBACK,Received NEC: address=0x837C, command=0x718E command_repeats=1
+Yamaha BDS671 (BDP118),FRAMEFORWARD,Received NEC: address=0x837C, command=0x708F command_repeats=1
+Yamaha BDS671 (BDP118),REWIND,Received NEC: address=0x837C, command=0x7986 command_repeats=1
+Yamaha BDS671 (BDP118),FORWARD,Received NEC: address=0x837C, command=0x7887 command_repeats=1
+Yamaha BDS671 (BDP118),FRSMESBACK,Received NEC: address=0x837C, command=0x3CC3 command_repeats=1
+Yamaha BDS671 (BDP118),FRAMESFORWARD,Received NEC: address=0x837C, command=0x3DC2 command_repeats=1
+Yamaha BDS671 (BDP118),SKIPBACK,Received NEC: address=0x837C, command=0x46B9 command_repeats=1
+Yamaha BDS671 (BDP118),SKIPFORWARD,Received NEC: address=0x837C, command=0x45BA command_repeats=1
