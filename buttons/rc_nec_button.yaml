@@ -1,0 +1,20 @@
+---
+#* Remote Control (IR Transmitter) button
+# Pawelo, 20241219, created based on https://esphome.io/components/remote_transmitter.html
+
+platform: template
+name: "${receiver} - ${action}"
+id: b_nec_${receiver}_${action}
+# entity_category: config
+icon: "mdi:remote-tv"
+state_topic: $devicename/b_nec_${receiver}_${action}
+on_press:
+  then:
+    - remote_transmitter.transmit_nec:
+          transmitter_id: ir_transmitter
+          address: ${address}
+          command: ${command}
+          command_repeats: 1
+    - lambda: |-
+        // ESP_LOGD("ir_transmitter", "Transmitted NEC: ${receiver} - ${action}, address=0x%X, command=0x%X", ${address}, ${command});
+        ESP_LOGI("ir_transmitter", "Transmitted NEC: ${receiver} - ${action}, address=0x%X, command=0x%X", ${address}, ${command});
