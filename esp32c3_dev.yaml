@@ -61,6 +61,7 @@ substitutions:
 # Set of Apple TV buttons
 packages:
   apple_tv: !include buttons/set_apple_tv_ir_remote.yaml
+  smart_tv: !include buttons/set_smart_tv_ir_remote.yaml
   nano_pc: !include buttons/set_nano_pc_ir_remote.yaml
 
 text_sensor:

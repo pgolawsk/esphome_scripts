@@ -1,0 +1,72 @@
+#* Set of Smart TV IR remote buttons
+# using buttons/rc_nec_button.yaml include
+# Pawelo, 20241220, created
+
+button:
+  # rockchip,usercode = <0x7f80>;
+  # <0xae   KEY_POWER>,
+  - !include { file: rc_nec_button.yaml, vars: { receiver: "SmartTV", action: "POWER", address: 0x7F80, command: 0xAE51 } }
+  # <0xb2   KEY_MUTE>,
+  - !include { file: rc_nec_button.yaml, vars: { receiver: "SmartTV", action: "MUTE", address: 0x7F80, command: 0xB24D } }
+  # <0xac   KEY_HOME>,
+  - !include { file: rc_nec_button.yaml, vars: { receiver: "SmartTV", action: "HOME", address: 0x7F80, command: 0xAC53 } }
+  # <0xda   KEY_ENTER>,
+  - !include { file: rc_nec_button.yaml, vars: { receiver: "SmartTV", action: "ENTER", address: 0x7F80, command: 0xDA25 } }
+  - !include { file: rc_nec_button.yaml, vars: { receiver: "SmartTV", action: "OK", address: 0x7F80, command: 0xDA25 } }
+  # <0xd9   KEY_UP>,
+  - !include { file: rc_nec_button.yaml, vars: { receiver: "SmartTV", action: "UP", address: 0x7F80, command: 0xD926 } }
+  # <0xda   KEY_LEFT>,
+  - !include { file: rc_nec_button.yaml, vars: { receiver: "SmartTV", action: "LEFT", address: 0x7F80, command: 0xDA25 } }
+  # <0xd8   KEY_RIGHT>,
+  - !include { file: rc_nec_button.yaml, vars: { receiver: "SmartTV", action: "RIGHT", address: 0x7F80, command: 0xD827 } }
+  # <0xd7   KEY_DOWN>,
+  - !include { file: rc_nec_button.yaml, vars: { receiver: "SmartTV", action: "DOWN", address: 0x7F80, command: 0xD728 } }
+  # <0xb6   KEY_MENU>,
+  - !include { file: rc_nec_button.yaml, vars: { receiver: "SmartTV", action: "MENU", address: 0x7F80, command: 0xB649 } }
+  # <0xe4   KEY_BACK>,
+  - !include { file: rc_nec_button.yaml, vars: { receiver: "SmartTV", action: "BACK", address: 0x7F80, command: 0xE41B } }
+  # <0xa9   KEY_VOLUMEDOWN>,
+  - !include { file: rc_nec_button.yaml, vars: { receiver: "SmartTV", action: "VOLUME_DOWN", address: 0x7F80, command: 0xA956 } }
+  # <0xb1   KEY_VOLUMEUP>;
+  - !include { file: rc_nec_button.yaml, vars: { receiver: "SmartTV", action: "VOLUME_UP", address: 0x7F80, command: 0xB14E } }
+  # <0x42   KEY_FORWARD>,
+  - !include { file: rc_nec_button.yaml, vars: { receiver: "SmartTV", action: "FORWARD", address: 0x7F80, command: 0x42BD } }
+  # <0x44   KEY_REWIND>,
+  - !include { file: rc_nec_button.yaml, vars: { receiver: "SmartTV", action: "REWIND", address: 0x7F80, command: 0x44BB } }
+  # <0xf6   KEY_MEDIA>,
+  - !include { file: rc_nec_button.yaml, vars: { receiver: "SmartTV", action: "MEDIA", address: 0x7F80, command: 0xF609 } }
+  # <0xee   KEY_MUSIC>,
+  - !include { file: rc_nec_button.yaml, vars: { receiver: "SmartTV", action: "MUSIC", address: 0x7F80, command: 0xEE11 } }
+  # <0xab   KEY_WEB>,
+  - !include { file: rc_nec_button.yaml, vars: { receiver: "SmartTV", action: "WEB", address: 0x7F80, command: 0xAB54 } }
+  # <0xb0   KEY_APPSELECT>,
+  - !include { file: rc_nec_button.yaml, vars: { receiver: "SmartTV", action: "APP_SELECT", address: 0x7F80, command: 0xB04F } }
+  #! <0xad   KEY_ESC>, !MOUSE
+  - !include { file: rc_nec_button.yaml, vars: { receiver: "SmartTV", action: "MOUSE", address: 0x7F80, command: 0xAD52 } }
+  - !include { file: rc_nec_button.yaml, vars: { receiver: "SmartTV", action: "ESC", address: 0x7F80, command: 0xAD52 } }
+  - !include { file: rc_nec_button.yaml, vars: { receiver: "SmartTV", action: "PLAY", address: 0x7F80, command: 0xAD52 } }
+  - !include { file: rc_nec_button.yaml, vars: { receiver: "SmartTV", action: "PAUSE", address: 0x7F80, command: 0xAD52 } }
+  # <0xcf   KEY_NUMERIC_0>,
+  - !include { file: rc_nec_button.yaml, vars: { receiver: "SmartTV", action: "0", address: 0x7F80, command: 0xCF30 } }
+  # <0xce   KEY_NUMERIC_1>,
+  - !include { file: rc_nec_button.yaml, vars: { receiver: "SmartTV", action: "1", address: 0x7F80, command: 0xCE31 } }
+  # <0xcd   KEY_NUMERIC_2>,
+  - !include { file: rc_nec_button.yaml, vars: { receiver: "SmartTV", action: "2", address: 0x7F80, command: 0xCD32 } }
+  # <0xcc   KEY_NUMERIC_3>,
+  - !include { file: rc_nec_button.yaml, vars: { receiver: "SmartTV", action: "3", address: 0x7F80, command: 0xCC33 } }
+  # <0xcb   KEY_NUMERIC_4>,
+  - !include { file: rc_nec_button.yaml, vars: { receiver: "SmartTV", action: "4", address: 0x7F80, command: 0xCB34 } }
+  # <0xca   KEY_NUMERIC_5>,
+  - !include { file: rc_nec_button.yaml, vars: { receiver: "SmartTV", action: "5", address: 0x7F80, command: 0xCA35 } }
+  # <0xc9   KEY_NUMERIC_6>,
+  - !include { file: rc_nec_button.yaml, vars: { receiver: "SmartTV", action: "6", address: 0x7F80, command: 0xC936 } }
+  # <0xc8   KEY_NUMERIC_7>,
+  - !include { file: rc_nec_button.yaml, vars: { receiver: "SmartTV", action: "7", address: 0x7F80, command: 0xC837 } }
+  # <0xc7   KEY_NUMERIC_8>,
+  - !include { file: rc_nec_button.yaml, vars: { receiver: "SmartTV", action: "8", address: 0x7F80, command: 0xC738 } }
+  # <0xc6   KEY_NUMERIC_9>,
+  - !include { file: rc_nec_button.yaml, vars: { receiver: "SmartTV", action: "9", address: 0x7F80, command: 0xC639 } }
+  #! <0xa7   KEY_NUMERIC_STAR>, !1/a
+  - !include { file: rc_nec_button.yaml, vars: { receiver: "SmartTV", action: "1_A", address: 0x7F80, command: 0xA758 } }
+  # <0xbb   KEY_BACKSPACE>,
+  - !include { file: rc_nec_button.yaml, vars: { receiver: "SmartTV", action: "BACKSPACE", address: 0x7F80, command: 0xBB44 } }
