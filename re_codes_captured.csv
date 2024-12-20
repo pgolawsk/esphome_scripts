@@ -62,4 +62,55 @@ Smart TV Remote,8,Received NEC: address: 0x7F80, command: 0xC738 command_repeats
 Smart TV Remote,9,Received NEC: address: 0x7F80, command: 0xC639 command_repeats=1
 Smart TV Remote,1_A,Received NEC: address: 0x7F80, command: 0xA758 command_repeats=1
 Smart TV Remote,BACKSPACE,Received NEC: address: 0x7F80, command: 0xBB44 command_repeats=1
-
+LG TV Remote (AKB72914048),POWER,Received NEC: address=0xFB04, command=0xF708 command_repeats=1
+LG TV Remote (AKB72914048),?ENERGY,Received NEC: address=0xFB04, command=0x6A95 command_repeats=1
+LG TV Remote (AKB72914048),?AV_MODE,Received NEC: address=0xFB04, command=0xCF30 command_repeats=1
+LG TV Remote (AKB72914048),?INPUT,Received NEC: address=0xFB04, command=0xF40B command_repeats=1
+LG TV Remote (AKB72914048),?TV_RADIO,Received NEC: address=0xFB04, command=0x0FF0 command_repeats=1
+LG TV Remote (AKB72914048),0,Received NEC: address=0xFB04, command=0xEF10 command_repeats=1
+LG TV Remote (AKB72914048),1,Received NEC: address=0xFB04, command=0xEE11 command_repeats=1
+LG TV Remote (AKB72914048),2,Received NEC: address=0xFB04, command=0xED12 command_repeats=1
+LG TV Remote (AKB72914048),3,Received NEC: address=0xFB04, command=0xEC13 command_repeats=1
+LG TV Remote (AKB72914048),4,Received NEC: address=0xFB04, command=0xEB14 command_repeats=1
+LG TV Remote (AKB72914048),5,Received NEC: address=0xFB04, command=0xEA15 command_repeats=1
+LG TV Remote (AKB72914048),6,Received NEC: address=0xFB04, command=0xE916 command_repeats=1
+LG TV Remote (AKB72914048),7,Received NEC: address=0xFB04, command=0xE817 command_repeats=1
+LG TV Remote (AKB72914048),8,Received NEC: address=0xFB04, command=0xE718 command_repeats=1
+LG TV Remote (AKB72914048),9,Received NEC: address=0xFB04, command=0xE619 command_repeats=1
+LG TV Remote (AKB72914048),?LIST,Received NEC: address=0xFB04, command=0xAC53 command_repeats=1
+LG TV Remote (AKB72914048),?Q_VIEW,Received NEC: address=0xFB04, command=0xE51A command_repeats=1
+LG TV Remote (AKB72914048),VOLUMEUP,Received NEC: address=0xFB04, command=0xFD02 command_repeats=1
+LG TV Remote (AKB72914048),VOLUMEDOWN,Received NEC: address=0xFB04, command=0xFC03 command_repeats=1
+LG TV Remote (AKB72914048),MUTE,Received NEC: address=0xFB04, command=0xF609 command_repeats=1
+LG TV Remote (AKB72914048),FAVORITES,Received NEC: address=0xFB04, command=0xE11E command_repeats=1
+LG TV Remote (AKB72914048),?3D,Received NEC: address=0xFB04, command=0x23DC command_repeats=1
+LG TV Remote (AKB72914048),CHANNELUP,Received NEC: address=0xFB04, command=0xFF00 command_repeats=1
+LG TV Remote (AKB72914048),?? PAGEUP,Received NEC: address=0xFB04, command=0xFF00 command_repeats=1
+LG TV Remote (AKB72914048),CHANNELDOWN,Received NEC: address=0xFB04, command=0xFE01 command_repeats=1
+LG TV Remote (AKB72914048),?? PAGEDOWN,Received NEC: address=0xFB04, command=0xFE01 command_repeats=1
+LG TV Remote (AKB72914048),?GU/IDE,Received NEC: address=0xFB04, command=0x54AB command_repeats=1
+LG TV Remote (AKB72914048),HOME,Received NEC: address=0xFB04, command=0xBC43 command_repeats=1
+LG TV Remote (AKB72914048),?Q_MENU,Received NEC: address=0xFB04, command=0xBA45 command_repeats=1
+LG TV Remote (AKB72914048),OK,Received NEC: address=0xFB04, command=0xBB44 command_repeats=1
+LG TV Remote (AKB72914048),LEFT,Received NEC: address=0xFB04, command=0xF807 command_repeats=1
+LG TV Remote (AKB72914048),RIGHT,Received NEC: address=0xFB04, command=0xF906 command_repeats=1
+LG TV Remote (AKB72914048),UP,Received NEC: address=0xFB04, command=0xBF40 command_repeats=1
+LG TV Remote (AKB72914048),DOWN,Received NEC: address=0xFB04, command=0xBE41 command_repeats=1
+LG TV Remote (AKB72914048),BACK,Received NEC: address=0xFB04, command=0xD728 command_repeats=1
+LG TV Remote (AKB72914048),INFO,Received NEC: address=0xFB04, command=0x55AA command_repeats=1
+LG TV Remote (AKB72914048),EXIT,Received NEC: address=0xFB04, command=0xA45B command_repeats=1
+LG TV Remote (AKB72914048),RED,Received NEC: address=0xFB04, command=0x8D72 command_repeats=1
+LG TV Remote (AKB72914048),GREEN,Received NEC: address=0xFB04, command=0x8E71 command_repeats=1
+LG TV Remote (AKB72914048),YELLOW,Received NEC: address=0xFB04, command=0x9C63 command_repeats=1
+LG TV Remote (AKB72914048),BLUE,Received NEC: address=0xFB04, command=0x9E61 command_repeats=1
+LG TV Remote (AKB72914048),?TEXT,Received NEC: address=0xFB04, command=0xDF20 command_repeats=1
+LG TV Remote (AKB72914048),?T_OPT,Received NEC: address=0xFB04, command=0xDE21 command_repeats=1
+LG TV Remote (AKB72914048),SUBTITLE,Received NEC: address=0xFB04, command=0xC639 command_repeats=1
+LG TV Remote (AKB72914048),STOP,Received NEC: address=0xFB04, command=0x4EB1 command_repeats=1
+LG TV Remote (AKB72914048),PLAY,Received NEC: address=0xFB04, command=0x4FB0 command_repeats=1
+LG TV Remote (AKB72914048),PAUSE,Received NEC: address=0xFB04, command=0x45BA command_repeats=1
+LG TV Remote (AKB72914048),REWIND,Received NEC: address=0xFB04, command=0x708F command_repeats=1
+LG TV Remote (AKB72914048),FORWARD,Received NEC: address=0xFB04, command=0x718E command_repeats=1
+LG TV Remote (AKB72914048),?SIMPLINK,Received NEC: address=0xFB04, command=0x817E command_repeats=1
+LG TV Remote (AKB72914048),?RATIO,Received NEC: address=0xFB04, command=0x8679 command_repeats=1
+LG TV Remote (AKB72914048),?AD,Received NEC: address=0xFB04, command=0x6E91 command_repeats=1
