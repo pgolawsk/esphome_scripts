@@ -1,0 +1,19 @@
+---
+#* Remote Control (IR Transmitter) button for LG TV
+# Pawelo, 20241219, created based on https://esphome.io/components/remote_transmitter.html
+
+platform: template
+name: "${receiver} - ${action}"
+id: b_lg_${receiver}_${action}
+# entity_category: config
+icon: "mdi:remote-tv"
+state_topic: $devicename/b_lg_${receiver}_${action}
+on_press:
+  then:
+    - remote_transmitter.transmit_lg:
+          transmitter_id: ir_transmitter
+          data: ${data}
+          nbits: 32
+    - lambda: |-
+        // ESP_LOGD("ir_transmitter", "Transmitted LG: ${receiver} - ${action}, data=0x%X, nbits=%d", ${data}, 32);
+        ESP_LOGI("ir_transmitter", "Transmitted LG: ${receiver} - ${action}, data=0x%X, nbits=%d", ${data}, 32);
