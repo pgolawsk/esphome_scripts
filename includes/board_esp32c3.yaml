@@ -1,9 +1,10 @@
 ---
 #* Base configuration for ESP32C3 SuperMini board (https://pl.aliexpress.com/item/1005006096717048.html)
-#! in case diffrent setup needed please include components PRIOR the board itself
+#! in case different setup needed please include components PRIOR the board itself
 # Pawelo 20231205, created as copy of board_esp32_with_sun.yaml
 # Pawelo, 20241117, added regular mqtt (no RTTL support), regular time snmp (with no sun)
 # Pawelo, 20241119, shortened esphome comment
+# Pawelo, 20241221, set flash_write_interval to 15min
 
 esphome:
   name: $devicename
@@ -22,8 +23,8 @@ esp32:
   #   # type: arduino
   #   type: esp-idf
 
-# preferences:
-#   flash_write_interval: 15min
+preferences:
+  flash_write_interval: 15min
 
 <<: !include wifi.yaml
 # <<: !include wifi_extended.yaml
