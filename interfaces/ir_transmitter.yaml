@@ -1,0 +1,15 @@
+---
+#* IR Transmitter (38kHz) interface via GPIO
+# Pawelo, 20241219, created based on https://esphome.io/components/remote_transmitter
+
+
+remote_transmitter:
+  id: ir_transmitter
+  pin:
+    number: ${gpio}
+    # inverted: true
+    # mode:
+    #   input: true
+    #   pullup: true
+  carrier_duty_percent: 50%
+  rmt_channel: ${rmt_channel} # for ESP32c3 can be 0-1, for ESP32 can be 0-7, for ESP32s2 0-3, for ESP32s3 0-3
