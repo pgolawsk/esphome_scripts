@@ -30,9 +30,9 @@ button:
   # <0xb1   KEY_VOLUMEUP>;
   - !include { file: rc_nec_button.yaml, vars: { receiver: "SmartTV", action: "VOLUME_UP", address: 0x7F80, command: 0xB14E } }
   # <0x42   KEY_FORWARD>,
-  - !include { file: rc_nec_button.yaml, vars: { receiver: "SmartTV", action: "FORWARD", address: 0x7F80, command: 0x42BD } }
+  - !include { file: rc_nec_button.yaml, vars: { receiver: "SmartTV", action: "SKIP_BACK", address: 0x7F80, command: 0x42BD } }
   # <0x44   KEY_REWIND>,
-  - !include { file: rc_nec_button.yaml, vars: { receiver: "SmartTV", action: "REWIND", address: 0x7F80, command: 0x44BB } }
+  - !include { file: rc_nec_button.yaml, vars: { receiver: "SmartTV", action: "SKIP_FORWARD", address: 0x7F80, command: 0x44BB } }
   # <0xf6   KEY_MEDIA>,
   - !include { file: rc_nec_button.yaml, vars: { receiver: "SmartTV", action: "MEDIA", address: 0x7F80, command: 0xF609 } }
   # <0xee   KEY_MUSIC>,
