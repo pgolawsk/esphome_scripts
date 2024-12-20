@@ -15,6 +15,7 @@
 # Pawelo, 20241122, cleanup of old/unused mqtt commented code
 # Pawelo, 20241124, added wifi strength sensor and wifi_scan button
 # Pawelo, 20241219, added debug component and sensors
+# Pawelo, 20241221, added factory_reset, safe_restart and shutdown buttons
 #
 #! run with this command to override substitutions
 # esphome -s devicename espXX -s updates 1min -s room <Room name> -s mqtt_room <room> run esp32_MMmm_SSss__PP.yaml --device 192.168.x.x
@@ -150,8 +151,12 @@ sensor:
 #   - !include switches/platform_restart.yaml
 
 button:
-  # Restart button
+  # Restart, reset and shutdown buttons
   - !include { file: buttons/restart_button.yaml }
+  # for _dev.yaml scripts include additional buttons
+  - !include { file: buttons/safe_mode_restart_button.yaml }
+  - !include { file: buttons/factory_reset_button.yaml }
+  - !include { file: buttons/shutdown_button.yaml }
 
   # Scan Wifi button (require wifi_info text sensor to be present to display results)
   # WARN: Performing the scan will disconnect device from current WiFi
