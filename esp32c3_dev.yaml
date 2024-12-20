@@ -11,7 +11,9 @@
 # Pawelo, 20241219, added debug component and sensors
 # Pawelo, 20241219, added ir_receiver for remote code detection
 # Pawelo, 20241219, added ir_transmitter for remote code actions
-#
+# Pawelo, 20241220, added packages with IR remote buttons
+# Pawelo, 20241221, added factory_reset, safe_restart and shutdown buttons
+
 #! run with this command to override substitutions
 # esphome -s devicename espXX -s updates 1min -s room <Room name> -s mqtt_room <room> run esp32_MMmm_SSss__PP.yaml --device 192.168.x.x
 # heare are default values if those are not given via command line
@@ -19,7 +21,7 @@ substitutions:
 #  devices: "Temperature and Humidity via SHTx30 and Illuminance via BH1750"
   devices: "DEV Kit"
   project_name: "pgolawsk.esp_home"
-  version: "20241219"
+  version: "20241220"
 
   devicename: esp32-xx
   updates: "30s"
@@ -60,9 +62,19 @@ substitutions:
 # IR Remote control buttons
 # Set of Apple TV buttons
 packages:
-  apple_tv: !include buttons/set_apple_tv_ir_remote.yaml
-  smart_tv: !include buttons/set_smart_tv_ir_remote.yaml
-  nano_pc: !include buttons/set_nano_pc_ir_remote.yaml
+  # apple_tv: !include buttons/set_apple_tv_ir_remote.yaml
+  # smart_tv: !include buttons/set_smart_tv_ir_remote.yaml
+  # smart_tv2: !include buttons/set_smart_tv_ir_remote_rest.yaml
+  # nano_pc: !include buttons/set_nano_pc_ir_remote.yaml
+  # nano_pc2: !include buttons/set_nano_pc_ir_remote_rest.yaml
+  lg_tv: !include buttons/set_lg_tv_ir_remote.yaml
+  # lg_tv2: !include buttons/set_lg_tv_ir_remote_rest.yaml
+  # yamaha_av_main: !include buttons/set_yamaha_av_main_ir_remote.yaml
+  # yamaha_av_main2: !include buttons/set_yamaha_av_main_ir_remote_rest.yaml
+  # yamaha_av_2zone: !include buttons/set_yamaha_av_2zone_ir_remote.yaml
+  # yamaha_av_2zone2: !include buttons/set_yamaha_av_2zone_ir_remote_rest.yaml
+  # yamaha_bd: !include buttons/set_yamaha_bd_ir_remote.yaml
+  # yamaha_bd2: !include buttons/set_yamaha_bd_ir_remote_rest.yaml
 
 text_sensor:
   - !include sensors/text_uptime.yaml
@@ -116,8 +128,13 @@ sensor:
   # - !include { file: sensors/tvoc_eco2_ENS160.yaml, vars: { ix: "", bus_id: "bus_a", address: "0x53" } }
 
 button:
-  # Restart button
+  # Restart, reset and shutdown buttons
   - !include { file: buttons/restart_button.yaml }
+  # for _dev.yaml scripts include additional buttons
+  - !include { file: buttons/safe_mode_restart_button.yaml }
+  - !include { file: buttons/factory_reset_button.yaml }
+  - !include { file: buttons/shutdown_button.yaml }
+
   # Scan Wifi button (require wifi_info text sensor to be present to display results)
   # WARN: Performing the scan will disconnect device from current WiFi
   - !include { file: buttons/scan_wifi_button.yaml }
