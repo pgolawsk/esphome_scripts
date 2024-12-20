@@ -126,6 +126,14 @@ button:
   # single remote buttons can be included here separately
   # # Apple TV Remote,MENU,Received NEC: address=0x87EE, command=0xB603 command_repeats=1
   # - !include { file: buttons/rc_nec_button.yaml, vars: { receiver: "AppleTV", action: "MENU", address: 0x87EE, command: 0xB603 } }
+  # # some LG TV buttons - via LG
+  # - !include { file: buttons/rc_lg_button.yaml, vars: { receiver: "LGTV", action: "POWER", data: 0x20DF10EF } }
+  # - !include { file: buttons/rc_lg_button.yaml, vars: { receiver: "LGTV", action: "INPUT", data: 0x20DFD02F } }
+  # - !include { file: buttons/rc_lg_button.yaml, vars: { receiver: "LGTV", action: "MUTE", data: 0x20DF906F } }
+  # - !include { file: buttons/rc_lg_button.yaml, vars: { receiver: "LGTV", action: "BACK", data: 0x20DF14EB } }
+  # # some LG TV buttons - via NEC
+  # - !include { file: buttons/rc_nec_button.yaml, vars: { receiver: "LG_TV", action: "1", address: 0xFB04, command: 0xEE11 } }
+  # - !include { file: buttons/rc_nec_button.yaml, vars: { receiver: "LG_TV", action: "HOME", address: 0xFB04, command: 0xBC43 } }
 
 switch:
   # LED cycle
