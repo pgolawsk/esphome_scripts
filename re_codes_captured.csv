@@ -258,6 +258,7 @@ Yamaha A810 (RAV447) - 2nd ZONE,9,Received NEC: address=0x017F, command=0x8679 c
 Yamaha A810 (RAV447) - 2nd ZONE,0,Received NEC: address=0x017F, command=0x857A command_repeats=1
 Yamaha A810 (RAV447) - 2nd ZONE,PLUS_10,Received NEC: address=0x017F, command=0x847B command_repeats=1
 Yamaha A810 (RAV447) - 2nd ZONE,ENT,Received NEC: address=0x017F, command=0x837C command_repeats=1
+Yamaha A810 (RAV447) - 2nd ZONE,HDMI_OUT,Received NEC: address=0x017F, command=0x0A53 command_repeats=1
 Yamaha BDS671 (BDP118),POWER,Received NEC: address=0x837C, command=0x7F80 command_repeats=1
 Yamaha BDS671 (BDP118),EJECTCD,Received NEC: address=0x837C, command=0x7E81 command_repeats=1
 Yamaha BDS671 (BDP118),RED,Received NEC: address=0x837C, command=0x16E9 command_repeats=1
