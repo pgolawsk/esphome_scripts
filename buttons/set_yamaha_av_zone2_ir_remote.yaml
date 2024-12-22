@@ -1,0 +1,37 @@
+#* Set of Yamaha A810 (RAV447) IR remote buttons for 2nd zone
+# using buttons/rc_nec_button.yaml include
+# IR codes based on https://github.com/friendlyarm/kernel-rockchip/blob/nanopi6-v6.1.y/arch/arm64/boot/dts/rockchip/rk3588-nanopi6-common.dtsi
+# Pawelo, 20241221, created from captures codes list
+# Pawelo, 20241222, added receiver name as variable
+
+button:
+  # Yamaha A810 (RAV447) - 2nd ZONE,POWER,Received NEC: address=0x857A, command=0x3A45 command_repeats=1
+  - !include { file: rc_nec_button.yaml, vars: { receiver: "${receiver}", action: "POWER", address: 0x857A, command: 0x3A45 } }
+  # Yamaha A810 (RAV447) - 2nd ZONE,PARTY,Received NEC: address=0x857A, command=0xCB34 command_repeats=1, same code on zone 2
+  - !include { file: rc_nec_button.yaml, vars: { receiver: "${receiver}", action: "PARTY", address: 0x857A, command: 0xCB34 } }
+  # Yamaha A810 (RAV447) - 2nd ZONE,SCENE_DVD,Received NEC: address=0x857A, command=0x7E01 command_repeats=1
+  - !include { file: rc_nec_button.yaml, vars: { receiver: "${receiver}", action: "SCENE_DVD", address: 0x857A, command: 0x7E01 } }
+  # Yamaha A810 (RAV447) - 2nd ZONE,SCENE_TV,Received NEC: address=0x857A, command=0x7B04 command_repeats=1
+  - !include { file: rc_nec_button.yaml, vars: { receiver: "${receiver}", action: "SCENE_TV", address: 0x857A, command: 0x7B04 } }
+  # Yamaha A810 (RAV447) - 2nd ZONE,SCENE_CD,Received NEC: address=0x857A, command=0x7807 command_repeats=1
+  - !include { file: rc_nec_button.yaml, vars: { receiver: "${receiver}", action: "SCENE_CD", address: 0x857A, command: 0x7807 } }
+  # Yamaha A810 (RAV447) - 2nd ZONE,SCENE_RADIO,Received NEC: address=0x857A, command=0x750A command_repeats=1
+  - !include { file: rc_nec_button.yaml, vars: { receiver: "${receiver}", action: "SCENE_RADIO", address: 0x857A, command: 0x750A } }
+  # Yamaha A810 (RAV447) - 2nd ZONE,UP,Received NEC: address=0x857A, command=0x542B command_repeats=1
+  - !include { file: rc_nec_button.yaml, vars: { receiver: "${receiver}", action: "A_UP", address: 0x857A, command: 0x542B } }
+  # Yamaha A810 (RAV447) - 2nd ZONE,DOWN,Received NEC: address=0x857A, command=0x532C command_repeats=1
+  - !include { file: rc_nec_button.yaml, vars: { receiver: "${receiver}", action: "A_DOWN", address: 0x857A, command: 0x532C } }
+  # Yamaha A810 (RAV447) - 2nd ZONE,LEFT,Received NEC: address=0x857A, command=0x522D command_repeats=1
+  - !include { file: rc_nec_button.yaml, vars: { receiver: "${receiver}", action: "A_LEFT", address: 0x857A, command: 0x522D } }
+  # Yamaha A810 (RAV447) - 2nd ZONE,RIGHT,Received NEC: address=0x857A, command=0x512E command_repeats=1
+  - !include { file: rc_nec_button.yaml, vars: { receiver: "${receiver}", action: "A_RIGHT", address: 0x857A, command: 0x512E } }
+  # Yamaha A810 (RAV447) - 2nd ZONE,?? OK,Received NEC: address=0x857A, command=0x502F command_repeats=1
+  - !include { file: rc_nec_button.yaml, vars: { receiver: "${receiver}", action: "A_OK", address: 0x857A, command: 0x502F } }
+  # Yamaha A810 (RAV447) - 2nd ZONE,RETURN,Received NEC: address=0x857A, command=0x433C command_repeats=1
+  - !include { file: rc_nec_button.yaml, vars: { receiver: "${receiver}", action: "A_RETURN", address: 0x857A, command: 0x433C } }
+  # Yamaha A810 (RAV447) - 2nd ZONE,VOLUMEUP,Received NEC: address=0x857A, command=0x25DA command_repeats=1
+  - !include { file: rc_nec_button.yaml, vars: { receiver: "${receiver}", action: "VOLUME_UP", address: 0x857A, command: 0x25DA } }
+  # Yamaha A810 (RAV447) - 2nd ZONE,VOLUMEDOWN,Received NEC: address=0x857A, command=0x24DB command_repeats=1
+  - !include { file: rc_nec_button.yaml, vars: { receiver: "${receiver}", action: "VOLUME_DOWN", address: 0x857A, command: 0x24DB } }
+  # Yamaha A810 (RAV447) - 2nd ZONE,MUTE,Received NEC: address=0x857A, command=0x23DC command_repeats=1
+  - !include { file: rc_nec_button.yaml, vars: { receiver: "${receiver}", action: "MUTE", address: 0x857A, command: 0x23DC } }

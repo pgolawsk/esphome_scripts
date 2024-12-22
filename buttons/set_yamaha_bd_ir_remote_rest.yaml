@@ -1,0 +1,87 @@
+#* Set of Yamaha BD S-671 (BDP118) IR remote buttons - non-essential
+# using buttons/rc_nec_button.yaml include
+# IR codes based on https://github.com/friendlyarm/kernel-rockchip/blob/nanopi6-v6.1.y/arch/arm64/boot/dts/rockchip/rk3588-nanopi6-common.dtsi
+# Pawelo, 20241221, created from captures codes list
+# Pawelo, 20241222, added receiver name as variable
+
+button:
+  # Yamaha BDS671 (BDP118),RED,Received NEC: address=0x837C, command=0x16E9 command_repeats=1
+  - !include { file: rc_nec_button.yaml, vars: { receiver: "${receiver}", action: "RED", address: 0x837C, command: 0x16E9 } }
+  # Yamaha BDS671 (BDP118),PROGRAM,Received NEC: address=0x837C, command=0x16E9 command_repeats=1
+  - !include { file: rc_nec_button.yaml, vars: { receiver: "${receiver}", action: "PROGRAM", address: 0x837C, command: 0x16E9 } }
+  # Yamaha BDS671 (BDP118),GREEN,Received NEC: address=0x837C, command=0x15EA command_repeats=1
+  - !include { file: rc_nec_button.yaml, vars: { receiver: "${receiver}", action: "GREEN", address: 0x837C, command: 0x15EA } }
+  # Yamaha BDS671 (BDP118),MARKER,Received NEC: address=0x837C, command=0x15EA command_repeats=1
+  - !include { file: rc_nec_button.yaml, vars: { receiver: "${receiver}", action: "MARKER", address: 0x837C, command: 0x15EA } }
+  # Yamaha BDS671 (BDP118),YELLOW,Received NEC: address=0x837C, command=0x13EC command_repeats=1
+  - !include { file: rc_nec_button.yaml, vars: { receiver: "${receiver}", action: "YELLOW", address: 0x837C, command: 0x13EC } }
+  # Yamaha BDS671 (BDP118),DIGEST,Received NEC: address=0x837C, command=0x13EC command_repeats=1
+  - !include { file: rc_nec_button.yaml, vars: { receiver: "${receiver}", action: "DIGEST", address: 0x837C, command: 0x13EC } }
+  # Yamaha BDS671 (BDP118),BLUE,Received NEC: address=0x837C, command=0x14EB command_repeats=1
+  - !include { file: rc_nec_button.yaml, vars: { receiver: "${receiver}", action: "BLUE", address: 0x837C, command: 0x14EB } }
+  # Yamaha BDS671 (BDP118),ZOOM,Received NEC: address=0x837C, command=0x14EB command_repeats=1
+  - !include { file: rc_nec_button.yaml, vars: { receiver: "${receiver}", action: "ZOOM", address: 0x837C, command: 0x14EB } }
+  # Yamaha BDS671 (BDP118),1,Received NEC: address=0x837C, command=0x6B94 command_repeats=1
+  - !include { file: rc_nec_button.yaml, vars: { receiver: "${receiver}", action: "1", address: 0x837C, command: 0x6B94 } }
+  # Yamaha BDS671 (BDP118),2,Received NEC: address=0x837C, command=0x6A95 command_repeats=1
+  - !include { file: rc_nec_button.yaml, vars: { receiver: "${receiver}", action: "2", address: 0x837C, command: 0x6A95 } }
+  # Yamaha BDS671 (BDP118),3,Received NEC: address=0x837C, command=0x6996 command_repeats=1
+  - !include { file: rc_nec_button.yaml, vars: { receiver: "${receiver}", action: "3", address: 0x837C, command: 0x6996 } }
+  # Yamaha BDS671 (BDP118),4,Received NEC: address=0x837C, command=0x6897 command_repeats=1
+  - !include { file: rc_nec_button.yaml, vars: { receiver: "${receiver}", action: "4", address: 0x837C, command: 0x6897 } }
+  # Yamaha BDS671 (BDP118),5,Received NEC: address=0x837C, command=0x6798 command_repeats=1
+  - !include { file: rc_nec_button.yaml, vars: { receiver: "${receiver}", action: "5", address: 0x837C, command: 0x6798 } }
+  # Yamaha BDS671 (BDP118),6,Received NEC: address=0x837C, command=0x6699 command_repeats=1
+  - !include { file: rc_nec_button.yaml, vars: { receiver: "${receiver}", action: "6", address: 0x837C, command: 0x6699 } }
+  # Yamaha BDS671 (BDP118),7,Received NEC: address=0x837C, command=0x659A command_repeats=1
+  - !include { file: rc_nec_button.yaml, vars: { receiver: "${receiver}", action: "7", address: 0x837C, command: 0x659A } }
+  # Yamaha BDS671 (BDP118),8,Received NEC: address=0x837C, command=0x649B command_repeats=1
+  - !include { file: rc_nec_button.yaml, vars: { receiver: "${receiver}", action: "8", address: 0x837C, command: 0x649B } }
+  # Yamaha BDS671 (BDP118),9,Received NEC: address=0x837C, command=0x639C command_repeats=1
+  - !include { file: rc_nec_button.yaml, vars: { receiver: "${receiver}", action: "9", address: 0x837C, command: 0x639C } }
+  # Yamaha BDS671 (BDP118),0,Received NEC: address=0x837C, command=0x6C93 command_repeats=1
+  - !include { file: rc_nec_button.yaml, vars: { receiver: "${receiver}", action: "0", address: 0x837C, command: 0x6C93 } }
+  # Yamaha BDS671 (BDP118),STATUS,Received NEC: address=0x837C, command=0x57A8 command_repeats=1
+  - !include { file: rc_nec_button.yaml, vars: { receiver: "${receiver}", action: "STATUS", address: 0x837C, command: 0x57A8 } }
+  # Yamaha BDS671 (BDP118),ANGLE,Received NEC: address=0x837C, command=0x51AE command_repeats=1
+  - !include { file: rc_nec_button.yaml, vars: { receiver: "${receiver}", action: "ANGLE", address: 0x837C, command: 0x51AE } }
+  # Yamaha BDS671 (BDP118),AUDIO,Received NEC: address=0x837C, command=0x52AD command_repeats=1
+  - !include { file: rc_nec_button.yaml, vars: { receiver: "${receiver}", action: "AUDIO", address: 0x837C, command: 0x52AD } }
+  # Yamaha BDS671 (BDP118),CLEAR,Received NEC: address=0x837C, command=0x609F command_repeats=1
+  - !include { file: rc_nec_button.yaml, vars: { receiver: "${receiver}", action: "CLEAR", address: 0x837C, command: 0x609F } }
+  # Yamaha BDS671 (BDP118),SEARCH,Received NEC: address=0x837C, command=0x619E command_repeats=1
+  - !include { file: rc_nec_button.yaml, vars: { receiver: "${receiver}", action: "SEARCH", address: 0x837C, command: 0x619E } }
+  # Yamaha BDS671 (BDP118),PIP,Received NEC: address=0x837C, command=0x12ED command_repeats=1
+  - !include { file: rc_nec_button.yaml, vars: { receiver: "${receiver}", action: "PIP", address: 0x837C, command: 0x12ED } }
+  # Yamaha BDS671 (BDP118),SETUP,Received NEC: address=0x837C, command=0x53AC command_repeats=1
+  - !include { file: rc_nec_button.yaml, vars: { receiver: "${receiver}", action: "SETUP", address: 0x837C, command: 0x53AC } }
+  # Yamaha BDS671 (BDP118),REPEAT,Received NEC: address=0x837C, command=0x5CA3 command_repeats=1
+  - !include { file: rc_nec_button.yaml, vars: { receiver: "${receiver}", action: "REPEAT", address: 0x837C, command: 0x5CA3 } }
+  # Yamaha BDS671 (BDP118),2ND_AUDIO,Received NEC: address=0x837C, command=0x11EE command_repeats=1
+  - !include { file: rc_nec_button.yaml, vars: { receiver: "${receiver}", action: "2ND_AUDIO", address: 0x837C, command: 0x11EE } }
+  # Yamaha BDS671 (BDP118),A_B,Received NEC: address=0x837C, command=0x5BA4 command_repeats=1
+  - !include { file: rc_nec_button.yaml, vars: { receiver: "${receiver}", action: "A_B", address: 0x837C, command: 0x5BA4 } }
+  # Yamaha BDS671 (BDP118),TOP_MENU,Received NEC: address=0x837C, command=0x4EB1 command_repeats=1
+  - !include { file: rc_nec_button.yaml, vars: { receiver: "${receiver}", action: "TOP_MENU", address: 0x837C, command: 0x4EB1 } }
+  # Yamaha BDS671 (BDP118),POPUP_MENU,Received NEC: address=0x837C, command=0x30CF command_repeats=1
+  - !include { file: rc_nec_button.yaml, vars: { receiver: "${receiver}", action: "POPUP_MENU", address: 0x837C, command: 0x30CF } }
+  # Yamaha BDS671 (BDP118),ENTER,Received NEC: address=0x837C, command=0x47B8 command_repeats=1
+  - !include { file: rc_nec_button.yaml, vars: { receiver: "${receiver}", action: "ENTER", address: 0x837C, command: 0x47B8 } }
+  # Yamaha BDS671 (BDP118),ON_SCREEN,Received NEC: address=0x837C, command=0x59A6 command_repeats=1
+  - !include { file: rc_nec_button.yaml, vars: { receiver: "${receiver}", action: "ON_SCREEN", address: 0x837C, command: 0x59A6 } }
+  # Yamaha BDS671 (BDP118),FRAMEBACK,Received NEC: address=0x837C, command=0x718E command_repeats=1
+  - !include { file: rc_nec_button.yaml, vars: { receiver: "${receiver}", action: "FRAME_BACK", address: 0x837C, command: 0x718E } }
+  # Yamaha BDS671 (BDP118),FRAMEFORWARD,Received NEC: address=0x837C, command=0x708F command_repeats=1
+  - !include { file: rc_nec_button.yaml, vars: { receiver: "${receiver}", action: "FRAME_FORWARD", address: 0x837C, command: 0x708F } }
+  # Yamaha BDS671 (BDP118),REWIND,Received NEC: address=0x837C, command=0x7986 command_repeats=1
+  - !include { file: rc_nec_button.yaml, vars: { receiver: "${receiver}", action: "REWIND", address: 0x837C, command: 0x7986 } }
+  # Yamaha BDS671 (BDP118),FORWARD,Received NEC: address=0x837C, command=0x7887 command_repeats=1
+  - !include { file: rc_nec_button.yaml, vars: { receiver: "${receiver}", action: "FORWARD", address: 0x837C, command: 0x7887 } }
+  # Yamaha BDS671 (BDP118),FRSMESBACK,Received NEC: address=0x837C, command=0x3CC3 command_repeats=1
+  - !include { file: rc_nec_button.yaml, vars: { receiver: "${receiver}", action: "FRAMES_BACK", address: 0x837C, command: 0x3CC3 } }
+  # Yamaha BDS671 (BDP118),FRAMESFORWARD,Received NEC: address=0x837C, command=0x3DC2 command_repeats=1
+  - !include { file: rc_nec_button.yaml, vars: { receiver: "${receiver}", action: "FRAMES_FORWARD", address: 0x837C, command: 0x3DC2 } }
+  # Yamaha BDS671 (BDP118),SKIPBACK,Received NEC: address=0x837C, command=0x46B9 command_repeats=1
+  - !include { file: rc_nec_button.yaml, vars: { receiver: "${receiver}", action: "SKIP_BACK", address: 0x837C, command: 0x46B9 } }
+  # Yamaha BDS671 (BDP118),SKIPFORWARD,Received NEC: address=0x837C, command=0x45BA command_repeats=1
+  - !include { file: rc_nec_button.yaml, vars: { receiver: "${receiver}", action: "SKIP_FORWARD", address: 0x837C, command: 0x45BA } }
