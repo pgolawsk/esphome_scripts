@@ -30,7 +30,7 @@ Author: Pawel Golawski, <pawel.golawski@2com.pl>
 
 Script filenames reflect what sensors, switches and manipulators are included in particular one. The naming convention is `board_MMmm_SSss__PP.yaml`, where:
 
-- `board` is the type of ESP board/device
+- `board` is the type of ESP board/device, like `esp12f` or `esp32c3`, ...
 - `MM` are the MEASURES provided, like temperature, humidity, ...
 - `mm` are the manipulators used, like diode, rtttl, ...
 - `SS` are the SENSORS used, like SHT30, BH1750, ...
@@ -90,6 +90,7 @@ All available manipulators
 - `2l` - Double Light Switch
 - `b` - Buzzer
 - `d` - Diode
+- `i` - IR Transmitter
 - `s` - Switch
 
 ### Sensors (`SS`)
@@ -104,9 +105,10 @@ All available sensors
 - `F` - INA3221 - 3-channel DC Current, Power, Voltage
 - `G` - BME680 - Temperature, Humidity, Pressure, Gas Resistance
 - `H` - AHTx21 - Temperature and Humidity
+- `I` - (generic) IR Transmitter
 - `L` - LD2410 - Radar sensor 24GHz
-- `O` - SGP30 - TVOC and eCO2
 - `N` - ENS160 - TVOC and eCO2
+- `O` - SGP30 - TVOC and eCO2
 - `P` - BME280 - Temperature, Humidity, Pressure
 - `S` - SHTx30 - Temperature and Humidity
 - `T` - TCS3472 - Illuminance and Color(s)
@@ -123,6 +125,7 @@ All available switches boards
 - `x` - Single Relay Board (generic from Aliexpress)
 - `b` - 9032A/9025A - Active Buzzer 9mm diameter x 3.2/2.5mm height
 - `r` - 9032/9025 - Passive Buzzer 9mm diameter x 3.2/2.5mm height
+- `i` - IR Transmitter (Open-Smart)
 
 ### Purpose (`PP`)
 
@@ -177,17 +180,24 @@ The parameters are following `-s` argument. Those are:
 - `mqtt_location` - name of the location for MQTT, `home` is default
 - `mqtt_room` - name of the room for MQTT, `room` is default
 
+Some scripts which have sensors or manipulators in 2 areas have the parameters for 2nd area passed as:
+
+- `room2` - friendly name of the room, `none` is default
+- `mqtt_location2` - name of the location for MQTT, `none` is default
+- `mqtt_room2` - name of the room for MQTT, `none` is default
+
 ## Repo description
 
 ### Folders
 
-- `buttons` - list of buttons intended to include them under `button:` section
-- `deprecated` - contain all old versions (not modular)
+- `buttons` - list of buttons intended to include them under `button:` section;
+  - folder contains also `set_of_...` files which contain multiple buttons (like for IR remote controls), but those should be included in `packages:` section
+- `deprecated` - contain all old versions (not modular usually)
 - `examples` - example configurations, how to use set of scripts
 - `fans` - list of switches intended to include them under `fan:` section
 - `fonts` - list of fonts to draw on displays intended to include them under `font:` section
 - `includes` - basic scripts for ESP boards, wifi, mqtt, ota, ...
-  - `boards` scripts mat contain wiring instructions - please READ those
+  - `board_...` scripts may contain wiring instructions - please READ those
 - `interfaces` - list of separate interfaces to include like `i2c`, `uart`, `dallas`
 - `lights` - list of switches intended to include them under `light:` section
 - `outputs` - list of outputs intended to include them under `output:` section
