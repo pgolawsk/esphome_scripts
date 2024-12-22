@@ -2,33 +2,35 @@
 # using buttons/rc_nec_button.yaml include
 # IR codes based on https://github.com/friendlyarm/kernel-rockchip/blob/nanopi6-v6.1.y/arch/arm64/boot/dts/rockchip/rk3588-nanopi6-common.dtsi
 # Pawelo, 20241221, created
+# Pawelo, 20241221, updated grouped directions into "A_" prefix
+# Pawelo, 20241222, added receiver name as variable
 
 button:
   # LG TV Remote (AKB72914048),POWER,Received NEC: address=0xFB04, command=0xF708 command_repeats=1
-  - !include { file: rc_nec_button.yaml, vars: { receiver: "LGTV", action: "POWER", address: 0x817E, command: 0xD52A } }
+  - !include { file: rc_nec_button.yaml, vars: { receiver: "${receiver}", action: "POWER", address: 0xFB04, command: 0xF708 } }
   # LG TV Remote (AKB72914048),?INPUT,Received NEC: address=0xFB04, command=0xF40B command_repeats=1
-  - !include { file: rc_nec_button.yaml, vars: { receiver: "LGTV", action: "INPUT", address: 0xFB04, command: 0xF40B } }
+  - !include { file: rc_nec_button.yaml, vars: { receiver: "${receiver}", action: "INPUT", address: 0xFB04, command: 0xF40B } }
   # LG TV Remote (AKB72914048),VOLUMEUP,Received NEC: address=0xFB04, command=0xFD02 command_repeats=1
-  - !include { file: rc_nec_button.yaml, vars: { receiver: "LGTV", action: "VOLUME_UP", address: 0xFB04, command: 0xFD02 } }
+  - !include { file: rc_nec_button.yaml, vars: { receiver: "${receiver}", action: "VOLUME_UP", address: 0xFB04, command: 0xFD02 } }
   # LG TV Remote (AKB72914048),VOLUMEDOWN,Received NEC: address=0xFB04, command=0xFC03 command_repeats=1
-  - !include { file: rc_nec_button.yaml, vars: { receiver: "LGTV", action: "VOLUME_DOWN", address: 0xFB04, command: 0xFC03 } }
+  - !include { file: rc_nec_button.yaml, vars: { receiver: "${receiver}", action: "VOLUME_DOWN", address: 0xFB04, command: 0xFC03 } }
   # LG TV Remote (AKB72914048),MUTE,Received NEC: address=0xFB04, command=0xF609 command_repeats=1
-  - !include { file: rc_nec_button.yaml, vars: { receiver: "LGTV", action: "MUTE", address: 0xFB04, command: 0xF609 } }
+  - !include { file: rc_nec_button.yaml, vars: { receiver: "${receiver}", action: "MUTE", address: 0xFB04, command: 0xF609 } }
   # LG TV Remote (AKB72914048),CHANNELUP,Received NEC: address=0xFB04, command=0xFF00 command_repeats=1
-  - !include { file: rc_nec_button.yaml, vars: { receiver: "LGTV", action: "CHANNEL_UP", address: 0xFB04, command: 0xFF00 } }
+  - !include { file: rc_nec_button.yaml, vars: { receiver: "${receiver}", action: "CHANNEL_UP", address: 0xFB04, command: 0xFF00 } }
   # LG TV Remote (AKB72914048),CHANNELDOWN,Received NEC: address=0xFB04, command=0xFE01 command_repeats=1
-  - !include { file: rc_nec_button.yaml, vars: { receiver: "LGTV", action: "CHANNEL_DOWN", address: 0xFB04, command: 0xFE01 } }
+  - !include { file: rc_nec_button.yaml, vars: { receiver: "${receiver}", action: "CHANNEL_DOWN", address: 0xFB04, command: 0xFE01 } }
   # LG TV Remote (AKB72914048),HOME,Received NEC: address=0xFB04, command=0xBC43 command_repeats=1
-  - !include { file: rc_nec_button.yaml, vars: { receiver: "LGTV", action: "HOME", address: 0xFB04, command: 0xBC43 } }
+  - !include { file: rc_nec_button.yaml, vars: { receiver: "${receiver}", action: "HOME", address: 0xFB04, command: 0xBC43 } }
   # LG TV Remote (AKB72914048),OK,Received NEC: address=0xFB04, command=0xBB44 command_repeats=1
-  - !include { file: rc_nec_button.yaml, vars: { receiver: "LGTV", action: "A_OK", address: 0xFB04, command: 0xBB44 } }
+  - !include { file: rc_nec_button.yaml, vars: { receiver: "${receiver}", action: "A_OK", address: 0xFB04, command: 0xBB44 } }
   # LG TV Remote (AKB72914048),LEFT,Received NEC: address=0xFB04, command=0xF807 command_repeats=1
-  - !include { file: rc_nec_button.yaml, vars: { receiver: "LGTV", action: "A_LEFT", address: 0xFB04, command: 0xF807 } }
+  - !include { file: rc_nec_button.yaml, vars: { receiver: "${receiver}", action: "A_LEFT", address: 0xFB04, command: 0xF807 } }
   # LG TV Remote (AKB72914048),RIGHT,Received NEC: address=0xFB04, command=0xF906 command_repeats=1
-  - !include { file: rc_nec_button.yaml, vars: { receiver: "LGTV", action: "A_RIGHT", address: 0xFB04, command: 0xF906 } }
+  - !include { file: rc_nec_button.yaml, vars: { receiver: "${receiver}", action: "A_RIGHT", address: 0xFB04, command: 0xF906 } }
   # LG TV Remote (AKB72914048),UP,Received NEC: address=0xFB04, command=0xBF40 command_repeats=1
-  - !include { file: rc_nec_button.yaml, vars: { receiver: "LGTV", action: "A_UP", address: 0xFB04, command: 0xBF40 } }
+  - !include { file: rc_nec_button.yaml, vars: { receiver: "${receiver}", action: "A_UP", address: 0xFB04, command: 0xBF40 } }
   # LG TV Remote (AKB72914048),DOWN,Received NEC: address=0xFB04, command=0xBE41 command_repeats=1
-  - !include { file: rc_nec_button.yaml, vars: { receiver: "LGTV", action: "A_DOWN", address: 0xFB04, command: 0xBE41 } }
+  - !include { file: rc_nec_button.yaml, vars: { receiver: "${receiver}", action: "A_DOWN", address: 0xFB04, command: 0xBE41 } }
   # LG TV Remote (AKB72914048),BACK,Received NEC: address=0xFB04, command=0xD728 command_repeats=1
-  - !include { file: rc_nec_button.yaml, vars: { receiver: "LGTV", action: "BACK", address: 0xFB04, command: 0xD728 } }
+  - !include { file: rc_nec_button.yaml, vars: { receiver: "${receiver}", action: "A_BACK", address: 0xFB04, command: 0xD728 } }
