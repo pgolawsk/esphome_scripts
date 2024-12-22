@@ -19,6 +19,10 @@ Author: Pawel Golawski, <pawel.golawski@2com.pl>
 - 2x ESP32-C3 plus (RGB led + IPEX option)
 - 1x ESP32-C6-WROOM-1-N8 (dev board with 2x usb-c)
 - 1x ESP32-C6 mini (dev board with 1.27mm pins)
+- 0x (+1) ESP32-S3 N16R8
+- 0x (1x) ESP32-S3 N16R8 (dev board with 2x usb-c)
+- 0x (+1)(-1) ESP32-S3 N8R2 (dev board with 2x usb-c)
+- 0x (+2) ESP32-S2FN4R2 mini (dev board with usb-c)
 
 ### Displays inventory
 
@@ -40,13 +44,14 @@ Author: Pawel Golawski, <pawel.golawski@2com.pl>
 - 1x 2m `D` - DS18B20 (Dallas) - Temperature
 - 2x `E` - INA226 - DC Current, Power, Voltage (max. 30V DC)
 - 2x `F` - INA3221 - 3-channel DC Current, Power, Voltage (max. 26V DC)
-- 1x `G` - BME680 - Temperature, Humidity, Pressure, Gas Resistance
+- 1x (+2) `G` - BME680 - Temperature, Humidity, Pressure, Gas Resistance
 - 0x `H` - AHTx21 - Temperature and Humidity
+- 2x (-1) `I` - IR Receiver 38KHz (Open-Smart, 1pin with signal)
 - 2x `L` - LD2410B - Radar sensor 24GHz
 - 2x `L` - LD2410C - Radar sensor 24GHz
 - 2x `L` - LD2420 - Radar sensor 24GHz
-- 6x `O` - SGP30 - TVOC and eCO2
 - 2x `N` - ENS160 - TVOC and eCO2
+- 6x `O` - SGP30 - TVOC and eCO2
 - 2x (-1) `P` - BME280 - Temperature, Humidity, Pressure
 - 2x `R` - RC522 - RFID tag sensor
 - 11x `S` - SHTx30 - Temperature and Humidity
@@ -56,12 +61,13 @@ Author: Pawel Golawski, <pawel.golawski@2com.pl>
 - 4x `W` - HC-SR04 - Distance (acoustic)
 - 1x `Y` - YF-B10 G1 - Water Pulse sensor
 
-### Switches inventory
+### Switches/Actuators inventory
 
 - 2x `a` - AVT5713 - Double Light Switch Board (mounted)
 - 7x `a` - AVT5713 - Double Light Switch Board (not mounted - bare board)
 - 5x `x` - ESP01S Single Relay Board (generic from Aliexpress)
 - 8x `b` - 9032A/9025A - Active Buzzer 9mm diameter x 3.2/2.5mm height
+- 2x (-1) `i` - IR Transmitter 38KHz (Open-Smart, 1pin with signal)
 - 3x `r` - 9032/9025 - Passive Buzzer 9mm diameter x 3.2/2.5mm height
 
 ### Other inventories
@@ -133,6 +139,22 @@ To be added
 #### Upstairs
 
 #### Office
+
+#### Salon
+
+PRODUCTION since: TBD
+Script `esp32c3_dev.yaml`.
+
+ESP32 board with IR Receiver and IR Transmitter, Temperature, Humidity, Pressure and Illuminance sensors.  Powered from 230V.
+
+Components:
+
+- 1x ESP32-S3 N8R2 (dev board with 2x usb-c)
+- 1x `G` - BME680 - Temperature, Humidity, Pressure, Gas Resistance
+- 1x `B` - BH1750 - Illuminance
+- 1x `I` - IR Receiver 38KHz (Open-Smart, 1pin with signal)
+- 1x `i` - IR Transmitter 38KHz (Open-Smart, 1pin with signal)
+- 1x white plastic box 90mm x 40mm x 15mm
 
 ### Outside
 
