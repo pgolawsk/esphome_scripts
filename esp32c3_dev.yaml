@@ -13,15 +13,16 @@
 # Pawelo, 20241219, added ir_transmitter for remote code actions
 # Pawelo, 20241220, added packages with IR remote buttons
 # Pawelo, 20241221, added factory_reset, safe_restart and shutdown buttons
+# Pawelo, 20241221, added receiver variable for IR packages
 
 #! run with this command to override substitutions
 # esphome -s devicename espXX -s updates 1min -s room <Room name> -s mqtt_room <room> run esp32_MMmm_SSss__PP.yaml --device 192.168.x.x
-# heare are default values if those are not given via command line
+# here are default values if those are not given via command line
 substitutions:
 #  devices: "Temperature and Humidity via SHTx30 and Illuminance via BH1750"
   devices: "DEV Kit"
   project_name: "pgolawsk.esp_home"
-  version: "20241220"
+  version: "20241222"
 
   devicename: esp32-xx
   updates: "30s"
@@ -59,22 +60,21 @@ substitutions:
 <<: !include { file: interfaces/ir_receiver.yaml, vars: { gpio: "GPIO3", dump: "nec", rmt_channel: 2 } } # for ESP32c3 can be 2-3, for ESP32 can be 0-7, for ESP32s2 0-3, for ESP32s3 4-7
 <<: !include { file: interfaces/ir_transmitter.yaml, vars: { gpio: "GPIO4", rmt_channel: 0 } } # for ESP32c3 can be 0-1, for ESP32 can be 0-7, for ESP32s2 0-3, for ESP32s3 0-3
 
-# IR Remote control buttons
-# Set of Apple TV buttons
+# IR Remote control buttons added from packages
 packages:
-  # apple_tv: !include buttons/set_apple_tv_ir_remote.yaml
-  # smart_tv: !include buttons/set_smart_tv_ir_remote.yaml
-  # smart_tv2: !include buttons/set_smart_tv_ir_remote_rest.yaml
-  # nano_pc: !include buttons/set_nano_pc_ir_remote.yaml
-  # nano_pc2: !include buttons/set_nano_pc_ir_remote_rest.yaml
-  lg_tv: !include buttons/set_lg_tv_ir_remote.yaml
-  # lg_tv2: !include buttons/set_lg_tv_ir_remote_rest.yaml
-  # yamaha_av_main: !include buttons/set_yamaha_av_main_ir_remote.yaml
-  # yamaha_av_main2: !include buttons/set_yamaha_av_main_ir_remote_rest.yaml
-  # yamaha_av_2zone: !include buttons/set_yamaha_av_2zone_ir_remote.yaml
-  # yamaha_av_2zone2: !include buttons/set_yamaha_av_2zone_ir_remote_rest.yaml
-  # yamaha_bd: !include buttons/set_yamaha_bd_ir_remote.yaml
-  # yamaha_bd2: !include buttons/set_yamaha_bd_ir_remote_rest.yaml
+  # apple_tv: !include { file: buttons/set_apple_tv_ir_remote.yaml, vars: { receiver: "ATV" } }
+  smart_tv: !include { file: buttons/set_smart_tv_ir_remote.yaml, vars: { receiver: "STV" } }
+  # smart_tv_x: !include { file: buttons/set_smart_tv_ir_remote_rest.yaml, vars: { receiver: "STVx" } }
+  # nano_pc: !include { file: buttons/set_nano_pc_ir_remote.yaml, vars: { receiver: "NPC" } }
+  # nano_pc_x: !include { file: buttons/set_nano_pc_ir_remote_rest.yaml, vars: { receiver: "NPCx" } }
+  lg_tv: !include { file: buttons/set_lg_tv_ir_remote.yaml, vars: { receiver: "TV" } }
+  # lg_tv_x: !include { file: buttons/set_lg_tv_ir_remote_rest.yaml, vars: { receiver: "TVx" } }
+  yamaha_av_main: !include { file: buttons/set_yamaha_av_main_ir_remote.yaml, vars: { receiver: "AV" } }
+  # yamaha_av_main_x: !include { file: buttons/set_yamaha_av_main_ir_remote_rest.yaml, vars: { receiver: "AVx" } }
+  yamaha_av_zone2: !include { file: buttons/set_yamaha_av_zone2_ir_remote.yaml, vars: { receiver: "AV2" } }
+  # yamaha_av_zone2_x: !include { file: buttons/set_yamaha_av_zone2_ir_remote_rest.yaml, vars: { receiver: "AV2x" } }
+  # yamaha_bd: !include { file: buttons/set_yamaha_bd_ir_remote.yaml, vars: { receiver: "BD" } }
+  # yamaha_bd_x: !include { file: buttons/set_yamaha_bd_ir_remote_rest.yaml, vars: { receiver: "BDx" } }
 
 text_sensor:
   - !include sensors/text_uptime.yaml
@@ -161,8 +161,8 @@ output:
   # - !include { file: outputs/led.yaml, vars: { ix: "", gpio: "GPIO8", inverted: true } }
 
   # LED RGB (blue only)
-#  - !include { file: outputs/led.yaml, vars: { ix: "", gpio: "GPIO7", inverted: false } }
-# OR
+  # - !include { file: outputs/led.yaml, vars: { ix: "", gpio: "GPIO7", inverted: false } }
+  # OR
   # LED RGB (multicolor)
   - !include { file: outputs/led_rgb.yaml, vars: { ix: "", ID: "rgb_led" } }
 
