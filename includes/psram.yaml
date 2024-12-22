@@ -1,0 +1,7 @@
+---
+#* Activates PSRAM on ESP32 boards with do have it (ESO32xxNxR? - those with "R?"")
+# Pawelo, 20241222, created based on https://esphome.io/components/psram.html
+
+psram:
+  mode: ${mode} # "quad' for 2MB, "octal" for 4-8MB PSRAM
+  speed: 80MHz
