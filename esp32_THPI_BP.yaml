@@ -10,11 +10,11 @@
 # Pawelo 20240628, 1.1.5, moved filters offset adjustments for BME280, BME680, SCD40, ATH2x to variables
 # Pawelo 20240906, added/testing RFID RC522
 # Pawelo 20240906, added last_tag text sensor
-# Pawelo 20241013, removed/commented  20240906 changes, prepared blank script for Dev32 generic device
+# Pawelo 20241013, removed/commented 20240906 changes, prepared blank script for Dev32 generic device
 #
 #! run with this command to override substitutions
 # esphome -s devicename espXX -s updates 1min -s room <Room name> -s mqtt_room <room> run esp32_MMmm_SSss__PP.yaml --device 192.168.x.x
-# heare are default values if those are not given via command line
+# here are default values if those are not given via command line
 substitutions:
 #  devices: "Temperature and Humidity via SHTx30 and Illuminance via BH1750"
   devices: "DEV Kit"
