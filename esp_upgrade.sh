@@ -2,6 +2,7 @@
 # Pawelo 20230923, created based on esp_setup.sh
 # Pawelo 20231205, added esp32-31
 # Pawelo 20240408, added esp32-05
+# Pawelo 20241222, added esp32s3-14, esp32-39
 
 #######################
 #*** OR Upgrade ESP Home on mac/win
@@ -30,6 +31,10 @@ esphome -s devicename esp12f-25 -s updates 30s -s room AquariumWindow -s mqtt_lo
 esphome -s devicename esp32-35 -s updates 1min -s room Pump -s mqtt_location measures -s mqtt_room pump -s room2 Garage -s mqtt_location2 outside -s mqtt_room2 garage run esp32-35_Pump_Garage
 # esphome -s devicename esp32-35 -s updates 1min -s room Pump -s mqtt_location measures -s mqtt_room pump run esp32_display_lcd_pcf8574.yaml
 # esphome -s devicename esp32-35 -s updates 1min -s room Pump -s mqtt_location measures -s mqtt_room pump run esp32_display_weact.yaml
+
+#* Future devices via OTA (with "compile" instead of "run")
+esphome -s devicename esp32-15 -s updates 30s -s room Salon -s mqtt_room salon compile esp32s3-14_Salon
+esphome -s devicename esp32-39 -s updates 1min -s room Attic -s mqtt_location home -s mqtt_room attic compile esp32-39_Attic
 
 #* Test devices
 esphome -s devicename esp12f-29 -s updates 30s -s room Test -s mqtt_location measures -s mqtt_room test run esp12f_dev.yaml
