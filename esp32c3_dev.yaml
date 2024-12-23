@@ -16,6 +16,7 @@
 # Pawelo, 20241221, added receiver variable for IR packages
 # Pawelo, 20241222, added PSRAM support (includes/ and debug_with_psram sensor)
 # Pawelo, 20241222, changed to use includes/board_esp32.yaml with variables
+# Pawelo, 20241223, added "CREATIVE" IR remote control buttons
 
 #! run with this command to override substitutions
 # esphome -s devicename espXX -s updates 1min -s room <Room name> -s mqtt_room <room> run esp32_MMmm_SSss__PP.yaml --device 192.168.x.x
@@ -84,6 +85,7 @@ packages:
   # yamaha_av_zone2_x: !include { file: buttons/set_yamaha_av_zone2_ir_remote_rest.yaml, vars: { receiver: "AV2x" } }
   # yamaha_bd: !include { file: buttons/set_yamaha_bd_ir_remote.yaml, vars: { receiver: "BD" } }
   # yamaha_bd_x: !include { file: buttons/set_yamaha_bd_ir_remote_rest.yaml, vars: { receiver: "BDx" } }
+  # creative: !include { file: buttons/set_creative_ir_remote.yaml, vars: { receiver: "CR" } }
 
 text_sensor:
   - !include sensors/text_uptime.yaml
