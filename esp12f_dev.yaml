@@ -19,9 +19,6 @@
 # Pawelo, 20241125, include first OVERRIDEs and then BOARD itself
 # Pawelo, 20241125, cleanup of old/unused mqtt commented code
 # Pawelo, 20241125, added wifi strength sensor and wifi_scan button
-# Pawelo, 20241223, include first OVERRIDEs and then BOARD itself
-# Pawelo, 20241223, cleanup of old/unused mqtt commented code
-# Pawelo, 20241223, added wifi strength sensor and wifi_scan button
 # Pawelo, 20241223, added debug component and sensors
 # Pawelo, 20241223, added factory_reset, safe_restart and shutdown buttons
 # Pawelo, 20241223, changed to use includes/board_esp32.yaml with variables
