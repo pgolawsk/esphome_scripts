@@ -14,14 +14,26 @@
 # Pawelo 20221203, 1.1.5, added Restart button on web
 # Pawelo 20230923, 1.1.5, added HA Connected binary sensor
 # Pawelo 20240628, 1.1.5, moved filters offset adjustments for BME280 to variables
+# Pawelo, 20241223, include first OVERRIDEs and then BOARD itself
+# Pawelo, 20241223, cleanup of old/unused mqtt commented code
+# Pawelo, 20241223, added wifi strength sensor and wifi_scan button
+# Pawelo, 20241223, added debug component and sensors
+# Pawelo, 20241223, added factory_reset, safe_restart and shutdown buttons
+# Pawelo, 20241222, changed to use includes/board_esp8266.yaml with variables
 
 #! run with this command to override substitutions
 # esphome -s devicename espXX -s updates 1min -s room <Room name> -s mqtt_room <room> run esp12f_MMmm_SSss__PP.yaml --device 192.168.x.x
-# heare are default values if those are not given via command line
+# here are default values if those are not given via command line
+
 substitutions:
   devices: "Temperature, Humidity and Pressure via BME280"
   project_name: "pgolawsk.esp_home"
-  version: "1.1.5"
+  version: "20241223"
+
+  board_variant: "12F" # determine variant like 12F, 07s, 01m, ...
+  board: "esp12e" # like: esp12e, esp01_1m, full list here https://registry.platformio.org/platforms/platformio/espressif8266/boards
+  restore_from_flash: "false"
+  flash_write_interval: "5min"
 
   devicename: esp12f-xx
   updates: "30s"
@@ -34,31 +46,40 @@ substitutions:
   # default variable values for !include statements
   accuracy_decimals: "2"
 
-  # Include basics of a board
-<<: !include includes/board_esp12f.yaml
-# Include/Override mqtt with/without RTTTL support if needed
-<<: !include includes/mqtt.yaml
-#<<: !include includes/mqtt_with_rtttl.yaml
+# Override some settings included below in _board_ setup
+# <<: !include includes/time_sntp_with_sun.yaml #WARN: this is to make sunrise and sunset sensor to be updated on every time sync event
+# <<: !include includes/mqtt_with_rtttl.yaml #WARN: override mqtt with RTTTL support if needed (buzzer and status led)
+# <<: !include { file: includes/logger_level.yaml, vars: { level: DEBUG, baud_rate: 115200 } } #WARN: override default log level to specific one
+# <<: !include { file: includes/logger_level.yaml, vars: { level: VERY_VERBOSE, baud_rate: 115200 } } #WARN: override default log level to specific one
+# <<: !include includes/wifi_outside.yaml #WARN: override wifi to connect to outside network instead of default
+# <<: !include { file: includes/wifi_main.yaml, vars: { } } #WARN: override wifi to connect to extended network instead of default
+# <<: !include { file: includes/wifi_extended.yaml, vars: { } } #WARN: override wifi to connect to extended network instead of default
+# <<: !include { file: includes/wifi_extended2.yaml, vars: { } } #WARN: override wifi to connect to extended network instead of default
+# <<: !include includes/api_services.yaml #WARN: this is to expose services like scan_wifi (results in scan_results sensor)
+
+# Include basics of a board
+<<: !include { file: includes/board_esp8266.yaml, vars: { board: "${board}", board_variant: "${board_variant}", restore_from_flash: "${restore_from_flash}", flash_write_interval: "${flash_write_interval}" } }
+# <<: !include includes/board_esp12f_with_sun.yaml
 
 # Include interfaces needed
+<<: !include { file: interfaces/debug.yaml, vars: { update_interval: "15s" } }
 <<: !include { file: interfaces/i2c.yaml, vars: { bus_id: "bus_a", sda: "GPIO4", scl: "GPIO5" } }
 # <<: !include { file: interfaces/dallas.yaml, vars: { gpio: "GPIO10" } }
 # <<: !include { file: interfaces/rtttl.yaml, vars: { ix: "" } }
-
-# # reinclude MQTT as a bug in ESPHOME, see: https://github.com/esphome/issues/issues/2180, https://github.com/esphome/issues/issues/1487
-# mqtt:
-#   broker: !secret mqtt_ip
-#   port: !secret mqtt_port
-# #  username: $devicename
-#   username: !secret mqtt_user
-#   password: !secret mqtt_password
-#   client_id: $devicename
-# # id: $devicename
 
 text_sensor:
   - !include sensors/text_uptime.yaml
   - !include sensors/text_version.yaml
   - !include sensors/text_wifi_info.yaml
+
+  # DEBUG component
+  - !include sensors/text_debug.yaml
+
+  # # Sun component
+  # - !include sensors/text_sun_sunrise.yaml
+  # - !include sensors/text_sun_sunset.yaml
+  # - !include sensors/text_sun_time_of_day.yaml
+  # - !include sensors/text_sun_direction.yaml
 
 binary_sensor:
   # HA Connected
@@ -67,14 +88,25 @@ binary_sensor:
 sensor:
   - !include sensors/uptime.yaml
   - !include sensors/wifi_signal.yaml
+  - !include sensors/wifi_strength.yaml
+
+  # DEBUG component
+  - !include sensors/debug.yaml
+
+  # # Sun component
+  # - !include sensors/sun_elevation.yaml
+  # - !include sensors/sun_azimuth.yaml
 
   # Temperature, Humidity and Pressure sensor
   - !include { file: sensors/temp_hum_press_BME280.yaml, vars: { ix: "", bus_id: "bus_a", address: "0x76", temp_offset: -2.1, hum_offset: +9.2, pressure_offset: +7.0 } }
 
-# switch:
-#   # Restart button
-#   - !include switches/platform_restart.yaml
-
 button:
-  # Restart button
+  # Restart, reset and shutdown buttons
   - !include { file: buttons/restart_button.yaml }
+  - !include { file: buttons/safe_mode_restart_button.yaml }
+  - !include { file: buttons/factory_reset_button.yaml }
+  - !include { file: buttons/shutdown_button.yaml }
+
+  # Scan Wifi button (require wifi_info text sensor to be present to display results)
+  # WARN: Performing the scan will disconnect device from current WiFi
+  - !include { file: buttons/scan_wifi_button.yaml }
