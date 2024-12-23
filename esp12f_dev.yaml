@@ -19,15 +19,27 @@
 # Pawelo, 20241125, include first OVERRIDEs and then BOARD itself
 # Pawelo, 20241125, cleanup of old/unused mqtt commented code
 # Pawelo, 20241125, added wifi strength sensor and wifi_scan button
+# Pawelo, 20241223, include first OVERRIDEs and then BOARD itself
+# Pawelo, 20241122, cleanup of old/unused mqtt commented code
+# Pawelo, 20241124, added wifi strength sensor and wifi_scan button
+# Pawelo, 20241219, added debug component and sensors
+# Pawelo, 20241221, added factory_reset, safe_restart and shutdown buttons
+# Pawelo, 20241222, changed to use includes/board_esp32.yaml with variables
 
 #! run with this command to override substitutions
 # esphome -s devicename espXX -s updates 1min -s room <Room name> -s mqtt_room <room> run esp12f_MMmm_SSss__PP.yaml --device 192.168.x.x
-# heare are default values if those are not given via command line
+# here are default values if those are not given via command line
+
 substitutions:
 #  devices: "Temperature, Humidity via SHTx30, Illuminance via BH1750,  and Doulbe Light Switch via AVT5713"
   devices: "DEV Kit"
   project_name: "pgolawsk.esp_home"
-  version: "20241125"
+  version: "20241223"
+
+  board_variant: "12F" # determine variant like 12F, 07s, 01m, ...
+  board: "esp12e" # like: esp12e, esp01_1m, full list here https://registry.platformio.org/platforms/platformio/espressif8266/boards
+  restore_from_flash: false
+  flash_write_interval: "5min"
 
   devicename: esp12-xx
   updates: "30s"
@@ -56,11 +68,11 @@ substitutions:
 # <<: !include includes/api_services.yaml #WARN: this is to expose services like scan_wifi (results in scan_results sensor)
 
 # Include basics of a board
-#<<: !include includes/board_esp12f.yaml
-<<: !include includes/board_esp12f_with_sun.yaml
+<<: !include { file: includes/board_esp8266.yaml, vars: { board: "${board}", board_variant: "${board_variant}", restore_from_flash: "${restore_from_flash}", flash_write_interval: "${flash_write_interval}" } }
+# <<: !include includes/board_esp12f_with_sun.yaml
 
 # Include interfaces needed
-# <<: !include { file: interfaces/debug.yaml, vars: { update_interval: "15s" } }
+<<: !include { file: interfaces/debug.yaml, vars: { update_interval: "15s" } }
 <<: !include { file: interfaces/i2c.yaml, vars: { bus_id: "bus_a", sda: "GPIO4", scl: "GPIO5" } }
 # <<: !include { file: interfaces/i2c_apds9960.yaml, vars: { address: "0x39" } }
 # <<: !include { file: interfaces/dallas.yaml, vars: { gpio: "GPIO10" } }
@@ -78,7 +90,7 @@ text_sensor:
   # - !include sensors/text_firmware.yaml
 
   # DEBUG component
-  # - !include sensors/text_debug.yaml
+  - !include sensors/text_debug.yaml
 
   # Sun component
   - !include sensors/text_sun_sunrise.yaml
@@ -118,11 +130,12 @@ binary_sensor:
 
 sensor:
   - !include sensors/uptime.yaml
+  - !include sensors/uptime_boot.yaml
   - !include sensors/wifi_signal.yaml
   - !include sensors/wifi_strength.yaml
 
   # DEBUG component
-  # - !include sensors/debug.yaml
+  - !include sensors/debug.yaml
 
   # Sun component
   - !include sensors/sun_elevation.yaml
@@ -137,10 +150,10 @@ sensor:
   # - !include { file: sensors/temp_hum_SHT3x.yaml, vars: { ix: "", bus_id: "bus_a", address: "0x44" } }
   - !include { file: sensors/temp_hum_AHT2x.yaml, vars: { ix: "", bus_id: "bus_a", address: "0x38", temp_offset: 0.0, hum_offset: 0.0 } }
 
-  # # Temperature, Humidity and Pressure seensor
+  # # Temperature, Humidity and Pressure sensor
   # - !include { file: sensors/temp_hum_press_BME280.yaml, vars: { ix: "", bus_id: "bus_a", address: "0x76", temp_offset: 0.0, hum_offset: 0.0, pressure_offset: 0.0 } }
 
-  # # Temperature, Humidity, Pressure and Gas Resistance seensor
+  # # Temperature, Humidity, Pressure and Gas Resistance sensor
   # - !include { file: sensors/temp_hum_press_gas_BME680.yaml, vars: { ix: "", bus_id: "bus_a", address: "0x77", temp_offset: 0.0, hum_offset: 0.0, pressure_offset: 0.0 } }
 
   # CO2, Temperature and Humidity sensor
@@ -155,7 +168,7 @@ sensor:
   # - !include { file: sensors/tvoc_eco2_SGP30.yaml, vars: { ix: "", bus_id: "bus_a", address: "0x58" } }
   - !include { file: sensors/tvoc_eco2_ENS160.yaml, vars: { ix: "", bus_id: "bus_a", address: "0x53" } }
 
-  # Water ussage YF-B10 sensor
+  # Water usage YF-B10 sensor
   # - !include { file: sensors/water_YF-B10.yaml, vars: { ix: "", gpio: "GPIO12" } }
   # - !include { file: sensors/water_usage_YF-B10.yaml, vars: { ix: "" } }
 
