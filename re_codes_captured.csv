@@ -2,6 +2,7 @@
 # Button names starting with "??" are not on remote, but remote behavior reflects it
 # Pawelo, 20241219, Capturing Apple TV and Smart TV remote codes
 # Pawelo, 20241220, Capturing LG TV, Yamaha AV and Yamaha BD remote codes
+# Pawelo, 20241220, Capturing CREATIVE remote codes
 
 Remote Model,Button,CODE sent by remote
 Apple TV Remote,MENU,Received NEC: address=0x87EE, command=0xB603 command_repeats=1
@@ -314,3 +315,13 @@ Yamaha BDS671 (BDP118),FRSMESBACK,Received NEC: address=0x837C, command=0x3CC3 c
 Yamaha BDS671 (BDP118),FRAMESFORWARD,Received NEC: address=0x837C, command=0x3DC2 command_repeats=1
 Yamaha BDS671 (BDP118),SKIPBACK,Received NEC: address=0x837C, command=0x46B9 command_repeats=1
 Yamaha BDS671 (BDP118),SKIPFORWARD,Received NEC: address=0x837C, command=0x45BA command_repeats=1
+CREATIVE,POWER,Received NEC: address=0x44C1, command=0x7A85 command_repeats=1
+CREATIVE,MUTE,Received NEC: address=0x44C1, command=0x8A75 command_repeats=1
+CREATIVE,SELECT,Received NEC: address=0x44C1, command=0x9A65 command_repeats=1
+CREATIVE,VOLUMEUP,Received NEC: address=0x44C1, command=0xBA45 command_repeats=1
+CREATIVE,VOLUMEDOWN,Received NEC: address=0x44C1, command=0x3AC5 command_repeats=1
+CREATIVE,MODE,Received NEC: address=0x44C1, command=0xB24D command_repeats=1
+CREATIVE,SKIPBACK,Received NEC: address=0x44C1, command=0x5AA5 command_repeats=1
+CREATIVE,PLAY,Received NEC: address=0x44C1, command=0xF20D command_repeats=1
+CREATIVE,PAUSE,Received NEC: address=0x44C1, command=0xF20D command_repeats=1
+CREATIVE,SKIPFORWARD,Received NEC: address=0x44C1, command=0xDA25 command_repeats=1
