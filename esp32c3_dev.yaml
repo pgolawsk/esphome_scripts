@@ -14,15 +14,23 @@
 # Pawelo, 20241220, added packages with IR remote buttons
 # Pawelo, 20241221, added factory_reset, safe_restart and shutdown buttons
 # Pawelo, 20241221, added receiver variable for IR packages
+# Pawelo, 20241222, added PSRAM support (includes/ and debug_with_psram sensor)
+# Pawelo, 20241222, changed to use includes/board_esp32.yaml with variables
 
 #! run with this command to override substitutions
 # esphome -s devicename espXX -s updates 1min -s room <Room name> -s mqtt_room <room> run esp32_MMmm_SSss__PP.yaml --device 192.168.x.x
 # here are default values if those are not given via command line
+
 substitutions:
 #  devices: "Temperature and Humidity via SHTx30 and Illuminance via BH1750"
   devices: "DEV Kit"
   project_name: "pgolawsk.esp_home"
   version: "20241222"
+
+  board_variant: "c3" # empty for ESP32, other values to display like c3, c6, s2, s3
+  board: "esp32-c3-devkitm-1" # like: esp32dev, esp32cam, esp32-c3-devkitm-1, esp32-s3-devkitc-1, esp32-s2-saola-1, full list here https://registry.platformio.org/platforms/platformio/espressif32/boards?version=5.3.0
+  flash_size: 4MB # One of 2MB, 4MB, 8MB, 16MB or 32MB
+  flash_write_interval: "5min"
 
   devicename: esp32-xx
   updates: "30s"
@@ -47,7 +55,8 @@ substitutions:
 <<: !include includes/api_services.yaml #WARN: this is to expose services like scan_wifi (results in scan_results sensor)
 
 # Include basics of a board
-<<: !include includes/board_esp32c3.yaml
+<<: !include { file: includes/board_esp32.yaml, vars: { board_variant: "${board_variant}", board: "${board}", flash_size: "${flash_size}", flash_write_interval: "${flash_write_interval}" } }
+# <<: !include { file: includes/psram.yaml, vars: { mode: "quad" } } # "quad' for 2MB, "octal" for 4-8MB PSRAM
 
 # Include interfaces needed
 <<: !include { file: interfaces/debug.yaml, vars: { update_interval: "5s" } }
@@ -107,6 +116,7 @@ sensor:
 
   # DEBUG component
   - !include sensors/debug.yaml
+  # - !include sensors/debug_with_psram.yaml
 
   # Sun component
   - !include sensors/sun_elevation.yaml
