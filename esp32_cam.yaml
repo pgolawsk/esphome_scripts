@@ -4,16 +4,28 @@
 ###
 # Pawelo 20230101, 1.1.5, created based on https://ivan-lesar.medium.com/the-eye-of-the-home-77dee1ea3f98
 # Pawelo 20230923, 1.1.5, added HA Connected binary sensor
-#
+# Pawelo, 20241222, include first OVERRIDEs and then BOARD itself
+# Pawelo, 20241222, cleanup of old/unused mqtt commented code
+# Pawelo, 20241222, added wifi strength sensor and wifi_scan button
+# Pawelo, 20241222, added debug component and sensors
+# Pawelo, 20241222, added factory_reset, safe_restart and shutdown buttons
+# Pawelo, 20241222, added PSRAM support (includes/ and debug_with_psram sensor)
+# Pawelo, 20241222, changed to use includes/board_esp32.yaml with variables
+
 #! run with this command to override substitutions
 # esphome -s devicename espXX -s updates 1min -s room <Room name> -s mqtt_room <room> run esp32_cam.yaml --device 192.168.x.x
-# heare are default values if those are not given via command line
+# here are default values if those are not given via command line
 
 substitutions:
 #  devices: "Temperature and Humidity via SHTx30 and Illuminance via BH1750"
   devices: "Camera Dev Kit"
   project_name: "pgolawsk.esp_home"
-  version: "1.1.5"
+  version: "20241222"
+
+  board_variant: "c3" # empty for ESP32, other values to display like c3, c6, s2, s3
+  board: "esp32-c3-devkitm-1" # like: esp32dev, esp32cam, esp32-c3-devkitm-1, esp32-s3-devkitc-1, esp32-s2-saola-1, full list here https://registry.platformio.org/platforms/platformio/espressif32/boards?version=5.3.0
+  flash_size: 4MB # One of 2MB, 4MB, 8MB, 16MB or 32MB
+  flash_write_interval: "5min"
 
   devicename: esp32-xx
   updates: "30s"
@@ -26,13 +38,24 @@ substitutions:
   # default variable values for !include statements
   accuracy_decimals: "2"
 
-  # Include basics of a board
-<<: !include includes/board_esp32-cam.yaml
-# Include/Override mqtt with/without RTTTL support if needed
-<<: !include includes/mqtt.yaml
-#<<: !include includes/mqtt_with_rtttl.yaml
+# Override some settings included below in _board_ setup
+# <<: !include includes/time_sntp_with_sun.yaml #WARN: this is to make sunrise and sunset sensor to be updated on every time sync event
+# <<: !include includes/mqtt_with_rtttl.yaml #WARN: override mqtt with RTTTL support if needed (buzzer and status led)
+# <<: !include { file: includes/logger_level.yaml, vars: { level: DEBUG, baud_rate: 115200 } } #WARN: override default log level to specific one
+# <<: !include { file: includes/logger_level.yaml, vars: { level: VERY_VERBOSE, baud_rate: 115200 } } #WARN: override default log level to specific one
+# <<: !include includes/wifi_outside.yaml #WARN: override wifi to connect to outside network instead of default
+# <<: !include { file: includes/wifi_main.yaml, vars: { } } #WARN: override wifi to connect to extended network instead of default
+# <<: !include { file: includes/wifi_extended.yaml, vars: { } } #WARN: override wifi to connect to extended network instead of default
+# <<: !include { file: includes/wifi_extended2.yaml, vars: { } } #WARN: override wifi to connect to extended network instead of default
+# <<: !include includes/api_services.yaml #WARN: this is to expose services like scan_wifi (results in scan_results sensor)
+
+# Include basics of a board
+<<: !include { file: includes/board_esp32.yaml, vars: { board_variant: "${board_variant}", board: "${board}", flash_size: "${flash_size}", flash_write_interval: "${flash_write_interval}" } }
+# <<: !include { file: includes/psram.yaml, vars: { mode: "quad" } } # "quad' for 2MB, "octal" for 4-8MB PSRAM
+# <<: !include includes/qr_guestwifi.yaml
 
 # Include interfaces needed
+<<: !include { file: interfaces/debug.yaml, vars: { update_interval: "5s" } }
 # <<: !include { file: interfaces/i2c.yaml, vars: { bus_id: "bus_a", sda: "GPIO4", scl: "GPIO5" } }
 # <<: !include { file: interfaces/dallas.yaml, vars: { gpio: "GPIO10" } }
 # <<: !include { file: interfaces/rtttl.yaml, vars: { ix: "" } }
@@ -42,6 +65,15 @@ text_sensor:
   - !include sensors/text_version.yaml
   - !include sensors/text_wifi_info.yaml
 
+  # DEBUG component
+  - !include sensors/text_debug.yaml
+
+  # # Sun component
+  # - !include sensors/text_sun_sunrise.yaml
+  # - !include sensors/text_sun_sunset.yaml
+  # - !include sensors/text_sun_time_of_day.yaml
+  # - !include sensors/text_sun_direction.yaml
+
 binary_sensor:
   # HA Connected
   - !include sensors/binary_ha_connected.yaml
@@ -50,14 +82,27 @@ sensor:
   - !include sensors/temp_internal.yaml
   - !include sensors/uptime.yaml
   - !include sensors/wifi_signal.yaml
+  - !include sensors/wifi_strength.yaml
 
-# switch:
-#   # Restart button
-#   - !include switches/platform_restart.yaml
+  # DEBUG component
+  - !include sensors/debug.yaml
+  # - !include sensors/debug_with_psram.yaml
+
+  # # Sun component
+  # - !include sensors/sun_elevation.yaml
+  # - !include sensors/sun_azimuth.yaml
 
 button:
-  # Restart button
+  # Restart, reset and shutdown buttons
   - !include { file: buttons/restart_button.yaml }
+  # for _dev.yaml scripts include additional buttons
+  - !include { file: buttons/safe_mode_restart_button.yaml }
+  - !include { file: buttons/factory_reset_button.yaml }
+  - !include { file: buttons/shutdown_button.yaml }
+
+  # # Scan Wifi button (require wifi_info text sensor to be present to display results)
+  # # WARN: Performing the scan will disconnect device from current WiFi
+  # - !include { file: buttons/scan_wifi_button.yaml }
 
 esp32_camera:
   name: $room Camera
