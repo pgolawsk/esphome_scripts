@@ -1,0 +1,44 @@
+---
+#* Base configuration for ESP8266 boards
+#! in case diffrent setup needed please include components PRIOR the board itself
+
+#? Minimum soldering from https://sktechworks.ca/2017/03/28/esp-12f-and-breakout-board/
+#? PINOUT diagram: https://www.mischianti.org/2021/05/04/esp-12-high-resolution-pinout-and-specs/
+#? PINOUT diagram: https://randomnerdtutorials.com/esp8266-pinout-reference-gpios/
+#! PIN 9 cannot be used at ALL
+#! PIN 10 can be used as GPIO for LED only or for SCL in I2C
+
+# Pawelo, 20241223, created as copy of board_esp12f.yaml
+# Pawelo, 20241223, refactor script to accept variables, like "board" and "board variant", ...
+
+esphome:
+  name: $devicename
+  friendly_name: $room
+  area: $room
+  comment: $room ESP${board_variant} controller with $devices
+  project:
+    name: $project_name
+    version: $version
+
+  # platformio_options:
+  #   build_flags:
+  #     - -DPIO_FRAMEWORK_ARDUINO_MMU_CACHE16_IRAM48
+  #     - -DPIO_FRAMEWORK_ARDUINO_MMU_CACHE16_IRAM32_SECHEAP_NOTSHARED
+
+esp8266:
+  board: ${board} # like: esp12e, esp01_1m, full list here https://registry.platformio.org/platforms/platformio/espressif8266/boards
+  restore_from_flash: ${restore_from_flash}
+  early_pin_init: false
+
+preferences:
+  flash_write_interval: ${flash_write_interval}
+
+<<: !include wifi.yaml
+<<: !include api.yaml
+<<: !include ota.yaml
+<<: !include logger.yaml
+<<: !include { file: web_server.yaml, vars: { ota_enabled: false } }
+<<: !include time_sntp.yaml
+<<: !include sun.yaml
+<<: !include prometheus.yaml
+<<: !include mqtt.yaml
