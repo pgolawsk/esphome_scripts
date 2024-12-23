@@ -1,8 +1,14 @@
 ---
 #* Passive buzzer switch
 # Pawelo, 20240722, created based on https://esphome.io/components/output/ledc.html and https://community.home-assistant.io/t/passive-buzzer-2-pin/230912
+# Pawelo, 20241223, added assembly parts
 
-# need passive buzzer 9032, diode 1N4001, transistor BC848 and resistor 220Ohm (?)
+# need following parts to assembly:
+# - passive buzzer 9032/9025,
+# - diode 1N4001 or SMD 1N4007 M7,
+# - transistor BC848 T and
+# - resistor 220 Ohm (SMD0805 mark 221)
+
 platform: template
 id: pbuzzer${ix}
 icon: "mdi:volume-high"
