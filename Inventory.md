@@ -8,7 +8,7 @@ Author: Pawel Golawski, <pawel.golawski@2com.pl>
 
 ### Boards inventory
 
-- 10x ESP-12F
+- 10x ESP12F
 - 6x ESP32-WROOM-32D (build-in antenna)
 - 2x ESP32-WROOM-32U (IPEX, no built-in antenna)
 - 3x ESP32-WROOM-32UE (IPEX, no built-in antenna)
@@ -136,14 +136,44 @@ To be added
 
 #### Entrance
 
+- PRODUCTION since: ~ 2022
+- Script `esp12f_THIPGbdss_BGr__G.yaml`.
+- Alias `esp12f-11_Entrance_Entry`.
+
+ESP12F board with Temperature, Humidity, Pressure, Gas and Illuminance sensors. Powered from intercom 12V bus. Board has a switch to open gate and sensor to check if intercom button is pressed. Whole device is put inside intercom.
+
+Components:
+
+- 1x ESP12F
+- 1x `G` - BME680 - Temperature, Humidity, Pressure, Gas Resistance
+- 1x `B` - BH1750 - Illuminance
+- 1x `b/r` - 9032 - Passive Buzzer 9mm diameter x 3.2mm height
+- 1x `d` - status diode (red)
+- 1x single relay HFD4-3V-S (3.3V)
+
 #### Upstairs
+
+- PRODUCTION since: ~ 2022
+- Script `esp12f_THP_P.yaml`.
+- Alias `esp12f-15_Upstairs`.
+
+ESP12F board with Temperature, Humidity, and Pressure sensors. Powered from intercom 12V bus.
+
+Components:
+
+- 1x ESP12F
+- 1x `P` - BME280 - Temperature, Humidity, Pressure
+- 1x white plastic box 60mm x 30mm x 15mm
 
 #### Office
 
+TBD
+
 #### Salon
 
-PRODUCTION since: TBD
-Script `esp32c3_dev.yaml`.
+- PRODUCTION since: TBD
+- Script `esp32s3_THIGPEOdbi_GBIi.yaml`.
+- Alias `esp32-14_Salon`.
 
 ESP32 board with IR Receiver and IR Transmitter, Temperature, Humidity, Pressure and Illuminance sensors.  Powered from 230V.
 
@@ -154,14 +184,17 @@ Components:
 - 1x `B` - BH1750 - Illuminance
 - 1x `I` - IR Receiver 38KHz (Open-Smart, 1pin with signal)
 - 1x `i` - IR Transmitter 38KHz (Open-Smart, 1pin with signal)
+- 1x `b/r` - 9032 - Passive Buzzer 9mm diameter x 3.2mm height
+- 1x `d` - status diode (red)
 - 1x white plastic box 90mm x 40mm x 15mm
 
 ### Outside
 
 #### Shades
 
-PRODUCTION since: June 2024
-Script `esp32_THIUGPdb_GSUBr_display.yaml`.
+- PRODUCTION since: June 2024
+- Script `esp32_THIUGPdb_GSUBr_display.yaml`.
+- Alias `esp32-05_Shades_WinterGardenUpp`.
 
 ESP32 board with Temperature, Humidity, Pressure, Gas Resistance, UV and Illuminance sensors. Powered from alarm/security 12V bus.
 
@@ -173,14 +206,17 @@ Components:
 - 1x `S` - SHTx41 - Temperature and Humidity
 - 1x `U` - LTR390 - UV and Illuminance
 - 1x `B` - BH1750 - Illuminance
+- 2x `b/r` - 9032 - Passive Buzzer 9mm diameter x 3.2mm height
+- 4x `d` - status diode (red, green; red, blue)
 - 1x DC 30V to DC 3.3V board
 - 2x Transparent IP44 case (gray)
 - 1x WeAct Studio 2.90 inch ePaper module, 296 x 128 px (91.8 x 37.5 mm)
 
 #### Attic
 
-PRODUCTION since: TBD
-Script `esp32_THPI_PB.yaml`.
+- PRODUCTION since: TBD
+- Script `esp32_THPI_PB.yaml`.
+- Alias `esp32-39_Attic`.
 
 ESP32 board with Temperature, Humidity, Pressure and Illuminance sensors. Powered from 230V.
 
@@ -197,6 +233,56 @@ Components:
 
 #### Garage, Pump
 
+- PRODUCTION since: Sep 2023
+- Script `esp32_THIWdb_SBYr_display.yaml`.
+- Alias `esp32-35_Pump_Garage`.
+
+ESP32 board with Temperature, Humidity, and Illuminance sensors. Powered from micro USB-A. Saves total counters in FRAM.
+
+Components:
+
+- 1x ESP32-D1
+- 1x `S` - SHTx30 - Temperature and Humidity
+- 1x 1m `D` - DS18B20 (Dallas) - Temperature
+- 1x `B` - BH1750 - Illuminance
+- 1x `Y` - YF-B10 G1 - Water Pulse sensor
+- 1x `b/r` - 9032 - Passive Buzzer 9mm diameter x 3.2mm height
+- 1x `d` - status diode (red)
+- 1x FRAM 32KB
+- 1x WeAct Studio 2.90 inch ePaper module, 296 x 128 px (91.8 x 37.5 mm)
+- 1x Transparent IP44 case (gray)
+
 #### Aquarium Window
 
+- PRODUCTION since: ~ 2022
+- Script `esp12f_THIddb_STr.yaml`.
+- Alias `esp12f-25_AquariumWindow`.
+
+ESP12F board with Temperature, Humidity, Illuminance and Color sensors. Powered from alarm/security 12V bus.
+
+Components:
+
+- 1x ESP12F
+- 1x `S` - SHTx30 - Temperature and Humidity
+- 1x `T` - TCS3472 - Illuminance and Color(s)
+- 1x `b/r` - 9032 - Passive Buzzer 9mm diameter x 3.2mm height
+- 1x `d` - status diode (blue)
+- 1x `d` - measurement diode (white) on TCS3472
+- 1x white plastic box 60mm x 30mm x 15mm
+
 #### Under Floor
+
+- PRODUCTION since: ~ 2022
+- Script `esp12f_THdb_SDr.yaml`.
+- Alias `esp12f-21_Underfloor`.
+
+ESP12F board with Temperature, Humidity sensors. Powered from 12V DC (from 230V charger).
+
+Components:
+
+- 1x ESP12F
+- 1x `S` - SHTx30 - Temperature and Humidity
+- 2x 1m `D` - DS18B20 (Dallas) - Temperature
+- 1x `b/r` - 9032 - Passive Buzzer 9mm diameter x 3.2mm height
+- 0x `d` - status diode (not connected, in script only for RTTTL to work)
+- 2x white plastic box 60mm x 30mm x 15mm (1 for 12V->3V converter, 1 for ESP12F)
