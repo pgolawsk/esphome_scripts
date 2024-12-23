@@ -1,7 +1,7 @@
 ---
 #* Active buzzer connected to GPIO
 # Pawelo, 20221127, created as new based on https://diyi0t.com/active-passive-buzzer-arduino-esp8266-esp32/
-# Pawelo, 20221215, added beep 3 times sortly, based on: https://help.konnected.io/support/solutions/articles/32000030295-esphome-binary-sensors-switches-sensor-configuration
+# Pawelo, 20221215, added beep 3 times shortly, based on: https://help.konnected.io/support/solutions/articles/32000030295-esphome-binary-sensors-switches-sensor-configuration
 # Pawelo, 20221223, passive buzzer good example: https://community.home-assistant.io/t/esphome-and-passive-buzzer-continuous-beep-sound/477046/2
 
 # need active buzzer 9032, diode 1N4001, transistor BC848 and resistor 220Ohm (?)
