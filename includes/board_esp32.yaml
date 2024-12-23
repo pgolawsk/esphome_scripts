@@ -8,25 +8,28 @@
 # Pawelo, 20241115, added area and friendly name
 # Pawelo, 20241119, simplified - added regular mqtt (no RTTL support), as it can be override PRIOR this file include
 # Pawelo, 20241122, removed flash_write_interval to no saves into flash
+# Pawelo, 20241222, make "board" and "board variant" as variables
+# Pawelo, 20241222, added flash_size as variable
 
 esphome:
   name: $devicename
   friendly_name: $room
   area: $room
-  comment: $room ESP32 with $devices
+  comment: $room ESP32${board_variant} with $devices
 #  platform: ESP8266   # OLD notation
   project:
     name: $project_name
     version: $version
 
 esp32:
-  board: esp32dev
+  board: ${board} # like: esp32dev, esp32cam, esp32-c3-devkitm-1, esp32-s3-devkitc-1, esp32-s2-saola-1, full list here https://registry.platformio.org/platforms/platformio/espressif32/boards?version=5.3.0
+  flash_size: ${flash_size} # One of 2MB, 4MB, 8MB, 16MB or 32MB
 #  restore_from_flash: true
   # framework:
   #   type: arduino
 
-# preferences:
-#   flash_write_interval: 15min
+preferences:
+  flash_write_interval: ${flash_write_interval}
 
 <<: !include wifi.yaml
 <<: !include api.yaml
