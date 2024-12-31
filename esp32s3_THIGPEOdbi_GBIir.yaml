@@ -1,10 +1,12 @@
 ---
 #* ESP32s3 sensor board script name reflecting configuration esp32_MMmm_SSss__PP.yaml
 #* Please read README.md for details
-#? ESP32-WROOM-32 minimum wiring https://www.mischianti.org/2021/05/30/esp32-wroom-32-esp32-s-flash-pinout-specs-and-ide-configuration-1/
+#* For pinout see: file://./pinouts/ESP32s3_N16R8_2xTypeC_dev_board_pinout.jpg
+# NOTE: ESP32s3 - RGB led is on GPIO48
 ###
 # Pawelo, 20241223, created based on esp32c3_dev.yaml
 # Pawelo, 20241223, added "CREATIVE" IR remote control buttons
+# Pawelo, 20241231, enabled RGB LED, added pinout file reference
 
 #! run with this command to override substitutions
 # esphome -s devicename espXX -s updates 1min -s room <Room name> -s mqtt_room <room> run esp32_MMmm_SSss__PP.yaml --device 192.168.x.x
@@ -17,7 +19,7 @@ substitutions:
 
   board_variant: "s3" # empty for ESP32, other values to display like c3, c6, s2, s3
   board: "esp32-s3-devkitc-1" # like: esp32dev, esp32cam, esp32-c3-devkitm-1, esp32-s3-devkitc-1, esp32-s2-saola-1, full list here https://registry.platformio.org/platforms/platformio/espressif32/boards?version=5.3.0
-  flash_size: 16MB # One of 2MB, 4MB, 8MB, 16MB or 32MB
+  flash_size: 8MB # One of 2MB, 4MB, 8MB, 16MB or 32MB
   flash_write_interval: "5min"
 
   devicename: esp32-xx
@@ -34,6 +36,7 @@ substitutions:
 # Override some settings included below in _board_ setup
 <<: !include includes/time_sntp_with_sun.yaml #WARN: this is to make sunrise and sunset sensor to be updated on every time sync event
 # <<: !include includes/mqtt_with_rtttl.yaml #WARN: override mqtt with RTTTL support if needed (buzzer and status led)
+# <<: !include { file: includes/logger_level.yaml, vars: { level: INFO, baud_rate: 115200 } } #WARN: override default log level to specific one
 # <<: !include { file: includes/logger_level.yaml, vars: { level: DEBUG, baud_rate: 115200 } } #WARN: override default log level to specific one
 # <<: !include { file: includes/logger_level.yaml, vars: { level: VERY_VERBOSE, baud_rate: 115200 } } #WARN: override default log level to specific one
 # <<: !include includes/wifi_outside.yaml #WARN: override wifi to connect to outside network instead of default
@@ -59,7 +62,7 @@ substitutions:
 
 # IR Remote control buttons added from packages
 packages:
-  # apple_tv: !include { file: buttons/set_apple_tv_ir_remote.yaml, vars: { receiver: "ATV" } }
+  apple_tv: !include { file: buttons/set_apple_tv_ir_remote.yaml, vars: { receiver: "ATV" } }
   smart_tv: !include { file: buttons/set_smart_tv_ir_remote.yaml, vars: { receiver: "STV" } }
   # smart_tv_x: !include { file: buttons/set_smart_tv_ir_remote_rest.yaml, vars: { receiver: "STVx" } }
   # nano_pc: !include { file: buttons/set_nano_pc_ir_remote.yaml, vars: { receiver: "NPC" } }
@@ -70,7 +73,7 @@ packages:
   # yamaha_av_main_x: !include { file: buttons/set_yamaha_av_main_ir_remote_rest.yaml, vars: { receiver: "AVx" } }
   yamaha_av_zone2: !include { file: buttons/set_yamaha_av_zone2_ir_remote.yaml, vars: { receiver: "AV2" } }
   # yamaha_av_zone2_x: !include { file: buttons/set_yamaha_av_zone2_ir_remote_rest.yaml, vars: { receiver: "AV2x" } }
-  # yamaha_bd: !include { file: buttons/set_yamaha_bd_ir_remote.yaml, vars: { receiver: "BD" } }
+  yamaha_bd: !include { file: buttons/set_yamaha_bd_ir_remote.yaml, vars: { receiver: "BD" } }
   # yamaha_bd_x: !include { file: buttons/set_yamaha_bd_ir_remote_rest.yaml, vars: { receiver: "BDx" } }
   # creative: !include { file: buttons/set_creative_ir_remote.yaml, vars: { receiver: "CR" } }
 
@@ -157,17 +160,17 @@ switch:
 
 output:
   # LED (blue on standard C3 mini)
-  - !include { file: outputs/led.yaml, vars: { ix: "", gpio: "GPIO8", inverted: true } }
+  # - !include { file: outputs/led.yaml, vars: { ix: "", gpio: "GPIO8", inverted: true } }
 
   # LED RGB (blue only)
   # - !include { file: outputs/led.yaml, vars: { ix: "", gpio: "GPIO7", inverted: false } }
   # OR
   # LED RGB (multicolor)
-  # - !include { file: outputs/led_rgb.yaml, vars: { ix: "", ID: "rgb_led" } }
+  - !include { file: outputs/led_rgb.yaml, vars: { ix: "", ID: "rgb_led" } }
 
 light:
   # LED
   - !include { file: lights/led.yaml, vars: { ix: "", platform: "status_led", off_delay: "1days" } }
   # LED RGB
-  # - !include { file: lights/led_rgb_neopixelbus.yaml, vars: { ix: "", gpio: "GPIO8" } }
+  - !include { file: lights/led_rgb_neopixelbus.yaml, vars: { ix: "", gpio: "GPIO48" } }
 
