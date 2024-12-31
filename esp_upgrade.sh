@@ -4,6 +4,7 @@
 # Pawelo 20240408, added esp32-05
 # Pawelo 20241222, added esp32-14, esp32-39
 # Pawelo 20241223, compiled esp32-14 successfully
+# Pawelo 20241223, added esp32-33 (s3) and esp32-34 (s2)
 
 #######################
 #*** OR Upgrade ESP Home on mac/win
@@ -47,6 +48,8 @@ esphome -s devicename esp32-30 -s updates 1min -s room Test32 -s mqtt_location m
 
 esphome -s devicename esp32-31 -s updates 15s -s room Test32c3 -s mqtt_location measures -s mqtt_room test32c3 run esp32c3_dev.yaml
 esphome -s devicename esp32-32 -s updates 15s -s room Test32c3rgb -s mqtt_location measures -s mqtt_room test32c3rgb run esp32c3_dev.yaml
+esphome -s devicename esp32-33 -s updates 1min -s room Test32s3rgb -s mqtt_location measures -s mqtt_room test32s3rgb run esp32s3_dev.yaml
+esphome -s devicename esp32-34 -s updates 1min -s room Test32s2 -s mqtt_location measures -s mqtt_room test32s2 run esp32s2_dev.yaml
 
 esphome -s devicename esp32-32 -s updates 1min -s room Test32c3rgb -s mqtt_location measures -s mqtt_room test32c3rgb run esp32c3_dev__no_mqtt.yaml
 
