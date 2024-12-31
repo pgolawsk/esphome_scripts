@@ -19,10 +19,15 @@ Author: Pawel Golawski, <pawel.golawski@2com.pl>
 - 2x ESP32-C3 plus (RGB led + IPEX option)
 - 1x ESP32-C6-WROOM-1-N8 (dev board with 2x usb-c)
 - 1x ESP32-C6 mini (dev board with 1.27mm pins)
-- 0x (+1) ESP32-S3 N16R8
-- 0x (1x) ESP32-S3 N16R8 (dev board with 2x usb-c)
-- 0x (+1)(-1) ESP32-S3 N8R2 (dev board with 2x usb-c)
-- 0x (+2) ESP32-S2FN4R2 mini (dev board with usb-c)
+- 1x ESP32-S3 N16R8
+![ESP32-S3 WROOM-2 pinout image](pinouts/ESP32s3-WROOM-2_pinout.jpg "ESP32-S3 WROOM-2 pinout")
+- 1x ESP32-S3 N16R8 (dev board with 2x usb-c)
+![ESP32-S3 N16R8 pinout image](pinouts/ESP32s3_N16R8_2xTypeC_dev_board_pinout.jpg "ESP32-S3 N16R8/N8R2 pinout")
+Note: GPIO48 is connected to RGB LED
+- 0x ESP32-S3 N8R2 (dev board with 2x usb-c)
+Pinout the same as N16R8 above.
+- 2x ESP32-S2FN4R2 mini (dev board with usb-c)
+![ESP32-S2 N4R2 pinout image](pinouts/ESP32s2mini_N4R2_TypeC_pinout.jpg "ESP32-S2 N4R2 pinout")
 
 ### Displays inventory
 
@@ -44,7 +49,7 @@ Author: Pawel Golawski, <pawel.golawski@2com.pl>
 - 1x 2m `D` - DS18B20 (Dallas) - Temperature
 - 2x `E` - INA226 - DC Current, Power, Voltage (max. 30V DC)
 - 2x `F` - INA3221 - 3-channel DC Current, Power, Voltage (max. 26V DC)
-- 1x (+2) `G` - BME680 - Temperature, Humidity, Pressure, Gas Resistance
+- 3x `G` - BME680 - Temperature, Humidity, Pressure, Gas Resistance
 - 0x `H` - AHTx21 - Temperature and Humidity
 - 2x (-1) `I` - IR Receiver 38KHz (Open-Smart, 1pin with signal)
 - 2x `L` - LD2410B - Radar sensor 24GHz
@@ -121,6 +126,8 @@ Author: Pawel Golawski, <pawel.golawski@2com.pl>
 - 3x white plastic box 60mm x 30mm x 15mm
 - 5x (-1) white plastic box 90mm x 40mm x 15mm
 - 4x color buttons for a case
+- 1x white plastic box 75mm x 75mm x 30mm
+- 1x white plastic box 100mm x 100mm x 36mm
 
 #### Breadboards (X x Y pins)
 
@@ -186,7 +193,7 @@ Components:
 - 1x `i` - IR Transmitter 38KHz (Open-Smart, 1pin with signal)
 - 1x `b/r` - 9032 - Passive Buzzer 9mm diameter x 3.2mm height
 - 1x `d` - status diode (red)
-- 1x white plastic box 90mm x 40mm x 15mm
+- 1x white plastic box 75mm x 75mm x 30mm
 
 ### Outside
 
