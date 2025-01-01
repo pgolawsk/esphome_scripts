@@ -9,12 +9,22 @@ Author: Pawel Golawski, <pawel.golawski@2com.pl>
 ### Boards inventory
 
 - 10x ESP12F
+![ESP-12F pinout image](pinouts/ESP_12F_pinout.png "ESP-12F pinout")
+![ESP-12E pinout image](pinouts/ESP_12E_pinout.png "ESP-12E pinout")
 - 6x ESP32-WROOM-32D (build-in antenna)
+![ESP32-WROOM-32 pinout image](pinouts/ESP32_WROOM_32_pinout.jpg "ESP32-WROOM-32 pinout")
 - 2x ESP32-WROOM-32U (IPEX, no built-in antenna)
+![ESP32-WROOM-32 pinout image](pinouts/ESP32_WROOM_32_pinout.jpg "ESP32-WROOM-32 pinout")
 - 3x ESP32-WROOM-32UE (IPEX, no built-in antenna)
+![ESP32-WROOM-32 pinout image](pinouts/ESP32_WROOM_32_pinout.jpg "ESP32-WROOM-32 pinout")
 - 1x ESP32S (IPEX or built-in antenna)
+![ESP32S pinout image](pinouts/ESP32S_pinout.jpg "ESP32S pinout")
 - 13x ESP32-WROOM-32 expansion board (to solder)
-- 1x ESP32-D1
+![ESP32 adapter image](pinouts/esp32_adapter_1.jpg "ESP32S adapter board")
+![ESP32 adapter image](pinouts/esp32_adapter_2.jpg "ESP32S adapter board")
+![ESP32 adapter image](pinouts/esp32_adapter_3.jpg "ESP32S adapter board")
+- 1x ESP32-D1 mini
+![ESP32-D1 mini pinout image](pinouts/ESP31_D1_mini_pinout.png "ESP32-D1 mini pinout")
 - 5x ESP32-C3
 - 2x ESP32-C3 plus (RGB led + IPEX option)
 - 1x ESP32-C6-WROOM-1-N8 (dev board with 2x usb-c)
