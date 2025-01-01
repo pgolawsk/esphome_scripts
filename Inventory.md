@@ -78,7 +78,9 @@ Author: Pawel Golawski, <pawel.golawski@2com.pl>
 
   ![ESP32-S2 N4R2 pinout image](pinouts/ESP32s2mini_N4R2_TypeC_pinout.jpg "ESP32-S2 N4R2 pinout")
 
-  > WARN: To flash this board for the first time need to:
+  > WARNING: GPIO19 and GPIO20 are connected to USB-C connector, do not use them for I2C or other purposes as board will have no web, but respond on ping
+  >
+  > WARNING: To flash this board for the first time need to:
   > 1. Hold 0 (BOOT)
   > 2. Short press RST (RESET)
   > 3. Release 0 (BOOT) after a few seconds (to allow computer to recognize USB)
