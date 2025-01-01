@@ -86,7 +86,13 @@ Author: Pawel Golawski, <pawel.golawski@2com.pl>
 ### Displays inventory
 
 - 0x WeAct Studio 2.90 inch ePaper module, 296 x 128 px (91.8 x 37.5 mm)
+
+  ![WeAct 2.90 ePaper pinout image](pinouts/WeAct_2.90_ePaper_pinout.png "WeAct 2.90 ePaper pinout")
+
 - 1x WeAct Studio 2.13 inch ePaper module, 250 x 122 px (72 x 30 mm)
+
+  ![WeAct 2.13 ePaper pinout image](pinouts/WeAct_2.13_ePaper_pinout.png "WeAct 2.90 ePaper pinout")
+
 - 1x LILYGO T5-4.7 ePaper with ESP32 full development board
 - 1x LILYGO TTGO LoRa32 with LCD display and ESP32 full development board
 - 1x LCD PCF8574 2x16 (line x character) display
