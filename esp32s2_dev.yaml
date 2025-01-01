@@ -21,6 +21,7 @@
 # Pawelo, 20241231, created as separate script for S2/S3 boards based on C3
 # Pawelo, 20241231, added pinout file reference
 # Pawelo, 20250101, fixed I2C on GPIO20 as ping/mqtt worked, while web server is not visible - moved to GPIO18
+# Pawelo, 20250101, enabled internal temperature sensor
 
 #! run with this command to override substitutions
 # esphome -s devicename espXX -s updates 1min -s room <Room name> -s mqtt_room <room> run esp32_MMmm_SSss__PP.yaml --device 192.168.x.x
@@ -77,7 +78,7 @@ substitutions:
 
 # IR Remote control buttons added from packages
 # packages:
-#   # apple_tv: !include { file: buttons/set_apple_tv_ir_remote.yaml, vars: { receiver: "ATV" } }
+#   apple_tv: !include { file: buttons/set_apple_tv_ir_remote.yaml, vars: { receiver: "ATV" } }
 #   smart_tv: !include { file: buttons/set_smart_tv_ir_remote.yaml, vars: { receiver: "STV" } }
 #   # smart_tv_x: !include { file: buttons/set_smart_tv_ir_remote_rest.yaml, vars: { receiver: "STVx" } }
 #   # nano_pc: !include { file: buttons/set_nano_pc_ir_remote.yaml, vars: { receiver: "NPC" } }
@@ -116,7 +117,7 @@ binary_sensor:
   - !include sensors/binary_ha_connected.yaml
 
 sensor:
-  # - !include sensors/temp_internal.yaml
+  - !include sensors/temp_internal.yaml
   - !include sensors/uptime.yaml
   - !include sensors/wifi_signal.yaml
   - !include sensors/wifi_strength.yaml
