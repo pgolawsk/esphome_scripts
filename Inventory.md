@@ -47,6 +47,7 @@ Author: Pawel Golawski, <pawel.golawski@2com.pl>
 - 2x ESP32-C3 super mini plus (RGB led + IPEX option)
 
   > Pinout is the same as ESP32-C3 super mini.
+  >
   > Note: GPIO8 is connected to RGB LED.
 
 - 1x ESP32-C6-WROOM-1-N8 (dev board with 2x usb-c)
@@ -69,6 +70,8 @@ Author: Pawel Golawski, <pawel.golawski@2com.pl>
 
   ![ESP32-S3 N16R8 pinout image](pinouts/ESP32s3_N16R8_2xTypeC_dev_board_pinout.jpg "ESP32-S3 N16R8/N8R2 pinout")
   > Note: GPIO48 is connected to RGB LED.
+  >
+  > Note: PSRAM require to include platformio_options as described in [https://community.home-assistant.io/t/esp32-s3-devkitc-1-n16r8-using-psram-howto](https://community.home-assistant.io/t/esp32-s3-devkitc-1-n16r8-using-psram-howto)
 
 - 0x ESP32-S3 N8R2 (dev board with 2x usb-c)
 
@@ -95,12 +98,42 @@ Author: Pawel Golawski, <pawel.golawski@2com.pl>
 
   ![WeAct 2.13 ePaper pinout image](pinouts/WeAct_2.13_ePaper_pinout.png "WeAct 2.90 ePaper pinout")
 
-- 1x LILYGO T5-4.7 ePaper with ESP32 full development board
-- 1x LILYGO TTGO LoRa32 with LCD display and ESP32 full development board
-- 1x LCD PCF8574 2x16 (line x character) display
+- 1x LILYGO T5-4.7 ePaper with ESP32 full development board (ESP32-WROVER-E N16R8)
+
+  ![LILYGO T5-4.7 ePaper image](pinouts/LILYGO_T5_4.7_ePaper.jpg "LILYGO T5-4.7 ePaper")
+
+  > NOTE: Board version is ESP32-WROVER-E N16R8
+
+- 1x LILYGO TTGO LoRa32 (SX1276 for 433MHz) with LCD display (SSD1306) and ESP32-PICO-D4 full development board
+
+  ![LILYGO TTGO LoRa32 image](pinouts/LILYGO_TTGO_LoRa32.jpg "LILYGO TTGO LoRa32")
+
+  > NOTE: Board has TF card slot, sliding power switch, micro-USB, battery connector (JST GH 2pin)
+  > NOTE: Board version is T3_v1.6.1
+  >
+  > Other possible solutions:
+  > - [OpenMQTTGateway](https://docs.openmqttgateway.com)
+  > - [Zephyr OS](https://docs.zephyrproject.org/latest/introduction/index.html)
+
+- 1x LCD PCF8574 2x16 (line x character) display via I2C
+
+  ![LCD 2x16 PCF8574 i2c image](pinouts/LCD_2x16_PCF8574_i2c.png "PCF8574 LCD i2c")
+
 - 1x LCD SSD1306, 0.96 inch b-w I2C OLED, 128 x 64 px (22 x 10,9 mm) SSD1315?
+
+  ![LCD 0.96 OLED image](pinouts/LCD_0.96_OLED_BW_i2c.jpg "LCD 0.96 OLED")
+  ![LCD 0.96 OLED schema image](pinouts/LCD_0.96_OLED_BW_i2c_schema.jpg "LCD 0.96 OLED schema")
+
 - 1x LCD SSD1306, SH-S091, 0.91 inch b-w I2C OLED, 128 x 32 px (22 x 5,6 mm)
-- 1x LCD ST7735, GMT130-v1.0, 1.3inch color SPI TFT, 240 x 240 px (23,4 x 23,4 mm)
+
+  ![LCD 0.91 OLED image](pinouts/LCD_0.91_OLED_BW_i2c.png "LCD 0.91 OLED")
+
+  > Size of module: 38 x 12 mm
+
+- 1x LCD ST7735, GMT130-v1.0, 1.3inch color SPI TFT, 240 x 240 px (23,4 x 23,4 mm) via I2C
+
+  ![LCD GMT130 image](pinouts/LCD_1.3_TFT_GMT130.jpeg "LCD GMT130")
+  ![LCD GMT130 schema image](pinouts/LCD_1.3_TFT_GMT130_schema.png "LCD GMT130 schema")
 
 ### Sensors inventory
 
