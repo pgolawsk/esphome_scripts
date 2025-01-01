@@ -19,11 +19,11 @@ Author: Pawel Golawski, <pawel.golawski@2com.pl>
 
 - 2x ESP32-WROOM-32U (IPEX, no built-in antenna)
 
-  Pinout is the same as ESP32-WROOM-32D
+  > Pinout is the same as ESP32-WROOM-32D
 
 - 3x ESP32-WROOM-32UE (IPEX, no built-in antenna)
 
-  Pinout is the same as ESP32-WROOM-32D
+  > Pinout is the same as ESP32-WROOM-32D
 
 - 1x ESP32S (IPEX or built-in antenna)
 
@@ -46,16 +46,16 @@ Author: Pawel Golawski, <pawel.golawski@2com.pl>
 
 - 2x ESP32-C3 super mini plus (RGB led + IPEX option)
 
-  Pinout is the same as ESP32-C3 super mini
-
-  Note: GPIO8 is connected to RGB LED
+  > Pinout is the same as ESP32-C3 super mini.
+  > Note: GPIO8 is connected to RGB LED.
 
 - 1x ESP32-C6-WROOM-1-N8 (dev board with 2x usb-c)
 
   ![nanoESP32-C6 pinout image](pinouts/ESP32c6_N8_2xTypeC_dev_board_pinout.png "nanoESP32-C6 pinout")
 
-  Note: GPIO8 is connected to RGB LED
-  [https://github.com/wuxx/nanoESP32-C6/tree/master](https://github.com/wuxx/nanoESP32-C6/tree/master)
+  > Note: GPIO8 is connected to RGB LED
+
+  Additional reference: [https://github.com/wuxx/nanoESP32-C6/tree/master](https://github.com/wuxx/nanoESP32-C6/tree/master)
 
 - 1x ESP32-C6 mini (dev board with 1.27mm pins)
 
@@ -68,17 +68,20 @@ Author: Pawel Golawski, <pawel.golawski@2com.pl>
 - 1x ESP32-S3 N16R8 (dev board with 2x usb-c)
 
   ![ESP32-S3 N16R8 pinout image](pinouts/ESP32s3_N16R8_2xTypeC_dev_board_pinout.jpg "ESP32-S3 N16R8/N8R2 pinout")
-  Note: GPIO48 is connected to RGB LED
+  > Note: GPIO48 is connected to RGB LED.
 
 - 0x ESP32-S3 N8R2 (dev board with 2x usb-c)
 
-  Pinout the same as N16R8 above.
+  > Pinout the same as N16R8 above.
 
 - 2x ESP32-S2FN4R2 mini (dev board with usb-c)
 
   ![ESP32-S2 N4R2 pinout image](pinouts/ESP32s2mini_N4R2_TypeC_pinout.jpg "ESP32-S2 N4R2 pinout")
 
-  WARN: To flash this board for the first time need to press BOOT
+  > WARN: To flash this board for the first time need to:
+  > 1. Hold 0 (BOOT)
+  > 2. Short press RST (RESET)
+  > 3. Release 0 (BOOT) after a few seconds (to allow computer to recognize USB)
 
 ### Displays inventory
 
