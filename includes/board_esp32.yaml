@@ -1,15 +1,16 @@
 ---
 #* Base configuration for ESP-32-WROOM board
-#! in case diffrent setup needed please include components PRIOR the board itself
+#! in case different setup needed please include components PRIOR the board itself
 
 # Pawelo 20230101, created as copy of board_esp12f.yaml
 # Pawelo 20230305, added time_sntp amd sun by default
 # Pawelo 20230924, increased flash_write_interval to 15min
 # Pawelo, 20241115, added area and friendly name
-# Pawelo, 20241119, simplified - added regular mqtt (no RTTL support), as it can be override PRIOR this file include
+# Pawelo, 20241119, simplified - added regular mqtt (no RTTTL support), as it can be override PRIOR this file include
 # Pawelo, 20241122, removed flash_write_interval to no saves into flash
 # Pawelo, 20241222, make "board" and "board variant" as variables
 # Pawelo, 20241222, added flash_size as variable
+# Pawelo, 20250101, small typo fixes in comments
 
 esphome:
   name: $devicename
