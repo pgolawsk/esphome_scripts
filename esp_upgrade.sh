@@ -4,9 +4,10 @@
 # Pawelo 20240408, added esp32-05
 # Pawelo 20241222, added esp32-14, esp32-39
 # Pawelo 20241223, compiled esp32-14 successfully
-# Pawelo 20241223, added esp32-33 (s3) and esp32-34 (s2)
+# Pawelo 20241231, added esp32-33 (s3) and esp32-34 (s2)
+# Pawelo 20250101, added examples how to read logs
 
-#######################
+#*###########################
 #*** OR Upgrade ESP Home on mac/win
 
 # check current version
@@ -24,6 +25,7 @@ pio system prune
 # check current version (after upgrade)
 esphome version
 
+#*###########################
 #* Upgrade ESP devices via OTA
 esphome -s devicename esp32-05 -s updates 1min -s room Shades -s mqtt_location outside -s mqtt_room shades -s room2 WinterGardenUpp -s mqtt_location2 home -s mqtt_room2 winter_garden_upp run esp32-05_Shades_WinterGardenUpp
 esphome -s devicename esp12f-11 -s updates 30s -s room Entrance -s mqtt_room entrance -s room2 Entry -s mqtt_location2 outside -s mqtt_room2 entry run esp12f-11_Entrance_Entry
@@ -51,9 +53,18 @@ esphome -s devicename esp32-32 -s updates 15s -s room Test32c3rgb -s mqtt_locati
 esphome -s devicename esp32-33 -s updates 1min -s room Test32s3rgb -s mqtt_location measures -s mqtt_room test32s3rgb run esp32s3_dev.yaml
 esphome -s devicename esp32-34 -s updates 1min -s room Test32s2 -s mqtt_location measures -s mqtt_room test32s2 run esp32s2_dev.yaml
 
+# minimal config for S2
+esphome -s devicename esp32-34a run esp32s2_dev_minimal.yaml
+
 esphome -s devicename esp32-32 -s updates 1min -s room Test32c3rgb -s mqtt_location measures -s mqtt_room test32c3rgb run esp32c3_dev__no_mqtt.yaml
 
 # generic ESP32 boards - no
 esphome -s devicename esp32-dev -s updates 1min -s room Dev32 -s mqtt_location measures -s mqtt_room dev32 -s room2 Dev32b -s mqtt_location2 measures -s mqtt_room2 dev32b run esp32_dev.yaml
 
 esphome run mac_host.yaml
+
+#*###########################
+#* Checking ESP logs
+
+# example og "logs" command
+esphome -s devicename esp32-34 logs esp32s2_dev.yaml
