@@ -55,8 +55,8 @@ Author: Pawel Golawski, <pawel.golawski@2com.pl>
   ![nanoESP32-C6 pinout image](pinouts/ESP32c6_N8_2xTypeC_dev_board_pinout.png "nanoESP32-C6 pinout")
 
   > Note: GPIO8 is connected to RGB LED
-
-  Additional reference: [https://github.com/wuxx/nanoESP32-C6/tree/master](https://github.com/wuxx/nanoESP32-C6/tree/master)
+  >
+  > Full reference: [https://github.com/wuxx/nanoESP32-C6](https://github.com/wuxx/nanoESP32-C6)
 
 - 1x ESP32-C6 mini (dev board with 1.27mm pins)
 
@@ -110,6 +110,7 @@ Author: Pawel Golawski, <pawel.golawski@2com.pl>
 
   > NOTE: Board has TF card slot, sliding power switch, micro-USB, battery connector (JST GH 2pin)
   > NOTE: Board version is T3_v1.6.1
+  > Full board description: [https://github.com/LilyGO/TTGO-LoRa32-V2.1](https://github.com/LilyGO/TTGO-LoRa32-V2.1)
   >
   > Other possible solutions:
   > - [OpenMQTTGateway](https://docs.openmqttgateway.com)
