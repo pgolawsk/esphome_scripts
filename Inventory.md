@@ -9,7 +9,7 @@ Author: Pawel Golawski, <pawel.golawski@2com.pl>
 ### Boards inventory
 
 - 10x ESP12F
-![ESP-12F pinout image](pinouts/ESP_12F_pinout.png "ESP-12F pinout")
+![ESP-12F pinout image](pinouts/ESP_12F.png "ESP-12F pinout")
 ![ESP-12E pinout image](pinouts/ESP_12E_pinout.png "ESP-12E pinout")
 - 6x ESP32-WROOM-32D (build-in antenna)
 ![ESP32-WROOM-32 pinout image](pinouts/ESP32_WROOM_32_pinout.jpg "ESP32-WROOM-32 pinout")
@@ -25,10 +25,19 @@ Author: Pawel Golawski, <pawel.golawski@2com.pl>
 ![ESP32 adapter image](pinouts/esp32_adapter_3.jpg "ESP32S adapter board")
 - 1x ESP32-D1 mini
 ![ESP32-D1 mini pinout image](pinouts/ESP31_D1_mini_pinout.png "ESP32-D1 mini pinout")
-- 5x ESP32-C3
-- 2x ESP32-C3 plus (RGB led + IPEX option)
+- 5x ESP32-C3 super mini
+![ESP32-C3 super-mini pinout back image](pinouts/ESP32c3_pinout_back.jpeg "ESP32-C3 super-mini pinout back")
+![ESP32-C3 super-mini pinout front image](pinouts/ESP32c3_pinout_front.jpeg "ESP32-C3 super-mini pinout front")
+- 2x ESP32-C3 super mini plus (RGB led + IPEX option)
+![ESP32-C3 super-mini pinout back image](pinouts/ESP32c3_pinout_back.jpeg "ESP32-C3 super-mini pinout back")
+![ESP32-C3 super-mini pinout front image](pinouts/ESP32c3_pinout_front.jpeg "ESP32-C3 super-mini pinout front")
+Note: GPIO8 is connected to RGB LED
 - 1x ESP32-C6-WROOM-1-N8 (dev board with 2x usb-c)
+![nanoESP32-C6 pinout image](pinouts/ESP32c6_N8_2xTypeC_dev_board_pinout.png "nanoESP32-C6 pinout")
+  Note: GPIO8 is connected to RGB LED
+  [https://github.com/wuxx/nanoESP32-C6/tree/master](https://github.com/wuxx/nanoESP32-C6/tree/master)
 - 1x ESP32-C6 mini (dev board with 1.27mm pins)
+![ESP32-C6 mini image](pinouts/ESP32c6_mini.png "ESP32-C6 mini")
 - 1x ESP32-S3 N16R8
 ![ESP32-S3 WROOM-2 pinout image](pinouts/ESP32s3-WROOM-2_pinout.jpg "ESP32-S3 WROOM-2 pinout")
 - 1x ESP32-S3 N16R8 (dev board with 2x usb-c)
