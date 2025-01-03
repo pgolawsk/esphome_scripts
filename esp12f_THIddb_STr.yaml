@@ -10,14 +10,15 @@
 # Pawelo, 20241124, include first OVERRIDEs and then BOARD itself
 # Pawelo, 20241124, cleanup of old/unused mqtt commented code
 # Pawelo, 20241124, added wifi strength sensor and wifi_scan button
+# Pawelo, 20250103, added entity_category to LED
 
-#! run with this command to override sunstitutions
+#! run with this command to override substitutions
 # esphome -s devicename espXX -s updates 1min -s room <Room name> -s mqtt_room <room> run esp12f_SSss_MMmm__PP.yaml --device 192.168.x.x
-# heare are default values if those are not given via command line
+# here are default values if those are not given via command line
 substitutions:
   devices: "Temperature and Humidity via SHTx30, Illuminance, Color via TCS34725"
   project_name: "pgolawsk.esp_home"
-  version: "20241124"
+  version: "20250103"
 
   devicename: esp12f-xx
   updates: "30s"
@@ -79,7 +80,7 @@ output:
 
 light:
   # LED
-  - !include { file: lights/led.yaml, vars: { ix: "", platform: "binary", off_delay: "3s" } }
+  - !include { file: lights/led.yaml, vars: { ix: "", platform: "binary", off_delay: "3s", entity_category: "" } }
 
   # Measurement LED
   - !include { file: lights/measurement_led.yaml, vars: { ix: "", off_delay: "30s" } }

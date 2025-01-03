@@ -6,7 +6,7 @@
 ###
 # Pawelo 20221127, 1.0.0, created based on esp12f_THL_SB.yml
 # Pawelo 20221127, 1.1.2, renamed script to reflect sensors/switches and measures/manipulators
-# Pawelo 20221127, 1.1.3, added $devices variable to nam configutation deployed
+# Pawelo 20221127, 1.1.3, added $devices variable to nam configuration deployed
 # Pawelo 20221127, 1.1.4, moved i2c configuration to separate include file
 # Pawelo 20221203, 1.1.5, added Restart button on web
 # Pawelo 20230923, 1.1.5, added HA Connected binary sensor
@@ -22,6 +22,7 @@
 # Pawelo, 20241223, added debug component and sensors
 # Pawelo, 20241223, added factory_reset, safe_restart and shutdown buttons
 # Pawelo, 20241223, changed to use includes/board_esp32.yaml with variables
+# Pawelo, 20250103, added entity_category to LED
 
 #! run with this command to override substitutions
 # esphome -s devicename espXX -s updates 1min -s room <Room name> -s mqtt_room <room> run esp12f_MMmm_SSss__PP.yaml --device 192.168.x.x
@@ -35,7 +36,7 @@ substitutions:
 
   board_variant: "12F" # determine variant like 12F, 07s, 01m, ...
   board: "esp12e" # like: esp12e, esp01_1m, full list here https://registry.platformio.org/platforms/platformio/espressif8266/boards
-  restore_from_flash: false
+  restore_from_flash: "false"
   flash_write_interval: "5min"
 
   devicename: esp12-xx
@@ -200,7 +201,7 @@ output:
 
 light:
   # Status LED
-  - !include { file: lights/led.yaml, vars: { ix: "", platform: "binary", off_delay: "5s" } }
+  - !include { file: lights/led.yaml, vars: { ix: "", platform: "binary", off_delay: "5s", entity_category: "diagnostic" } }
 
   # Measurement LED
   # - !include { file: lights/measurement_led.yaml, vars: { ix: "", off_delay: "5s" } }
@@ -210,9 +211,6 @@ light:
   # - !include { file: lights/light_on_relay.yaml, vars: { ix: "B" } }
 
 switch:
-  # Restart button
-  # - !include { file: switches/platform_restart.yaml }
-
   # Status LED cycle
   - !include { file: switches/led_cycle.yaml, vars: { ID: "led", cycles: 3, on_delay: "1s" , off_delay: "500ms" } }
 

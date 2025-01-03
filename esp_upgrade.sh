@@ -18,7 +18,7 @@ pip3.11 install -U esphome
 # platformio is updated by esphome to minimum version required anyway
 # pip3.11 install -U platformio
 
-# clean unnesecary packages
+# clean unnecessary packages
 # pio system prune --dry-run
 pio system prune
 
@@ -29,15 +29,15 @@ esphome version
 #* Upgrade ESP devices via OTA
 esphome -s devicename esp32-05 -s updates 1min -s room Shades -s mqtt_location outside -s mqtt_room shades -s room2 WinterGardenUpp -s mqtt_location2 home -s mqtt_room2 winter_garden_upp run esp32-05_Shades_WinterGardenUpp
 esphome -s devicename esp12f-11 -s updates 30s -s room Entrance -s mqtt_room entrance -s room2 Entry -s mqtt_location2 outside -s mqtt_room2 entry run esp12f-11_Entrance_Entry
+esphome -s devicename esp32-14 -s updates 30s -s room Salon -s mqtt_room salon run esp32-14_Salon #! internal temp sensor is commented now
 esphome -s devicename esp12f-15 -s updates 30s -s room Upstairs -s mqtt_room upstairs run esp12f-15_Upstairs
-esphome -s devicename esp12f-21 -s updates 30s -s room Unrderfloor -s mqtt_location measures -s mqtt_room underfloor run esp12f-21_Underfloor
+esphome -s devicename esp12f-21 -s updates 30s -s room Underfloor -s mqtt_location measures -s mqtt_room underfloor run esp12f-21_Underfloor
 esphome -s devicename esp12f-25 -s updates 30s -s room AquariumWindow -s mqtt_location measures -s mqtt_room aquarium_window run esp12f-25_AquariumWindow
 esphome -s devicename esp32-35 -s updates 1min -s room Pump -s mqtt_location measures -s mqtt_room pump -s room2 Garage -s mqtt_location2 outside -s mqtt_room2 garage run esp32-35_Pump_Garage
 # esphome -s devicename esp32-35 -s updates 1min -s room Pump -s mqtt_location measures -s mqtt_room pump run esp32_display_lcd_pcf8574.yaml
 # esphome -s devicename esp32-35 -s updates 1min -s room Pump -s mqtt_location measures -s mqtt_room pump run esp32_display_weact.yaml
 
 #* Future devices via OTA (with "compile" instead of "run")
-esphome -s devicename esp32-14 -s updates 30s -s room Salon -s mqtt_room salon compile esp32-14_Salon #! internal temp sensor is commented now
 esphome -s devicename esp32-39 -s updates 1min -s room Attic -s mqtt_location home -s mqtt_room attic compile esp32-39_Attic
 
 #* Test devices

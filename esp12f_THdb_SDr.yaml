@@ -13,20 +13,21 @@
 # Pawelo 20221119, 1.1.0. moved to framework with !include statements
 # Pawelo 20221119, 1.1.1. added esp version and wifi info text sensors to publish on web
 # Pawelo 20221127, 1.1.2, renamed script to reflect sensors/switches and measures/manipulators
-# Pawelo 20221127, 1.1.3, added $devices variable to name configutation deployed
+# Pawelo 20221127, 1.1.3, added $devices variable to name configuration deployed
 # Pawelo 20221127, 1.1.4, moved i2c configuration to separate include file
 # Pawelo 20221203, 1.1.5, added Restart button on web
 # Pawelo 20230906, 1.1.5, switched Dallas to Dallasng custom component
 # Pawelo 20230923, 1.1.5, added HA Connected binary sensor
 # Pawelo, 20240902, refactoring: "status_led" renamed to "led"
+# Pawelo, 20250103, added entity_category to LED
 
 #! run with this command to override substitutions
 # esphome -s devicename espXX -s updates 1min -s room <Room name> -s mqtt_room <room> run esp12f_SSss_MMmm__PP.yaml --device 192.168.x.x
-# heare are default values if those are not given via command line
+# here are default values if those are not given via command line
 substitutions:
   devices: "Temperatures via DS18B20, Temperature and Humidity via SHTx30"
   project_name: "pgolawsk.esp_home"
-  version: "20240902"
+  version: "20250103"
 
   devicename: esp12f-xx
   updates: "30s"
@@ -96,7 +97,7 @@ output:
 light:
   #! needed for RTTTL but its not connected to this device
   # LED
-  - !include { file: lights/led.yaml, vars: { ix: "", platform: "binary", off_delay: "5s" } }
+  - !include { file: lights/led.yaml, vars: { ix: "", platform: "binary", off_delay: "5s", entity_category: "" } }
 
 switch:
   # # Restart button
