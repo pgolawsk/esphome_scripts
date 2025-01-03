@@ -209,7 +209,7 @@ switch:
   - !include { file: switches/led_cycle.yaml, vars: { ID: "led", cycles: 5, on_delay: "1s", off_delay: "500ms" } }
   - !include { file: switches/led_cycle.yaml, vars: { ID: "led2", cycles: 5, on_delay: "1s", off_delay: "500ms", room: "${room2}", mqtt_location: "${mqtt_location2}", mqtt_room: "${mqtt_room2}" } }
 
-  # Buzzer (active)
+  # Passive/RTTTL Buzzer
   - !include { file: switches/passive_buzzer.yaml, vars: { ix: "", off_delay: "500ms" } }
   - !include { file: switches/passive_buzzer_cycle.yaml, vars: { ix: "", cycles: 2, freq: "1000Hz", on_delay: "500ms", off_delay: "200ms" } }
   - !include { file: switches/passive_buzzer_cycle.yaml, vars: { ix: "", cycles: 3, freq: "2000Hz", on_delay: "500ms", off_delay: "200ms" } }
