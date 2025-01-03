@@ -69,13 +69,20 @@ Author: Pawel Golawski, <pawel.golawski@2com.pl>
 - 1x ESP32-S3 N16R8 (dev board with 2x usb-c)
 
   ![ESP32-S3 N16R8 pinout image](pinouts/ESP32s3_N16R8_2xTypeC_dev_board_pinout.jpg "ESP32-S3 N16R8/N8R2 pinout")
-  > Note: GPIO48 is connected to RGB LED.
-  >
-  > Note: PSRAM require to include platformio_options as described in [https://community.home-assistant.io/t/esp32-s3-devkitc-1-n16r8-using-psram-howto](https://community.home-assistant.io/t/esp32-s3-devkitc-1-n16r8-using-psram-howto)
+  > Notes:
+  > - GPIO43 is connected to green LED.
+  > - GPIO44 is connected to blue LED.
+  > - GPIO48 is connected to RGB LED.
+  > - PSRAM (may) require to include platformio_options as described in [https://community.home-assistant.io/t/esp32-s3-devkitc-1-n16r8-using-psram-howto](https://community.home-assistant.io/t/esp32-s3-devkitc-1-n16r8-using-psram-howto)
 
 - 0x ESP32-S3 N8R2 (dev board with 2x usb-c)
 
   > Pinout the same as N16R8 above.
+  > Notes:
+  > - GPIO43 is connected to green LED.
+  > - GPIO44 is connected to blue LED.
+  > - GPIO48 is connected to RGB LED.
+  > - PSRAM (may) require to include platformio_options as described in [https://community.home-assistant.io/t/esp32-s3-devkitc-1-n16r8-using-psram-howto](https://community.home-assistant.io/t/esp32-s3-devkitc-1-n16r8-using-psram-howto)
 
 - 2x ESP32-S2FN4R2 mini (dev board with usb-c)
 
