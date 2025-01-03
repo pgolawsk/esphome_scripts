@@ -17,6 +17,7 @@
 # Pawelo, 20241222, added PSRAM support (includes/ and debug_with_psram sensor)
 # Pawelo, 20241222, changed to use includes/board_esp32.yaml with variables
 # Pawelo, 20241223, added "CREATIVE" IR remote control buttons
+# Pawelo, 20250103, added commented blue, green LEDs and RTTTL buzzer
 
 #! run with this command to override substitutions
 # esphome -s devicename espXX -s updates 1min -s room <Room name> -s mqtt_room <room> run esp32_MMmm_SSss__PP.yaml --device 192.168.x.x
@@ -26,7 +27,7 @@ substitutions:
 #  devices: "Temperature and Humidity via SHTx30 and Illuminance via BH1750"
   devices: "DEV Kit"
   project_name: "pgolawsk.esp_home"
-  version: "20241222"
+  version: "202050103"
 
   board_variant: "c3" # empty for ESP32, other values to display like c3, c6, s2, s3
   board: "esp32-c3-devkitm-1" # like: esp32dev, esp32cam, esp32-c3-devkitm-1, esp32-s3-devkitc-1, esp32-s2-saola-1, full list here https://registry.platformio.org/platforms/platformio/espressif32/boards?version=5.3.0
@@ -164,23 +165,44 @@ button:
   # - !include { file: buttons/rc_nec_button.yaml, vars: { receiver: "LG_TV", action: "1", address: 0xFB04, command: 0xEE11 } }
   # - !include { file: buttons/rc_nec_button.yaml, vars: { receiver: "LG_TV", action: "HOME", address: 0xFB04, command: 0xBC43 } }
 
-switch:
-  # LED cycle
-  - !include { file: switches/led_cycle.yaml, vars: { ID: "led", cycles: 3, on_delay: "1s" , off_delay: "1000ms" } }
-
 output:
-  # LED (blue on standard C3 mini)
+  # LED blue (C3 supermini)
   # - !include { file: outputs/led.yaml, vars: { ix: "", gpio: "GPIO8", inverted: true } }
 
-  # LED RGB (blue only)
-  # - !include { file: outputs/led.yaml, vars: { ix: "", gpio: "GPIO7", inverted: false } }
-  # OR
-  # LED RGB (multicolor)
-  - !include { file: outputs/led_rgb.yaml, vars: { ix: "", ID: "rgb_led" } }
+  # LED blue (S2 mini)
+  # - !include { file: outputs/led.yaml, vars: { ix: "", gpio: "GPIO15", inverted: false } }
+
+  # LED green (S3)
+  # - !include { file: outputs/led.yaml, vars: { ix: "green", gpio: "GPIO43", inverted: true } }
+  # LED blue (S3, C3 supermini plus)
+  # - !include { file: outputs/led.yaml, vars: { ix: "blue", gpio: "GPIO44", inverted: true } }
+  - !include { file: outputs/led.yaml, vars: { ix: "blue", gpio: "GPIO7", inverted: false } }
+
+  # LED RGB (required only when RGB led is used as status led)
+  # - !include { file: outputs/led_rgb.yaml, vars: { ix: "", ID: "rgb_led" } }
+
+  # Passive/RTTTL Buzzer
+  # - !include { file: outputs/passive_buzzer_ledc.yaml, vars: { ix: "", gpio: "GPIO4" } }
 
 light:
-  # LED
-  - !include { file: lights/led.yaml, vars: { ix: "", platform: "status_led", off_delay: "1days" } }
-  # LED RGB
-  - !include { file: lights/led_rgb_neopixelbus.yaml, vars: { ix: "", gpio: "GPIO8" } }
+  # LED green (S3)
+  # - !include { file: lights/led.yaml, vars: { ix: "green", platform: "binary", off_delay: "1days", entity_category: "" } }
+  # LED blue (S3, C3 supermini/plus)
+  - !include { file: lights/led.yaml, vars: { ix: "blue", platform: "status_led", off_delay: "1days", entity_category: "diagnostic" } }
+  # LED RGB (S3, C3 supermini plus)
+  # - !include { file: lights/led_rgb.yaml, vars: { ix: "", gpio: "GPIO48", entity_category: "", rmt_channel: 1 } }
+  - !include { file: lights/led_rgb_neopixelbus.yaml, vars: { ix: "", gpio: "GPIO8", entity_category: "" } }
 
+switch:
+  # LED cycle
+  - !include { file: switches/led_cycle.yaml, vars: { ID: "ledblue", cycles: 3, on_delay: "1s" , off_delay: "1000ms" } }
+
+  # Passive/RTTTL Buzzer
+  # - !include { file: switches/passive_buzzer.yaml, vars: { ix: "", off_delay: "500ms" } }
+  # - !include { file: switches/passive_buzzer_cycle.yaml, vars: { ix: "", cycles: 2, freq: "1000Hz", on_delay: "500ms", off_delay: "200ms" } }
+  # - !include { file: switches/passive_buzzer_cycle.yaml, vars: { ix: "", cycles: 3, freq: "2000Hz", on_delay: "500ms", off_delay: "200ms" } }
+  # - !include { file: switches/passive_buzzer_cycle.yaml, vars: { ix: "", cycles: 4, freq: "800Hz", on_delay: "500ms", off_delay: "200ms" } }
+
+  # RTTTL Play (passive_buzzer)
+  # - !include { file: switches/rtttl_play.yaml, vars: { ix: "" } }
+  # - !include { file: switches/rtttl_play.yaml, vars: { ix: "2", mqtt_location: "${mqtt_location2}", mqtt_room: "${mqtt_room2}" } }
