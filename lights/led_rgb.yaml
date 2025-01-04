@@ -1,0 +1,30 @@
+---
+#* RGB LED light
+# Pawelo, 20250103, created based on https://community.home-assistant.io/t/esp32-s3-devkitc-1-n16r8-using-psram-howto/652601/38
+# Pawelo, 20250103, make entity_category as variable
+
+platform: esp32_rmt_led_strip
+chipset: WS2812
+rgb_order: GRB
+rmt_channel: ${rmt_channel} # for ESP32c3 can be 0-1, for ESP32 can be 0-7, for ESP32s2 0-3, for ESP32s3 0-3
+name: "$room LED RGB${ix}"
+icon: "mdi:led-outline"
+id: rgb_led${ix}
+state_topic: $devicename/rgb_led${ix}
+pin: ${gpio}
+num_leds: 1
+entity_category: ${entity_category} # "" or config or diagnostic
+restore_mode: ALWAYS_OFF
+effects:
+  - pulse:
+      name: slow_pulse
+      transition_length: 0.5s
+      update_interval: 1s
+      min_brightness: 10%
+      max_brightness: 50%
+  - pulse:
+      name: fast_pulse
+      transition_length: 0.25s
+      update_interval: 0.5s
+      min_brightness: 20%
+      max_brightness: 70%
