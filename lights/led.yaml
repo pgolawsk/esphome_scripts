@@ -4,6 +4,7 @@
 # Pawelo, 20230128, created from examples
 # Pawelo, 20240902, renamed from "status_led" to "led"
 # Pawelo, 20240902, added "platform" variable based on https://github.com/esphome/feature-requests/issues/2230
+# Pawelo, 20250103, make entity_category as variable
 
 platform: ${platform} # binary or status_led
 # platform: binary
@@ -12,6 +13,7 @@ icon: "mdi:led-off"
 id: led${ix}
 output: o_led${ix}
 state_topic: $devicename/led${ix}
+entity_category: ${entity_category} # "" or config or diagnostic
 on_turn_on:
 - delay: ${off_delay}
 - light.turn_off: led${ix}
