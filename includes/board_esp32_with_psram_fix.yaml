@@ -12,6 +12,7 @@
 # Pawelo, 20241222, make "board" and "board variant" as variables
 # Pawelo, 20241222, added flash_size as variable
 #? Pawelo, 20241222, created as copy of board_esp32.yaml with additional platformio_options to enable PSRAM gor N16R8 board variant
+# Pawelo, 20250103, renamed script and added flash_mode as dio
 
 esphome:
   name: $devicename
@@ -23,10 +24,11 @@ esphome:
     name: $project_name
     version: $version
 
-  # FIX for PSRAM on N16R8 board variant - arduino options are not set by default in ESPHome
+  # FIX for PSRAM on N16Rx board variants - arduino options are not set by default in ESPHome(?)
   platformio_options:
     board_build.arduino.memory_type: qio_opi
     board_upload.maximum_ram_size: 524288
+    board_build.flash_mode: dio
 
 esp32:
   board: ${board} # like: esp32dev, esp32cam, esp32-c3-devkitm-1, esp32-s3-devkitc-1, esp32-s2-saola-1, full list here https://registry.platformio.org/platforms/platformio/espressif32/boards?version=5.3.0
