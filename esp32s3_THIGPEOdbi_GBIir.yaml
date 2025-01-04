@@ -71,7 +71,7 @@ packages:
   apple_tv: !include { file: buttons/set_apple_tv_ir_remote.yaml, vars: { receiver: "ATV" } }
   smart_tv: !include { file: buttons/set_smart_tv_ir_remote.yaml, vars: { receiver: "STV" } }
   # smart_tv_x: !include { file: buttons/set_smart_tv_ir_remote_rest.yaml, vars: { receiver: "STVx" } }
-  nano_pc: !include { file: buttons/set_nano_pc_ir_remote.yaml, vars: { receiver: "NPC" } }
+  # nano_pc: !include { file: buttons/set_nano_pc_ir_remote.yaml, vars: { receiver: "NPC" } }
   # nano_pc_x: !include { file: buttons/set_nano_pc_ir_remote_rest.yaml, vars: { receiver: "NPCx" } }
   lg_tv: !include { file: buttons/set_lg_tv_ir_remote.yaml, vars: { receiver: "TV" } }
   # lg_tv_x: !include { file: buttons/set_lg_tv_ir_remote_rest.yaml, vars: { receiver: "TVx" } }
