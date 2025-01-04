@@ -4,9 +4,9 @@
 # Pawelo, 20240902, renamed from "s_led" to "o_led"
 
 platform: gpio
-pin:
-    number: ${gpio} # GPIO2 with inverted
-  #  mode: INPUT_PULLUP
 id: o_led${ix}
-# icon: mdi:led-off
-inverted: ${inverted} # false
+pin:
+  number: ${gpio} # GPIO2 with inverted
+  #  mode: INPUT_PULLUP
+  # icon: mdi:led-off
+  inverted: ${inverted} # false
