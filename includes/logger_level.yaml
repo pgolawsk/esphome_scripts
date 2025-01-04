@@ -2,6 +2,7 @@
 #* Enable logging with particular logging level
 # Pawelo, 20241117, created based on logger.yaml, added manageable log level
 # Pawelo, 20241119, added baud rate as variable
+# Pawelo, 20250103, excluded WARN(ING) from tcs34725
 
 logger:
   #  level: NONE, ERROR, WARN, INFO, DEBUG (default), VERBOSE, VERY_VERBOSE
@@ -13,3 +14,4 @@ logger:
     mqtt.client: INFO
     component: ERROR
     waveshare_epaper: INFO
+    tcs34725: ERROR

@@ -3,6 +3,8 @@
 # Pawelo, 20221119, created as my framework based on !include statements
 # Pawelo, 20230728, added component as ERROR  to get rid of warning that sensor check should not be longer than 200-300ms
 # Pawelo, 20230929, back to WARN log level, as seams 2023.9.1 resolved issue with sensor warnings taken too long to operate
+# Pawelo, 20250103, excluded WARN(ING) from tcs34725
+
 logger:
   #  level: NONE, ERROR, WARN, INFO, DEBUG (default), VERBOSE, VERY_VERBOSE
   level: INFO
@@ -16,3 +18,4 @@ logger:
     mqtt.client: INFO
     component: ERROR
     waveshare_epaper: WARN
+    tcs34725: ERROR
