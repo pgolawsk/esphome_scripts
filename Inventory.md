@@ -83,6 +83,7 @@ Author: Pawel Golawski, <pawel.golawski@2com.pl>
   > - GPIO44 is connected to blue LED.
   > - GPIO48 is connected to RGB LED.
   > - PSRAM (may) require to include platformio_options as described in [https://community.home-assistant.io/t/esp32-s3-devkitc-1-n16r8-using-psram-howto](https://community.home-assistant.io/t/esp32-s3-devkitc-1-n16r8-using-psram-howto)
+  > - DO NOT use 5V pin, as it provides 3.3V only and od not deliver enough power for I2C devices (those are recognized during scan, but won't work)
 
 - 2x ESP32-S2FN4R2 mini (dev board with usb-c)
 

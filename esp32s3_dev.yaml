@@ -6,6 +6,7 @@
 # NOTE: ESP32s3 - blue led is on GPIO44
 # NOTE: ESP32s3 - green led is on GPIO43
 # NOTE: PSRAM 8MB is not working? then https://community.home-assistant.io/t/esp32-s3-devkitc-1-n16r8-using-psram-howto
+# NOTE: DO NOT use 5V pin, as it provides 3.3V only and od not deliver enough power for I2C devices (those are recognized during scan, but won't work)
 ###
 # Pawelo 20231205, 1.1.5, created based on esp32_dev.yaml
 # Pawelo 20240209, 1.1.5, added ENS160 + AHT21 support
