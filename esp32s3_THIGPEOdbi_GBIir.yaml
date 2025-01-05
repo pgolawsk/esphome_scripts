@@ -6,12 +6,15 @@
 # NOTE: ESP32s3 - blue led is on GPIO44
 # NOTE: ESP32s3 - green led is on GPIO43
 # NOTE: PSRAM 8MB is not working? then https://community.home-assistant.io/t/esp32-s3-devkitc-1-n16r8-using-psram-howto###
+# NOTE: DO NOT use 5V pin, as it provides 3.3V only and od not deliver enough power for I2C devices (those are recognized during scan, but won't work)
+###
 # Pawelo, 20241223, created based on esp32c3_dev.yaml
 # Pawelo, 20241223, added "CREATIVE" IR remote control buttons
 # Pawelo, 20241231, enabled RGB LED, added pinout file reference
 # Pawelo, 20250103, added RTTTL support and passive buzzer on GPIO4
 # Pawelo, 20250103, added green and blue LEDs
 # Pawelo, 20250103, corrected IR receiver GPIO to 6
+# Pawelo, 20250104, setting device in the box - added BH1750 and pin checked working device
 
 #! run with this command to override substitutions
 # esphome -s devicename espXX -s updates 1min -s room <Room name> -s mqtt_room <room> run esp32_MMmm_SSss__PP.yaml --device 192.168.x.x
@@ -58,6 +61,7 @@ substitutions:
 # Include interfaces needed
 <<: !include { file: interfaces/debug.yaml, vars: { update_interval: "5s" } }
 <<: !include { file: interfaces/i2c.yaml, vars: { bus_id: "bus_a", sda: "GPIO21", scl: "GPIO20" } }
+# <<: !include { file: interfaces/i2c.yaml, vars: { bus_id: "bus_a", sda: "GPIO15", scl: "GPIO16" } }
 # <<: !include { file: interfaces/dallas.yaml, vars: { gpio: "GPIO10" } }
 <<: !include { file: interfaces/rtttl.yaml, vars: { ix: "" } }
 # <<: !include { file: interfaces/spi.yaml, vars: { spi_id: "spi_a", clk: "GPIO6", mosi: "GPIO7", miso: "GPIO9" } }
@@ -81,7 +85,7 @@ packages:
   # yamaha_av_zone2_x: !include { file: buttons/set_yamaha_av_zone2_ir_remote_rest.yaml, vars: { receiver: "AV2x" } }
   yamaha_bd: !include { file: buttons/set_yamaha_bd_ir_remote.yaml, vars: { receiver: "BD" } }
   # yamaha_bd_x: !include { file: buttons/set_yamaha_bd_ir_remote_rest.yaml, vars: { receiver: "BDx" } }
-  # creative: !include { file: buttons/set_creative_ir_remote.yaml, vars: { receiver: "CR" } }
+  creative: !include { file: buttons/set_creative_ir_remote.yaml, vars: { receiver: "CR" } }
 
 text_sensor:
   - !include sensors/text_uptime.yaml
@@ -126,10 +130,10 @@ sensor:
 
   # Temperature, Humidity, Pressure and Gas Resistance sensor
   # - !include { file: sensors/temp_hum_press_gas_BME680.yaml, vars: { ix: "", bus_id: "bus_a", address: "0x77", temp_offset: 0.0, hum_offset: 0.0, pressure_offset: 0.0 } }
-  - !include { file: sensors/temp_hum_press_gas_aqi_co2_voc_bme680.yaml, vars: { ix: "", bus_id: "bus_a", address: "0x77", temp_offset: -1.7, hum_offset: -3.0, pressure_offset: 7.0 } }  #!not working (bricked device)
+  - !include { file: sensors/temp_hum_press_gas_aqi_co2_voc_bme680.yaml, vars: { ix: "", bus_id: "bus_a", address: "0x77", temp_offset: 0, hum_offset: 0, pressure_offset: 0 } }
 
   # Illuminance sensor
-  # - !include { file: sensors/lux_BH1750.yaml, vars: { ix: "", bus_id: "bus_a", address: "0x23" } }
+  - !include { file: sensors/lux_BH1750.yaml, vars: { ix: "", bus_id: "bus_a", address: "0x23" } }
 
   # TVOC and eCO2 sensor
   # - !include { file: sensors/tvoc_eco2_SGP30.yaml, vars: { ix: "", bus_id: "bus_a", address: "0x58" } }
