@@ -62,6 +62,14 @@ Author: Pawel Golawski, <pawel.golawski@2com.pl>
 
   ![ESP32-C6 mini image](pinouts/ESP32c6_mini.png "ESP32-C6 mini")
 
+- 0x (+1) ESP32-C6 supermini
+
+  ![ESP32-C6 super-mini pinout image](pinouts/ESP32c6_supermini_pinout.jpeg "ESP32-C6 super-mini pinout")
+
+  > Notes:
+  > - GPIO15 is connected to blue LED.
+  > - GPIO8 is connected to RGB LED.
+
 - 1x ESP32-S3 N16R8
 
   ![ESP32-S3 WROOM-2 pinout image](pinouts/ESP32s3-WROOM-2_pinout.jpg "ESP32-S3 WROOM-2 pinout")
