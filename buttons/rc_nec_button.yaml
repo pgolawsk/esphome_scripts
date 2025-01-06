@@ -1,6 +1,8 @@
 ---
 #* Remote Control (IR Transmitter) button
+#NOTE: "${web_group}" must match "sorting_group_id" defined in "web_server" component
 # Pawelo, 20241219, created based on https://esphome.io/components/remote_transmitter.html
+# Pawelo, 20250106, added sorting group variable to separate IR remotes on web server
 
 platform: template
 name: "${receiver} - ${action}"
@@ -8,6 +10,9 @@ id: b_nec_${receiver}_${action}
 # entity_category: config
 icon: "mdi:remote-tv"
 state_topic: $devicename/b_nec_${receiver}_${action}
+web_server:
+  # sorting_group_id: ${web_group}
+  sorting_group_id: sg_tv_remotes
 on_press:
   then:
     - remote_transmitter.transmit_nec:

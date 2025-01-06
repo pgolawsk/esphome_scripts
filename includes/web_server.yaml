@@ -1,7 +1,10 @@
 ---
 #* Enable WEB server
+#NOTE: sorting_weight positive is after core groups, negative is before core groups
 # Pawelo, 20221119, created as my framework based on !include statements
-# Pawelo, 20230311, make ota as ota_rnabled input variable
+# Pawelo, 20230311, make ota as ota_enabled input variable
+# Pawelo, 20250106, added sorting groups to separate IR remotes
+
 web_server:
   port: 80
   include_internal: true
@@ -11,3 +14,13 @@ web_server:
 #    username: !secret web_username
 #    password: !secret web_password
   version: 3
+  sorting_groups:
+    - id: sg_tv_remotes
+      name: "TV Remote Controls"
+      sorting_weight: -10
+    - id: sg_av_remotes
+      name: "AV Remote Controls"
+      sorting_weight: -9
+    - id: sg_input_remotes
+      name: "Input Remote Controls"
+      sorting_weight: -8
