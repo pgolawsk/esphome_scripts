@@ -17,14 +17,16 @@
 # Pawelo 20240628, 1.1.5, moved filters offset adjustments for BME680 to variables
 # Pawelo, 20240902, refactoring: "status_led" renamed to "led"
 # Pawelo, 20250103, added entity_category to LED
+# Pawelo, 20250106, added commented debug and sun sensors
+# Pawelo, 20250106, added factory reset and similar buttons
 
 #! run with this command to override substitutions
 # esphome -s devicename espXX -s updates 1min -s room <Room name> -s mqtt_room <room> run esp12f_MMmm_SSss__PP.yaml --device 192.168.x.x
 # here are default values if those are not given via command line
 substitutions:
-  devices: "Temperature, Humidity, Preassure, Gas Resistance via BME680, Illuminance via BH1750 and Gate/Doorbell via GPIO"
+  devices: "Temperature, Humidity, Pressure, Gas Resistance via BME680, Illuminance via BH1750 and Gate/Doorbell via GPIO"
   project_name: "pgolawsk.esp_home"
-  version: "20250103"
+  version: "20250106"
 
   devicename: esp12f-xx
   updates: "30s"
@@ -41,6 +43,8 @@ substitutions:
   # default variable values for !include statements
   accuracy_decimals: "2"
 
+# <<: !include { file: web_server.yaml, vars: { ota_enabled: false } } #WARN: this is to enable older version of web interface (consume less memory)
+
 # Include basics of a board
 <<: !include includes/board_esp12f.yaml
 # Include/Override mqtt with/without RTTTL support if needed
@@ -52,6 +56,7 @@ substitutions:
 # <<: !include { file: interfaces/dallas.yaml, vars: { gpio: "GPIO10" } }
 <<: !include { file: interfaces/rtttl.yaml, vars: { ix: "" } }
 # <<: !include { file: interfaces/i2c_bme68x_bsec2.yaml, vars: { ix: "", address: "0x77" } }  #!not working (bricked device)
+# <<: !include { file: interfaces/debug.yaml, vars: { update_interval: "15s" } }
 
 
 # # reinclude MQTT as a bug in ESPHOME, see: https://github.com/esphome/issues/issues/2180, https://github.com/esphome/issues/issues/1487
@@ -71,6 +76,15 @@ text_sensor:
   # - !include sensors/text_air_quality_bme68x_bsec2.yaml #!not working (bricked device)
   # - !include sensors/text_IAQ_accuracy_bme68x_bsec2.yaml #!not working (bricked device)
 
+  # DEBUG component
+  # - !include sensors/text_debug.yaml
+
+  # Sun component
+  # - !include sensors/text_sun_sunrise.yaml
+  # - !include sensors/text_sun_sunset.yaml
+  # - !include sensors/text_sun_time_of_day.yaml
+  # - !include sensors/text_sun_direction.yaml
+
 binary_sensor:
   # HA Connected
   - !include sensors/binary_ha_connected.yaml
@@ -80,9 +94,18 @@ binary_sensor:
 
 sensor:
   - !include sensors/uptime.yaml
+  # - !include sensors/uptime_boot.yaml
   - !include sensors/wifi_signal.yaml
+  # - !include sensors/wifi_strength.yaml
 
-  # Temperature and Humidity and Preasure sensor
+  # DEBUG component
+  # - !include sensors/debug.yaml
+
+  # Sun component
+  # - !include sensors/sun_elevation.yaml
+  # - !include sensors/sun_azimuth.yaml
+
+  # Temperature and Humidity and Pressure sensor
   - !include { file: sensors/temp_hum_press_gas_BME680.yaml, vars: { ix: "", bus_id: "bus_a", address: "0x77", temp_offset: -2.4, hum_offset: 4.4, pressure_offset: 7.0 } }
   # - !include { file: sensors/temp_hum_press_gas_aqi_co2_voc_bme680.yaml, vars: { ix: "", bus_id: "bus_a", address: "0x77", temp_offset: -2.4, hum_offset: 4.4, pressure_offset: 7.0 } }  #!not working (bricked device)
   # Illuminance sensor
@@ -100,9 +123,6 @@ light:
   - !include { file: lights/led.yaml, vars: { ix: "", platform: "binary", off_delay: "5s", entity_category: "" } }
 
 switch:
-  # # Restart button
-  # - !include switches/platform_restart.yaml
-
   # LED cycle
   - !include { file: switches/led_cycle.yaml, vars: { ID: "led", cycles: 3, on_delay: "1s" , off_delay: "500ms" } }
 
@@ -113,5 +133,12 @@ switch:
   - !include { file: switches/gate.yaml, vars: { ix: "", gpio: "GPIO14", off_delay: "4s", room: "${room2}", mqtt_location: "${mqtt_location2}", mqtt_room: "${mqtt_room2}" } }
 
 button:
-  # Restart button
+  # Restart, reset and shutdown buttons
   - !include { file: buttons/restart_button.yaml }
+  - !include { file: buttons/safe_mode_restart_button.yaml }
+  - !include { file: buttons/factory_reset_button.yaml }
+  - !include { file: buttons/shutdown_button.yaml }
+
+  # Scan Wifi button (require wifi_info text sensor to be present to display results)
+  # WARN: Performing the scan will disconnect device from current WiFi
+  # - !include { file: buttons/scan_wifi_button.yaml }
