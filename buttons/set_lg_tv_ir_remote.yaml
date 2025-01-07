@@ -1,11 +1,11 @@
 #* Set of LG TV IR remote buttons
-#NOTE: "web_group" must match "sorting_group_id" defined in "web_server" component
 # using buttons/rc_nec_button.yaml include
-# IR codes based on https://github.com/friendlyarm/kernel-rockchip/blob/nanopi6-v6.1.y/arch/arm64/boot/dts/rockchip/rk3588-nanopi6-common.dtsi
+# NOTE: "web_group" must match "sorting_group_id" defined in "web_server" component
 # Pawelo, 20241221, created
 # Pawelo, 20241221, updated grouped directions into "A_" prefix
 # Pawelo, 20241222, added receiver name as variable
 # Pawelo, 20250106, added web_group to display in this section on web_server
+# Pawelo, 20250107, comment NOTE change
 
 button:
   # LG TV Remote (AKB72914048),POWER,Received NEC: address=0xFB04, command=0xF708 command_repeats=1
