@@ -13,7 +13,7 @@
 # Pawelo 20230112, added flashing for generic esp32-cam-mb board
 # Pawelo 20230305, upgrade esphome to 2023.2 version and platformio
 # Pawelo 20231205, added esp32c3_dev flashing
-# Pawelo 20250107, some typos corrected
+# Pawelo 20250107, some typos corrected, some obsolete script names corrected
 
 #TODO: Read more complicated AIQ measurement on https://github.com/nkitanov/iaq_board
 #TODO: Read about speaker with PAM8403 (amplifier) connection to ESP826 on: https://www.instructables.com/MQTT-Audio-Notifier-for-ESP8266-Play-MP3-TTS-RTTL/
@@ -107,7 +107,7 @@ mosquitto_sub -v -t home/#
 #? 30s is 30 seconds and it's optimal as the same interval is setup on prometheus (could be 10s, 1min, 5min, ...)
 # esphome -s devicename esp12f-10 -s updates 30s -s room Office -s mqtt_room office run esp12f_TH_S.yaml --device 192.168.x.x
 # GROUND Floor
-esphome -s devicename esp12f-10 -s updates 30s -s room Office -s mqtt_room office run esp12f_THICEV2lbd_BCEar.yaml --device 192.168.x.x
+esphome -s devicename esp12f-10 -s updates 30s -s room Office -s mqtt_room office run esp12f_THICEO2lbd_BCOar.yaml --device 192.168.x.x
 esphome -s devicename esp12f-11 -s updates 30s -s room Entrance -s mqtt_room entrance run esp12f_THIPGbdss_BGr__G.yaml --device 192.168.x.x
 # esphome -s devicename esp12f-12 -s updates 30s -s room Kitchen -s mqtt_room kitchen run esp12f_dev.yaml --device 192.168.x.x
 # esphome -s devicename esp12f-13 -s updates 30s -s room Salon -s mqtt_room salon run esp12f_dev.yaml --device 192.168.x.x
@@ -134,7 +134,7 @@ esphome -s devicename esp12f-28 -s updates 30s -s room TestSwitch2 -s mqtt_locat
 
 #*! RUN those commands to compile and deliver updates to esp01s relay switches
 #? --device is optional - if not given and device name can be found by dns then it will be flashed OTA anyway:)
-esphome -s devicename esp01s-100 -s updates 1min -s room "Kitchen" -s mqtt_room kitchen_fan -s off_delay 5min run esp01s_1r__F.yaml --device 192.168.x.x
+esphome -s devicename esp01s-100 -s updates 1min -s room "Kitchen" -s mqtt_room kitchen_fan -s off_delay 5min run esp01s_1r_x__F.yaml --device 192.168.x.x
 
 
 #*! RUN those commands to compile and deliver updates to esp32 devices wit sensors, switches, ...
