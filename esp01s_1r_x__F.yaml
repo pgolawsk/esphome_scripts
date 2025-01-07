@@ -4,14 +4,15 @@
 ###
 # Pawelo 20221222, 1.1.5, created based esp12f_ scripts
 # Pawelo 20230923, 1.1.5, added HA Connected binary sensor
+# Pawelo, 20250107, typo corrections
 
-#! run with this command to override sunstitutions
+#! run with this command to override substitutions
 # esphome -s devicename espXX -s updates 1min -s room <Room name> -s mqtt_room <room> -s delay_off <time of active output> run esp01s_SSss_MMmm__PP.yaml --device 192.168.x.x
-# heare are default values if those are not given via command line
+# here are default values if those are not given via command line
 substitutions:
   devices: "Single Relay Switch"
   project_name: "pgolawsk.esp_home"
-  version: "1.1.5"
+  version: "20250107"
 
   devicename: esp01s-xx
   updates: "30s"
@@ -24,7 +25,7 @@ substitutions:
   # default variable values for !include statements
   accuracy_decimals: "2"
   # how much time to wait till relay will bw switched off
-  dalay_off: 10min
+  off_delay: 10min
 
 # Include basics of a board
 <<: !include includes/board_esp01s.yaml
@@ -35,16 +36,6 @@ substitutions:
 # <<: !include { file: interfaces/i2c.yaml, vars: { bus_id: "bus_a", sda: "GPIO4", scl: "GPIO2" } }
 # <<: !include { file: interfaces/dallas.yaml, vars: { gpio: "GPIO10" } }
 # <<: !include { file: interfaces/rtttl.yaml, vars: { ix: "" } }
-
-# # reinclude MQTT as a bug in ESPHOME, see: https://github.com/esphome/issues/issues/2180, https://github.com/esphome/issues/issues/1487
-# mqtt:
-#   broker: !secret mqtt_ip
-#   port: !secret mqtt_port
-# #  username: $devicename
-#   username: !secret mqtt_user
-#   password: !secret mqtt_password
-#   client_id: $devicename
-# # id: $devicename
 
 text_sensor:
   - !include sensors/text_uptime.yaml
@@ -65,10 +56,6 @@ sensor:
 output:
   # Relay
   - !include { file: outputs/relay.yaml, vars: { ix: "", gpio: "GPIO0", inverted: true } }
-
-# switch:
-#   # Restart button
-#   - !include switches/platform_restart.yaml
 
 button:
   # Restart button
