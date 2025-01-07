@@ -2,3 +2,4 @@
 /.esphome/
 /secrets.yaml
 *.bin
+/temp
