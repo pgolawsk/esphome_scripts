@@ -70,8 +70,8 @@ substitutions:
 
 # Include interfaces needed
 # <<: !include { file: interfaces/debug.yaml, vars: { update_interval: "15s" } }
-<<: !include { file: interfaces/i2c.yaml, vars: { bus_id: "bus_a", sda: "GPIO4", scl: "GPIO5" } }
 <<: !include { file: interfaces/rtttl.yaml, vars: { ix: "" } }
+<<: !include { file: interfaces/i2c.yaml, vars: { bus_id: "bus_a", sda: "GPIO4", scl: "GPIO5" } }
 # <<: !include { file: interfaces/i2c_bme68x_bsec2.yaml, vars: { ix: "", address: "0x77" } }  #!not working (bricked ESP12F device)
 
 text_sensor:
