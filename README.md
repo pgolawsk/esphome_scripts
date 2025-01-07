@@ -201,6 +201,7 @@ Some scripts which have sensors or manipulators in 2 areas have the parameters f
 - `interfaces` - list of separate interfaces to include like `i2c`, `uart`, `dallas`
 - `lights` - list of switches intended to include them under `light:` section
 - `outputs` - list of outputs intended to include them under `output:` section
+- `pinouts` - images of pinouts, boards, displays referenced by [Inventory.md](Inventory.md)
 - `sensors` - list of sensors intended to include them under:
   - `binary_senor:` section, those with filenames starting as `binary_`
   - `text_senor:` section, those with filenames starting as `text_`
