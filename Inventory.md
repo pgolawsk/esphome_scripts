@@ -13,6 +13,10 @@ Author: Pawel Golawski, <pawel.golawski@2com.pl>
   ![ESP-12F pinout image](pinouts/ESP_12F.png "ESP-12F pinout")
   ![ESP-12E pinout image](pinouts/ESP_12E_pinout.png "ESP-12E pinout")
 
+  > Notes:
+  > - GPIO9 do not work (it hangs ESP)- reserved for flashing
+  > - GPIO10 - use with caution, read [https://www.letscontrolit.com/forum/viewtopic.php?t=1462](https://www.letscontrolit.com/forum/viewtopic.php?t=1462)
+
 - 6x ESP32-WROOM-32D (build-in antenna)
 
   ![ESP32-WROOM-32 pinout image](pinouts/ESP32_WROOM_32_pinout.jpg "ESP32-WROOM-32 pinout")
