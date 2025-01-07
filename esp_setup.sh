@@ -1,4 +1,4 @@
-#* Setup of ESP sensors
+#* Setup of ESP sensors and ESPHome environment
 # Pawelo 20221111 first steps
 # Pawelo 20221112, created based on https://www.youtube.com/watch?v=a3iay-g1AsI, https://github.com/geerlingguy/pico-w-garage-door-sensor, https://github.com/nygma2004/esphome
 # Pawelo 20221115, added prometheus setup, based on https://esphome.io/components/prometheus.html
@@ -7,12 +7,13 @@
 # Pawelo 20221203, added ESP1 links in OPTIONAL section
 # Pawelo 20221230, added flashing for Entrance room ("THIPG" measures and "d" switch) on esp12f
 # Pawelo 20230101, added flashing for generic esp board with esp-32
-# Pawelo 20230101, added flashing for Upstairs room ("THP" measires) on esp12f
+# Pawelo 20230101, added flashing for Upstairs room ("THP" measures) on esp12f
 # Pawelo 20230107, changed default update_interval to 30s (from 1min) to synchronize with prometheus
 # Pawelo 20230108, moved esp12f tests to esp12f_dev.yaml script
 # Pawelo 20230112, added flashing for generic esp32-cam-mb board
 # Pawelo 20230305, upgrade esphome to 2023.2 version and platformio
 # Pawelo 20231205, added esp32c3_dev flashing
+# Pawelo 20250107, some typos corrected
 
 #TODO: Read more complicated AIQ measurement on https://github.com/nkitanov/iaq_board
 #TODO: Read about speaker with PAM8403 (amplifier) connection to ESP826 on: https://www.instructables.com/MQTT-Audio-Notifier-for-ESP8266-Play-MP3-TTS-RTTL/
@@ -47,7 +48,7 @@ pip3 install esphome
 pip3 install -U esphome
 pip3 install -U platformio
 
-# clean unnesecary packages
+# clean unnecessary packages
 # pio system prune --dry-run
 pio system prune
 
@@ -100,8 +101,8 @@ mosquitto_sub -v -t home/#
 # CH_PD/ED - 10K resistor to 3.3V DC
 
 ###########################
-#* Install the firmwares (wired or OTA)
-#*! RUN those commmands to compile and deliver updates to esp12f devices with sensors, switches, ...
+#* Install the firmware (wired or OTA)
+#*! RUN those commands to compile and deliver updates to esp12f devices with sensors, switches, ...
 #? --device is optional - if not given and device name can be found by dns then it will be flashed OTA anyway:)
 #? 30s is 30 seconds and it's optimal as the same interval is setup on prometheus (could be 10s, 1min, 5min, ...)
 # esphome -s devicename esp12f-10 -s updates 30s -s room Office -s mqtt_room office run esp12f_TH_S.yaml --device 192.168.x.x
@@ -120,7 +121,7 @@ esphome -s devicename esp12f-15 -s updates 30s -s room Upstairs -s mqtt_room ups
 # esphome -s devicename esp12f-19 -s updates 30s -s room Bathroom -s mqtt_room bathroom run esp12f_dev.yaml --device 192.168.x.x
 
 # MEASURES devices
-esphome -s devicename esp12f-21 -s updates 30s -s room Unrderfloor -s mqtt_location measures -s mqtt_room underfloor run esp12f_THdb_SDr.yaml --device 192.168.x.x
+esphome -s devicename esp12f-21 -s updates 30s -s room Underfloor -s mqtt_location measures -s mqtt_room underfloor run esp12f_THdb_SDr.yaml --device 192.168.x.x
 esphome -s devicename esp12f-25 -s updates 30s -s room AquariumWindow -s mqtt_location measures -s mqtt_room aquarium_window run esp12f_THIddb_STr.yaml --device 192.168.x.x
 
 # TEST devices
@@ -131,12 +132,12 @@ esphome -s devicename esp12f-28 -s updates 30s -s room TestSwitch2 -s mqtt_locat
 # esphome -s devicename esp12f-11 -s updates 30s -s room Kitchen -s mqtt_room kitchen run esp12f_THI_SB.yaml --device 192.168.x.x
 
 
-#*! RUN those commmands to compile and deliver updates to esp01s relay switches
+#*! RUN those commands to compile and deliver updates to esp01s relay switches
 #? --device is optional - if not given and device name can be found by dns then it will be flashed OTA anyway:)
 esphome -s devicename esp01s-100 -s updates 1min -s room "Kitchen" -s mqtt_room kitchen_fan -s off_delay 5min run esp01s_1r__F.yaml --device 192.168.x.x
 
 
-#*! RUN those commmands to compile and deliver updates to esp32 devices wit sensors, switches, ...
+#*! RUN those commands to compile and deliver updates to esp32 devices wit sensors, switches, ...
 #? --device is optional - if not given and device name can be found by dns then it will be flashed OTA anyway:)
 esphome -s devicename esp32-35 -s updates 1min -s room Pump -s mqtt_location measures -s mqtt_room pump run esp32_THIWdb_SBYr.yaml --device 192.168.x.x
 
@@ -185,7 +186,7 @@ docker-compose logs prometheus
 #* OPTIONAL
 ###########################
 ###########################
-#* Programmming of soldered esp12f module, read https://www.hackster.io/brian-lough/3-simple-ways-of-programming-an-esp8266-12x-module-c514ee
+#* Programming of soldered esp12f module, read https://www.hackster.io/brian-lough/3-simple-ways-of-programming-an-esp8266-12x-module-c514ee
 #* 8 cables needed AND
 # A. breadboard, RX, TX, GND connect to USB to serial converter
 #* B. development board for esp01 to esp12 - connect 8 cables using development board pins to program it
