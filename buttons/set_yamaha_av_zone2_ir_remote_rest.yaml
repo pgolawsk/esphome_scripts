@@ -1,115 +1,116 @@
 #* Set of Yamaha A810 (RAV447) IR remote buttons for 2nd zone - non-essential
 # using buttons/rc_nec_button.yaml include
-# IR codes based on https://github.com/friendlyarm/kernel-rockchip/blob/nanopi6-v6.1.y/arch/arm64/boot/dts/rockchip/rk3588-nanopi6-common.dtsi
+# NOTE: "web_group" must match "sorting_group_id" defined in "web_server" component
 # Pawelo, 20241221, created from captures codes list
 # Pawelo, 20241222, added receiver name as variable
+# Pawelo, 20250107, added web_group to display in this section on web_server
 
 button:
   # Yamaha A810 (RAV447) - 2nd ZONE,HDMI1,Received NEC: address=0x857A, command=0x3748 command_repeats=1
-  - !include { file: rc_nec_button.yaml, vars: { receiver: "${receiver}", action: "HDMI1", address: 0x857A, command: 0x3748 } }
+  - !include { file: rc_nec_button.yaml, vars: { web_group: sg_av_remotes, receiver: "${receiver}", action: "HDMI1", address: 0x857A, command: 0x3748 } }
   # Yamaha A810 (RAV447) - 2nd ZONE,HDMI2,Received NEC: address=0x857A, command=0x344B command_repeats=1
-  - !include { file: rc_nec_button.yaml, vars: { receiver: "${receiver}", action: "HDMI2", address: 0x857A, command: 0x344B } }
+  - !include { file: rc_nec_button.yaml, vars: { web_group: sg_av_remotes, receiver: "${receiver}", action: "HDMI2", address: 0x857A, command: 0x344B } }
   # Yamaha A810 (RAV447) - 2nd ZONE,HDMI3,Received NEC: address=0x857A, command=0x314E command_repeats=1
-  - !include { file: rc_nec_button.yaml, vars: { receiver: "${receiver}", action: "HDMI3", address: 0x857A, command: 0x314E } }
+  - !include { file: rc_nec_button.yaml, vars: { web_group: sg_av_remotes, receiver: "${receiver}", action: "HDMI3", address: 0x857A, command: 0x314E } }
   # Yamaha A810 (RAV447) - 2nd ZONE,HDMI4,Received NEC: address=0x857A, command=0x2E51 command_repeats=1
-  - !include { file: rc_nec_button.yaml, vars: { receiver: "${receiver}", action: "HDMI4", address: 0x857A, command: 0x2E51 } }
+  - !include { file: rc_nec_button.yaml, vars: { web_group: sg_av_remotes, receiver: "${receiver}", action: "HDMI4", address: 0x857A, command: 0x2E51 } }
   # Yamaha A810 (RAV447) - 2nd ZONE,HDMI5,Received NEC: address=0x857A, command=0x0E71 command_repeats=1
-  - !include { file: rc_nec_button.yaml, vars: { receiver: "${receiver}", action: "HDMI5", address: 0x857A, command: 0x0E71 } }
+  - !include { file: rc_nec_button.yaml, vars: { web_group: sg_av_remotes, receiver: "${receiver}", action: "HDMI5", address: 0x857A, command: 0x0E71 } }
   # Yamaha A810 (RAV447) - 2nd ZONE,HDMI6,Received NEC: address=0x857A, command=0x0B74 command_repeats=1
-  - !include { file: rc_nec_button.yaml, vars: { receiver: "${receiver}", action: "HDMI6", address: 0x857A, command: 0x0B74 } }
+  - !include { file: rc_nec_button.yaml, vars: { web_group: sg_av_remotes, receiver: "${receiver}", action: "HDMI6", address: 0x857A, command: 0x0B74 } }
   # Yamaha A810 (RAV447) - 2nd ZONE,HDMI7,Received NEC: address=0x857A, command=0xE699 command_repeats=1
-  - !include { file: rc_nec_button.yaml, vars: { receiver: "${receiver}", action: "HDMI7", address: 0x857A, command: 0xE699 } }
+  - !include { file: rc_nec_button.yaml, vars: { web_group: sg_av_remotes, receiver: "${receiver}", action: "HDMI7", address: 0x857A, command: 0xE699 } }
   # Yamaha A810 (RAV447) - 2nd ZONE,V_AUX,Received NEC: address=0x857A, command=0x27D8 command_repeats=1
-  - !include { file: rc_nec_button.yaml, vars: { receiver: "${receiver}", action: "V_AUX", address: 0x857A, command: 0x27D8 } }
+  - !include { file: rc_nec_button.yaml, vars: { web_group: sg_av_remotes, receiver: "${receiver}", action: "V_AUX", address: 0x857A, command: 0x27D8 } }
   # Yamaha A810 (RAV447) - 2nd ZONE,AV1,Received NEC: address=0x857A, command=0x2B54 command_repeats=1
-  - !include { file: rc_nec_button.yaml, vars: { receiver: "${receiver}", action: "AV1", address: 0x857A, command: 0x2B54 } }
+  - !include { file: rc_nec_button.yaml, vars: { web_group: sg_av_remotes, receiver: "${receiver}", action: "AV1", address: 0x857A, command: 0x2B54 } }
   # Yamaha A810 (RAV447) - 2nd ZONE,AV2,Received NEC: address=0x857A, command=0x2857 command_repeats=1
-  - !include { file: rc_nec_button.yaml, vars: { receiver: "${receiver}", action: "AV2", address: 0x857A, command: 0x2857 } }
+  - !include { file: rc_nec_button.yaml, vars: { web_group: sg_av_remotes, receiver: "${receiver}", action: "AV2", address: 0x857A, command: 0x2857 } }
   # Yamaha A810 (RAV447) - 2nd ZONE,AV3,Received NEC: address=0x857A, command=0x255A command_repeats=1
-  - !include { file: rc_nec_button.yaml, vars: { receiver: "${receiver}", action: "AV3", address: 0x857A, command: 0x255A } }
+  - !include { file: rc_nec_button.yaml, vars: { web_group: sg_av_remotes, receiver: "${receiver}", action: "AV3", address: 0x857A, command: 0x255A } }
   # Yamaha A810 (RAV447) - 2nd ZONE,AV4,Received NEC: address=0x857A, command=0x225D command_repeats=1
-  - !include { file: rc_nec_button.yaml, vars: { receiver: "${receiver}", action: "AV4", address: 0x857A, command: 0x225D } }
+  - !include { file: rc_nec_button.yaml, vars: { web_group: sg_av_remotes, receiver: "${receiver}", action: "AV4", address: 0x857A, command: 0x225D } }
   # Yamaha A810 (RAV447) - 2nd ZONE,AV5,Received NEC: address=0x857A, command=0x1F60 command_repeats=1
-  - !include { file: rc_nec_button.yaml, vars: { receiver: "${receiver}", action: "AV5", address: 0x857A, command: 0x1F60 } }
+  - !include { file: rc_nec_button.yaml, vars: { web_group: sg_av_remotes, receiver: "${receiver}", action: "AV5", address: 0x857A, command: 0x1F60 } }
   # Yamaha A810 (RAV447) - 2nd ZONE,AV6,Received NEC: address=0x857A, command=0x1C63 command_repeats=1
-  - !include { file: rc_nec_button.yaml, vars: { receiver: "${receiver}", action: "AV6", address: 0x857A, command: 0x1C63 } }
+  - !include { file: rc_nec_button.yaml, vars: { web_group: sg_av_remotes, receiver: "${receiver}", action: "AV6", address: 0x857A, command: 0x1C63 } }
   # Yamaha A810 (RAV447) - 2nd ZONE,AUDIO,Received NEC: address=0x857A, command=0xE39C command_repeats=1
-  - !include { file: rc_nec_button.yaml, vars: { receiver: "${receiver}", action: "AUDIO", address: 0x857A, command: 0xE39C } }
+  - !include { file: rc_nec_button.yaml, vars: { web_group: sg_av_remotes, receiver: "${receiver}", action: "AUDIO", address: 0x857A, command: 0xE39C } }
   # Yamaha A810 (RAV447) - 2nd ZONE,DOCK,Received NEC: address=0x017F, command=0xB44B command_repeats=1
-  - !include { file: rc_nec_button.yaml, vars: { receiver: "${receiver}", action: "DOCK", address: 0x017F, command: 0xB44B } }
+  - !include { file: rc_nec_button.yaml, vars: { web_group: sg_av_remotes, receiver: "${receiver}", action: "DOCK", address: 0x017F, command: 0xB44B } }
   # Yamaha A810 (RAV447) - 2nd ZONE,TUNER,Received NEC: address=0x857A, command=0x2DD2 command_repeats=1
-  - !include { file: rc_nec_button.yaml, vars: { receiver: "${receiver}", action: "TUNER", address: 0x857A, command: 0x2DD2 } }
+  - !include { file: rc_nec_button.yaml, vars: { web_group: sg_av_remotes, receiver: "${receiver}", action: "TUNER", address: 0x857A, command: 0x2DD2 } }
   # Yamaha A810 (RAV447) - 2nd ZONE,PHONO,Received NEC: address=0x857A, command=0x2FD0 command_repeats=1
-  - !include { file: rc_nec_button.yaml, vars: { receiver: "${receiver}", action: "PHONO", address: 0x857A, command: 0x2FD0 } }
+  - !include { file: rc_nec_button.yaml, vars: { web_group: sg_av_remotes, receiver: "${receiver}", action: "PHONO", address: 0x857A, command: 0x2FD0 } }
   # Yamaha A810 (RAV447) - 2nd ZONE,NET,Received NEC: address=0x017F, command=0xBF40 command_repeats=1
-  - !include { file: rc_nec_button.yaml, vars: { receiver: "${receiver}", action: "NET", address: 0x017F, command: 0xBF40 } }
+  - !include { file: rc_nec_button.yaml, vars: { web_group: sg_av_remotes, receiver: "${receiver}", action: "NET", address: 0x017F, command: 0xBF40 } }
   # Yamaha A810 (RAV447) - 2nd ZONE,USB,Received NEC: address=0x017F, command=0x0C73 command_repeats=1
-  - !include { file: rc_nec_button.yaml, vars: { receiver: "${receiver}", action: "USB", address: 0x017F, command: 0x0C73 } }
+  - !include { file: rc_nec_button.yaml, vars: { web_group: sg_av_remotes, receiver: "${receiver}", action: "USB", address: 0x017F, command: 0x0C73 } }
   # Yamaha A810 (RAV447) - 2nd ZONE,FM,Received NEC: address=0x017F, command=0x2659 command_repeats=1
-  - !include { file: rc_nec_button.yaml, vars: { receiver: "${receiver}", action: "FM", address: 0x017F, command: 0x2659 } }
+  - !include { file: rc_nec_button.yaml, vars: { web_group: sg_av_remotes, receiver: "${receiver}", action: "FM", address: 0x017F, command: 0x2659 } }
   # Yamaha A810 (RAV447) - 2nd ZONE,AM,Received NEC: address=0x017F, command=0x2956 command_repeats=1
-  - !include { file: rc_nec_button.yaml, vars: { receiver: "${receiver}", action: "AM", address: 0x017F, command: 0x2956 } }
+  - !include { file: rc_nec_button.yaml, vars: { web_group: sg_av_remotes, receiver: "${receiver}", action: "AM", address: 0x017F, command: 0x2956 } }
   # Yamaha A810 (RAV447) - 2nd ZONE,INFO,Received NEC: address=0x857A, command=0x5728 command_repeats=1
-  - !include { file: rc_nec_button.yaml, vars: { receiver: "${receiver}", action: "INFO", address: 0x857A, command: 0x5728 } }
+  - !include { file: rc_nec_button.yaml, vars: { web_group: sg_av_remotes, receiver: "${receiver}", action: "INFO", address: 0x857A, command: 0x5728 } }
   # Yamaha A810 (RAV447) - 2nd ZONE,MEMORY,Received NEC: address=0x017F, command=0x1768 command_repeats=1
-  - !include { file: rc_nec_button.yaml, vars: { receiver: "${receiver}", action: "MEMORY", address: 0x017F, command: 0x1768 } }
+  - !include { file: rc_nec_button.yaml, vars: { web_group: sg_av_remotes, receiver: "${receiver}", action: "MEMORY", address: 0x017F, command: 0x1768 } }
   # Yamaha A810 (RAV447) - 2nd ZONE,CHANNELUP,Received NEC: address=0x017F, command=0x235C command_repeats=1
-  - !include { file: rc_nec_button.yaml, vars: { receiver: "${receiver}", action: "CHANNEL_UP", address: 0x017F, command: 0x235C } }
+  - !include { file: rc_nec_button.yaml, vars: { web_group: sg_av_remotes, receiver: "${receiver}", action: "CHANNEL_UP", address: 0x017F, command: 0x235C } }
   # Yamaha A810 (RAV447) - 2nd ZONE,CHANNELDOWN,Received NEC: address=0x017F, command=0x205F command_repeats=1
-  - !include { file: rc_nec_button.yaml, vars: { receiver: "${receiver}", action: "CHANNEL_DOWN", address: 0x017F, command: 0x205F } }
+  - !include { file: rc_nec_button.yaml, vars: { web_group: sg_av_remotes, receiver: "${receiver}", action: "CHANNEL_DOWN", address: 0x017F, command: 0x205F } }
   # Yamaha A810 (RAV447) - 2nd ZONE,TUNINGUP,Received NEC: address=0x017F, command=0x1D62 command_repeats=1
-  - !include { file: rc_nec_button.yaml, vars: { receiver: "${receiver}", action: "TUNING_UP", address: 0x017F, command: 0x1D62 } }
+  - !include { file: rc_nec_button.yaml, vars: { web_group: sg_av_remotes, receiver: "${receiver}", action: "TUNING_UP", address: 0x017F, command: 0x1D62 } }
   # Yamaha A810 (RAV447) - 2nd ZONE,TUNINGDOWN,Received NEC: address=0x017F, command=0x1A65 command_repeats=1
-  - !include { file: rc_nec_button.yaml, vars: { receiver: "${receiver}", action: "TUNING_DOWN", address: 0x017F, command: 0x1A65 } }
+  - !include { file: rc_nec_button.yaml, vars: { web_group: sg_av_remotes, receiver: "${receiver}", action: "TUNING_DOWN", address: 0x017F, command: 0x1A65 } }
   # Yamaha A810 (RAV447) - 2nd ZONE,SLEEP,Received NEC: address=0x857A, command=0xCE31 command_repeats=1
-  - !include { file: rc_nec_button.yaml, vars: { receiver: "${receiver}", action: "SLEEP", address: 0x857A, command: 0xCE31 } }
+  - !include { file: rc_nec_button.yaml, vars: { web_group: sg_av_remotes, receiver: "${receiver}", action: "SLEEP", address: 0x857A, command: 0xCE31 } }
   # Yamaha A810 (RAV447) - 2nd ZONE,ENTER,Received NEC: address=0x857A, command=0x502F command_repeats=1
-  - !include { file: rc_nec_button.yaml, vars: { receiver: "${receiver}", action: "ENTER", address: 0x857A, command: 0x502F } }
+  - !include { file: rc_nec_button.yaml, vars: { web_group: sg_av_remotes, receiver: "${receiver}", action: "ENTER", address: 0x857A, command: 0x502F } }
   # Yamaha A810 (RAV447) - 2nd ZONE,DISPLAY,Received NEC: address=0x017F, command=0x7F80 command_repeats=1
-  - !include { file: rc_nec_button.yaml, vars: { receiver: "${receiver}", action: "DISPLAY", address: 0x017F, command: 0x7F80 } }
+  - !include { file: rc_nec_button.yaml, vars: { web_group: sg_av_remotes, receiver: "${receiver}", action: "DISPLAY", address: 0x017F, command: 0x7F80 } }
   # Yamaha A810 (RAV447) - 2nd ZONE,TOP_MENU,Received NEC: address=0x857A, command=0xDEA1 command_repeats=1
-  - !include { file: rc_nec_button.yaml, vars: { receiver: "${receiver}", action: "TOP_MENU", address: 0x857A, command: 0xDEA1 } }
+  - !include { file: rc_nec_button.yaml, vars: { web_group: sg_av_remotes, receiver: "${receiver}", action: "TOP_MENU", address: 0x857A, command: 0xDEA1 } }
   # Yamaha A810 (RAV447) - 2nd ZONE,POPUP_MENU,Received NEC: address=0x857A, command=0xDAA5 command_repeats=1
-  - !include { file: rc_nec_button.yaml, vars: { receiver: "${receiver}", action: "POPUP_MENU", address: 0x857A, command: 0xDAA5 } }
+  - !include { file: rc_nec_button.yaml, vars: { web_group: sg_av_remotes, receiver: "${receiver}", action: "POPUP_MENU", address: 0x857A, command: 0xDAA5 } }
   # Yamaha A810 (RAV447) - 2nd ZONE,MODE,Received NEC: address=0x017F, command=0x7986 command_repeats=1
-  - !include { file: rc_nec_button.yaml, vars: { receiver: "${receiver}", action: "MODE", address: 0x017F, command: 0x7986 } }
+  - !include { file: rc_nec_button.yaml, vars: { web_group: sg_av_remotes, receiver: "${receiver}", action: "MODE", address: 0x017F, command: 0x7986 } }
   # Yamaha A810 (RAV447) - 2nd ZONE,STOP,Received NEC: address=0x017F, command=0x7689 command_repeats=1
-  - !include { file: rc_nec_button.yaml, vars: { receiver: "${receiver}", action: "STOP", address: 0x017F, command: 0x7689 } }
+  - !include { file: rc_nec_button.yaml, vars: { web_group: sg_av_remotes, receiver: "${receiver}", action: "STOP", address: 0x017F, command: 0x7689 } }
   # Yamaha A810 (RAV447) - 2nd ZONE,PAUSE,Received NEC: address=0x017F, command=0x7887 command_repeats=1
-  - !include { file: rc_nec_button.yaml, vars: { receiver: "${receiver}", action: "PAUSE", address: 0x017F, command: 0x7887 } }
+  - !include { file: rc_nec_button.yaml, vars: { web_group: sg_av_remotes, receiver: "${receiver}", action: "PAUSE", address: 0x017F, command: 0x7887 } }
   # Yamaha A810 (RAV447) - 2nd ZONE,PLAY,Received NEC: address=0x017F, command=0x7788 command_repeats=1
-  - !include { file: rc_nec_button.yaml, vars: { receiver: "${receiver}", action: "PLAY", address: 0x017F, command: 0x7788 } }
+  - !include { file: rc_nec_button.yaml, vars: { web_group: sg_av_remotes, receiver: "${receiver}", action: "PLAY", address: 0x017F, command: 0x7788 } }
   # Yamaha A810 (RAV447) - 2nd ZONE,REWIND,Received NEC: address=0x017F, command=0x758A command_repeats=1
-  - !include { file: rc_nec_button.yaml, vars: { receiver: "${receiver}", action: "REWIND", address: 0x017F, command: 0x758A } }
+  - !include { file: rc_nec_button.yaml, vars: { web_group: sg_av_remotes, receiver: "${receiver}", action: "REWIND", address: 0x017F, command: 0x758A } }
   # Yamaha A810 (RAV447) - 2nd ZONE,FORWARD,Received NEC: address=0x017F, command=0x748B command_repeats=1
-  - !include { file: rc_nec_button.yaml, vars: { receiver: "${receiver}", action: "FORWARD", address: 0x017F, command: 0x748B } }
+  - !include { file: rc_nec_button.yaml, vars: { web_group: sg_av_remotes, receiver: "${receiver}", action: "FORWARD", address: 0x017F, command: 0x748B } }
   # Yamaha A810 (RAV447) - 2nd ZONE,SKIPBACK,Received NEC: address=0x017F, command=0x738C command_repeats=1
-  - !include { file: rc_nec_button.yaml, vars: { receiver: "${receiver}", action: "SKIP_BACK", address: 0x017F, command: 0x738C } }
+  - !include { file: rc_nec_button.yaml, vars: { web_group: sg_av_remotes, receiver: "${receiver}", action: "SKIP_BACK", address: 0x017F, command: 0x738C } }
   # Yamaha A810 (RAV447) - 2nd ZONE,SKIPFORWARD,Received NEC: address=0x017F, command=0x728D command_repeats=1
-  - !include { file: rc_nec_button.yaml, vars: { receiver: "${receiver}", action: "SKIP_FORWARD", address: 0x017F, command: 0x728D } }
+  - !include { file: rc_nec_button.yaml, vars: { web_group: sg_av_remotes, receiver: "${receiver}", action: "SKIP_FORWARD", address: 0x017F, command: 0x728D } }
   # Yamaha A810 (RAV447) - 2nd ZONE,1,Received NEC: address=0x017F, command=0x8E71 command_repeats=1
-  - !include { file: rc_nec_button.yaml, vars: { receiver: "${receiver}", action: "1", address: 0x017F, command: 0x8E71 } }
+  - !include { file: rc_nec_button.yaml, vars: { web_group: sg_av_remotes, receiver: "${receiver}", action: "1", address: 0x017F, command: 0x8E71 } }
   # Yamaha A810 (RAV447) - 2nd ZONE,2,Received NEC: address=0x017F, command=0x8D72 command_repeats=1
-  - !include { file: rc_nec_button.yaml, vars: { receiver: "${receiver}", action: "2", address: 0x017F, command: 0x8D72 } }
+  - !include { file: rc_nec_button.yaml, vars: { web_group: sg_av_remotes, receiver: "${receiver}", action: "2", address: 0x017F, command: 0x8D72 } }
   # Yamaha A810 (RAV447) - 2nd ZONE,3,Received NEC: address=0x017F, command=0x8C73 command_repeats=1
-  - !include { file: rc_nec_button.yaml, vars: { receiver: "${receiver}", action: "3", address: 0x017F, command: 0x8C73 } }
+  - !include { file: rc_nec_button.yaml, vars: { web_group: sg_av_remotes, receiver: "${receiver}", action: "3", address: 0x017F, command: 0x8C73 } }
   # Yamaha A810 (RAV447) - 2nd ZONE,4,Received NEC: address=0x017F, command=0x8B74 command_repeats=1
-  - !include { file: rc_nec_button.yaml, vars: { receiver: "${receiver}", action: "4", address: 0x017F, command: 0x8B74 } }
+  - !include { file: rc_nec_button.yaml, vars: { web_group: sg_av_remotes, receiver: "${receiver}", action: "4", address: 0x017F, command: 0x8B74 } }
   # Yamaha A810 (RAV447) - 2nd ZONE,5,Received NEC: address=0x017F, command=0x8A75 command_repeats=1
-  - !include { file: rc_nec_button.yaml, vars: { receiver: "${receiver}", action: "5", address: 0x017F, command: 0x8A75 } }
+  - !include { file: rc_nec_button.yaml, vars: { web_group: sg_av_remotes, receiver: "${receiver}", action: "5", address: 0x017F, command: 0x8A75 } }
   # Yamaha A810 (RAV447) - 2nd ZONE,6,Received NEC: address=0x017F, command=0x8976 command_repeats=1
-  - !include { file: rc_nec_button.yaml, vars: { receiver: "${receiver}", action: "6", address: 0x017F, command: 0x8976 } }
+  - !include { file: rc_nec_button.yaml, vars: { web_group: sg_av_remotes, receiver: "${receiver}", action: "6", address: 0x017F, command: 0x8976 } }
   # Yamaha A810 (RAV447) - 2nd ZONE,7,Received NEC: address=0x017F, command=0x8877 command_repeats=1
-  - !include { file: rc_nec_button.yaml, vars: { receiver: "${receiver}", action: "7", address: 0x017F, command: 0x8877 } }
+  - !include { file: rc_nec_button.yaml, vars: { web_group: sg_av_remotes, receiver: "${receiver}", action: "7", address: 0x017F, command: 0x8877 } }
   # Yamaha A810 (RAV447) - 2nd ZONE,8,Received NEC: address=0x017F, command=0x8778 command_repeats=1
-  - !include { file: rc_nec_button.yaml, vars: { receiver: "${receiver}", action: "8", address: 0x017F, command: 0x8778 } }
+  - !include { file: rc_nec_button.yaml, vars: { web_group: sg_av_remotes, receiver: "${receiver}", action: "8", address: 0x017F, command: 0x8778 } }
   # Yamaha A810 (RAV447) - 2nd ZONE,9,Received NEC: address=0x017F, command=0x8679 command_repeats=1
-  - !include { file: rc_nec_button.yaml, vars: { receiver: "${receiver}", action: "9", address: 0x017F, command: 0x8679 } }
+  - !include { file: rc_nec_button.yaml, vars: { web_group: sg_av_remotes, receiver: "${receiver}", action: "9", address: 0x017F, command: 0x8679 } }
   # Yamaha A810 (RAV447) - 2nd ZONE,0,Received NEC: address=0x017F, command=0x857A command_repeats=1
-  - !include { file: rc_nec_button.yaml, vars: { receiver: "${receiver}", action: "0", address: 0x017F, command: 0x857A } }
+  - !include { file: rc_nec_button.yaml, vars: { web_group: sg_av_remotes, receiver: "${receiver}", action: "0", address: 0x017F, command: 0x857A } }
   # Yamaha A810 (RAV447) - 2nd ZONE,PLUS_10,Received NEC: address=0x017F, command=0x847B command_repeats=1
-  - !include { file: rc_nec_button.yaml, vars: { receiver: "${receiver}", action: "PLUS_10", address: 0x017F, command: 0x847B } }
+  - !include { file: rc_nec_button.yaml, vars: { web_group: sg_av_remotes, receiver: "${receiver}", action: "PLUS_10", address: 0x017F, command: 0x847B } }
   # Yamaha A810 (RAV447) - 2nd ZONE,ENT,Received NEC: address=0x017F, command=0x837C command_repeats=1
-  - !include { file: rc_nec_button.yaml, vars: { receiver: "${receiver}", action: "ENT", address: 0x017F, command: 0x837C } }
+  - !include { file: rc_nec_button.yaml, vars: { web_group: sg_av_remotes, receiver: "${receiver}", action: "ENT", address: 0x017F, command: 0x837C } }
   # Yamaha A810 (RAV447) - 2nd ZONE,HDMI_OUT,Received NEC: address=0x017F, command=0x0A53 command_repeats=1
-  - !include { file: rc_nec_button.yaml, vars: { receiver: "${receiver}", action: "HDMI_OUT", address: 0x017F, command: 0x0A53 } }
+  - !include { file: rc_nec_button.yaml, vars: { web_group: sg_av_remotes, receiver: "${receiver}", action: "HDMI_OUT", address: 0x017F, command: 0x0A53 } }

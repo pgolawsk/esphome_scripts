@@ -1,49 +1,51 @@
 #* Set of Smart TV IR remote buttons - non-essential
 # using buttons/rc_nec_button.yaml include
+# NOTE: "web_group" must match "sorting_group_id" defined in "web_server" component
 # Pawelo, 20241220, created
 # Pawelo, 20241220, file spited into essential and non-essential (rest) buttons
 # Pawelo, 20241222, added receiver name as variable
+# Pawelo, 20250107, added web_group to display in this section on web_server
 
 button:
     # Smart TV Remote,SKIP_BACK,Received NEC: address=0x7F80, command=0x42BD command_repeats=1
-  - !include { file: rc_nec_button.yaml, vars: { receiver: "${receiver}", action: "SKIP_BACK", address: 0x7F80, command: 0x42BD } }
+  - !include { file: rc_nec_button.yaml, vars: { web_group: sg_input_remotes, receiver: "${receiver}", action: "SKIP_BACK", address: 0x7F80, command: 0x42BD } }
   # Smart TV Remote,SKIP_FORWARD,Received NEC: address=0x7F80, command=0x44BB command_repeats=1
-  - !include { file: rc_nec_button.yaml, vars: { receiver: "${receiver}", action: "SKIP_FORWARD", address: 0x7F80, command: 0x44BB } }
+  - !include { file: rc_nec_button.yaml, vars: { web_group: sg_input_remotes, receiver: "${receiver}", action: "SKIP_FORWARD", address: 0x7F80, command: 0x44BB } }
   # Smart TV Remote,MEDIA,Received NEC: address=0x7F80, command=0xF609 command_repeats=1
-  - !include { file: rc_nec_button.yaml, vars: { receiver: "${receiver}", action: "MEDIA", address: 0x7F80, command: 0xF609 } }
+  - !include { file: rc_nec_button.yaml, vars: { web_group: sg_input_remotes, receiver: "${receiver}", action: "MEDIA", address: 0x7F80, command: 0xF609 } }
   # Smart TV Remote,MUSIC,Received NEC: address=0x7F80, command=0xEE11 command_repeats=1
-  - !include { file: rc_nec_button.yaml, vars: { receiver: "${receiver}", action: "MUSIC", address: 0x7F80, command: 0xEE11 } }
+  - !include { file: rc_nec_button.yaml, vars: { web_group: sg_input_remotes, receiver: "${receiver}", action: "MUSIC", address: 0x7F80, command: 0xEE11 } }
   # Smart TV Remote,WEB,Received NEC: address=0x7F80, command=0xAB54 command_repeats=1
-  - !include { file: rc_nec_button.yaml, vars: { receiver: "${receiver}", action: "WEB", address: 0x7F80, command: 0xAB54 } }
+  - !include { file: rc_nec_button.yaml, vars: { web_group: sg_input_remotes, receiver: "${receiver}", action: "WEB", address: 0x7F80, command: 0xAB54 } }
   # Smart TV Remote,APP_SELECT,Received NEC: address=0x7F80, command=0xB04F command_repeats=1
-  - !include { file: rc_nec_button.yaml, vars: { receiver: "${receiver}", action: "APP_SELECT", address: 0x7F80, command: 0xB04F } }
+  - !include { file: rc_nec_button.yaml, vars: { web_group: sg_input_remotes, receiver: "${receiver}", action: "APP_SELECT", address: 0x7F80, command: 0xB04F } }
   # Smart TV Remote,?? ESC,Received NEC: address: 0x7F80, command: 0xAD52 command_repeats=1
-  - !include { file: rc_nec_button.yaml, vars: { receiver: "${receiver}", action: "ESC", address: 0x7F80, command: 0xAD52 } }
+  - !include { file: rc_nec_button.yaml, vars: { web_group: sg_input_remotes, receiver: "${receiver}", action: "ESC", address: 0x7F80, command: 0xAD52 } }
   # Smart TV Remote,?? PLAY,Received NEC: address: 0x7F80, command: 0xAD52 command_repeats=1
-  - !include { file: rc_nec_button.yaml, vars: { receiver: "${receiver}", action: "PLAY", address: 0x7F80, command: 0xAD52 } }
+  - !include { file: rc_nec_button.yaml, vars: { web_group: sg_input_remotes, receiver: "${receiver}", action: "PLAY", address: 0x7F80, command: 0xAD52 } }
   # Smart TV Remote,?? PAUSE,Received NEC: address: 0x7F80, command: 0xAD52 command_repeats=1
-  - !include { file: rc_nec_button.yaml, vars: { receiver: "${receiver}", action: "PAUSE", address: 0x7F80, command: 0xAD52 } }
+  - !include { file: rc_nec_button.yaml, vars: { web_group: sg_input_remotes, receiver: "${receiver}", action: "PAUSE", address: 0x7F80, command: 0xAD52 } }
   # Smart TV Remote,0,Received NEC: address: 0x7F80, command: 0xCF30 command_repeats=1
-  - !include { file: rc_nec_button.yaml, vars: { receiver: "${receiver}", action: "0", address: 0x7F80, command: 0xCF30 } }
+  - !include { file: rc_nec_button.yaml, vars: { web_group: sg_input_remotes, receiver: "${receiver}", action: "0", address: 0x7F80, command: 0xCF30 } }
   # Smart TV Remote,1,Received NEC: address: 0x7F80, command: 0xCE31 command_repeats=1
-  - !include { file: rc_nec_button.yaml, vars: { receiver: "${receiver}", action: "1", address: 0x7F80, command: 0xCE31 } }
+  - !include { file: rc_nec_button.yaml, vars: { web_group: sg_input_remotes, receiver: "${receiver}", action: "1", address: 0x7F80, command: 0xCE31 } }
   # Smart TV Remote,2,Received NEC: address: 0x7F80, command: 0xCD32 command_repeats=1
-  - !include { file: rc_nec_button.yaml, vars: { receiver: "${receiver}", action: "2", address: 0x7F80, command: 0xCD32 } }
+  - !include { file: rc_nec_button.yaml, vars: { web_group: sg_input_remotes, receiver: "${receiver}", action: "2", address: 0x7F80, command: 0xCD32 } }
   # Smart TV Remote,3,Received NEC: address: 0x7F80, command: 0xCC33 command_repeats=1
-  - !include { file: rc_nec_button.yaml, vars: { receiver: "${receiver}", action: "3", address: 0x7F80, command: 0xCC33 } }
+  - !include { file: rc_nec_button.yaml, vars: { web_group: sg_input_remotes, receiver: "${receiver}", action: "3", address: 0x7F80, command: 0xCC33 } }
   # Smart TV Remote,4,Received NEC: address: 0x7F80, command: 0xCB34 command_repeats=1
-  - !include { file: rc_nec_button.yaml, vars: { receiver: "${receiver}", action: "4", address: 0x7F80, command: 0xCB34 } }
+  - !include { file: rc_nec_button.yaml, vars: { web_group: sg_input_remotes, receiver: "${receiver}", action: "4", address: 0x7F80, command: 0xCB34 } }
   # Smart TV Remote,5,Received NEC: address: 0x7F80, command: 0xCA35 command_repeats=1
-  - !include { file: rc_nec_button.yaml, vars: { receiver: "${receiver}", action: "5", address: 0x7F80, command: 0xCA35 } }
+  - !include { file: rc_nec_button.yaml, vars: { web_group: sg_input_remotes, receiver: "${receiver}", action: "5", address: 0x7F80, command: 0xCA35 } }
   # Smart TV Remote,6,Received NEC: address: 0x7F80, command: 0xC936 command_repeats=1
-  - !include { file: rc_nec_button.yaml, vars: { receiver: "${receiver}", action: "6", address: 0x7F80, command: 0xC936 } }
+  - !include { file: rc_nec_button.yaml, vars: { web_group: sg_input_remotes, receiver: "${receiver}", action: "6", address: 0x7F80, command: 0xC936 } }
   # Smart TV Remote,7,Received NEC: address: 0x7F80, command: 0xC837 command_repeats=1
-  - !include { file: rc_nec_button.yaml, vars: { receiver: "${receiver}", action: "7", address: 0x7F80, command: 0xC837 } }
+  - !include { file: rc_nec_button.yaml, vars: { web_group: sg_input_remotes, receiver: "${receiver}", action: "7", address: 0x7F80, command: 0xC837 } }
   # Smart TV Remote,8,Received NEC: address: 0x7F80, command: 0xC738 command_repeats=1
-  - !include { file: rc_nec_button.yaml, vars: { receiver: "${receiver}", action: "8", address: 0x7F80, command: 0xC738 } }
+  - !include { file: rc_nec_button.yaml, vars: { web_group: sg_input_remotes, receiver: "${receiver}", action: "8", address: 0x7F80, command: 0xC738 } }
   # Smart TV Remote,9,Received NEC: address: 0x7F80, command: 0xC639 command_repeats=1
-  - !include { file: rc_nec_button.yaml, vars: { receiver: "${receiver}", action: "9", address: 0x7F80, command: 0xC639 } }
+  - !include { file: rc_nec_button.yaml, vars: { web_group: sg_input_remotes, receiver: "${receiver}", action: "9", address: 0x7F80, command: 0xC639 } }
   # Smart TV Remote,1_A,Received NEC: address: 0x7F80, command: 0xA758 command_repeats=1
-  - !include { file: rc_nec_button.yaml, vars: { receiver: "${receiver}", action: "1_A", address: 0x7F80, command: 0xA758 } }
+  - !include { file: rc_nec_button.yaml, vars: { web_group: sg_input_remotes, receiver: "${receiver}", action: "1_A", address: 0x7F80, command: 0xA758 } }
   # Smart TV Remote,BACKSPACE,Received NEC: address: 0x7F80, command: 0xBB44 command_repeats=1
-  - !include { file: rc_nec_button.yaml, vars: { receiver: "${receiver}", action: "BACKSPACE", address: 0x7F80, command: 0xBB44 } }
+  - !include { file: rc_nec_button.yaml, vars: { web_group: sg_input_remotes, receiver: "${receiver}", action: "BACKSPACE", address: 0x7F80, command: 0xBB44 } }

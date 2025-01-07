@@ -1,22 +1,24 @@
 #* Set of Apple TV IR remote buttons - all/essential
 # using buttons/rc_nec_button.yaml include
+# NOTE: "web_group" must match "sorting_group_id" defined in "web_server" component
 # Pawelo, 20241219, created
 # Pawelo, 20241220, grouped directions into "A_" prefix
 # Pawelo, 20241222, added receiver name as variable
+# Pawelo, 20250107, added web_group to display in this section on web_server
 
 button:
   # Apple TV Remote,MENU,Received NEC: address=0x87EE, command=0xB603 command_repeats=1
-  - !include { file: rc_nec_button.yaml, vars: { receiver: "${receiver}", action: "MENU", address: 0x87EE, command: 0xB603 } }
+  - !include { file: rc_nec_button.yaml, vars: { web_group: sg_input_remotes, receiver: "${receiver}", action: "MENU", address: 0x87EE, command: 0xB603 } }
   # Apple TV Remote,PLAY/PAUSE,Received NEC: address=0x87EE, command=0xB65F command_repeats=1,Received NEC: address=0x87EE, command=0xB605 command_repeats=1
-  - !include { file: rc_nec_button.yaml, vars: { receiver: "${receiver}", action: "PLAY", address: 0x87EE, command: 0xB65F } }
-  - !include { file: rc_nec_button.yaml, vars: { receiver: "${receiver}", action: "PAUSE", address: 0x87EE, command: 0xB65F } }
+  - !include { file: rc_nec_button.yaml, vars: { web_group: sg_input_remotes, receiver: "${receiver}", action: "PLAY", address: 0x87EE, command: 0xB65F } }
+  - !include { file: rc_nec_button.yaml, vars: { web_group: sg_input_remotes, receiver: "${receiver}", action: "PAUSE", address: 0x87EE, command: 0xB65F } }
   # Apple TV Remote,OK,Received NEC: address=0x87EE, command=0xB65C command_repeats=1,Received NEC: address=0x87EE, command=0xB605 command_repeats=1
-  - !include { file: rc_nec_button.yaml, vars: { receiver: "${receiver}", action: "A_OK", address: 0x87EE, command: 0xB65C } }
+  - !include { file: rc_nec_button.yaml, vars: { web_group: sg_input_remotes, receiver: "${receiver}", action: "A_OK", address: 0x87EE, command: 0xB65C } }
   # Apple TV Remote,UP,Received NEC: address=0x87EE, command=0xB60A command_repeats=1
-  - !include { file: rc_nec_button.yaml, vars: { receiver: "${receiver}", action: "A_UP", address: 0x87EE, command: 0xB60A } }
+  - !include { file: rc_nec_button.yaml, vars: { web_group: sg_input_remotes, receiver: "${receiver}", action: "A_UP", address: 0x87EE, command: 0xB60A } }
   # Apple TV Remote,RIGHT,Received NEC: address=0x87EE, command=0xB606 command_repeats=1
-  - !include { file: rc_nec_button.yaml, vars: { receiver: "${receiver}", action: "A_RIGHT", address: 0x87EE, command: 0xB606 } }
+  - !include { file: rc_nec_button.yaml, vars: { web_group: sg_input_remotes, receiver: "${receiver}", action: "A_RIGHT", address: 0x87EE, command: 0xB606 } }
   # Apple TV Remote,DOWN,Received NEC: address=0x87EE, command=0xB60C command_repeats=1
-  - !include { file: rc_nec_button.yaml, vars: { receiver: "${receiver}", action: "A_DOWN", address: 0x87EE, command: 0xB60C } }
+  - !include { file: rc_nec_button.yaml, vars: { web_group: sg_input_remotes, receiver: "${receiver}", action: "A_DOWN", address: 0x87EE, command: 0xB60C } }
   # Apple TV Remote,LEFT,Received NEC: address=0x87EE, command=0xB609 command_repeats=1
-  - !include { file: rc_nec_button.yaml, vars: { receiver: "${receiver}", action: "A_LEFT", address: 0x87EE, command: 0xB609 } }
+  - !include { file: rc_nec_button.yaml, vars: { web_group: sg_input_remotes, receiver: "${receiver}", action: "A_LEFT", address: 0x87EE, command: 0xB609 } }

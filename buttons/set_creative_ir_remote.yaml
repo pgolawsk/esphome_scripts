@@ -1,26 +1,28 @@
 #* Set of CREATIVE (computer sound system) IR remote buttons - all/essential
 # using buttons/rc_nec_button.yaml include
+# NOTE: "web_group" must match "sorting_group_id" defined in "web_server" component
 # Pawelo, 20241223, created
+# Pawelo, 20250107, added web_group to display in this section on web_server
 
 button:
   # aa
   # CREATIVE,POWER,Received NEC: address=0x44C1, command=0x7A85 command_repeats=1
-  - !include { file: rc_nec_button.yaml, vars: { receiver: "${receiver}", action: "POWER", address: 0x44C1, command: 0x7A85 } }
+  - !include { file: rc_nec_button.yaml, vars: { web_group: sg_av_remotes, receiver: "${receiver}", action: "POWER", address: 0x44C1, command: 0x7A85 } }
   # CREATIVE,MUTE,Received NEC: address=0x44C1, command=0x8A75 command_repeats=1
-  - !include { file: rc_nec_button.yaml, vars: { receiver: "${receiver}", action: "MUTE", address: 0x44C1, command: 0x8A75 } }
+  - !include { file: rc_nec_button.yaml, vars: { web_group: sg_av_remotes, receiver: "${receiver}", action: "MUTE", address: 0x44C1, command: 0x8A75 } }
   # CREATIVE,SELECT,Received NEC: address=0x44C1, command=0x9A65 command_repeats=1
-  - !include { file: rc_nec_button.yaml, vars: { receiver: "${receiver}", action: "SELECT", address: 0x44C1, command: 0x9A65 } }
+  - !include { file: rc_nec_button.yaml, vars: { web_group: sg_av_remotes, receiver: "${receiver}", action: "SELECT", address: 0x44C1, command: 0x9A65 } }
   # CREATIVE,VOLUMEUP,Received NEC: address=0x44C1, command=0xBA45 command_repeats=1
-  - !include { file: rc_nec_button.yaml, vars: { receiver: "${receiver}", action: "VOLUME_UP", address: 0x44C1, command: 0xBA45 } }
+  - !include { file: rc_nec_button.yaml, vars: { web_group: sg_av_remotes, receiver: "${receiver}", action: "VOLUME_UP", address: 0x44C1, command: 0xBA45 } }
   # CREATIVE,VOLUMEDOWN,Received NEC: address=0x44C1, command=0x3AC5 command_repeats=1
-  - !include { file: rc_nec_button.yaml, vars: { receiver: "${receiver}", action: "VOLUME_DOWN", address: 0x44C1, command: 0x3AC5 } }
+  - !include { file: rc_nec_button.yaml, vars: { web_group: sg_av_remotes, receiver: "${receiver}", action: "VOLUME_DOWN", address: 0x44C1, command: 0x3AC5 } }
   # CREATIVE,MODE,Received NEC: address=0x44C1, command=0xB24D command_repeats=1
-  - !include { file: rc_nec_button.yaml, vars: { receiver: "${receiver}", action: "MODE", address: 0x44C1, command: 0xB24D } }
+  - !include { file: rc_nec_button.yaml, vars: { web_group: sg_av_remotes, receiver: "${receiver}", action: "MODE", address: 0x44C1, command: 0xB24D } }
   # CREATIVE,SKIPBACK,Received NEC: address=0x44C1, command=0x5AA5 command_repeats=1
-  - !include { file: rc_nec_button.yaml, vars: { receiver: "${receiver}", action: "SKIP_BACK", address: 0x44C1, command: 0x5AA5 } }
+  - !include { file: rc_nec_button.yaml, vars: { web_group: sg_av_remotes, receiver: "${receiver}", action: "SKIP_BACK", address: 0x44C1, command: 0x5AA5 } }
   # CREATIVE,PLAY,Received NEC: address=0x44C1, command=0xF20D command_repeats=1
-  - !include { file: rc_nec_button.yaml, vars: { receiver: "${receiver}", action: "PLAY", address: 0x44C1, command: 0xF20D } }
+  - !include { file: rc_nec_button.yaml, vars: { web_group: sg_av_remotes, receiver: "${receiver}", action: "PLAY", address: 0x44C1, command: 0xF20D } }
   # CREATIVE,PAUSE,Received NEC: address=0x44C1, command=0xF20D command_repeats=1
-  - !include { file: rc_nec_button.yaml, vars: { receiver: "${receiver}", action: "PAUSE", address: 0x44C1, command: 0xF20D } }
+  - !include { file: rc_nec_button.yaml, vars: { web_group: sg_av_remotes, receiver: "${receiver}", action: "PAUSE", address: 0x44C1, command: 0xF20D } }
   # CREATIVE,SKIPFORWARD,Received NEC: address=0x44C1, command=0xDA25 command_repeats=1
-  - !include { file: rc_nec_button.yaml, vars: { receiver: "${receiver}", action: "SKIP_FORWARD", address: 0x44C1, command: 0xDA25 } }
+  - !include { file: rc_nec_button.yaml, vars: { web_group: sg_av_remotes, receiver: "${receiver}", action: "SKIP_FORWARD", address: 0x44C1, command: 0xDA25 } }

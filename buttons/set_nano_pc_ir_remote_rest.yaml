@@ -1,18 +1,20 @@
 #* Set of Nano PC IR remote buttons - non-essential
 # using buttons/rc_nec_button.yaml include
 # IR codes based on https://github.com/friendlyarm/kernel-rockchip/blob/nanopi6-v6.1.y/arch/arm64/boot/dts/rockchip/rk3588-nanopi6-common.dtsi
+# NOTE: "web_group" must match "sorting_group_id" defined in "web_server" component
 # Pawelo, 20241219, created
 # Pawelo, 20241220, file spited into essential and non-essential (rest) buttons
 # Pawelo, 20241222, added receiver name as variable
+# Pawelo, 20250107, added web_group to display in this section on web_server
 
 button:
   # NanoPC Remote,ENTER,Received NEC: address=0xC43B, command=0xEE00 command_repeats=1
-  - !include { file: rc_nec_button.yaml, vars: { receiver: "${receiver}", action: "ENTER", address: 0xC43B, command: 0xEE00 } }
+  - !include { file: rc_nec_button.yaml, vars: { web_group: sg_input_remotes, receiver: "${receiver}", action: "ENTER", address: 0xC43B, command: 0xEE00 } }
   # NanoPC Remote,LEFTMETA,Received NEC: address=0xC43B, command=0xEB00 command_repeats=1
-  - !include { file: rc_nec_button.yaml, vars: { receiver: "${receiver}", action: "LEFTMETA", address: 0xC43B, command: 0xEB00 } }
+  - !include { file: rc_nec_button.yaml, vars: { web_group: sg_input_remotes, receiver: "${receiver}", action: "LEFTMETA", address: 0xC43B, command: 0xEB00 } }
   # NanoPC Remote,MODE,Received NEC: address=0xC43B, command=0xF700 command_repeats=1
-  - !include { file: rc_nec_button.yaml, vars: { receiver: "${receiver}", action: "MODE", address: 0xC43B, command: 0xF700 } }
+  - !include { file: rc_nec_button.yaml, vars: { web_group: sg_input_remotes, receiver: "${receiver}", action: "MODE", address: 0xC43B, command: 0xF700 } }
   # NanoPC Remote,SYSRQ,Received NEC: address=0xC43B, command=0xE500 command_repeats=1
-  - !include { file: rc_nec_button.yaml, vars: { receiver: "${receiver}", action: "SYSRQ", address: 0xC43B, command: 0xE500 } }
+  - !include { file: rc_nec_button.yaml, vars: { web_group: sg_input_remotes, receiver: "${receiver}", action: "SYSRQ", address: 0xC43B, command: 0xE500 } }
   # NanoPC Remote,ESC,Received NEC: address=0xC43B, command=0xF500 command_repeats=1
-  - !include { file: rc_nec_button.yaml, vars: { receiver: "${receiver}", action: "ESC", address: 0xC43B, command: 0xF500 } }
+  - !include { file: rc_nec_button.yaml, vars: { web_group: sg_input_remotes, receiver: "${receiver}", action: "ESC", address: 0xC43B, command: 0xF500 } }
