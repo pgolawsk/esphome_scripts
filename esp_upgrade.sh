@@ -6,6 +6,7 @@
 # Pawelo 20241223, compiled esp32-14 successfully
 # Pawelo 20241231, added esp32-33 (s3) and esp32-34 (s2)
 # Pawelo 20250101, added examples how to read logs
+# Pawelo 20250101, added relay switches on esp01s circuit
 
 #*###########################
 #*** OR Upgrade ESP Home on mac/win
@@ -42,6 +43,7 @@ esphome -s devicename esp32-39 -s updates 1min -s room Attic -s mqtt_location ho
 
 #* Test devices
 esphome -s devicename esp12f-29 -s updates 30s -s room Test -s mqtt_location measures -s mqtt_room test run esp12f_dev.yaml
+# esphome -s devicename esp12f-29 -s updates 30s -s room Test -s mqtt_location measures -s room2 Test2 -s mqtt_location2 measures -s mqtt_room2 test2 run esp12f-11_Entrance_Entry
 esphome -s devicename esp32-30 -s updates 1min -s room Test32 -s mqtt_location measures -s mqtt_room test32 -s room2 Test32b -s mqtt_location2 measures -s mqtt_room2 test32b run esp32_dev.yaml
 # esphome -s devicename esp32-30 -s updates 1min -s room Test32D -s mqtt_location measures -s mqtt_room test32 -s room2 Test32DU -s mqtt_location2 measures -s mqtt_room2 test32b run esp32_dev_display.yaml
 # esphome -s devicename esp32-30 -s updates 1min -s room Test32 -s mqtt_location measures -s mqtt_room test32 run esp32_display_weact.yaml
@@ -60,6 +62,9 @@ esphome -s devicename esp32-32 -s updates 1min -s room Test32c3rgb -s mqtt_locat
 
 # generic ESP32 boards - no
 esphome -s devicename esp32-dev -s updates 1min -s room Dev32 -s mqtt_location measures -s mqtt_room dev32 -s room2 Dev32b -s mqtt_location2 measures -s mqtt_room2 dev32b run esp32_dev.yaml
+
+# relay switches on esp01s circuit
+esphome -s devicename esp01s-100 -s updates 1min -s room "Kitchen" -s mqtt_room kitchen_fan -s off_delay 5min run esp01s_1r_x__F.yaml
 
 esphome run mac_host.yaml
 
