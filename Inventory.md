@@ -8,7 +8,7 @@ Author: Pawel Golawski, <pawel.golawski@2com.pl>
 
 ### Boards inventory
 
-- 10x ESP12F
+- 10x **ESP12F**
 
   ![ESP-12F pinout image](pinouts/ESP_12F.png "ESP-12F pinout")
   ![ESP-12E pinout image](pinouts/ESP_12E_pinout.png "ESP-12E pinout")
@@ -17,44 +17,44 @@ Author: Pawel Golawski, <pawel.golawski@2com.pl>
   > - GPIO9 do not work (it hangs ESP)- reserved for flashing
   > - GPIO10 - use with caution, read [https://www.letscontrolit.com/forum/viewtopic.php?t=1462](https://www.letscontrolit.com/forum/viewtopic.php?t=1462)
 
-- 6x ESP32-WROOM-32D (build-in antenna)
+- 6x **ESP32-WROOM-32D** (build-in antenna)
 
   ![ESP32-WROOM-32 pinout image](pinouts/ESP32_WROOM_32_pinout.jpg "ESP32-WROOM-32 pinout")
 
-- 2x ESP32-WROOM-32U (IPEX, no built-in antenna)
+- 2x **ESP32-WROOM-32U** (IPEX, no built-in antenna)
 
   > Pinout is the same as ESP32-WROOM-32D
 
-- 3x ESP32-WROOM-32UE (IPEX, no built-in antenna)
+- 3x **ESP32-WROOM-32UE** (IPEX, no built-in antenna)
 
   > Pinout is the same as ESP32-WROOM-32D
 
-- 1x ESP32S (IPEX or built-in antenna)
+- 1x **ESP32S** (IPEX or built-in antenna)
 
   ![ESP32S pinout image](pinouts/ESP32S_pinout.jpg "ESP32S pinout")
 
-- 13x ESP32-WROOM-32 expansion board (to solder)
+- 13x **ESP32-WROOM-32 expansion board** (to solder)
 
   ![ESP32 adapter image](pinouts/esp32_adapter_1.jpg "ESP32S adapter board")
   ![ESP32 adapter image](pinouts/esp32_adapter_2.jpg "ESP32S adapter board")
   ![ESP32 adapter image](pinouts/esp32_adapter_3.jpg "ESP32S adapter board")
 
-- 1x ESP32-D1 mini
+- 1x **ESP32-D1 mini**
 
   ![ESP32-D1 mini pinout image](pinouts/ESP31_D1_mini_pinout.png "ESP32-D1 mini pinout")
 
-- 5x ESP32-C3 super mini
+- 5x **ESP32-C3 super mini**
 
   ![ESP32-C3 super-mini pinout back image](pinouts/ESP32c3_pinout_back.jpeg "ESP32-C3 super-mini pinout back")
   ![ESP32-C3 super-mini pinout front image](pinouts/ESP32c3_pinout_front.jpeg "ESP32-C3 super-mini pinout front")
 
-- 2x ESP32-C3 super mini plus (RGB led + IPEX option)
+- 2x **ESP32-C3 super mini plus** (RGB led + IPEX option)
 
   > Pinout is the same as ESP32-C3 super mini.
   >
   > Note: GPIO8 is connected to RGB LED.
 
-- 1x ESP32-C6-WROOM-1-N8 (dev board with 2x usb-c)
+- 1x **ESP32-C6-WROOM-1-N8** (dev board with 2x usb-c)
 
   ![nanoESP32-C6 pinout image](pinouts/ESP32c6_N8_2xTypeC_dev_board_pinout.png "nanoESP32-C6 pinout")
 
@@ -62,11 +62,11 @@ Author: Pawel Golawski, <pawel.golawski@2com.pl>
   >
   > Full reference: [https://github.com/wuxx/nanoESP32-C6](https://github.com/wuxx/nanoESP32-C6)
 
-- 1x ESP32-C6 mini (dev board with 1.27mm pins)
+- 1x **ESP32-C6 mini** (dev board with 1.27mm pins)
 
   ![ESP32-C6 mini image](pinouts/ESP32c6_mini.png "ESP32-C6 mini")
 
-- 0x (+1) ESP32-C6 supermini
+- 0x (+1) **ESP32-C6 supermini**
 
   ![ESP32-C6 super-mini pinout image](pinouts/ESP32c6_supermini_pinout.jpeg "ESP32-C6 super-mini pinout")
 
@@ -74,11 +74,11 @@ Author: Pawel Golawski, <pawel.golawski@2com.pl>
   > - GPIO15 is connected to blue LED.
   > - GPIO8 is connected to RGB LED.
 
-- 1x ESP32-S3 N16R8
+- 1x **ESP32-S3 N16R8**
 
   ![ESP32-S3 WROOM-2 pinout image](pinouts/ESP32s3-WROOM-2_pinout.jpg "ESP32-S3 WROOM-2 pinout")
 
-- 1x ESP32-S3 N16R8 (dev board with 2x usb-c)
+- 1x **ESP32-S3 N16R8** (dev board with 2x usb-c)
 
   ![ESP32-S3 N16R8 pinout image](pinouts/ESP32s3_N16R8_2xTypeC_dev_board_pinout.jpg "ESP32-S3 N16R8/N8R2 pinout")
   > Notes:
@@ -87,7 +87,7 @@ Author: Pawel Golawski, <pawel.golawski@2com.pl>
   > - GPIO48 is connected to RGB LED.
   > - PSRAM (may) require to include platformio_options as described in [https://community.home-assistant.io/t/esp32-s3-devkitc-1-n16r8-using-psram-howto](https://community.home-assistant.io/t/esp32-s3-devkitc-1-n16r8-using-psram-howto)
 
-- 0x ESP32-S3 N8R2 (dev board with 2x usb-c)
+- 0x **ESP32-S3 N8R2** (dev board with 2x usb-c)
 
   > Pinout the same as N16R8 above.
   > Notes:
@@ -97,7 +97,7 @@ Author: Pawel Golawski, <pawel.golawski@2com.pl>
   > - PSRAM (may) require to include platformio_options as described in [https://community.home-assistant.io/t/esp32-s3-devkitc-1-n16r8-using-psram-howto](https://community.home-assistant.io/t/esp32-s3-devkitc-1-n16r8-using-psram-howto)
   > - DO NOT use 5V pin, as it provides 3.3V only and od not deliver enough power for I2C devices (those are recognized during scan, but won't work)
 
-- 2x ESP32-S2FN4R2 mini (dev board with usb-c)
+- 2x **ESP32-S2FN4R2 mini** (dev board with usb-c)
 
   ![ESP32-S2 N4R2 pinout image](pinouts/ESP32s2mini_N4R2_TypeC_pinout.jpg "ESP32-S2 N4R2 pinout")
 
@@ -108,23 +108,30 @@ Author: Pawel Golawski, <pawel.golawski@2com.pl>
   > 2. Short press RST (RESET)
   > 3. Release 0 (BOOT) after a few seconds (to allow computer to recognize USB)
 
+- 0x (+1) **T-Display ESP32** (dev board with usb-c and 1.14 LCD color display)
+
+  ![ESP32 T-Display pinout image](pinouts/ESP32_T-display_dev_board_pinout.jpg "ESP32 T-Display pinout")
+
+  > NOTE: Board has TF card slot, sliding power switch, micro-USB, battery connector (JST GH 2pin)
+  > NOTE: Board version is v1.1 XY-CP
+
 ### Displays inventory
 
-- 0x WeAct Studio 2.90 inch ePaper module, 296 x 128 px (91.8 x 37.5 mm)
+- 0x **WeAct Studio 2.90** inch ePaper module, 296 x 128 px (91.8 x 37.5 mm)
 
   ![WeAct 2.90 ePaper pinout image](pinouts/WeAct_2.90_ePaper_pinout.png "WeAct 2.90 ePaper pinout")
 
-- 1x WeAct Studio 2.13 inch ePaper module, 250 x 122 px (72 x 30 mm)
+- 1x **WeAct Studio 2.13** inch ePaper module, 250 x 122 px (72 x 30 mm)
 
   ![WeAct 2.13 ePaper pinout image](pinouts/WeAct_2.13_ePaper_pinout.png "WeAct 2.90 ePaper pinout")
 
-- 1x LILYGO T5-4.7 ePaper with ESP32 full development board (ESP32-WROVER-E N16R8)
+- 1x **LILYGO T5-4.7** ePaper with ESP32 full development board (ESP32-WROVER-E N16R8)
 
   ![LILYGO T5-4.7 ePaper image](pinouts/LILYGO_T5_4.7_ePaper.jpg "LILYGO T5-4.7 ePaper")
 
   > NOTE: Board version is ESP32-WROVER-E N16R8
 
-- 1x LILYGO TTGO LoRa32 (SX1276 for 433MHz) with LCD display (SSD1306) and ESP32-PICO-D4 full development board
+- 1x **LILYGO TTGO LoRa32** (SX1276 for 433MHz) with LCD display (SSD1306) and ESP32-PICO-D4 full development board
 
   ![LILYGO TTGO LoRa32 image](pinouts/LILYGO_TTGO_LoRa32.jpg "LILYGO TTGO LoRa32")
 
@@ -136,72 +143,75 @@ Author: Pawel Golawski, <pawel.golawski@2com.pl>
   > - [OpenMQTTGateway](https://docs.openmqttgateway.com)
   > - [Zephyr OS](https://docs.zephyrproject.org/latest/introduction/index.html)
 
-- 1x LCD PCF8574 2x16 (line x character) display via I2C
+- 1x **LCD PCF8574 2x16** (line x character) display via I2C
 
   ![LCD 2x16 PCF8574 i2c image](pinouts/LCD_2x16_PCF8574_i2c.png "PCF8574 LCD i2c")
 
-- 1x LCD SSD1306, 0.96 inch b-w I2C OLED, 128 x 64 px (22 x 10,9 mm) SSD1315?
+- 1x **LCD SSD1306, 0.96** inch b-w I2C OLED, 128 x 64 px (22 x 10,9 mm) SSD1315?
 
   ![LCD 0.96 OLED image](pinouts/LCD_0.96_OLED_BW_i2c.jpg "LCD 0.96 OLED")
   ![LCD 0.96 OLED schema image](pinouts/LCD_0.96_OLED_BW_i2c_schema.jpg "LCD 0.96 OLED schema")
 
-- 1x LCD SSD1306, SH-S091, 0.91 inch b-w I2C OLED, 128 x 32 px (22 x 5,6 mm)
+- 1x **LCD SSD1306, SH-S091, 0.91** inch b-w I2C OLED, 128 x 32 px (22 x 5,6 mm)
 
   ![LCD 0.91 OLED image](pinouts/LCD_0.91_OLED_BW_i2c.png "LCD 0.91 OLED")
 
   > Size of module: 38 x 12 mm
 
-- 1x LCD ST7735, GMT130-v1.0, 1.3inch color SPI TFT, 240 x 240 px (23,4 x 23,4 mm) via I2C
+- 1x **LCD ST7735, GMT130-v1.0, 1.3inch** color SPI TFT, 240 x 240 px (23,4 x 23,4 mm) via I2C
 
   ![LCD GMT130 image](pinouts/LCD_1.3_TFT_GMT130.jpeg "LCD GMT130")
   ![LCD GMT130 schema image](pinouts/LCD_1.3_TFT_GMT130_schema.png "LCD GMT130 schema")
 
 ### Sensors inventory
 
-- 5x `A` - APDS9660 - Illuminance, Color(s), Gesture and Motion
-- 10x (-1) `B` - BH1750 - Illuminance
-- `C` - SCD40 - CO2, Temperature, Humidity
-- 4x 1m `D` - DS18B20 (Dallas) - Temperature
-- 1x 2m `D` - DS18B20 (Dallas) - Temperature
-- 2x `E` - INA226 - DC Current, Power, Voltage (max. 30V DC)
-- 2x `F` - INA3221 - 3-channel DC Current, Power, Voltage (max. 26V DC)
-- 3x `G` - BME680 - Temperature, Humidity, Pressure, Gas Resistance
-- 0x `H` - AHTx21 - Temperature and Humidity
-- 2x (-1) `I` - IR Receiver 38KHz (Open-Smart, 1pin with signal)
-- 2x `L` - LD2410B - Radar sensor 24GHz
-- 2x `L` - LD2410C - Radar sensor 24GHz
-- 2x `L` - LD2420 - Radar sensor 24GHz
-- 2x `N` - ENS160 - TVOC and eCO2
-- 6x `O` - SGP30 - TVOC and eCO2
-- 2x (-1) `P` - BME280 - Temperature, Humidity, Pressure
-- 2x `R` - RC522 - RFID tag sensor
-- 11x `S` - SHTx30 - Temperature and Humidity
-- 0x `T` - TCS3472 - Illuminance and Color(s)
-- 0x `U` - LTR390 - UV and Illuminance
-- 2x `V` - VL53L0x - Distance (laser)
-- 4x `W` - HC-SR04 - Distance (acoustic)
-- 1x `Y` - YF-B10 G1 - Water Pulse sensor
+- 5x `A` - **APDS9660** - Illuminance, Color(s), Gesture and Motion
+- 10x (-1) `B` - **BH1750** - Illuminance
+- `C` - **SCD40** - CO2, Temperature, Humidity
+- 4x (+2) 1m `D` - **DS18B20** (Dallas) - Temperature
+- 1x 2m `D` - **DS18B20** (Dallas) - Temperature
+- 2x `E` - **INA226** - DC Current, Power, Voltage (max. 30V DC)
+- 2x `F` - **INA3221** - 3-channel DC Current, Power, Voltage (max. 26V DC)
+- 3x `G` - **BME680** - Temperature, Humidity, Pressure, Gas Resistance
+- 0x `H` - **AHTx21** - Temperature and Humidity
+- 2x (-1) `I` - **IR Receiver 38KHz** (Open-Smart, 1pin with signal)
+- 2x `L` - **LD2410B** - Radar sensor 24GHz
+- 2x `L` - **LD2410C** - Radar sensor 24GHz
+- 2x `L` - **LD2420** - Radar sensor 24GHz
+- 0x (+2) `M` - **INMP441** - I2S microphone
+- 2x `N` - **ENS160** - TVOC and eCO2
+- 6x `O` - **SGP30** - TVOC and eCO2
+- 2x (-1) `P` - **BME280** - Temperature, Humidity, Pressure
+- 2x `R` - **RC522** - RFID tag sensor
+- 11x `S` - **SHTx30** - Temperature and Humidity
+- 0x `T` - **TCS3472** - Illuminance and Color(s)
+- 0x `U` - **LTR390** - UV and Illuminance
+- 2x `V` - **VL53L0x** - Distance (laser)
+- 4x `W` - **HC-SR04** - Distance (acoustic)
+- 1x `Y` - **YF-B10 G1** - Water Pulse sensor
 
 ### Switches/Actuators inventory
 
-- 2x `a` - AVT5713 - Double Light Switch Board (mounted)
-- 7x `a` - AVT5713 - Double Light Switch Board (not mounted - bare board)
-- 5x `x` - ESP01S Single Relay Board (generic from Aliexpress)
-- 8x `b` - 9032A/9025A - Active Buzzer 9mm diameter x 3.2/2.5mm height
-- 2x (-1) `i` - IR Transmitter 38KHz (Open-Smart, 1pin with signal)
-- 3x `r` - 9032/9025 - Passive Buzzer 9mm diameter x 3.2/2.5mm height
+- 2x `a` - **AVT5713** - Double Light Switch Board (mounted)
+- 7x `a` - **AVT5713** - Double Light Switch Board (not mounted - bare board)
+- 5x `x` - ***ESP01S Single Relay** Board (generic from Aliexpress)
+- 8x `b` - **9032A/9025A** - Active Buzzer 9mm diameter x 3.2/2.5mm height
+- 2x (-1) `i` - **IR Transmitter 38KHz** (Open-Smart, 1pin with signal)
+- 3x `r` - **9032/9025** - Passive Buzzer 9mm diameter x 3.2/2.5mm height
+- 0x (+2) `m` - **Max98357** -  I2S mono amplifier
+  > Note: Amp use cases ![Max98357 use case image](pinouts/MAX98357_use_cases.jpg "Max98357 use case")
 
 ### Other inventories
 
 #### Other
 
-- 1x FRAM 32KB
+- 1x **FRAM** 32KB
 - 5x 2ch DC level converter 5V <> 3.3V
 - 5x DC level converter 5V <> 3.3V (I2C, SPI, UART)
 - 10x 4ch DC level converter 5V <> 3.3V (I2C)
-- 2x RS485 to TTL (3.3 - 5V)
-- 2x D4184 MOSFET (max 40V, 50A)
-- 4x LR7843 MOSFET (max 30V, 161A)
+- 2x **RS485 to TTL** (3.3 - 5V)
+- 2x **D4184** MOSFET (max 40V, 50A)
+- 4x **LR7843** MOSFET (max 30V, 161A)
 
 #### Development boards
 
