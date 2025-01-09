@@ -73,6 +73,11 @@ Author: Pawel Golawski, <pawel.golawski@2com.pl>
   > Notes:
   > - GPIO15 is connected to blue LED.
   > - GPIO8 is connected to RGB LED.
+  > - Green LED (BAT) is not connected to any of GPIO, it shows when battery is charging. fast blinks where battery is disconnected.
+
+  > WARNING: This board work only with esp-idf framework (no arduino) and throws some frequent warnings, like:
+  > - `[W][web_server_idf:070][httpd]: Only application/x-www-form-urlencoded supported for POST request`
+  > - `[I][esp-idf:000][httpd]: W (59638) httpd_txrx: httpd_sock_err: error in recv : 104`
 
 - 1x **ESP32-S3 N16R8**
 
