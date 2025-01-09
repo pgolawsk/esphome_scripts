@@ -11,7 +11,7 @@
 # Pawelo, 20241222, make "board" and "board variant" as variables
 # Pawelo, 20241222, added flash_size as variable
 # Pawelo, 20250101, small typo fixes in comments
-# Pawelo, 20250101, added framework_type variable recognition
+# Pawelo, 20250109, added framework_type variable recognition
 
 esphome:
   name: $devicename
