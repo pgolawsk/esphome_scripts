@@ -11,6 +11,7 @@
 # Pawelo, 20241222, make "board" and "board variant" as variables
 # Pawelo, 20241222, added flash_size as variable
 # Pawelo, 20250101, small typo fixes in comments
+# Pawelo, 20250101, added framework_type variable recognition
 
 esphome:
   name: $devicename
@@ -23,11 +24,11 @@ esphome:
     version: $version
 
 esp32:
-  board: ${board} # like: esp32dev, esp32cam, esp32-c3-devkitm-1, esp32-s3-devkitc-1, esp32-s2-saola-1, full list here https://registry.platformio.org/platforms/platformio/espressif32/boards?version=5.3.0
+  board: ${board} # like: esp32dev, esp32cam, esp32-c3-devkitm-1, esp32-c6-devkitm-1, esp32-s3-devkitc-1, esp32-s2-saola-1, full list here https://registry.platformio.org/platforms/platformio/espressif32/boards?version=5.3.0
   flash_size: ${flash_size} # One of 2MB, 4MB, 8MB, 16MB or 32MB
 #  restore_from_flash: true
-  # framework:
-  #   type: arduino
+  framework:
+    type: ${framework_type} # arduino or esp-idf
 
 preferences:
   flash_write_interval: ${flash_write_interval}
