@@ -1,17 +1,18 @@
 ---
 #* ESP32 WeAct 2.9' display
 #* Please read README.md for details
+#* For pinout see: file://.//pinouts/ESP32_WROOM_32_pinout.jpg
 ###
 # Pawelo 20230921, created based on esp32_display.yaml and https://github.com/esphome/feature-requests/issues/2101
 # Pawelo 20230923, 1.1.5, added HA Connected binary sensor
 # Pawelo 20230924, 1.1.5, added Sun Direction and Time Of Day sensors text sensors
 # Pawelo 20230924, 1.1.5, support for physical buttons
-# Pawelo 20231003, 1.1.5, confirmed working WeAct epaper with mode: 2.90inbs
+# Pawelo 20231003, 1.1.5, confirmed working WeAct ePaper with mode: 2.90inbs
 # Pawelo 20231003, 1.1.5, added page with Temp/Hum sensors
 # Pawelo 20231004, 1.1.5, added cycle the pages, while there is some light
 # Pawelo 20231004, 1.1.5, prevent cycle for 5 min when using buttons manually
 # Pawelo 20231006, 1.1.5, skip blank and qr pages while cycle pages automatically
-# Pawelo 20231006, 1.1.5, moced interval script for page cycles to separate yaml in scripts/
+# Pawelo 20231006, 1.1.5, moved interval script for page cycles to separate yaml in scripts/
 # Pawelo 20231006, 1.1.5, reduce no of digits displayed when illuminance is 100+ or 1000+
 # Pawelo 20240518, 1.1.5, moved display to use waveshare_epaper to pr#6226, as per https://github.com/esphome/feature-requests/issues/2191#issuecomment-2009352588
 # Pawelo 20240628, 1.1.5, move fonts to separate include file
@@ -22,6 +23,7 @@
 # Pawelo, 20241222, added factory_reset, safe_restart and shutdown buttons
 # Pawelo, 20241222, added PSRAM support (includes/ and debug_with_psram sensor)
 # Pawelo, 20241222, changed to use includes/board_esp32.yaml with variables
+# Pawelo, 20250109, added option to select desired framework_type (for board include)
 
 #! run with this command to override substitutions
 # esphome -s devicename espXX -s updates 1min -s room <Room name> -s mqtt_room <room> run esp32_MMmm_SSss__PP.yaml --device 192.168.x.x
@@ -31,8 +33,10 @@ substitutions:
 #  devices: "Temperature and Humidity via SHTx30 and Illuminance via BH1750"
   devices: "WeAct Display and MQTT sensors"
   project_name: "pgolawsk.esp_home"
-  version: "20241222"
+  version: "20250109"
 
+  # required by includes/board_esp32.yaml script
+  framework_type: arduino # "arduino" or "esp-idf"
   board_variant: "" # empty for ESP32, other values to display like c3, c6, s2, s3
   board: "esp32dev" # like: esp32dev, esp32cam, esp32-c3-devkitm-1, esp32-s3-devkitc-1, esp32-s2-saola-1, full list here https://registry.platformio.org/platforms/platformio/espressif32/boards?version=5.3.0
   flash_size: 4MB # One of 2MB, 4MB, 8MB, 16MB or 32MB

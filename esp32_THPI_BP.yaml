@@ -1,7 +1,7 @@
 ---
 #* ESP32 sensor board script name reflecting configuration esp32_MMmm_SSss__PP.yaml
 #* Please read README.md for details
-#? ESP32-WROOM-32 minimum wiring https://www.mischianti.org/2021/05/30/esp32-wroom-32-esp32-s-flash-pinout-specs-and-ide-configuration-1/
+#* For pinout see: file://.//pinouts/ESP32_WROOM_32_pinout.jpg
 ###
 # Pawelo 20230101, 1.1.5, created based on esp12f_.yaml
 # Pawelo 20230923, 1.1.5, added HA Connected binary sensor
@@ -18,6 +18,7 @@
 # Pawelo, 20241222, added factory_reset, safe_restart and shutdown buttons
 # Pawelo, 20241222, added PSRAM support (includes/ and debug_with_psram sensor)
 # Pawelo, 20241222, changed to use includes/board_esp32.yaml with variables
+# Pawelo, 20250109, added option to select desired framework_type (for board include)
 #
 #! run with this command to override substitutions
 # esphome -s devicename espXX -s updates 1min -s room <Room name> -s mqtt_room <room> run esp32_MMmm_SSss__PP.yaml --device 192.168.x.x
@@ -26,8 +27,10 @@ substitutions:
 #  devices: "Temperature and Humidity via SHTx30 and Illuminance via BH1750"
   devices: "DEV Kit"
   project_name: "pgolawsk.esp_home"
-  version: "20241222"
+  version: "20250109"
 
+  # required by includes/board_esp32.yaml script
+  framework_type: arduino # "arduino" or "esp-idf"
   board_variant: "" # empty for ESP32, other values to display like c3, c6, s2, s3
   board: "esp32dev" # like: esp32dev, esp32cam, esp32-c3-devkitm-1, esp32-s3-devkitc-1, esp32-s2-saola-1, full list here https://registry.platformio.org/platforms/platformio/espressif32/boards?version=5.3.0
   flash_size: 4MB # One of 2MB, 4MB, 8MB, 16MB or 32MB
@@ -60,7 +63,8 @@ substitutions:
 # <<: !include includes/api_services.yaml #WARN: this is to expose services like scan_wifi (results in scan_results sensor)
 
 # Include basics of a board
-<<: !include { file: includes/board_esp32.yaml, vars: { board_variant: "${board_variant}", board: "${board}", flash_size: "${flash_size}", flash_write_interval: "${flash_write_interval}" } }
+# <<: !include { file: includes/board_esp32.yaml, vars: { board_variant: "${board_variant}", board: "${board}", flash_size: "${flash_size}", flash_write_interval: "${flash_write_interval}" } }
+<<: !include { file: includes/board_esp32.yaml, vars: {} }
 # <<: !include { file: includes/psram.yaml, vars: { mode: "quad" } } # "quad' for 2MB, "octal" for 4-8MB PSRAM
 
 # Include interfaces needed

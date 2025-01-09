@@ -15,6 +15,7 @@
 # Pawelo, 20250103, added green and blue LEDs
 # Pawelo, 20250103, corrected IR receiver GPIO to 6
 # Pawelo, 20250104, setting device in the box - added BH1750 and pin checked working device
+# Pawelo, 20250109, added option to select desired framework_type (for board include)
 
 #! run with this command to override substitutions
 # esphome -s devicename espXX -s updates 1min -s room <Room name> -s mqtt_room <room> run esp32_MMmm_SSss__PP.yaml --device 192.168.x.x
@@ -23,8 +24,10 @@
 substitutions:
   devices: "Temperature, Humidity, Pressure, Gas, eCO2, VOC via BME680, Illuminance via BH1750, IR Receiver, IR Transmitter, RTTTL Buzzer"
   project_name: "pgolawsk.esp_home"
-  version: "20250103"
+  version: "20250109"
 
+  # required by includes/board_esp32.yaml script
+  framework_type: arduino # "arduino" or "esp-idf"
   board_variant: "s3" # empty for ESP32, other values to display like c3, c6, s2, s3
   board: "esp32-s3-devkitc-1" # like: esp32dev, esp32cam, esp32-c3-devkitm-1, esp32-s3-devkitc-1, lolin_s2_mini, full list here https://registry.platformio.org/platforms/platformio/espressif32/boards?version=5.3.0
   flash_size: 8MB # One of 2MB, 4MB, 8MB, 16MB or 32MB
@@ -54,7 +57,8 @@ substitutions:
 # <<: !include includes/api_services.yaml #WARN: this is to expose services like scan_wifi (results in scan_results sensor)
 
 # Include basics of a board
-<<: !include { file: includes/board_esp32.yaml, vars: { board_variant: "${board_variant}", board: "${board}", flash_size: "${flash_size}", flash_write_interval: "${flash_write_interval}" } }
+# <<: !include { file: includes/board_esp32.yaml, vars: { board_variant: "${board_variant}", board: "${board}", flash_size: "${flash_size}", flash_write_interval: "${flash_write_interval}" } }
+<<: !include { file: includes/board_esp32.yaml, vars: {} }
 # <<: !include { file: includes/board_esp32_with_psram_fix.yaml, vars: { board_variant: "${board_variant}", board: "${board}", flash_size: "${flash_size}", flash_write_interval: "${flash_write_interval}" } }
 <<: !include { file: includes/psram.yaml, vars: { mode: "quad" } } # "quad' for 2MB, "octal" for 4-8MB PSRAM
 
