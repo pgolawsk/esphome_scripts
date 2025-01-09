@@ -41,7 +41,7 @@ Author: Pawel Golawski, <pawel.golawski@2com.pl>
 
 - 1x **ESP32-D1 mini**
 
-  ![ESP32-D1 mini pinout image](pinouts/ESP31_D1_mini_pinout.png "ESP32-D1 mini pinout")
+  ![ESP32-D1 mini pinout image](pinouts/ESP32_D1_mini_pinout.png "ESP32-D1 mini pinout")
 
 - 5x **ESP32-C3 super mini**
 
