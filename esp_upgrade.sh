@@ -7,6 +7,7 @@
 # Pawelo 20241231, added esp32-33 (s3) and esp32-34 (s2)
 # Pawelo 20250101, added examples how to read logs
 # Pawelo 20250101, added relay switches on esp01s circuit
+# Pawelo 20250109, added esp32-39 (c6)
 
 #*###########################
 #*** OR Upgrade ESP Home on mac/win
@@ -54,6 +55,7 @@ esphome -s devicename esp32-31 -s updates 15s -s room Test32c3 -s mqtt_location 
 esphome -s devicename esp32-32 -s updates 15s -s room Test32c3rgb -s mqtt_location measures -s mqtt_room test32c3rgb run esp32c3_dev.yaml
 esphome -s devicename esp32-33 -s updates 1min -s room Test32s3rgb -s mqtt_location measures -s mqtt_room test32s3rgb run esp32s3_dev.yaml
 esphome -s devicename esp32-34 -s updates 1min -s room Test32s2 -s mqtt_location measures -s mqtt_room test32s2 run esp32s2_dev.yaml
+esphome -s devicename esp32-39 -s updates 1min -s room Test32c6 -s mqtt_location measures -s mqtt_room test32c6 run esp32c6_dev.yaml
 
 # minimal config for S2
 esphome -s devicename esp32-34a run esp32s2_dev_minimal.yaml
