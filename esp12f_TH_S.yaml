@@ -1,6 +1,7 @@
 ---
 #* ESP12F sensor board script name reflecting configuration esp12f_MMmm_SSss__PP.yaml
 #* Please read README.md for details
+#* For pinout see: file://.//pinouts/ESP_12E_pinout.png
 # NOTE: pin 9 do not work (it hangs ESP)- reserved for flashing;
 # NOTE: pin 10 - use with caution, read https://www.letscontrolit.com/forum/viewtopic.php?t=1462
 ###
@@ -17,7 +18,7 @@
 # Pawelo 20221127, 1.1.4, moved i2c configuration to separate include file
 # Pawelo 20221203, 1.1.5, added Restart button on web
 # Pawelo 20230923, 1.1.5, added HA Connected binary sensor
-# Pawelo, 20250107, changed to use includes/board_esp32.yaml with variables
+# Pawelo, 20250107, changed to use includes/board_esp8266.yaml with variables
 
 #! run with this command to override substitutions
 # esphome -s devicename espXX -s updates 1min -s room <Room name> -s mqtt_room <room> run esp12f_SSss_MMmm__PP.yaml --device 192.168.x.x
@@ -56,7 +57,8 @@ substitutions:
 # <<: !include includes/api_services.yaml #WARN: this is to expose services like scan_wifi (results in scan_results sensor)
 
 # Include basics of a board
-<<: !include { file: includes/board_esp8266.yaml, vars: { board: "${board}", board_variant: "${board_variant}", restore_from_flash: "${restore_from_flash}", flash_write_interval: "${flash_write_interval}" } }
+# <<: !include { file: includes/board_esp8266.yaml, vars: { board: "${board}", board_variant: "${board_variant}", restore_from_flash: "${restore_from_flash}", flash_write_interval: "${flash_write_interval}" } }
+<<: !include { file: includes/board_esp8266.yaml, vars: {} }
 # <<: !include includes/board_esp12f.yaml
 # <<: !include includes/board_esp12f_with_sun.yaml
 
