@@ -1,6 +1,7 @@
 ---
 #* ESP12F sensor board script name reflecting configuration esp12f_MMmm_SSss__PP.yaml
 #* Please read README.md for details
+#* For pinout see: file://.//pinouts/ESP_12E_pinout.png
 # NOTE: pin 9 do not work (it hangs ESP)- reserved for flashing;
 # NOTE: pin 10 - use with caution, read https://www.letscontrolit.com/forum/viewtopic.php?t=1462
 ###
@@ -19,7 +20,7 @@
 # Pawelo, 20250103, added entity_category to LED
 # Pawelo, 20250106, added commented debug and sun sensors
 # Pawelo, 20250106, added factory reset and similar buttons
-# Pawelo, 20250107, changed to use includes/board_esp32.yaml with variables
+# Pawelo, 20250107, changed to use includes/board_esp8266.yaml with variables
 
 #! run with this command to override substitutions
 # esphome -s devicename espXX -s updates 1min -s room <Room name> -s mqtt_room <room> run esp12f_MMmm_SSss__PP.yaml --device 192.168.x.x
@@ -54,7 +55,7 @@ substitutions:
 # Override some settings included below in _board_ setup
 # <<: !include includes/time_sntp_with_sun.yaml #WARN: this is to make sunrise and sunset sensor to be updated on every time sync event
 <<: !include includes/mqtt_with_rtttl.yaml #WARN: override mqtt with RTTTL support if needed (buzzer and status led)
-<<: !include { file: includes/logger_level.yaml, vars: { level: INFO, baud_rate: 115200 } } #WARN: override default log level to specific one
+# <<: !include { file: includes/logger_level.yaml, vars: { level: INFO, baud_rate: 115200 } } #WARN: override default log level to specific one
 # <<: !include { file: includes/logger_level.yaml, vars: { level: DEBUG, baud_rate: 115200 } } #WARN: override default log level to specific one
 # <<: !include { file: includes/logger_level.yaml, vars: { level: VERY_VERBOSE, baud_rate: 115200 } } #WARN: override default log level to specific one
 # <<: !include includes/wifi_outside.yaml #WARN: override wifi to connect to outside network instead of default
@@ -64,7 +65,8 @@ substitutions:
 # <<: !include includes/api_services.yaml #WARN: this is to expose services like scan_wifi (results in scan_results sensor)
 
 # Include basics of a board
-<<: !include { file: includes/board_esp8266.yaml, vars: { board: "${board}", board_variant: "${board_variant}", restore_from_flash: "${restore_from_flash}", flash_write_interval: "${flash_write_interval}" } }
+# <<: !include { file: includes/board_esp8266.yaml, vars: { board: "${board}", board_variant: "${board_variant}", restore_from_flash: "${restore_from_flash}", flash_write_interval: "${flash_write_interval}" } }
+<<: !include { file: includes/board_esp8266.yaml, vars: {} }
 # <<: !include includes/board_esp12f.yaml
 # <<: !include includes/board_esp12f_with_sun.yaml
 
@@ -147,4 +149,4 @@ button:
 
   # Scan Wifi button (require wifi_info text sensor to be present to display results)
   # WARN: Performing the scan will disconnect device from current WiFi
-  # - !include { file: buttons/scan_wifi_button.yaml }
+  - !include { file: buttons/scan_wifi_button.yaml }
