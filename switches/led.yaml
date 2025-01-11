@@ -1,0 +1,15 @@
+---
+#* LED switch
+#*! using o_led<id> created by outputs/led.yaml
+# Pawelo, 20250111, created based on lights/led.yaml
+
+platform: output
+name: "$room LED${ix}"
+icon: "mdi:led-off"
+id: led${ix}
+output: o_led${ix}
+state_topic: $devicename/led${ix}
+entity_category: ${entity_category} # "" or config or diagnostic
+on_turn_on:
+- delay: ${off_delay}
+- switch.turn_off: led${ix}
