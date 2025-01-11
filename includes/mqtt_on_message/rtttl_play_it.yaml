@@ -2,6 +2,7 @@
 #* MQTT on message to play RTTTL
 # Pawelo, 20230129, added RTTTL topic to play
 # Pawelo, 20230130, moved rtttl_play_it to separate include file
+# Pawelo, 20250111, log message typos fixed
 
 # Example tones
 # siren:d=8,o=5,b=100:d,e,d,e,d,e,d,e,d,e,d,e,d,e,d,e,d,e,d,e,d,e,d,e,d,e,d,e,d,e,d,e
@@ -22,10 +23,10 @@ then:
         lambda: |-
           return x == "" || x == "ON";
       then:
-        - logger.log: "Recieved MQTT RTTL activation - playing confirmation."
+        - logger.log: "Received MQTT RTTTL activation - playing confirmation."
         - rtttl.play: "success:d=24,o=5,b=100:c,g,b"
       else:
-        - logger.log: "Recieved MQTT RTTTL to play."
+        - logger.log: "Received MQTT RTTTL to play."
         - rtttl.play:
             rtttl: !lambda "return x;"
   - repeat:
