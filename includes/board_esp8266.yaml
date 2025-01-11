@@ -1,28 +1,30 @@
 ---
 #* Base configuration for ESP8266 boards
-#! in case diffrent setup needed please include components PRIOR the board itself
+#! in case different setup needed please include components PRIOR the board itself
 
 #? Minimum soldering from https://sktechworks.ca/2017/03/28/esp-12f-and-breakout-board/
 #? PINOUT diagram: https://www.mischianti.org/2021/05/04/esp-12-high-resolution-pinout-and-specs/
 #? PINOUT diagram: https://randomnerdtutorials.com/esp8266-pinout-reference-gpios/
-#! PIN 9 cannot be used at ALL
-#! PIN 10 can be used as GPIO for LED only or for SCL in I2C
+# NOTE: PIN 9 cannot be used at ALL
+# NOTE: PIN 10 can be used as GPIO for LED only or for SCL in I2C
 
 # Pawelo, 20241223, created as copy of board_esp12f.yaml
 # Pawelo, 20241223, refactor script to accept variables, like "board" and "board variant", ...
+# Pawelo, 20250111, commented "area" and "friendly name" as for ESP12F which have little RAM is too much (prometheus /metrics output is cut)
 
 esphome:
   name: $devicename
-  friendly_name: $room
-  area: $room
+  # friendly_name: $room
+  # area: $room
   comment: $room ESP${board_variant} controller with $devices
   project:
     name: $project_name
     version: $version
 
-  # platformio_options:
-  #   build_flags:
-  #     - -DPIO_FRAMEWORK_ARDUINO_MMU_CACHE16_IRAM48
+  platformio_options:
+    build_flags:
+      # for details see https://docs.platformio.org/en/latest/platforms/espressif8266.html
+      - -DPIO_FRAMEWORK_ARDUINO_MMU_CACHE16_IRAM48
   #     - -DPIO_FRAMEWORK_ARDUINO_MMU_CACHE16_IRAM32_SECHEAP_NOTSHARED
 
 esp8266:

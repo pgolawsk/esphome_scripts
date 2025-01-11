@@ -3,23 +3,24 @@
 #? Minimum soldering from https://sktechworks.ca/2017/03/28/esp-12f-and-breakout-board/
 #? PINOUT diagram: https://www.mischianti.org/2021/05/04/esp-12-high-resolution-pinout-and-specs/
 #? PINOUT diagram: https://randomnerdtutorials.com/esp8266-pinout-reference-gpios/
-#! PIN 9 cannot be used at ALL
-#! PIN 10 can be used as GPIO for LED only or for SCL in I2C
+# NOTE: PIN 9 cannot be used at ALL
+# NOTE: PIN 10 can be used as GPIO for LED only or for SCL in I2C
 
 # Pawelo 20221119, created as my framework based on !include statements
-# Pawelo 20221127, 1.1.3, added $devices variable to name configutation deployed
+# Pawelo 20221127, 1.1.3, added $devices variable to name configuration deployed
 # Pawelo 20221127, 1.1.4, moved i2c configuration to separate include file
 # Pawelo 20221127, 1.1.5, added preserving values in flash
 # Pawelo 20230305, added time_sntp and sun by default
 # Pawelo 20230414, fix for compilation error: "firmware.elf section `.text1' will not fit in region `iram1_0_seg'"
 # Pawelo 20230923, disable restore from flash to prevent wearing of flash memory
 # Pawelo 20231020, removed sun, as there is separate board include with sun
-# Pawelo, 20241115, added area and friendly name
+# Pawelo, 20241115, added "area" and "friendly name" to add tags for prometheus (/metrics)
+# Pawelo, 20250111, commented "area" and "friendly name" as for ESP12F which have little RAM is too much (prometheus /metrics output is cut)
 
 esphome:
   name: $devicename
-  friendly_name: $room
-  area: $room
+  # friendly_name: $room
+  # area: $room
   comment: $room ESP12F controller with $devices
 #  platform: ESP8266   # OLD notation
   project:
@@ -28,6 +29,7 @@ esphome:
 
   platformio_options:
     build_flags:
+      # for details see https://docs.platformio.org/en/latest/platforms/espressif8266.html
       - -DPIO_FRAMEWORK_ARDUINO_MMU_CACHE16_IRAM48
 
 esp8266:
@@ -44,7 +46,7 @@ esp8266:
 <<: !include { file: web_server.yaml, vars: { ota_enabled: false } }
 <<: !include time_sntp.yaml
 <<: !include prometheus.yaml
-#! as mqtt cannot be overwriten later in the code need to include in in each script (to facilitate "on_message" customization)
+#! as mqtt cannot be overwritten later in the code need to include in in each script (to facilitate "on_message" customization)
 #<<: !include mqtt.yaml
 
 # packages:
