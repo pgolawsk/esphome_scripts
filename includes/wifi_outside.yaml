@@ -1,5 +1,5 @@
 ---
-#* Enable WiFi Outside network, including falback hotspot
+#* Enable WiFi Outside network, including fallback hotspot
 # Pawelo, 20241116, created as a copy of wifi_main.yaml
 # Pawelo, 20241119, added power_save_mode option
 
