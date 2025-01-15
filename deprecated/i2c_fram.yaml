@@ -3,7 +3,7 @@
 #! NOT TESTED
 # Pawelo, 20230319, created based on https://esphome.io/components/sensor/apds9960.html
 
-#Enabeling the I2CFram module
+#Enabling the I2CFram module
 custom_component:
   components:
     - id: fram
