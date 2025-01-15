@@ -1,7 +1,7 @@
 ---
 #* BME680 interface on I2C
 #* requires ESPHOME 2024.8
-#! not working with esp2866
+#! not working with esp8266
 # Pawelo, 20240825, created based on https://esphome.io/components/sensor/bme68x_bsec2
 
 bme68x_bsec2_i2c:
