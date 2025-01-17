@@ -21,6 +21,8 @@
 # Pawelo, 20250104, switch RGB led from neopixelbus to esp32_rmt
 # Pawelo, 20250107, added web_server sorting_groups for IR remotes
 # Pawelo, 20250109, added option to select desired framework_type (for board include)
+# Pawelo, 20250114, disabled IR receiver and transmitter
+# Pawelo, 20250115, added I2S audio (mic and speaker)
 
 #! run with this command to override substitutions
 # esphome -s devicename espXX -s updates 1min -s room <Room name> -s mqtt_room <room> run esp32_MMmm_SSss__PP.yaml --device 192.168.x.x
@@ -30,7 +32,7 @@ substitutions:
 #  devices: "Temperature and Humidity via SHTx30 and Illuminance via BH1750"
   devices: "DEV Kit"
   project_name: "pgolawsk.esp_home"
-  version: "202050109"
+  version: "202050115"
 
   # required by includes/board_esp32.yaml script
   framework_type: arduino # "arduino" or "esp-idf"
@@ -75,25 +77,33 @@ substitutions:
 # <<: !include { file: interfaces/spi.yaml, vars: { spi_id: "spi_a", clk: "GPIO6", mosi: "GPIO7", miso: "GPIO9" } }
 # <<: !include { file: interfaces/spi_rc522.yaml, vars: { spi_id: "spi_a", cs: "GPIO5", reset: "GPIO4" } }
 <<: !include { file: interfaces/i2c_bme68x_bsec2.yaml, vars: { ix: "", address: "0x77" } }
-<<: !include { file: interfaces/ir_receiver.yaml, vars: { gpio: "GPIO3", dump: "nec", rmt_channel: 2 } } # for ESP32c3 can be 2-3, for ESP32 can be 0-7, for ESP32s2 0-3, for ESP32s3 4-7
-<<: !include { file: interfaces/ir_transmitter.yaml, vars: { gpio: "GPIO4", rmt_channel: 0 } } # for ESP32c3 can be 0-1, for ESP32 can be 0-7, for ESP32s2 0-3, for ESP32s3 0-3
+# <<: !include { file: interfaces/ir_receiver.yaml, vars: { gpio: "GPIO3", dump: "nec", rmt_channel: 2 } } # for ESP32c3 can be 2-3, for ESP32 can be 0-7, for ESP32s2 0-3, for ESP32s3 4-7
+# <<: !include { file: interfaces/ir_transmitter.yaml, vars: { gpio: "GPIO4", rmt_channel: 0 } } # for ESP32c3 can be 0-1, for ESP32 can be 0-7, for ESP32s2 0-3, for ESP32s3 0-3
+<<: !include { file: interfaces/i2s_audio.yaml, vars: { i2s_id: "i2s_a", ws_pin: "GPIO6", sck_pin: "GPIO7" } }
+
+<<: !include { file: i2s/mic.yaml, vars: { ix: "", i2s_id: "i2s_a", sd_pin: "GPIO5", channel: "left" } }
+# <<: !include { file: i2s/media_player.yaml, vars: { ix: "", i2s_id: "i2s_a", dout_pin: "GPIO9", mode: "mono" } } #! do not compiles in 2024.12.2 due to some conversion errors
+<<: !include { file: i2s/speaker.yaml, vars: { ix: "", i2s_id: "i2s_a", dout_pin: "GPIO9", channel: "mono" } }
+# <<: !include { file: i2s/voice_assistant_mic_only.yaml, vars: { mic_id: "mic" } }
+# <<: !include { file: i2s/voice_assistant_mplayer.yaml, vars: { mic_id: "mic", mplayer_id: "mplayer" } }
+<<: !include { file: i2s/voice_assistant_speaker.yaml, vars: { mic_id: "mic", speaker_id: "spk" } }
 
 # IR Remote control buttons added from packages
-packages:
-  # apple_tv: !include { file: buttons/set_apple_tv_ir_remote.yaml, vars: { receiver: "ATV" } }
-  smart_tv: !include { file: buttons/set_smart_tv_ir_remote.yaml, vars: { receiver: "STV" } }
-  # smart_tv_x: !include { file: buttons/set_smart_tv_ir_remote_rest.yaml, vars: { receiver: "STVx" } }
-  # nano_pc: !include { file: buttons/set_nano_pc_ir_remote.yaml, vars: { receiver: "NPC" } }
-  # nano_pc_x: !include { file: buttons/set_nano_pc_ir_remote_rest.yaml, vars: { receiver: "NPCx" } }
-  lg_tv: !include { file: buttons/set_lg_tv_ir_remote.yaml, vars: { receiver: "TV" } }
-  # lg_tv_x: !include { file: buttons/set_lg_tv_ir_remote_rest.yaml, vars: { receiver: "TVx" } }
-  yamaha_av_main: !include { file: buttons/set_yamaha_av_main_ir_remote.yaml, vars: { receiver: "AV" } }
-  # yamaha_av_main_x: !include { file: buttons/set_yamaha_av_main_ir_remote_rest.yaml, vars: { receiver: "AVx" } }
-  yamaha_av_zone2: !include { file: buttons/set_yamaha_av_zone2_ir_remote.yaml, vars: { receiver: "AV2" } }
-  # yamaha_av_zone2_x: !include { file: buttons/set_yamaha_av_zone2_ir_remote_rest.yaml, vars: { receiver: "AV2x" } }
-  # yamaha_bd: !include { file: buttons/set_yamaha_bd_ir_remote.yaml, vars: { receiver: "BD" } }
-  # yamaha_bd_x: !include { file: buttons/set_yamaha_bd_ir_remote_rest.yaml, vars: { receiver: "BDx" } }
-  # creative: !include { file: buttons/set_creative_ir_remote.yaml, vars: { receiver: "CR" } }
+# packages:
+#   # apple_tv: !include { file: buttons/set_apple_tv_ir_remote.yaml, vars: { receiver: "ATV" } }
+#   smart_tv: !include { file: buttons/set_smart_tv_ir_remote.yaml, vars: { receiver: "STV" } }
+#   # smart_tv_x: !include { file: buttons/set_smart_tv_ir_remote_rest.yaml, vars: { receiver: "STVx" } }
+#   # nano_pc: !include { file: buttons/set_nano_pc_ir_remote.yaml, vars: { receiver: "NPC" } }
+#   # nano_pc_x: !include { file: buttons/set_nano_pc_ir_remote_rest.yaml, vars: { receiver: "NPCx" } }
+#   lg_tv: !include { file: buttons/set_lg_tv_ir_remote.yaml, vars: { receiver: "TV" } }
+#   # lg_tv_x: !include { file: buttons/set_lg_tv_ir_remote_rest.yaml, vars: { receiver: "TVx" } }
+#   yamaha_av_main: !include { file: buttons/set_yamaha_av_main_ir_remote.yaml, vars: { receiver: "AV" } }
+#   # yamaha_av_main_x: !include { file: buttons/set_yamaha_av_main_ir_remote_rest.yaml, vars: { receiver: "AVx" } }
+#   yamaha_av_zone2: !include { file: buttons/set_yamaha_av_zone2_ir_remote.yaml, vars: { receiver: "AV2" } }
+#   # yamaha_av_zone2_x: !include { file: buttons/set_yamaha_av_zone2_ir_remote_rest.yaml, vars: { receiver: "AV2x" } }
+#   # yamaha_bd: !include { file: buttons/set_yamaha_bd_ir_remote.yaml, vars: { receiver: "BD" } }
+#   # yamaha_bd_x: !include { file: buttons/set_yamaha_bd_ir_remote_rest.yaml, vars: { receiver: "BDx" } }
+#   # creative: !include { file: buttons/set_creative_ir_remote.yaml, vars: { receiver: "CR" } }
 
 text_sensor:
   - !include sensors/text_uptime.yaml
@@ -117,6 +127,9 @@ text_sensor:
 binary_sensor:
   # HA Connected
   - !include sensors/binary_ha_connected.yaml
+
+  # Voice Assistant
+  - !include { file: sensors/binary_voice_assistant_button.yaml, vars: { gpio: GPIO0 } }
 
 sensor:
   - !include sensors/temp_internal.yaml
@@ -183,8 +196,8 @@ output:
   # - !include { file: outputs/led.yaml, vars: { ix: "green", gpio: "GPIO43", inverted: true } }
   # LED blue (S3, C3 supermini plus)
   # - !include { file: outputs/led.yaml, vars: { ix: "blue", gpio: "GPIO44", inverted: true } }
-  #! blue lead is not on GPIO7 on C3, need to check further which GPIO it's connected. 0-2 are not
-  - !include { file: outputs/led.yaml, vars: { ix: "blue", gpio: "GPIO7", inverted: true } }
+  #! blue lead is not on GPIO7-9 on C3, need to check further which GPIO it's connected. 0-2 are not
+  - !include { file: outputs/led.yaml, vars: { ix: "blue", gpio: "GPIO2", inverted: true } }
 
   # LED RGB (required only when RGB led is used as status led)
   # - !include { file: outputs/led_rgb.yaml, vars: { ix: "", ID: "rgb_led" } }
