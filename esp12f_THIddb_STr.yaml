@@ -16,6 +16,7 @@
 # Pawelo, 20250111, fix for /metrics by reducing no of components - disabled measurement LED and led_cycle
 # Pawelo, 20250111, added LEDs as switches to avoid light as it brakes prometheus (/metrics) due to multiple rows for light
 # Pawelo, 20250111, changed to use includes/board_esp8266.yaml with variables
+# Pawelo, 20250115, disabled wifi_strength to avoid cut prometheus (/metrics) in some rare cases
 
 # WARN: DO NOT ADD any more sensors as it will impact /metrics (prometheus) and in worst case brick the device
 #! run with this command to override substitutions
@@ -24,7 +25,7 @@
 substitutions:
   devices: "Temperature and Humidity via SHTx30, Illuminance, Color via TCS34725"
   project_name: "pgolawsk.esp_home"
-  version: "20250111"
+  version: "20250115"
 
   board_variant: "12F" # determine variant like 12F, 07s, 01m, ...
   board: "esp12e" # like: esp12e, esp01_1m, full list here https://registry.platformio.org/platforms/platformio/espressif8266/boards
@@ -88,7 +89,7 @@ sensor:
   - !include sensors/uptime.yaml
   # - !include sensors/uptime_boot.yaml
   - !include sensors/wifi_signal.yaml
-  - !include sensors/wifi_strength.yaml
+  # - !include sensors/wifi_strength.yaml
 
   # DEBUG component
   # - !include sensors/debug.yaml
