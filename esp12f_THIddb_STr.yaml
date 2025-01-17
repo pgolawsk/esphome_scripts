@@ -17,6 +17,7 @@
 # Pawelo, 20250111, added LEDs as switches to avoid light as it brakes prometheus (/metrics) due to multiple rows for light
 # Pawelo, 20250111, changed to use includes/board_esp8266.yaml with variables
 # Pawelo, 20250115, disabled wifi_strength to avoid cut prometheus (/metrics) in some rare cases
+# Pawelo, 20250116, enabled wifi_strength as confirmed it do not impact prometheus endpoint (/metrics)
 
 # WARN: DO NOT ADD any more sensors as it will impact /metrics (prometheus) and in worst case brick the device
 #! run with this command to override substitutions
@@ -89,7 +90,7 @@ sensor:
   - !include sensors/uptime.yaml
   # - !include sensors/uptime_boot.yaml
   - !include sensors/wifi_signal.yaml
-  # - !include sensors/wifi_strength.yaml
+  - !include sensors/wifi_strength.yaml
 
   # DEBUG component
   # - !include sensors/debug.yaml
