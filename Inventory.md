@@ -113,7 +113,7 @@ Author: Pawel Golawski, <pawel.golawski@2com.pl>
   > 2. Short press RST (RESET)
   > 3. Release 0 (BOOT) after a few seconds (to allow computer to recognize USB)
 
-- 0x (+1) **T-Display ESP32** (dev board with usb-c and 1.14 LCD color display)
+- 1x **T-Display ESP32** (dev board with usb-c and 1.14 LCD color display)
 
   ![ESP32 T-Display pinout image](pinouts/ESP32_T-display_dev_board_pinout.jpg "ESP32 T-Display pinout")
 
@@ -183,7 +183,7 @@ Author: Pawel Golawski, <pawel.golawski@2com.pl>
 - 2x `L` - **LD2410B** - Radar sensor 24GHz
 - 2x `L` - **LD2410C** - Radar sensor 24GHz
 - 2x `L` - **LD2420** - Radar sensor 24GHz
-- 0x (+2) `M` - **INMP441** - I2S microphone
+- 2x (+4) `M` - **INMP441** - I2S microphone
 - 2x `N` - **ENS160** - TVOC and eCO2
 - 6x `O` - **SGP30** - TVOC and eCO2
 - 2x (-1) `P` - **BME280** - Temperature, Humidity, Pressure
@@ -203,7 +203,7 @@ Author: Pawel Golawski, <pawel.golawski@2com.pl>
 - 8x `b` - **9032A/9025A** - Active Buzzer 9mm diameter x 3.2/2.5mm height
 - 2x (-1) `i` - **IR Transmitter 38KHz** (Open-Smart, 1pin with signal)
 - 3x `r` - **9032/9025** - Passive Buzzer 9mm diameter x 3.2/2.5mm height
-- 0x (+2) `m` - **Max98357** -  I2S mono amplifier
+- 2x `m` - **Max98357** -  I2S mono amplifier
   > Note: Amp use cases ![Max98357 use case image](pinouts/MAX98357_use_cases.jpg "Max98357 use case")
 
 ### Other inventories

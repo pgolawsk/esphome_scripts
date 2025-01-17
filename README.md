@@ -11,20 +11,25 @@ Author: Pawel Golawski, <pawel.golawski@2com.pl>
 ## Futures
 
 - This is modular repository, which means that sensors, manipulators, ... are embed into particular device script via `!include <file>` statements. Usually those are single line includes.
-- Those includes may define or override variables, which make particular configuration. For example for `i2c.yaml` variables given define GPIO pins which are serve as I2C interface.
+- Those includes may define or override variables, which make particular configuration. For example for `i2c.yaml` variables given define GPIO pins (SDA, SCL) which are serve as I2C interface.
 - Always available components:
   - Wifi
   - OTA (Over The Air) updates
   - MQTT publish sensor values, like `esp-xx/temperature`
   - Additional MQTT topic for sensors with friendly structure, like `home/office/temperature`
   - Logger via MQTT
-  - Prometheus
+  - Prometheus, exposing `/metrics` web interface endpoint
   - HomeAssistant API
   - Web server
   - Time (via SNTP)
-  - Sun (to provide elevation, azimuth and sunrise sunset times)
+  - Logger with `I` (`INFO`) level via API, web, MQTT
+  - No USB logs output by default (as most devices are not connected to any USB)
 - Optional components:
+  - Sun (to provide elevation, azimuth and sunrise sunset times)
   - RTTTL - to play RTTTL melody via passive buzzer; melody can be received via MQTT (`esp-xx/play_rtttl` topic)
+  - Logger LEVEL + USB output
+  - Other WiFi networks credentials
+  - API services
 
 ## Script names
 
@@ -97,35 +102,37 @@ All available manipulators
 
 All available sensors
 
-- `A` - APDS9660 - Illuminance, Color(s), Gesture and Motion
-- `B` - BH1750 - Illuminance
-- `C` - SCD40 - CO2, Temperature, Humidity
-- `D` - DS18B20 (Dallas) - Temperature
-- `E` - INA226 - DC Current, Power, Voltage
-- `F` - INA3221 - 3-channel DC Current, Power, Voltage
-- `G` - BME680 - Temperature, Humidity, Pressure, Gas Resistance
-- `H` - AHTx21 - Temperature and Humidity
-- `I` - (generic) IR Transmitter
-- `L` - LD2410 - Radar sensor 24GHz
-- `N` - ENS160 - TVOC and eCO2
-- `O` - SGP30 - TVOC and eCO2
-- `P` - BME280 - Temperature, Humidity, Pressure
-- `S` - SHTx30 - Temperature and Humidity
-- `T` - TCS3472 - Illuminance and Color(s)
-- `U` - LTR390 - UV and Illuminance
-- `V` - VL53L0x - Distance (laser)
-- `W` - HC-SR04 - Distance (acoustic)
-- `Y` - YF-B10 G1 - Water Pulse sensor
+- `A` - **APDS9660** - Illuminance, Color(s), Gesture and Motion
+- `B` - **BH1750** - Illuminance
+- `C` - **SCD40** - CO2, Temperature, Humidity
+- `D` - **DS18B20** (Dallas) - Temperature
+- `E` - **INA226** - DC Current, Power, Voltage
+- `F` - **INA3221** - 3-channel DC Current, Power, Voltage
+- `G` - **BME680** - Temperature, Humidity, Pressure, Gas Resistance
+- `H` - **AHTx21** - Temperature and Huźmidity
+- `I` - (generic) IR Receiver
+- `L` - **LD2410** - Radar sensor 24GHz
+- `M` - **INMP441** - I2S microphone
+- `N` - **ENS160** - TVOC and eCO2
+- `O` - **SGP30** - TVOC and eCO2
+- `P` - **BME280** - Temperature, Humidity, Pressure
+- `S` - **SHTx30** - Temperature and Humidity
+- `T` - **TCS3472** - Illuminance and Color(s)
+- `U` - **LTR390** - UV and Illuminance
+- `V` - **VL53L0x** - Distance (laser)
+- `W` - **HC-SR04** - Distance (acoustic)
+- `Y` - **YF-B10 G1** - Water Pulse sensor
 
 ### Switches (`ss`)
 
 All available switches boards
 
-- `a` - AVT5713 - Double Light Switch Board
+- `a` - **AVT5713** - Double Light Switch Board
 - `x` - Single Relay Board (generic from Aliexpress)
-- `b` - 9032A/9025A - Active Buzzer 9mm diameter x 3.2/2.5mm height
-- `r` - 9032/9025 - Passive Buzzer 9mm diameter x 3.2/2.5mm height
+- `b` - **9032A/9025A** - Active Buzzer 9mm diameter x 3.2/2.5mm height
+- `r` - **9032/9025** - Passive Buzzer 9mm diameter x 3.2/2.5mm height
 - `i` - IR Transmitter (Open-Smart)
+- `m` - **Max98357** -  I2S mono amplifier
 
 ### Purpose (`PP`)
 
@@ -196,6 +203,7 @@ Some scripts which have sensors or manipulators in 2 areas have the parameters f
 - `examples` - example configurations, how to use set of scripts
 - `fans` - list of switches intended to include them under `fan:` section
 - `fonts` - list of fonts to draw on displays intended to include them under `font:` section
+- `i2s` - scripts for i2s sound devices (mic, speaker, ...)
 - `includes` - basic scripts for ESP boards, wifi, mqtt, ota, ...
   - `board_...` scripts may contain wiring instructions - please READ those
 - `interfaces` - list of separate interfaces to include like `i2c`, `uart`, `dallas`
