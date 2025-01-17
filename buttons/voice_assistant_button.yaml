@@ -1,0 +1,13 @@
+---
+#* Voice Assistant button
+# Pawelo, 20250115, created based on https://community.home-assistant.io/t/i-s-audio-component-with-esp32-s2/568732/3
+
+platform: template
+name: "$room Voice Assistant"
+id: b_va
+icon: "mdi:microphone"
+state_topic: $devicename/b_va
+on_press:
+  - voice_assistant.start:
+on_release:
+  - voice_assistant.stop:

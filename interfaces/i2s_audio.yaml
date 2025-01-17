@@ -1,0 +1,10 @@
+---
+#* I2S Audio for ESP32
+#! not working with esp8266
+# Pawelo, 20250115, created based on https://esphome.io/components/i2s_audio
+
+i2s_audio:
+  id: "${i2s_id}"
+  i2s_lrclk_pin: ${ws_pin} # WS
+  i2s_bclk_pin: ${sck_pin} # SCK
+  # i2s_mclk_pin: GPIOXX

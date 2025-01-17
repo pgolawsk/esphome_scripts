@@ -1,0 +1,20 @@
+---
+#* VoiceAssistant button on GPIO
+# Pawelo, 20250115, created based on https://community.home-assistant.io/t/i-s-audio-component-with-esp32-s2/568732/3
+
+platform: gpio
+pin:
+  number: ${gpio}
+  mode:
+    input: true # for GPIO0
+    pullup: true # for GPIO0
+  inverted: true
+name: "$room VA Button"
+id: va_button
+# entity_category: config
+icon: mdi:microphone
+state_topic: $devicename/va_button
+on_press:
+  - voice_assistant.start:
+on_release:
+  - voice_assistant.stop:

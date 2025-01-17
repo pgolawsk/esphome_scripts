@@ -1,0 +1,17 @@
+---
+#* I2S Audio Media Player for ESP32
+#! not working with esp8266
+# Pawelo, 20250115, created based on https://esphome.io/components/media_player/#config-media-player
+# and https://esphome.io/components/media_player/i2s_audio
+
+media_player:
+- platform: i2s_audio
+  id: "mplayer${ix}"
+  i2s_audio_id: ${i2s_id}
+  i2s_dout_pin: ${dout_pin}
+  name: "$room Media Player${ix}"
+  icon: "mdi:play-pause"
+  dac_type: external
+  # mute_pin: GPIOXX
+  mode: ${mode} # mono or stereo
+

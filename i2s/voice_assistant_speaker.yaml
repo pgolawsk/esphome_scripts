@@ -1,0 +1,9 @@
+---
+#* Voice Assistant component with Speaker
+# Pawelo, 20250116, created based on https://esphome.io/components/voice_assistant.html
+
+voice_assistant:
+  microphone: ${mic_id}
+  speaker: ${speaker_id}
+  # media_player: ${mplayer_id}
+

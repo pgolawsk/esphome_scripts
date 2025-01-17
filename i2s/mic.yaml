@@ -1,0 +1,13 @@
+---
+#* I2S Audio Microphone for ESP32
+#! not working with esp8266
+# Pawelo, 20250115, created based on https://esphome.io/components/microphone/i2s_audio
+
+microphone:
+- platform: i2s_audio
+  id: "mic${ix}"
+  i2s_audio_id: ${i2s_id}
+  i2s_din_pin: ${sd_pin} #sd
+  adc_type: external
+  channel: ${channel} # left, right or stereo
+  pdm: false
