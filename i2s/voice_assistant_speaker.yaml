@@ -1,6 +1,7 @@
 ---
 #* Voice Assistant component with Speaker
 # Pawelo, 20250116, created based on https://esphome.io/components/voice_assistant.html
+# Pawelo, 20250116, updates after 1st use
 
 voice_assistant:
   microphone: ${mic_id}

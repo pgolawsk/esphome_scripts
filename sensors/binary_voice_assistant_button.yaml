@@ -1,6 +1,7 @@
 ---
 #* VoiceAssistant button on GPIO
 # Pawelo, 20250115, created based on https://community.home-assistant.io/t/i-s-audio-component-with-esp32-s2/568732/3
+# Pawelo, 20250116, updates after 1st use
 
 platform: gpio
 pin:

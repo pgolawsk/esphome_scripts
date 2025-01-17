@@ -3,6 +3,7 @@
 #! not working with esp8266
 # Pawelo, 20250115, created based on https://esphome.io/components/media_player/#config-media-player
 # and https://esphome.io/components/media_player/i2s_audio
+# Pawelo, 20250116, added i2s_id as variable
 
 media_player:
 - platform: i2s_audio

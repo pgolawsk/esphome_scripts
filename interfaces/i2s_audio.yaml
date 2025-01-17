@@ -2,6 +2,7 @@
 #* I2S Audio for ESP32
 #! not working with esp8266
 # Pawelo, 20250115, created based on https://esphome.io/components/i2s_audio
+# Pawelo, 20250116, added i2s_id as variable
 
 i2s_audio:
   id: "${i2s_id}"
