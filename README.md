@@ -10,7 +10,7 @@ Author: Pawel Golawski, <pawel.golawski@2com.pl>
 
 ## Futures
 
-- This is modular repository, which means that sensors, manipulators, ... are embed into particular device script via `!include <file>` statements. Usually those are single line includes.
+- This is modular repository, which means that sensors, manipulators, ... are embedded into particular device script via `!include <file>` statements. Usually those are single line includes.
 - Those includes may define or override variables, which make particular configuration. For example for `i2c.yaml` variables given define GPIO pins (SDA, SCL) which are serve as I2C interface.
 - Always available components:
   - Wifi
