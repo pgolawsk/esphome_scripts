@@ -1,6 +1,8 @@
 ---
 #* I2S Audio Speaker for ESP32
 #! not working with esp8266
+# see example: https://community.home-assistant.io/t/i2s-esp32-stereo-output-two-max98357a/573741
+#
 # Pawelo, 20250115, created based on https://esphome.io/components/speaker/i2s_audio
 # Pawelo, 20250116, added i2s_id as variable
 
