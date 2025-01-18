@@ -16,6 +16,7 @@
 # Pawelo, 20250103, corrected IR receiver GPIO to 6
 # Pawelo, 20250104, setting device in the box - added BH1750 and pin checked working device
 # Pawelo, 20250109, added option to select desired framework_type (for board include)
+# Pawelo, 20250118, added RTTTL buzzer and i2s mic
 
 #! run with this command to override substitutions
 # esphome -s devicename espXX -s updates 1min -s room <Room name> -s mqtt_room <room> run esp32_MMmm_SSss__PP.yaml --device 192.168.x.x
@@ -46,7 +47,7 @@ substitutions:
 
 # Override some settings included below in _board_ setup
 <<: !include includes/time_sntp_with_sun.yaml #WARN: this is to make sunrise and sunset sensor to be updated on every time sync event
-# <<: !include includes/mqtt_with_rtttl.yaml #WARN: override mqtt with RTTTL support if needed (buzzer and status led)
+<<: !include includes/mqtt_with_rtttl.yaml #WARN: override mqtt with RTTTL support if needed (buzzer and status led)
 <<: !include { file: includes/logger_level.yaml, vars: { level: INFO, baud_rate: 115200 } } #WARN: override default log level to specific one
 # <<: !include { file: includes/logger_level.yaml, vars: { level: DEBUG, baud_rate: 115200 } } #WARN: override default log level to specific one
 # <<: !include { file: includes/logger_level.yaml, vars: { level: VERY_VERBOSE, baud_rate: 115200 } } #WARN: override default log level to specific one
@@ -71,8 +72,17 @@ substitutions:
 # <<: !include { file: interfaces/spi.yaml, vars: { spi_id: "spi_a", clk: "GPIO6", mosi: "GPIO7", miso: "GPIO9" } }
 # <<: !include { file: interfaces/spi_rc522.yaml, vars: { spi_id: "spi_a", cs: "GPIO5", reset: "GPIO4" } }
 <<: !include { file: interfaces/i2c_bme68x_bsec2.yaml, vars: { ix: "", address: "0x77" } }
-<<: !include { file: interfaces/ir_receiver.yaml, vars: { gpio: "GPIO6", dump: "nec", rmt_channel: 4 } } # for ESP32c3 can be 2-3, for ESP32 can be 0-7, for ESP32s2 0-3, for ESP32s3 4-7
-<<: !include { file: interfaces/ir_transmitter.yaml, vars: { gpio: "GPIO5", rmt_channel: 0 } } # for ESP32c3 can be 0-1, for ESP32 can be 0-7, for ESP32s2 0-3, for ESP32s3 0-3
+<<: !include { file: interfaces/ir_receiver.yaml, vars: { gpio: "GPIO5", dump: "nec", rmt_channel: 4 } } # for ESP32c3 can be 2-3, for ESP32 can be 0-7, for ESP32s2 0-3, for ESP32s3 4-7
+<<: !include { file: interfaces/ir_transmitter.yaml, vars: { gpio: "GPIO6", rmt_channel: 0 } } # for ESP32c3 can be 0-1, for ESP32 can be 0-7, for ESP32s2 0-3, for ESP32s3 0-3
+<<: !include { file: interfaces/i2s_audio.yaml, vars: { i2s_id: "i2s_a", ws_pin: "GPIO37", sck_pin: "GPIO38" } }
+
+# I2s audio
+<<: !include { file: i2s/mic.yaml, vars: { ix: "", i2s_id: "i2s_a", sd_pin: "GPIO15", channel: "left" } }
+# <<: !include { file: i2s/media_player.yaml, vars: { ix: "", i2s_id: "i2s_a", dout_pin: "GPIO9", mode: "mono" } } #! do not compiles in 2024.12.2 due to some conversion errors
+<<: !include { file: i2s/speaker.yaml, vars: { ix: "", i2s_id: "i2s_a", dout_pin: "GPIO16", channel: "mono" } }
+# <<: !include { file: i2s/voice_assistant_mic_only.yaml, vars: { mic_id: "mic" } }
+# <<: !include { file: i2s/voice_assistant_mplayer.yaml, vars: { mic_id: "mic", mplayer_id: "mplayer" } }
+<<: !include { file: i2s/voice_assistant_speaker.yaml, vars: { mic_id: "mic", speaker_id: "spk" } }
 
 # IR Remote control buttons added from packages
 packages:
@@ -89,7 +99,7 @@ packages:
   # yamaha_av_zone2_x: !include { file: buttons/set_yamaha_av_zone2_ir_remote_rest.yaml, vars: { receiver: "AV2x" } }
   yamaha_bd: !include { file: buttons/set_yamaha_bd_ir_remote.yaml, vars: { receiver: "BD" } }
   # yamaha_bd_x: !include { file: buttons/set_yamaha_bd_ir_remote_rest.yaml, vars: { receiver: "BDx" } }
-  creative: !include { file: buttons/set_creative_ir_remote.yaml, vars: { receiver: "CR" } }
+  # creative: !include { file: buttons/set_creative_ir_remote.yaml, vars: { receiver: "CR" } }
 
 text_sensor:
   - !include sensors/text_uptime.yaml
@@ -176,7 +186,7 @@ output:
   # - !include { file: outputs/led.yaml, vars: { ix: "", gpio: "GPIO15", inverted: false } }
 
   # LED green (S3)
-  - !include { file: outputs/led.yaml, vars: { ix: "green", gpio: "GPIO43", inverted: true } }
+  - !include { file: outputs/led.yaml, vars: { ix: "", gpio: "GPIO43", inverted: true } }
   # LED blue (S3, C3 supermini plus)
   - !include { file: outputs/led.yaml, vars: { ix: "blue", gpio: "GPIO44", inverted: true } }
   # - !include { file: outputs/led.yaml, vars: { ix: "blue", gpio: "GPIO7", inverted: false } }
@@ -185,11 +195,11 @@ output:
   # - !include { file: outputs/led_rgb.yaml, vars: { ix: "", ID: "rgb_led" } }
 
   # Passive/RTTTL Buzzer
-  - !include { file: outputs/passive_buzzer_ledc.yaml, vars: { ix: "", gpio: "GPIO4" } }
+  - !include { file: outputs/passive_buzzer_ledc.yaml, vars: { ix: "", gpio: "GPIO7" } }
 
 light:
   # LED green (S3)
-  - !include { file: lights/led.yaml, vars: { ix: "green", platform: "binary", off_delay: "1days", entity_category: "" } }
+  - !include { file: lights/led.yaml, vars: { ix: "", platform: "binary", off_delay: "1days", entity_category: "" } }
   # LED blue (S3, C3 supermini/plus)
   - !include { file: lights/led.yaml, vars: { ix: "blue", platform: "status_led", off_delay: "1days", entity_category: "diagnostic" } }
   # LED RGB (S3, C3 supermini plus)
@@ -198,7 +208,7 @@ light:
 
 switch:
   # LED cycle
-  - !include { file: switches/led_cycle.yaml, vars: { ID: "ledgreen", cycles: 3, on_delay: "1s" , off_delay: "1000ms" } }
+  - !include { file: switches/led_cycle.yaml, vars: { ID: "led", cycles: 3, on_delay: "1s" , off_delay: "1000ms" } }
 
   # Passive/RTTTL Buzzer
   - !include { file: switches/passive_buzzer.yaml, vars: { ix: "", off_delay: "500ms" } }
