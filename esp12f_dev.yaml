@@ -141,7 +141,7 @@ sensor:
   - !include sensors/wifi_strength.yaml
 
   # DEBUG component
-  - !include sensors/debug.yaml
+  # - !include sensors/debug.yaml
 
   # Sun component
   - !include sensors/sun_elevation.yaml
