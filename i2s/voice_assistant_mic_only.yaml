@@ -1,5 +1,6 @@
 ---
 #* Voice Assistant component with microphone only (no speaker, no media player)
+# see example: https://smarthomecircle.com/created-voice-assistant-esp32-with-wake-word-in-home-assistant
 # Pawelo, 20250116, created based on https://esphome.io/components/voice_assistant.html
 # Pawelo, 20250116, updates after 1st use
 
