@@ -97,7 +97,7 @@ packages:
   # I2S Sound Level Meter (!cannot be used with "I2S Audio" above)
   slm: !include { file: i2s/set_i2s_sound_level_meter.yaml, vars: { i2s_id: "i2s_db", din_pin: "GPIO15", ws_pin: "GPIO37", bck_pin: "GPIO38", channel: "left" } }
 
-# IR Remote control buttons added from packages
+  # IR Remote control buttons added from packages
   apple_tv: !include { file: buttons/set_apple_tv_ir_remote.yaml, vars: { receiver: "ATV" } }
   smart_tv: !include { file: buttons/set_smart_tv_ir_remote.yaml, vars: { receiver: "STV" } }
   # smart_tv_x: !include { file: buttons/set_smart_tv_ir_remote_rest.yaml, vars: { receiver: "STVx" } }
