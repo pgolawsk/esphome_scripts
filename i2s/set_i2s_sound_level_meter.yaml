@@ -98,7 +98,7 @@ sound_level_meter:
         - sensors:
             # 'eq' type sensor calculates Leq (average) sound level over specified period
             - type: eq
-              name: $room LZeq_1s
+              name: $room SLM LZeq_1s
               id: LZeq_1s
               # you can override updated_interval specified on top level
               # individually per each sensor
