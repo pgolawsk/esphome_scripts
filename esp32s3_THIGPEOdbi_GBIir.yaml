@@ -6,7 +6,7 @@
 # NOTE: ESP32s3 - blue led is on GPIO44
 # NOTE: ESP32s3 - green led is on GPIO43
 # NOTE: PSRAM 8MB is not working? then https://community.home-assistant.io/t/esp32-s3-devkitc-1-n16r8-using-psram-howto###
-# NOTE: DO NOT use 5V pin, as it provides 3.3V only and od not deliver enough power for I2C devices (those are recognized during scan, but won't work)
+# NOTE: DO NOT use 5V pin, as it provides 2.5V only and od not deliver enough power for I2C devices (those are recognized during scan, but won't work)
 ###
 # Pawelo, 20241223, created based on esp32c3_dev.yaml
 # Pawelo, 20241223, added "CREATIVE" IR remote control buttons
@@ -17,6 +17,7 @@
 # Pawelo, 20250104, setting device in the box - added BH1750 and pin checked working device
 # Pawelo, 20250109, added option to select desired framework_type (for board include)
 # Pawelo, 20250118, added RTTTL buzzer and i2s mic
+# Pawelo, 20250118, commented i2s mic and added i2s sound level meter
 
 #! run with this command to override substitutions
 # esphome -s devicename espXX -s updates 1min -s room <Room name> -s mqtt_room <room> run esp32_MMmm_SSss__PP.yaml --device 192.168.x.x
@@ -25,7 +26,7 @@
 substitutions:
   devices: "Temperature, Humidity, Pressure, Gas, eCO2, VOC via BME680, Illuminance via BH1750, IR Receiver, IR Transmitter, RTTTL Buzzer"
   project_name: "pgolawsk.esp_home"
-  version: "20250109"
+  version: "20250119"
 
   # required by includes/board_esp32.yaml script
   framework_type: arduino # "arduino" or "esp-idf"
@@ -74,18 +75,22 @@ substitutions:
 <<: !include { file: interfaces/i2c_bme68x_bsec2.yaml, vars: { ix: "", address: "0x77" } }
 <<: !include { file: interfaces/ir_receiver.yaml, vars: { gpio: "GPIO5", dump: "nec", rmt_channel: 4 } } # for ESP32c3 can be 2-3, for ESP32 can be 0-7, for ESP32s2 0-3, for ESP32s3 4-7
 <<: !include { file: interfaces/ir_transmitter.yaml, vars: { gpio: "GPIO6", rmt_channel: 0 } } # for ESP32c3 can be 0-1, for ESP32 can be 0-7, for ESP32s2 0-3, for ESP32s3 0-3
-<<: !include { file: interfaces/i2s_audio.yaml, vars: { i2s_id: "i2s_a", ws_pin: "GPIO37", sck_pin: "GPIO38" } }
 
-# I2s audio
-<<: !include { file: i2s/mic.yaml, vars: { ix: "", i2s_id: "i2s_a", sd_pin: "GPIO15", channel: "left" } }
-# <<: !include { file: i2s/media_player.yaml, vars: { ix: "", i2s_id: "i2s_a", dout_pin: "GPIO9", mode: "mono" } } #! do not compiles in 2024.12.2 due to some conversion errors
-<<: !include { file: i2s/speaker.yaml, vars: { ix: "", i2s_id: "i2s_a", dout_pin: "GPIO16", channel: "mono" } }
-# <<: !include { file: i2s/voice_assistant_mic_only.yaml, vars: { mic_id: "mic" } }
-# <<: !include { file: i2s/voice_assistant_mplayer.yaml, vars: { mic_id: "mic", mplayer_id: "mplayer" } }
-<<: !include { file: i2s/voice_assistant_speaker.yaml, vars: { mic_id: "mic", speaker_id: "spk" } }
+# # I2s audio
+# i2s_audio:
+#   - <<: !include { file: i2s/i2s_audio.yaml, vars: { i2s_id: "i2s_a", ws_pin: "GPIO37", sck_pin: "GPIO38" } }
+# <<: !include { file: i2s/mic.yaml, vars: { ix: "", i2s_id: "i2s_a", sd_pin: "GPIO15", channel: "left" } }
+# # <<: !include { file: i2s/media_player.yaml, vars: { ix: "", i2s_id: "i2s_a", dout_pin: "GPIO9", mode: "mono" } } #! do not compiles in 2024.12.2 due to some conversion errors
+# <<: !include { file: i2s/speaker.yaml, vars: { ix: "", i2s_id: "i2s_a", dout_pin: "GPIO16", channel: "mono" } }
+# # <<: !include { file: i2s/voice_assistant_mic_only.yaml, vars: { mic_id: "mic" } }
+# # <<: !include { file: i2s/voice_assistant_mplayer.yaml, vars: { mic_id: "mic", mplayer_id: "mplayer" } }
+# <<: !include { file: i2s/voice_assistant_speaker.yaml, vars: { mic_id: "mic", speaker_id: "spk" } }
+
+packages:
+  # I2S Sound Level Meter
+  slm: !include { file: i2s/set_i2s_sound_level_meter.yaml, vars: { i2s_id: "i2s_db", din_pin: "GPIO15", ws_pin: "GPIO37", bck_pin: "GPIO38", channel: "left" } }
 
 # IR Remote control buttons added from packages
-packages:
   apple_tv: !include { file: buttons/set_apple_tv_ir_remote.yaml, vars: { receiver: "ATV" } }
   smart_tv: !include { file: buttons/set_smart_tv_ir_remote.yaml, vars: { receiver: "STV" } }
   # smart_tv_x: !include { file: buttons/set_smart_tv_ir_remote_rest.yaml, vars: { receiver: "STVx" } }

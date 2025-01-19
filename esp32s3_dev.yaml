@@ -6,7 +6,7 @@
 # NOTE: ESP32s3 - blue led is on GPIO44
 # NOTE: ESP32s3 - green led is on GPIO43
 # NOTE: PSRAM 8MB is not working? then https://community.home-assistant.io/t/esp32-s3-devkitc-1-n16r8-using-psram-howto
-# NOTE: DO NOT use 5V pin, as it provides 3.3V only and od not deliver enough power for I2C devices (those are recognized during scan, but won't work)
+# NOTE: DO NOT use 5V pin, as it provides 2.5V only and od not deliver enough power for I2C devices (those are recognized during scan, but won't work)
 ###
 # Pawelo 20231205, 1.1.5, created based on esp32_dev.yaml
 # Pawelo 20240209, 1.1.5, added ENS160 + AHT21 support
@@ -38,7 +38,7 @@ substitutions:
 #  devices: "Temperature and Humidity via SHTx30 and Illuminance via BH1750"
   devices: "DEV Kit"
   project_name: "pgolawsk.esp_home"
-  version: "202450109"
+  version: "202450119"
 
   # required by includes/board_esp32.yaml script
   framework_type: arduino # "arduino" or "esp-idf"
@@ -88,14 +88,11 @@ substitutions:
 # <<: !include { file: interfaces/ir_transmitter.yaml, vars: { gpio: "GPIO5", rmt_channel: 0 } } # for ESP32c3 can be 0-1, for ESP32 can be 0-7, for ESP32s2 0-3, for ESP32s3 0-3
 # <<: !include { file: interfaces/i2s_audio.yaml, vars: { i2s_id: "i2s_a", ws_pin: "GPIO6", sck_pin: "GPIO7" } }
 
-# I2S Sound Level Meter
-packages:
-  slm: !include { file: interfaces/set_i2s_sound_level_meter.yaml, vars: { i2s_id: "i2s_db", din_pin: "GPIO5", ws_pin: "GPIO6", bck_pin: "GPIO7", channel: "left" } }
 
 # # I2s audio
 # i2s_audio:
-#   - <<: !include { file: interfaces/i2s_audio.yaml, vars: { i2s_id: "i2s_a", ws_pin: "GPIO6", sck_pin: "GPIO7" } }
-#   - <<: !include { file: interfaces/i2s_audio.yaml, vars: { i2s_id: "i2s_b", ws_pin: "GPIO17", sck_pin: "GPIO16" } }
+#   - <<: !include { file: i2s/i2s_audio.yaml, vars: { i2s_id: "i2s_a", ws_pin: "GPIO6", sck_pin: "GPIO7" } }
+#   - <<: !include { file: i2s/i2s_audio.yaml, vars: { i2s_id: "i2s_b", ws_pin: "GPIO17", sck_pin: "GPIO16" } }
 # <<: !include { file: i2s/mic.yaml, vars: { ix: "", i2s_id: "i2s_a", sd_pin: "GPIO5", channel: "left" } }
 # <<: !include { file: i2s/media_player.yaml, vars: { ix: "", i2s_id: "i2s_a", dout_pin: "GPIO15", mode: "mono" } } #! do not compiles in 2024.12.2 due to some conversion errors
 # # <<: !include { file: i2s/speaker.yaml, vars: { ix: "", i2s_id: "i2s_a", dout_pin: "GPIO15", channel: "mono" } }
@@ -103,8 +100,10 @@ packages:
 # <<: !include { file: i2s/voice_assistant_mplayer.yaml, vars: { mic_id: "mic", mplayer_id: "mplayer" } }
 # # <<: !include { file: i2s/voice_assistant_speaker.yaml, vars: { mic_id: "mic", speaker_id: "spk" } }
 
-# IR Remote control buttons added from packages
-# packages:
+packages:
+  # I2S Sound Level Meter
+  slm: !include { file: i2s/set_i2s_sound_level_meter.yaml, vars: { i2s_id: "i2s_db", din_pin: "GPIO5", ws_pin: "GPIO6", bck_pin: "GPIO7", channel: "left" } }
+  # IR Remote control buttons added from packages
 #   # apple_tv: !include { file: buttons/set_apple_tv_ir_remote.yaml, vars: { receiver: "ATV" } }
 #   smart_tv: !include { file: buttons/set_smart_tv_ir_remote.yaml, vars: { receiver: "STV" } }
 #   # smart_tv_x: !include { file: buttons/set_smart_tv_ir_remote_rest.yaml, vars: { receiver: "STVx" } }
