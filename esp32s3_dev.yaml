@@ -29,6 +29,7 @@
 # Pawelo, 20250109, added option to select desired framework_type (for board include)
 # Pawelo, 20250118, added i2s audio
 # Pawelo, 20250119, added i2s sound level meter
+# Pawelo, 20250119, added i2s mic bits_per_sample and use_apll as variables
 
 #! run with this command to override substitutions
 # esphome -s devicename espXX -s updates 1min -s room <Room name> -s mqtt_room <room> run esp32_MMmm_SSss__PP.yaml --device 192.168.x.x
@@ -89,20 +90,24 @@ substitutions:
 # <<: !include { file: interfaces/i2s_audio.yaml, vars: { i2s_id: "i2s_a", ws_pin: "GPIO6", sck_pin: "GPIO7" } }
 
 
-# # I2s audio
-# i2s_audio:
-#   - <<: !include { file: i2s/i2s_audio.yaml, vars: { i2s_id: "i2s_a", ws_pin: "GPIO6", sck_pin: "GPIO7" } }
-#   - <<: !include { file: i2s/i2s_audio.yaml, vars: { i2s_id: "i2s_b", ws_pin: "GPIO17", sck_pin: "GPIO16" } }
-# <<: !include { file: i2s/mic.yaml, vars: { ix: "", i2s_id: "i2s_a", sd_pin: "GPIO5", channel: "left" } }
-# <<: !include { file: i2s/media_player.yaml, vars: { ix: "", i2s_id: "i2s_a", dout_pin: "GPIO15", mode: "mono" } } #! do not compiles in 2024.12.2 due to some conversion errors
-# # <<: !include { file: i2s/speaker.yaml, vars: { ix: "", i2s_id: "i2s_a", dout_pin: "GPIO15", channel: "mono" } }
-# # <<: !include { file: i2s/voice_assistant_mic_only.yaml, vars: { mic_id: "mic" } }
-# <<: !include { file: i2s/voice_assistant_mplayer.yaml, vars: { mic_id: "mic", mplayer_id: "mplayer" } }
-# # <<: !include { file: i2s/voice_assistant_speaker.yaml, vars: { mic_id: "mic", speaker_id: "spk" } }
+# I2S Audio (!cannot be used with "I2S Sound Level Meter" below)
+i2s_audio:
+  - <<: !include { file: i2s/i2s_audio.yaml, vars: { i2s_id: "i2s_in", ws_pin: "GPIO6", sck_pin: "GPIO7" } }
+  - <<: !include { file: i2s/i2s_audio.yaml, vars: { i2s_id: "i2s_out", ws_pin: "GPIO17", sck_pin: "GPIO16" } }
 
-packages:
-  # I2S Sound Level Meter
-  slm: !include { file: i2s/set_i2s_sound_level_meter.yaml, vars: { i2s_id: "i2s_db", din_pin: "GPIO5", ws_pin: "GPIO6", bck_pin: "GPIO7", channel: "left" } }
+<<: !include { file: i2s/mic.yaml, vars: { ix: "", i2s_id: "i2s_in", sd_pin: "GPIO5", channel: "left", bits_per_sample: 24bit, use_apll: true } }
+
+<<: !include { file: i2s/media_player.yaml, vars: { ix: "", i2s_id: "i2s_out", dout_pin: "GPIO15", mode: "mono" } }
+# <<: !include { file: i2s/speaker.yaml, vars: { ix: "", i2s_id: "i2s_out", dout_pin: "GPIO15", channel: "mono" } }
+
+# <<: !include { file: i2s/voice_assistant_mic_only.yaml, vars: { mic_id: "mic" } }
+<<: !include { file: i2s/voice_assistant_mplayer.yaml, vars: { mic_id: "mic", mplayer_id: "mplayer" } }
+# <<: !include { file: i2s/voice_assistant_speaker.yaml, vars: { mic_id: "mic", speaker_id: "spk" } }
+
+# packages:
+  # I2S Sound Level Meter (!cannot be used with "I2S Audio" above)
+  # slm: !include { file: i2s/set_i2s_sound_level_meter.yaml, vars: { i2s_id: "i2s_db", din_pin: "GPIO5", ws_pin: "GPIO6", bck_pin: "GPIO7", channel: "left" } }
+
   # IR Remote control buttons added from packages
 #   # apple_tv: !include { file: buttons/set_apple_tv_ir_remote.yaml, vars: { receiver: "ATV" } }
 #   smart_tv: !include { file: buttons/set_smart_tv_ir_remote.yaml, vars: { receiver: "STV" } }
