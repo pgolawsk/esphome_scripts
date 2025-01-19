@@ -3,8 +3,9 @@
 #! not working with esp8266
 # Pawelo, 20250115, created based on https://esphome.io/components/i2s_audio
 # Pawelo, 20250116, added i2s_id as variable, added LRC, BCLK comments
+# Pawelo, 20250116, refactor i2s audio - removed from interface
 
-i2s_audio:
+# i2s_audio:
   id: "${i2s_id}"
   i2s_lrclk_pin: ${ws_pin} # WS or LRC
   i2s_bclk_pin: ${sck_pin} # SCK or BCLK
