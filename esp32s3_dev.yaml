@@ -105,7 +105,10 @@ i2s_audio:
 # <<: !include { file: i2s/voice_assistant_speaker.yaml, vars: { mic_id: "mic", speaker_id: "spk" } }
 
 # packages:
-  # I2S Sound Level Meter (!cannot be used with "I2S Audio" above)
+  # I2S Voice Assistant (!cannot be used with "I2S Sound Level Meter" below)
+  # va: !include { file: i2s/set_i2s_voice_assistant.yaml, vars: { ix: "", i2s_id: "i2s_va", dout_pin: "GPIO15", ws_pin: "GPIO6", sck_pin: "GPIO7", din_pin: "GPIO5", dout_mode: mono, din_channel: "right", din_bits_per_sample: 24bit, din_use_apll: true, rgb_light_id: rgb_led } }
+
+  # I2S Sound Level Meter (!cannot be used with "I2S Voice Assistant" above)
   # slm: !include { file: i2s/set_i2s_sound_level_meter.yaml, vars: { i2s_id: "i2s_db", din_pin: "GPIO5", ws_pin: "GPIO6", bck_pin: "GPIO7", channel: "left" } }
 
   # IR Remote control buttons added from packages
