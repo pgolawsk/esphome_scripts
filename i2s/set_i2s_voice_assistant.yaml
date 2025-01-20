@@ -1,0 +1,131 @@
+---
+#* Voice Assistant component with mic and Media Player
+# Pawelo, 20250120 created based on https://smarthomecircle.com/created-voice-assistant-esp32-with-wake-word-in-home-assistant
+
+
+i2s_audio:
+  - id: "${i2s_id}"
+    i2s_lrclk_pin: ${ws_pin} # WS or LRC
+    i2s_bclk_pin: ${sck_pin} # SCK or BCLK
+    # i2s_mclk_pin: GPIOXX
+
+microphone:
+  - platform: i2s_audio
+    id: "mic${ix}"
+    channel: ${din_channel} # The channel of the microphone. One of left, right, or stereo. If stereo, the output data will be twice as big, with each right sample followed by a left sample. Defaults to right.
+    # sample_rate: 16000 # I2S sample rate. Defaults to 16000.
+    bits_per_sample: ${din_bits_per_sample} # The bit depth of the audio samples. Note that while set to 24bit or 32bit, the samples will be scaled down to 16bit before being forwarded. One of 8bit, 16bit, 24bit, or 32bit. Defaults to 32bit.
+    # bits_per_channel: ${bits_per_sample} # The bit depth of the audio channels. See the datasheet of your I2S device for details. Defaults to bits_per_sample.
+    use_apll: ${din_use_apll} # I2S using APLL as main I2S clock, enable it to get accurate clock. Defaults to false.
+    # i2s_mode: primary # The I2S mode to use. One of primary (clock driven by the host) or secondary (clock driven by the attached device). Defaults to primary.
+    adc_type: external
+    pdm: false
+    i2s_audio_id: ${i2s_id}
+    i2s_din_pin: ${din_pin} #sd
+
+media_player:
+  - platform: i2s_audio
+    id: "mplayer${ix}"
+    i2s_audio_id: ${i2s_id}
+    i2s_dout_pin: ${dout_pin}
+    name: "$room Media Player${ix}"
+    icon: "mdi:play-pause"
+    dac_type: external
+    # mute_pin: GPIOXX
+    mode: ${dout_mode} # mono or stereo
+
+voice_assistant:
+  id: va${ix}
+  microphone: mic${ix}
+  # speaker: speaker${ix}
+  media_player: mplayer${ix}
+  noise_suppression_level: 2
+  auto_gain: 31dBFS
+  volume_multiplier: 4.0
+  use_wake_word: false
+  # Automation
+  on_wake_word_detected:
+    - light.turn_on:
+        id: ${rgb_light_id}
+  on_listening:
+    - light.turn_on:
+        id: ${rgb_light_id}
+        effect: "VA Effect"
+        red: 63%
+        green: 13%
+        blue: 93%
+  on_stt_end:
+    - light.turn_on:
+        id: ${rgb_light_id}
+        effect: "None"
+        red: 0%
+        green: 100%
+        blue: 0%
+  on_error:
+    - light.turn_on:
+        id: ${rgb_light_id}
+        effect: "None"
+        red: 100%
+        green: 0%
+        blue: 0%
+    - if:
+        condition:
+          switch.is_on: va${ix}_use_wake_word
+        then:
+          - switch.turn_off: va${ix}_use_wake_word
+          - delay: 1sec
+          - switch.turn_on: va${ix}_use_wake_word
+  on_client_connected:
+    - if:
+        condition:
+          switch.is_on: va${ix}_use_wake_word
+        then:
+          - voice_assistant.start_continuous:
+  on_client_disconnected:
+    - if:
+        condition:
+          switch.is_on: va${ix}_use_wake_word
+        then:
+          - voice_assistant.stop:
+  on_end:
+    - light.turn_off:
+        id: ${rgb_light_id}
+
+binary_sensor:
+  - platform: status
+    name: $room VA${ix} Connection
+    id: va${ix}_connection
+    filters:
+      - delayed_on: 1s
+    on_press:
+      - if:
+          condition:
+            switch.is_on: va${ix}_use_wake_word
+          then:
+            - voice_assistant.start_continuous:
+    on_release:
+      - if:
+          condition:
+            switch.is_on: va${ix}_use_wake_word
+          then:
+            - voice_assistant.stop:
+
+switch:
+  - platform: template
+    name: $room VA${ix} use WAKE word
+    id: va${ix}_use_wake_word
+    optimistic: true
+    restore_mode: RESTORE_DEFAULT_ON
+    entity_category: config
+    on_turn_on:
+      - lambda: id(va${ix}).set_use_wake_word(true);
+      - if:
+          condition:
+            not:
+              - voice_assistant.is_running
+          then:
+            - voice_assistant.start_continuous
+    on_turn_off:
+      - voice_assistant.stop
+      - lambda: id(va${ix}).set_use_wake_word(false);
+
