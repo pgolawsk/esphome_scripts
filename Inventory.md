@@ -66,7 +66,7 @@ Author: Pawel Golawski, <pawel.golawski@2com.pl>
 
   ![ESP32-C6 mini image](pinouts/ESP32c6_mini.png "ESP32-C6 mini")
 
-- 0x (+1) **ESP32-C6 supermini**
+- 1x **ESP32-C6 supermini**
 
   ![ESP32-C6 super-mini pinout image](pinouts/ESP32c6_supermini_pinout.jpeg "ESP32-C6 super-mini pinout")
 
@@ -78,6 +78,12 @@ Author: Pawel Golawski, <pawel.golawski@2com.pl>
   > WARNING: This board work only with esp-idf framework (no arduino) and throws some frequent warnings, like:
   > - `[W][web_server_idf:070][httpd]: Only application/x-www-form-urlencoded supported for POST request`
   > - `[I][esp-idf:000][httpd]: W (59638) httpd_txrx: httpd_sock_err: error in recv : 104`
+
+- 1x **ESP32-S3 supermini**
+
+  ![ESP32-S3 supermini pinout image](pinouts/ESP32s3_supermini.jpg "ESP32-S3 supermini pinout")
+  > Notes:
+  > - GPIO48 is connected to RGB LED and blue LED.
 
 - 1x **ESP32-S3 N16R8**
 
@@ -179,11 +185,11 @@ Author: Pawel Golawski, <pawel.golawski@2com.pl>
 - 2x `F` - **INA3221** - 3-channel DC Current, Power, Voltage (max. 26V DC)
 - 3x `G` - **BME680** - Temperature, Humidity, Pressure, Gas Resistance
 - 0x `H` - **AHTx21** - Temperature and Humidity
-- 2x (-1) `I` - **IR Receiver 38KHz** (Open-Smart, 1pin with signal)
+- 1x `I` - **IR Receiver 38KHz** (Open-Smart, 1pin with signal)
 - 2x `L` - **LD2410B** - Radar sensor 24GHz
 - 2x `L` - **LD2410C** - Radar sensor 24GHz
 - 2x `L` - **LD2420** - Radar sensor 24GHz
-- 2x (+4) `M` - **INMP441** - I2S microphone
+- 5x (+4) `M` - **INMP441** - I2S microphone
 - 2x `N` - **ENS160** - TVOC and eCO2
 - 6x `O` - **SGP30** - TVOC and eCO2
 - 2x (-1) `P` - **BME280** - Temperature, Humidity, Pressure
@@ -201,10 +207,12 @@ Author: Pawel Golawski, <pawel.golawski@2com.pl>
 - 7x `a` - **AVT5713** - Double Light Switch Board (not mounted - bare board)
 - 5x `x` - ***ESP01S Single Relay** Board (generic from Aliexpress)
 - 8x `b` - **9032A/9025A** - Active Buzzer 9mm diameter x 3.2/2.5mm height
-- 2x (-1) `i` - **IR Transmitter 38KHz** (Open-Smart, 1pin with signal)
+- 1x `i` - **IR Transmitter 38KHz** (Open-Smart, 1pin with signal)
 - 3x `r` - **9032/9025** - Passive Buzzer 9mm diameter x 3.2/2.5mm height
-- 2x `m` - **Max98357** -  I2S mono amplifier
+- 1x (-1) `m` - **Max98357** -  I2S mono amplifier
   > Note: Amp use cases ![Max98357 use case image](pinouts/MAX98357_use_cases.jpg "Max98357 use case")
+- 2x (+x) `s4` - small speaker 4 Ohm (1 - 3 W)
+- 0x (+x) `s8` - small speaker 8 Ohm (0.5 - 1 W)
 
 ### Other inventories
 
@@ -222,7 +230,7 @@ Author: Pawel Golawski, <pawel.golawski@2com.pl>
 
 - 1x ESP12 development board, fits ESP12E, ESP12F
 - 1x ESP32 development board
-- 4x ESP32C3 pin board (require ESP32C3 mini or ESP32C3 mini plus)
+- 6x ESP32C3 pin board (require ESP32C3 supermini, ESP32C3 supermini plus, ESP32S6 supermini, ESP32S3 supermini)
 
 #### USB modules
 
@@ -243,6 +251,7 @@ Author: Pawel Golawski, <pawel.golawski@2com.pl>
 - 9x AC 230V to DC 5V Hi-Link module
 - 3x DC 30V to DC 3.3V board
 - 8x DC 30V to DC 5V board
+- 0x (+1) AC 230V to DC 5V (1A) board
 - 14x single relay SRD-05DC-SL-C (5V)
 - 4x single relay HFD4-3V-S (3.3V)
 - 7x AVT5785 board (to put 230C to (5V or 3.3V) Hi-Link module)
@@ -309,11 +318,11 @@ TBD
 
 #### Salon
 
-- PRODUCTION since: TBD
+- PRODUCTION since: 2025 Jan
 - Script `esp32s3_THIGPEOdbi_GBIi.yaml`.
 - Alias `esp32-14_Salon`.
 
-ESP32 board with IR Receiver and IR Transmitter, Temperature, Humidity, Pressure and Illuminance sensors.  Powered from 230V.
+ESP32 board with IR Receiver and IR Transmitter, Temperature, Humidity, Pressure and Illuminance sensors. Includes Voice Assistant as well (mic and speaker) Powered from 230V.
 
 Components:
 
@@ -321,7 +330,10 @@ Components:
 - 1x `G` - BME680 - Temperature, Humidity, Pressure, Gas Resistance
 - 1x `B` - BH1750 - Illuminance
 - 1x `I` - IR Receiver 38KHz (Open-Smart, 1pin with signal)
+- 1x `M` - INMP441 - I2S microphone
 - 1x `i` - IR Transmitter 38KHz (Open-Smart, 1pin with signal)
+- 0x (+1) `m` - Max98357 -  I2S mono amplifier
+- 0x (+1) `s4` - small speaker 4 Ohm
 - 1x `b/r` - 9032 - Passive Buzzer 9mm diameter x 3.2mm height
 - 1x `d` - status diode (red)
 - 1x white plastic box 75mm x 75mm x 30mm
