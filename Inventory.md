@@ -79,7 +79,7 @@ Author: Pawel Golawski, <pawel.golawski@2com.pl>
   > - `[W][web_server_idf:070][httpd]: Only application/x-www-form-urlencoded supported for POST request`
   > - `[I][esp-idf:000][httpd]: W (59638) httpd_txrx: httpd_sock_err: error in recv : 104`
 
-- 1x **ESP32-S3 supermini**
+- 0x (+1) **ESP32-S3 supermini**
 
   ![ESP32-S3 supermini pinout image](pinouts/ESP32s3_supermini.jpg "ESP32-S3 supermini pinout")
   > Notes:
@@ -195,6 +195,7 @@ Author: Pawel Golawski, <pawel.golawski@2com.pl>
 - 2x (-1) `P` - **BME280** - Temperature, Humidity, Pressure
 - 2x `R` - **RC522** - RFID tag sensor
 - 11x `S` - **SHTx30** - Temperature and Humidity
+- 2x 1m `S` - **SHTx30** - Temperature and Humidity as waterproof probe
 - 0x `T` - **TCS3472** - Illuminance and Color(s)
 - 0x `U` - **LTR390** - UV and Illuminance
 - 2x `V` - **VL53L0x** - Distance (laser)
@@ -206,13 +207,14 @@ Author: Pawel Golawski, <pawel.golawski@2com.pl>
 - 2x `a` - **AVT5713** - Double Light Switch Board (mounted)
 - 7x `a` - **AVT5713** - Double Light Switch Board (not mounted - bare board)
 - 5x `x` - ***ESP01S Single Relay** Board (generic from Aliexpress)
-- 8x `b` - **9032A/9025A** - Active Buzzer 9mm diameter x 3.2/2.5mm height
+- 0x `b` - **9032A/9025A** - Active Buzzer 9mm diameter x 3.2/2.5mm height
 - 1x `i` - **IR Transmitter 38KHz** (Open-Smart, 1pin with signal)
-- 3x `r` - **9032/9025** - Passive Buzzer 9mm diameter x 3.2/2.5mm height
-- 1x (-1) `m` - **Max98357** -  I2S mono amplifier
+- 6x `r` - **9032/9025** - Passive Buzzer 9mm diameter x 3.2/2.5mm height (soldered package)
+- 5x (+10) `r` - **9032/9025** - Passive Buzzer 9mm diameter x 3.2/2.5mm height
+- 1x (-1)(+9) `m` - **Max98357** -  I2S mono amplifier
   > Note: Amp use cases ![Max98357 use case image](pinouts/MAX98357_use_cases.jpg "Max98357 use case")
-- 2x (+x) `s4` - small speaker 4 Ohm (1 - 3 W)
-- 0x (+x) `s8` - small speaker 8 Ohm (0.5 - 1 W)
+- 2x (+2) `s4` - small speaker 4 Ohm (1 - 3 W)
+- 0x (+6) `s8` - small speaker 8 Ohm (0.5 - 1 W)
 
 ### Other inventories
 
@@ -376,6 +378,7 @@ Components:
 - 1x ESP32-WROOM-32 expansion board (to solder)
 - 1x `P` - BME280 - Temperature, Humidity, Pressure
 - 1x `B` - BH1750 - Illuminance
+- 1x `S` - SHTx30 - Temperature and Humidity as waterproof probe
 - 1x white plastic box 90mm x 40mm x 15mm
 - 1x AC 230V to DC 3.3V board (with Hi-Link module)
 
@@ -392,7 +395,7 @@ ESP32 board with Temperature, Humidity, and Illuminance sensors. Powered from mi
 Components:
 
 - 1x ESP32-D1
-- 1x `S` - SHTx30 - Temperature and Humidity
+- 1x 1m `S` - SHTx30 - Temperature and Humidity as waterproof probe
 - 1x 1m `D` - DS18B20 (Dallas) - Temperature
 - 1x `B` - BH1750 - Illuminance
 - 1x `Y` - YF-B10 G1 - Water Pulse sensor
@@ -431,7 +434,7 @@ ESP12F board with Temperature, Humidity sensors. Powered from 12V DC (from 230V 
 Components:
 
 - 1x ESP12F
-- 1x `S` - SHTx30 - Temperature and Humidity
+- 1x 30cm `S` - SHTx30 - Temperature and Humidity as waterproof probe
 - 2x 1m `D` - DS18B20 (Dallas) - Temperature
 - 1x `b/r` - 9032 - Passive Buzzer 9mm diameter x 3.2mm height
 - 0x `d` - status diode (not connected, in script only for RTTTL to work)
