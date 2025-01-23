@@ -1,7 +1,7 @@
 ---
 #* Voice Assistant component with mic and Media Player
+# !only on Arduino framework due to media_player, no micro_wake_word support
 # Pawelo, 20250120 created based on https://smarthomecircle.com/created-voice-assistant-esp32-with-wake-word-in-home-assistant
-
 
 i2s_audio:
   - id: "${i2s_id}"
