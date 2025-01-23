@@ -93,6 +93,7 @@ Author: Pawel Golawski, <pawel.golawski@2com.pl>
 
   ![ESP32-S3 N16R8 pinout image](pinouts/ESP32s3_N16R8_2xTypeC_dev_board_pinout.jpg "ESP32-S3 N16R8/N8R2 pinout")
   > Notes:
+  > - Connect pads next to RGB let to have 5V output on 5V pin
   > - GPIO43 is connected to green LED.
   > - GPIO44 is connected to blue LED.
   > - GPIO48 is connected to RGB LED.
@@ -102,6 +103,7 @@ Author: Pawel Golawski, <pawel.golawski@2com.pl>
 
   > Pinout the same as N16R8 above.
   > Notes:
+  > - Connect pads next to RGB let to have 5V output on 5V pin
   > - GPIO43 is connected to green LED.
   > - GPIO44 is connected to blue LED.
   > - GPIO48 is connected to RGB LED.
