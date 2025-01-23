@@ -4,6 +4,7 @@
 # Pawelo, 20221222, added $devicename to friendly names of those sensors
 # Pawelo, 20221222, adjusted units displayed to "min"
 # Pawelo, 20240717, adjusted for 2024.07, added "type" as "seconds" property
+# Pawelo, 20250123, replaced String() with c++ standard to_string() in lambda to support both arduino and ESP-IDF frameworks
 
 platform: uptime
 name: "$room $devicename Uptime [min]"
@@ -31,10 +32,10 @@ on_raw_value:
           int minutes = seconds /  60;
           seconds = seconds % 60;
           return (
-            (days ? String(days) + "d " : "") +
-            (hours ? String(hours) + "h " : "") +
-            (minutes ? String(minutes) + "m " : "") +
-            (String(seconds) + "s")
+            (days ? to_string(days) + "d " : "") +
+            (hours ? to_string(hours) + "h " : "") +
+            (minutes ? to_string(minutes) + "m " : "") +
+            (to_string(seconds) + "s")
           ).c_str();
 filters:
   - lambda: return x / 60;
