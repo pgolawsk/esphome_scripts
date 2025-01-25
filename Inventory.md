@@ -369,7 +369,7 @@ Components:
 #### Attic
 
 - PRODUCTION since: TBD
-- Script `esp32_THPI_PB.yaml`.
+- Script `esp32_THPI_SBPD.yaml`.
 - Alias `esp32-39_Attic`.
 
 ESP32 board with Temperature, Humidity, Pressure and Illuminance sensors. Powered from 230V.
@@ -378,10 +378,11 @@ Components:
 
 - 1x ESP32-WROOM-32, with antenna connector
 - 1x ESP32-WROOM-32 expansion board (to solder)
+- 1x 1m `D` - DS18B20 (Dallas) - Temperature
 - 1x `P` - BME280 - Temperature, Humidity, Pressure
 - 1x `B` - BH1750 - Illuminance
 - 1x `S` - SHTx30 - Temperature and Humidity as waterproof probe
-- 1x white plastic box 90mm x 40mm x 15mm
+- 1x ? white plastic box 90mm x 40mm x 15mm
 - 1x AC 230V to DC 3.3V board (with Hi-Link module)
 
 ### Measures
