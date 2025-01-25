@@ -7,7 +7,8 @@
 # Pawelo 20241231, added esp32-33 (s3) and esp32-34 (s2)
 # Pawelo 20250101, added examples how to read logs
 # Pawelo 20250101, added relay switches on esp01s circuit
-# Pawelo 20250109, added esp32-39 (c6)
+# Pawelo 20250109, added esp32-36 (c6) as TestC6 device
+# Pawelo 20250125, added esp32-39 as Attic device
 
 #*###########################
 #*** OR Upgrade ESP Home on mac/win
@@ -36,11 +37,12 @@ esphome -s devicename esp12f-15 -s updates 30s -s room Upstairs -s mqtt_room ups
 esphome -s devicename esp12f-21 -s updates 30s -s room Underfloor -s mqtt_location measures -s mqtt_room underfloor run esp12f-21_Underfloor
 esphome -s devicename esp12f-25 -s updates 30s -s room AquariumW -s mqtt_location measures -s mqtt_room aquarium_window run esp12f-25_AquariumWindow
 esphome -s devicename esp32-35 -s updates 1min -s room Pump -s mqtt_location measures -s mqtt_room pump -s room2 Garage -s mqtt_location2 outside -s mqtt_room2 garage run esp32-35_Pump_Garage
+esphome -s devicename esp32-39 -s updates 1min -s room Attic -s mqtt_location home -s mqtt_room attic run esp32-39_Attic
 # esphome -s devicename esp32-35 -s updates 1min -s room Pump -s mqtt_location measures -s mqtt_room pump run esp32_display_lcd_pcf8574.yaml
 # esphome -s devicename esp32-35 -s updates 1min -s room Pump -s mqtt_location measures -s mqtt_room pump run esp32_display_weact.yaml
 
 #* Future devices via OTA (with "compile" instead of "run")
-esphome -s devicename esp32-39 -s updates 1min -s room Attic -s mqtt_location home -s mqtt_room attic compile esp32-39_Attic
+# esphome -s devicename esp32-39 -s updates 1min -s room Attic -s mqtt_location home -s mqtt_room attic compile esp32-39_Attic
 
 #* Test devices
 esphome -s devicename esp12f-29 -s updates 30s -s room Test -s mqtt_location measures -s mqtt_room test run esp12f_dev.yaml
@@ -55,7 +57,7 @@ esphome -s devicename esp32-31 -s updates 15s -s room Test32c3 -s mqtt_location 
 esphome -s devicename esp32-32 -s updates 15s -s room Test32c3rgb -s mqtt_location measures -s mqtt_room test32c3rgb run esp32c3_dev.yaml
 esphome -s devicename esp32-33 -s updates 1min -s room Test32s3rgb -s mqtt_location measures -s mqtt_room test32s3rgb run esp32s3_dev.yaml
 esphome -s devicename esp32-34 -s updates 1min -s room Test32s2 -s mqtt_location measures -s mqtt_room test32s2 run esp32s2_dev.yaml
-esphome -s devicename esp32-39 -s updates 1min -s room Test32c6 -s mqtt_location measures -s mqtt_room test32c6 run esp32c6_dev.yaml
+esphome -s devicename esp32-36 -s updates 1min -s room Test32c6 -s mqtt_location measures -s mqtt_room test32c6 run esp32c6_dev.yaml
 
 # minimal config for S2
 esphome -s devicename esp32-34a run esp32s2_dev_minimal.yaml
