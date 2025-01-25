@@ -3,6 +3,7 @@
 # Pawelo, 20230129, added RTTTL topic to play
 # Pawelo, 20230130, moved rtttl_play_it to separate include file
 # Pawelo, 20250111, log message typos fixed
+# Pawelo, 20250125, disabled LED blinking on RTTTL play (as it can be light or switch, hence no common way to blink)
 
 # Example tones
 # siren:d=8,o=5,b=100:d,e,d,e,d,e,d,e,d,e,d,e,d,e,d,e,d,e,d,e,d,e,d,e,d,e,d,e,d,e,d,e
@@ -29,10 +30,10 @@ then:
         - logger.log: "Received MQTT RTTTL to play."
         - rtttl.play:
             rtttl: !lambda "return x;"
-  - repeat:
-      count: ${led_cycles}
-      then:
-        - light.turn_on: led
-        - delay: 300ms
-        - light.turn_off: led
-        - delay: 300ms
+  # - repeat:
+  #     count: ${led_cycles}
+  #     then:
+  #       - light.turn_on: led
+  #       - delay: 300ms
+  #       - light.turn_off: led
+  #       - delay: 300ms
