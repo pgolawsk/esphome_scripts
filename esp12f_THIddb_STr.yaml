@@ -17,7 +17,7 @@
 # Pawelo, 20250111, added LEDs as switches to avoid light as it brakes prometheus (/metrics) due to multiple rows for light
 # Pawelo, 20250111, changed to use includes/board_esp8266.yaml with variables
 # Pawelo, 20250115, disabled wifi_strength to avoid cut prometheus (/metrics) in some rare cases
-# Pawelo, 20250116, enabled wifi_strength as confirmed it do not impact prometheus endpoint (/metrics)
+#! Pawelo, 20250125, confirmed to "RTTTL on mqtt" needs to be disabled as it makes OTA unstable
 
 # WARN: DO NOT ADD any more sensors as it will impact /metrics (prometheus) and in worst case brick the device
 #! run with this command to override substitutions
@@ -26,7 +26,7 @@
 substitutions:
   devices: "Temperature and Humidity via SHTx30, Illuminance, Color via TCS34725"
   project_name: "pgolawsk.esp_home"
-  version: "20250115"
+  version: "20250125"
 
   board_variant: "12F" # determine variant like 12F, 07s, 01m, ...
   board: "esp12e" # like: esp12e, esp01_1m, full list here https://registry.platformio.org/platforms/platformio/espressif8266/boards
@@ -90,7 +90,7 @@ sensor:
   - !include sensors/uptime.yaml
   # - !include sensors/uptime_boot.yaml
   - !include sensors/wifi_signal.yaml
-  - !include sensors/wifi_strength.yaml
+  # - !include sensors/wifi_strength.yaml
 
   # DEBUG component
   # - !include sensors/debug.yaml
@@ -109,7 +109,7 @@ output:
   # LED
   - !include { file: outputs/led.yaml, vars: { ix: "", gpio: "GPIO16", inverted: false } }
 
-  # LED m(easurement) for switch only
+  # LED measurement (ledm) for switch only
   - !include { file: outputs/led.yaml, vars: { ix: "m", gpio: "GPIO12", inverted: false } }
 
   # Measurement LED (for light only)
@@ -129,10 +129,10 @@ switch:
   # LED
   - !include { file: switches/led.yaml, vars: { ix: "", off_delay: "5s", entity_category: "" } }
 
-  # Measurement LED
+  # Measurement LED (ledm)
   - !include { file: switches/led.yaml, vars: { ix: "m", off_delay: "30s", entity_category: "" } }
 
-  # LED cycle a few times
+  # LED cycle a few times (works only with "light" type LED)
   # - !include { file: switches/led_cycle.yaml, vars: { ID: "led", cycles: 5, on_delay: "1s" , off_delay: "500ms" } }
 
   # RTTTL Play (passive_buzzer)
