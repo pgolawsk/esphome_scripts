@@ -19,6 +19,7 @@
 # Pawelo, 20241222, added PSRAM support (includes/ and debug_with_psram sensor)
 # Pawelo, 20241222, changed to use includes/board_esp32.yaml with variables
 # Pawelo, 20250109, added option to select desired framework_type (for board include)
+# Pawelo, 20250125, configure as Attic device
 #
 #! run with this command to override substitutions
 # esphome -s devicename espXX -s updates 1min -s room <Room name> -s mqtt_room <room> run esp32_MMmm_SSss__PP.yaml --device 192.168.x.x
@@ -27,7 +28,7 @@ substitutions:
 #  devices: "Temperature and Humidity via SHTx30 and Illuminance via BH1750"
   devices: "DEV Kit"
   project_name: "pgolawsk.esp_home"
-  version: "20250109"
+  version: "20250125"
 
   # required by includes/board_esp32.yaml script
   framework_type: arduino # "arduino" or "esp-idf"
@@ -74,7 +75,9 @@ substitutions:
 # i2c:
 #   - !include { file: interfaces/i2c__include.yaml, vars: { bus_id: "bus_a", sda: "GPIO21", scl: "GPIO22" } }
 #   - !include { file: interfaces/i2c__include.yaml, vars: { bus_id: "bus_b", sda: "GPIO17", scl: "GPIO18" } }
-# <<: !include { file: interfaces/dallas.yaml, vars: { gpio: "GPIO10" } }
+# <<: !include { file: interfaces/dallas.yaml, vars: { gpio: "GPIO19" } }
+# OR
+<<: !include { file: interfaces/dallasng.yaml, vars: { gpio: "GPIO19" } }
 # <<: !include { file: interfaces/rtttl.yaml, vars: { ix: "" } }
 # <<: !include { file: interfaces/spi.yaml, vars: { spi_id: "spi_a", clk: "GPIO18", mosi: "GPIO23", miso: "GPIO19" } }
 # <<: !include { file: interfaces/spi_rc522.yaml, vars: { spi_id: "spi_a", cs: "GPIO5", reset: "GPIO21" } }
@@ -122,13 +125,18 @@ sensor:
   - !include sensors/sun_elevation.yaml
   - !include sensors/sun_azimuth.yaml
 
+  # Temperature Dallas sensor
+  #  - !include { file: sensors/temp_DS18B20.yaml, vars: { ix: "Dsolar", address: "0x515b56c21e64ff28" } }
+  # OR
+  - !include { file: sensors/temp_DS18B20_on_dallasng.yaml, vars: { ix: "Dsolar", address: "0x515b56c21e64ff28" } }
+
   # Temperature and Humidity sensor
-#  - !include { file: sensors/temp_hum_SHT3x.yaml, vars: { ix: "", bus_id: "bus_a", address: "0x44" } }
+  - !include { file: sensors/temp_hum_SHT3x.yaml, vars: { ix: "", bus_id: "bus_a", address: "0x44" } }
   # - !include { file: sensors/temp_hum_SHT4x.yaml, vars: { ix: "2", bus_id: "bus_b", address: "0x44", room: "${room2}", mqtt_location: "${mqtt_location2}", mqtt_room: "${mqtt_room2}" } }
   # - !include { file: sensors/temp_hum_AHT2x.yaml, vars: { ix: "", bus_id: "bus_a", address: "0x38", temp_offset: 0.0, hum_offset: 0.0 } }
 
   # Temperature, Humidity and Pressure sensor
-  - !include { file: sensors/temp_hum_press_BME280.yaml, vars: { ix: "", bus_id: "bus_a", address: "0x76", temp_offset: 0.0, hum_offset: 0.0, pressure_offset: 0.0 } }
+  - !include { file: sensors/temp_hum_press_BME280.yaml, vars: { ix: "box", bus_id: "bus_a", address: "0x76", temp_offset: 0.0, hum_offset: 0.0, pressure_offset: 0.0 } }
 
   # Temperature, Humidity, Pressure and Gas Resistance sensor
   # - !include { file: sensors/temp_hum_press_gas_BME680.yaml, vars: { ix: "", bus_id: "bus_a", address: "0x77", temp_offset: 0.0, hum_offset: 0.0, pressure_offset: 0.0 } }
