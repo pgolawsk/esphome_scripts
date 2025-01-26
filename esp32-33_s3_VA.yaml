@@ -25,7 +25,7 @@ esp32:
   flash_size: 16MB
   framework:
     type: esp-idf
-    version: recommended
+    # version: recommended
 
     sdkconfig_options:
     #   CONFIG_ESP32S3_DEFAULT_CPU_FREQ_240: "y"
