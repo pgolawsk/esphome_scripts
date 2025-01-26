@@ -1,0 +1,232 @@
+# Example code as per https://smarthomecircle.com/created-voice-assistant-esp32-with-wake-word-in-home-assistant
+
+substitutions:
+  devicename: esp32-33
+  room: Test32s3rgb
+
+esphome:
+  name: $devicename
+  friendly_name: $room
+  area: $room
+  platformio_options:
+    board_build.flash_mode: dio
+  on_boot:
+    - light.turn_on:
+        id: led_light
+        blue: 100%
+        brightness: 60%
+        effect: fast pulse
+
+esp32:
+  board: esp32-s3-devkitc-1
+  flash_size: 16MB
+  framework:
+    type: arduino
+
+    # sdkconfig_options:
+    #   CONFIG_ESP32S3_DEFAULT_CPU_FREQ_240: "y"
+    #   CONFIG_ESP32S3_DATA_CACHE_64KB: "y"
+    #   CONFIG_ESP32S3_DATA_CACHE_LINE_64B: "y"
+    #   CONFIG_AUDIO_BOARD_CUSTOM: "y"
+
+psram:
+  mode: octal  # quad for N8R2 and octal for N16R8
+  speed: 80MHz
+
+
+# Enable logging
+logger:
+  hardware_uart: UART0
+
+api:
+  reboot_timeout: 0s # 0s will disable reboot if no HA connected
+  password: !secret api_password
+  on_client_connected:
+        then:
+          - delay: 50ms
+          - light.turn_off: led_light
+          # - micro_wake_word.start:
+  on_client_disconnected:
+        then:
+          - voice_assistant.stop:
+
+ota:
+  platform: esphome
+  # safe_mode: true
+  password: !secret ota_password
+
+safe_mode:
+
+wifi:
+  networks:
+    - ssid: !secret wifi_ssid
+      password: !secret wifi_password
+      hidden: true
+    # - ssid: !secret wifi2_ssid
+    #   password: !secret wifi2_password
+    #   hidden: true
+    # - ssid: !secret wifi3_ssid
+    #   password: !secret wifi3_password
+    #   hidden: true
+  domain: ""
+  fast_connect: true
+  reboot_timeout: 45min
+
+  # Enable fallback hotspot (captive portal) in case wifi connection fails
+  ap:
+    ssid: "$devicename Recovery"
+    password: !secret wifi_fallback_password
+
+captive_portal:
+
+
+i2s_audio:
+  - id: i2s_in
+    i2s_lrclk_pin: GPIO5  #WS
+    i2s_bclk_pin: GPIO6 #SCK
+  - id: i2s_out
+    i2s_lrclk_pin: GPIO3  #LRC
+    i2s_bclk_pin: GPIO8 #BLCK
+
+microphone:
+  - platform: i2s_audio
+    adc_type: external
+    pdm: false
+    id: mic_i2s
+    channel: left
+    bits_per_sample: 32bit
+    i2s_audio_id: i2s_in
+    i2s_din_pin: GPIO4  #SD Pin from the INMP441 Microphone
+
+
+media_player:
+  - platform: i2s_audio
+    name: "esp_speaker"
+    id: media_player_speaker
+    i2s_audio_id: i2s_out
+    dac_type: external
+    i2s_dout_pin: GPIO18   #  DIN Pin of the MAX98357A Audio Amplifier
+    mode: mono
+
+
+voice_assistant:
+  microphone: mic_i2s
+  id: va
+  noise_suppression_level: 2
+  auto_gain: 31dBFS
+  volume_multiplier: 4.0
+  use_wake_word: false
+  media_player: media_player_speaker
+
+  on_wake_word_detected:
+    - light.turn_on:
+        id: led_light
+  on_listening:
+    - light.turn_on:
+        id: led_light
+        effect: "fast pulse"
+        red: 63%
+        green: 13%
+        blue: 93%
+
+  on_stt_end:
+    - light.turn_on:
+        id: led_light
+        effect: "None"
+        red: 0%
+        green: 100%
+        blue: 0%
+
+  on_error:
+    - light.turn_on:
+        id: led_light
+        effect: "None"
+    - if:
+        condition:
+          switch.is_on: use_wake_word
+        then:
+
+          - switch.turn_off: use_wake_word
+          - delay: 1sec
+          - switch.turn_on: use_wake_word
+
+
+  on_client_connected:
+    - if:
+        condition:
+          switch.is_on: use_wake_word
+        then:
+          - voice_assistant.start_continuous:
+
+  on_client_disconnected:
+    - if:
+        condition:
+          switch.is_on: use_wake_word
+        then:
+          - voice_assistant.stop:
+
+  on_end:
+    - light.turn_off:
+        id: led_light
+
+
+binary_sensor:
+  - platform: status
+    name: $room API Connection
+    id: api_connection
+    filters:
+      - delayed_on: 1s
+    on_press:
+      - if:
+          condition:
+            switch.is_on: use_wake_word
+          then:
+            - voice_assistant.start_continuous:
+    on_release:
+      - if:
+          condition:
+            switch.is_on: use_wake_word
+          then:
+            - voice_assistant.stop:
+
+button:
+  - platform: restart
+    name: "$room Restart"
+    id: but_rest
+
+switch:
+  - platform: template
+    name: $room Use wake word
+    id: use_wake_word
+    optimistic: true
+    restore_mode: RESTORE_DEFAULT_ON
+    entity_category: config
+    on_turn_on:
+      - lambda: id(va).set_use_wake_word(true);
+      - if:
+          condition:
+            not:
+              - voice_assistant.is_running
+          then:
+            - voice_assistant.start_continuous
+    on_turn_off:
+      - voice_assistant.stop
+      - lambda: id(va).set_use_wake_word(false);
+
+light:
+  - platform: esp32_rmt_led_strip
+    id: led_light
+    rgb_order: GRB
+    pin: GPIO48
+    num_leds: 1
+    rmt_channel: 0
+    chipset: ws2812
+    name: "$room LED RGB"
+    effects:
+      - pulse:
+      - pulse:
+          name: "Fast Pulse"
+          transition_length: 0.5s
+          update_interval: 0.5s
+          min_brightness: 0%
+          max_brightness: 100%

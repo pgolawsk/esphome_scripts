@@ -1,0 +1,272 @@
+
+# Example code as per https://smarthomecircle.com/How-to-setup-on-device-wake-word-for-voice-assistant-home-assistant
+# and https://community.home-assistant.io/t/esphome-media-player-glitching/777507/5
+
+substitutions:
+  devicename: esp32-33
+  room: Test32s3rgb
+
+esphome:
+  name: $devicename
+  friendly_name: $room
+  area: $room
+  platformio_options:
+    board_build.flash_mode: dio
+  on_boot:
+    - light.turn_on:
+        id: led_ww
+        blue: 100%
+        brightness: 60%
+        effect: fast pulse
+
+esp32:
+  board: esp32-s3-devkitc-1
+  variant: esp32s3
+  flash_size: 16MB
+  framework:
+    type: esp-idf
+    version: recommended
+
+    sdkconfig_options:
+    #   CONFIG_ESP32S3_DEFAULT_CPU_FREQ_240: "y"
+    #   CONFIG_ESP32S3_DATA_CACHE_64KB: "y"
+    #   CONFIG_ESP32S3_DATA_CACHE_LINE_64B: "y"
+    #   CONFIG_AUDIO_BOARD_CUSTOM: "y"
+      CONFIG_ESP32_S3_BOX_BOARD: "y"
+      CONFIG_ESP32_WIFI_STATIC_RX_BUFFER_NUM: "16"
+      CONFIG_ESP32_WIFI_DYNAMIC_RX_BUFFER_NUM: "512"
+      CONFIG_TCPIP_RECVMBOX_SIZE: "512"
+      CONFIG_TCP_SND_BUF_DEFAULT: "65535"
+      CONFIG_TCP_WND_DEFAULT: "512000"
+      CONFIG_TCP_RECVMBOX_SIZE: "512"
+
+psram:
+  mode: octal  # quad for N8R2 and octal for N16R8
+  speed: 80MHz
+
+# Enable logging
+logger:
+  hardware_uart: UART0
+
+# Enable Home Assistant API
+api:
+  reboot_timeout: 0s # 0s will disable reboot if no HA connected
+  password: !secret api_password
+  on_client_connected:
+        then:
+          - delay: 50ms
+          - light.turn_on:
+              id: led_ww
+              red: 0%
+              green: 0%
+              blue: 100%
+              brightness: 60%
+              effect: none
+          - micro_wake_word.start:
+  on_client_disconnected:
+        then:
+          - voice_assistant.stop:
+
+ota:
+  platform: esphome
+  # safe_mode: true
+  password: !secret ota_password
+
+safe_mode:
+
+wifi:
+  networks:
+    - ssid: !secret wifi_ssid
+      password: !secret wifi_password
+      hidden: true
+  domain: ""
+  fast_connect: true
+  reboot_timeout: 45min
+
+  # Enable fallback hotspot (captive portal) in case wifi connection fails
+  ap:
+    ssid: "$devicename Recovery"
+    password: !secret wifi_fallback_password
+
+captive_portal:
+
+button:
+  - platform: restart
+    name: "$room Restart"
+    id: but_rest
+
+switch:
+  - platform: template
+    id: mute
+    name: $room Mute
+    optimistic: true
+    on_turn_on:
+      - micro_wake_word.stop:
+      - voice_assistant.stop:
+      - light.turn_on:
+          id: led_ww
+          red: 100%
+          green: 0%
+          blue: 0%
+          brightness: 60%
+          effect: fast pulse
+      - delay: 2s
+      - light.turn_off:
+          id: led_ww
+      - light.turn_on:
+          id: led_ww
+          red: 100%
+          green: 0%
+          blue: 0%
+          brightness: 30%
+    on_turn_off:
+      - micro_wake_word.start:
+      - light.turn_on:
+          id: led_ww
+          red: 0%
+          green: 100%
+          blue: 0%
+          brightness: 60%
+          effect: fast pulse
+      - delay: 2s
+      - light.turn_on:
+          id: led_ww
+          red: 0%
+          green: 0%
+          blue: 100%
+          brightness: 60%
+          effect: none
+
+light:
+  - platform: esp32_rmt_led_strip
+    id: led_ww
+    rgb_order: GRB
+    pin: GPIO48
+    num_leds: 1
+    rmt_channel: 0
+    chipset: ws2812
+    name: "$room LED RGB"
+    effects:
+      - pulse:
+      - pulse:
+          name: "Fast Pulse"
+          transition_length: 0.5s
+          update_interval: 0.5s
+          min_brightness: 0%
+          max_brightness: 100%
+
+# based on https://community.home-assistant.io/t/esphome-media-player-glitching/777507/6
+external_components:
+  - source:
+      type: git
+      url: https://github.com/gnumpi/esphome_audio
+      ref: dev-next
+    components: [ adf_pipeline, i2s_audio ]
+
+adf_pipeline:
+  - platform: i2s_audio
+    type: audio_out
+    id: adf_i2s_out
+    i2s_audio_id: i2s_out
+    i2s_dout_pin: GPIO7
+
+  - platform: i2s_audio
+    type: audio_in
+    id: adf_mic
+    i2s_audio_id: i2s_in
+    i2s_din_pin: GPIO4
+    channel: left
+    sample_rate: 16000
+    bits_per_sample: 32bit
+    pdm: false
+
+microphone:
+  - platform: adf_pipeline
+    id: adf_microphone
+    gain_log2: 3
+    keep_pipeline_alive: false
+    pipeline:
+      - adf_mic
+      - self
+
+media_player:
+  - platform: adf_pipeline
+    id: adf_media_player
+    name: $room Media Player
+    keep_pipeline_alive: false
+    internal: false
+    pipeline:
+      - self
+    #  - adf_spk
+      - adf_i2s_out
+
+# I2S Audio
+i2s_audio:
+  - id: i2s_in
+    i2s_lrclk_pin: GPIO5  #WS
+    i2s_bclk_pin: GPIO6 #SCK
+  - id: i2s_out
+    i2s_lrclk_pin: GPIO9  #LRC 2
+    i2s_bclk_pin: GPIO8 #BLCK
+
+micro_wake_word:
+  on_wake_word_detected:
+    # then:
+    - voice_assistant.start:
+        wake_word: !lambda return wake_word;
+    - light.turn_on:
+        id: led_ww
+        red: 0%
+        green: 0%
+        blue: 100%
+        brightness: 60%
+        effect: fast pulse
+  models:
+    - model: hey_jarvis
+    - model: okay_nabu
+    - model: alexa
+
+voice_assistant:
+  id: va
+  microphone: adf_microphone
+  media_player: adf_media_player
+  noise_suppression_level: 1
+  auto_gain: 31dBFS
+  volume_multiplier: 4
+
+  on_stt_end:
+    then:
+    - light.turn_on:
+        id: led_ww
+        red: 0%
+        green: 100%
+        blue: 0%
+        brightness: 60%
+        effect: fast pulse
+
+  on_error:
+    - micro_wake_word.start:
+    - light.turn_on:
+        id: led_ww
+        red: 100%
+        green: 0%
+        blue: 0%
+        brightness: 60%
+        effect: fast pulse
+
+  on_end:
+    then:
+    - light.turn_on:
+        id: led_ww
+        red: 0%
+        green: 0%
+        blue: 100%
+        brightness: 60%
+        effect: none
+    - voice_assistant.stop
+    - delay: 100ms
+    - wait_until:
+        not:
+          voice_assistant.is_running
+    - delay: 100ms
+    - micro_wake_word.start
