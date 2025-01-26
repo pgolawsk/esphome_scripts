@@ -64,8 +64,8 @@ substitutions:
 # Override some settings included below in _board_ setup
 <<: !include includes/time_sntp_with_sun.yaml #WARN: this is to make sunrise and sunset sensor to be updated on every time sync event
 # <<: !include includes/mqtt_with_rtttl.yaml #WARN: override mqtt with RTTTL support if needed (buzzer and status led)
-# <<: !include { file: includes/logger_level.yaml, vars: { level: INFO, baud_rate: 115200 } } #WARN: override default log level to specific one
-<<: !include { file: includes/logger_level.yaml, vars: { level: DEBUG, baud_rate: 115200 } } #WARN: override default log level to specific one
+<<: !include { file: includes/logger_level.yaml, vars: { level: INFO, baud_rate: 115200 } } #WARN: override default log level to specific one
+# <<: !include { file: includes/logger_level.yaml, vars: { level: DEBUG, baud_rate: 115200 } } #WARN: override default log level to specific one
 # <<: !include { file: includes/logger_level.yaml, vars: { level: VERY_VERBOSE, baud_rate: 115200 } } #WARN: override default log level to specific one
 # <<: !include includes/wifi_outside.yaml #WARN: override wifi to connect to outside network instead of default
 # <<: !include { file: includes/wifi_main.yaml, vars: { } } #WARN: override wifi to connect to extended network instead of default
