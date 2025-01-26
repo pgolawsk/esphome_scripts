@@ -1,8 +1,10 @@
 ---
 #* Enables native ESPHome API
 # Pawelo, 20221119, created as my framework based on !include statements
+# Pawelo, 20250126, changed to API key
+
 api:
   reboot_timeout: 0s # 0s will disable reboot if no HA connected
-  password: !secret api_password
-  # encryption:
-  #   key: !secret api_key
+  # password: !secret api_password
+  encryption:
+    key: !secret api_key
