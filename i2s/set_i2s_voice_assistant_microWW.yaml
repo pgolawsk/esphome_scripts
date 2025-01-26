@@ -10,6 +10,10 @@ i2s_audio:
     i2s_lrclk_pin: ${ws_pin} # WS or LRC
     i2s_bclk_pin: ${sck_pin} # SCK or BCLK
     # i2s_mclk_pin: GPIOXX
+  # 2nd I2S just for tests
+  - id: "i2s_out"
+    i2s_lrclk_pin: GPIO9 # WS or LRC
+    i2s_bclk_pin: GPIO8 # SCK or BCLK
 
 microphone:
   - platform: i2s_audio
@@ -18,7 +22,7 @@ microphone:
     # sample_rate: 16000 # I2S sample rate. Defaults to 16000.
     bits_per_sample: ${din_bits_per_sample} # The bit depth of the audio samples. Note that while set to 24bit or 32bit, the samples will be scaled down to 16bit before being forwarded. One of 8bit, 16bit, 24bit, or 32bit. Defaults to 32bit.
     # bits_per_channel: ${bits_per_sample} # The bit depth of the audio channels. See the datasheet of your I2S device for details. Defaults to bits_per_sample.
-    use_apll: ${din_use_apll} # I2S using APLL as main I2S clock, enable it to get accurate clock. Defaults to false.
+    # use_apll: ${din_use_apll} # I2S using APLL as main I2S clock, enable it to get accurate clock. Defaults to false.
     # i2s_mode: primary # The I2S mode to use. One of primary (clock driven by the host) or secondary (clock driven by the attached device). Defaults to primary.
     adc_type: external
     pdm: false
@@ -28,7 +32,8 @@ microphone:
 speaker:
   - platform: i2s_audio
     id: "spk${ix}"
-    i2s_audio_id: ${i2s_id}
+    # i2s_audio_id: ${i2s_id}
+    i2s_audio_id: i2s_out
     i2s_dout_pin: ${dout_pin}
     # name: "$room Speaker${ix}"
     # icon: "mdi:speaker"
@@ -50,6 +55,8 @@ micro_wake_word:
         effect: fast pulse
   models:
     - model: hey_jarvis
+    - model: okay_nabu
+    - model: alexa
 
 voice_assistant:
   id: va${ix}

@@ -43,7 +43,8 @@ substitutions:
   version: "202450119"
 
   # required by includes/board_esp32.yaml script
-  framework_type: arduino # "arduino" or "esp-idf"
+  # framework_type: arduino # "arduino" or "esp-idf"
+  framework_type: esp-idf # "arduino" or "esp-idf"
   board_variant: "s3" # empty for ESP32, other values to display like c3, c6, s2, s3
   board: "esp32-s3-devkitc-1" # like: esp32dev, esp32cam, esp32-c3-devkitm-1, esp32-s3-devkitc-1, lolin_s2_mini, full list here https://registry.platformio.org/platforms/platformio/espressif32/boards?version=5.3.0
   flash_size: 16MB # One of 2MB, 4MB, 8MB, 16MB or 32MB
@@ -63,8 +64,8 @@ substitutions:
 # Override some settings included below in _board_ setup
 <<: !include includes/time_sntp_with_sun.yaml #WARN: this is to make sunrise and sunset sensor to be updated on every time sync event
 # <<: !include includes/mqtt_with_rtttl.yaml #WARN: override mqtt with RTTTL support if needed (buzzer and status led)
-<<: !include { file: includes/logger_level.yaml, vars: { level: INFO, baud_rate: 115200 } } #WARN: override default log level to specific one
-# <<: !include { file: includes/logger_level.yaml, vars: { level: DEBUG, baud_rate: 115200 } } #WARN: override default log level to specific one
+# <<: !include { file: includes/logger_level.yaml, vars: { level: INFO, baud_rate: 115200 } } #WARN: override default log level to specific one
+<<: !include { file: includes/logger_level.yaml, vars: { level: DEBUG, baud_rate: 115200 } } #WARN: override default log level to specific one
 # <<: !include { file: includes/logger_level.yaml, vars: { level: VERY_VERBOSE, baud_rate: 115200 } } #WARN: override default log level to specific one
 # <<: !include includes/wifi_outside.yaml #WARN: override wifi to connect to outside network instead of default
 # <<: !include { file: includes/wifi_main.yaml, vars: { } } #WARN: override wifi to connect to extended network instead of default
@@ -92,26 +93,26 @@ substitutions:
 
 
 # I2S Audio (!cannot be used with "I2S Sound Level Meter" below)
-i2s_audio:
-  - <<: !include { file: i2s/i2s_audio.yaml, vars: { i2s_id: "i2s_in", ws_pin: "GPIO6", sck_pin: "GPIO7" } }
-  - <<: !include { file: i2s/i2s_audio.yaml, vars: { i2s_id: "i2s_out", ws_pin: "GPIO17", sck_pin: "GPIO16" } }
+# i2s_audio:
+#   - <<: !include { file: i2s/i2s_audio.yaml, vars: { i2s_id: "i2s_in", ws_pin: "GPIO5", sck_pin: "GPIO6" } }
+#   - <<: !include { file: i2s/i2s_audio.yaml, vars: { i2s_id: "i2s_out", ws_pin: "GPIO9", sck_pin: "GPIO8" } }
 
-<<: !include { file: i2s/mic.yaml, vars: { ix: "", i2s_id: "i2s_in", sd_pin: "GPIO5", channel: "left", bits_per_sample: 32bit, use_apll: false } }
+# <<: !include { file: i2s/mic.yaml, vars: { ix: "", i2s_id: "i2s_in", sd_pin: "GPIO4", channel: "left", bits_per_sample: 32bit, use_apll: false } }
 
-<<: !include { file: i2s/media_player.yaml, vars: { ix: "", i2s_id: "i2s_out", dout_pin: "GPIO15", mode: "mono" } }
-# <<: !include { file: i2s/speaker.yaml, vars: { ix: "", i2s_id: "i2s_out", dout_pin: "GPIO15", channel: "mono" } }
+# <<: !include { file: i2s/media_player.yaml, vars: { ix: "", i2s_id: "i2s_out", dout_pin: "GPIO3", mode: "mono" } }
+# # <<: !include { file: i2s/speaker.yaml, vars: { ix: "", i2s_id: "i2s_out", dout_pin: "GPIO15", channel: "mono" } }
 
-# <<: !include { file: i2s/voice_assistant_mic_only.yaml, vars: { mic_id: "mic" } }
-<<: !include { file: i2s/voice_assistant_mplayer.yaml, vars: { mic_id: "mic", mplayer_id: "mplayer" } }
-# <<: !include { file: i2s/voice_assistant_speaker.yaml, vars: { mic_id: "mic", speaker_id: "spk" } }
+# # <<: !include { file: i2s/voice_assistant_mic_only.yaml, vars: { mic_id: "mic" } }
+# <<: !include { file: i2s/voice_assistant_mplayer.yaml, vars: { mic_id: "mic", mplayer_id: "mplayer" } }
+# # <<: !include { file: i2s/voice_assistant_speaker.yaml, vars: { mic_id: "mic", speaker_id: "spk" } }
 
-# packages:
+packages:
   # I2S Voice Assistant (!cannot be used with "I2S Sound Level Meter" below)
-  # va: !include { file: i2s/set_i2s_voice_assistant.yaml, vars: { ix: "", i2s_id: "i2s_va", dout_pin: "GPIO15", ws_pin: "GPIO6", sck_pin: "GPIO7", din_pin: "GPIO5", dout_mode: mono, din_channel: "right", din_bits_per_sample: 32bit, din_use_apll: false, rgb_light_id: rgb_led } }
-  # va: !include { file: i2s/set_i2s_voice_assistant_microWW.yaml, vars: { ix: "", i2s_id: "i2s_va", dout_pin: "GPIO15", ws_pin: "GPIO6", sck_pin: "GPIO7", din_pin: "GPIO5", dout_mode: mono, din_channel: "right", din_bits_per_sample: 32bit, din_use_apll: false, rgb_light_id: rgb_led } }
+  # va: !include { file: i2s/set_i2s_voice_assistant.yaml, vars: { ix: "", i2s_id: "i2s_va", dout_pin: "GPIO15", ws_pin: "GPIO6", sck_pin: "GPIO7", din_pin: "GPIO5", dout_mode: mono, din_channel: "left", din_bits_per_sample: 24bit, din_use_apll: false, rgb_light_id: rgb_led } }
+  va: !include { file: i2s/set_i2s_voice_assistant_microWW.yaml, vars: { ix: "", i2s_id: "i2s_va", dout_pin: "GPIO3", ws_pin: "GPIO5", sck_pin: "GPIO6", din_pin: "GPIO4", dout_mode: mono, din_channel: "left", din_bits_per_sample: 24bit, din_use_apll: false, rgb_light_id: rgb_led } }
 
   # I2S Sound Level Meter (!cannot be used with "I2S Voice Assistant" above)
-  # slm: !include { file: i2s/set_i2s_sound_level_meter.yaml, vars: { i2s_id: "i2s_db", din_pin: "GPIO5", ws_pin: "GPIO6", bck_pin: "GPIO7", channel: "left" } }
+  # slm: !include { file: i2s/set_i2s_sound_level_meter.yaml, vars: { i2s_id: "i2s_db", din_pin: "GPIO4", ws_pin: "GPIO5", bck_pin: "GPIO6", channel: "left" } }
 
   # IR Remote control buttons added from packages
 #   # apple_tv: !include { file: buttons/set_apple_tv_ir_remote.yaml, vars: { receiver: "ATV" } }
