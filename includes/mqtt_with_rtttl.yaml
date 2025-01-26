@@ -6,6 +6,7 @@
 # Pawelo, 20230130, moved on_message topics to separate include files
 #! Pawelo, 20230410, prometheus not working with "on_message" section
 #! Pawelo, 20230410, prometheus randomly not working while client_id is set
+# Pawelo, 20250126, set discovery to false to avoid duplicated entries on HA
 
 mqtt:
   id: mqtt_client
@@ -14,7 +15,7 @@ mqtt:
   username: !secret mqtt_user
   password: !secret mqtt_password
 #  client_id: $devicename
-  # discovery: false
+  discovery: false
   # discovery_retain: false
   #discovery_unique_id_generator: mac
   #discovery_object_id_generator: device_name
