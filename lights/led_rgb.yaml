@@ -2,6 +2,7 @@
 #* RGB LED light
 # Pawelo, 20250103, created based on https://community.home-assistant.io/t/esp32-s3-devkitc-1-n16r8-using-psram-howto/652601/38
 # Pawelo, 20250103, make entity_category as variable
+# Pawelo, 20250125, added va_effect
 
 platform: esp32_rmt_led_strip
 chipset: WS2812
@@ -28,3 +29,9 @@ effects:
       update_interval: 0.5s
       min_brightness: 10%
       max_brightness: 70%
+  - pulse:
+      name: va_effect
+      transition_length: 0.3s
+      update_interval: 0.6s
+      min_brightness: 10%
+      max_brightness: 50%
