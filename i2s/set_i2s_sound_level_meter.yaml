@@ -3,6 +3,7 @@
 #! include as package
 #! not working with esp8266
 # Pawelo, 20250119, created based on https://github.com/stas-sl/esphome-sound-level-meter
+# Pawelo, 20250127, change update_interval to respect ${updates} variable
 
 external_components:
   - source: github://stas-sl/esphome-sound-level-meter
@@ -36,14 +37,14 @@ sound_level_meter:
   # update_interval specifies over which interval to aggregate audio data
   # you can specify default update_interval on top level, but you can also override
   # it further by specifying it on sensor level
-  update_interval: 60s           # default: 60s
+  update_interval: ${updates}           # default: 60s
 
   # you can disable (turn off) component by default (on boot)
   # and turn it on later when needed via sound_level_meter.turn_on/toggle actions;
-  # when used with switch it might conflict/being overriden by
+  # when used with switch it might conflict/being overridden by
   # switch state restoration logic, so you have to either disable it in
-  # switch config and then is_on property here will have effect, 
-  # or completely rely on switch state restoration/initialization and 
+  # switch config and then is_on property here will have effect,
+  # or completely rely on switch state restoration/initialization and
   # any value set here will be ignored
   is_on: true                   # default: true
 
