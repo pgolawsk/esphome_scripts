@@ -12,7 +12,7 @@
 # Pawelo 20231016, fix - use pulses_per_liter_garden for garden total
 # Pawelo, 20241115, added area and friendly name
 # Pawelo, 20241122, simplified - added regular mqtt (no RTTL support), as it can be override PRIOR this file include
-
+# Pawelo, 20250130, added framework_version variable
 
 globals:
   - id: global_watertotal_all
@@ -71,10 +71,14 @@ esphome:
   #         value: !lambda 'return id(water_flow_garden).state / ${pulses_per_liter};'
 
 esp32:
-  board: esp32dev
+  # board: esp32dev
+  board: ${board} # like: esp32dev, esp32cam, esp32-c3-devkitm-1, esp32-c6-devkitm-1, esp32-s3-devkitc-1, esp32-s2-saola-1, full list here https://registry.platformio.org/platforms/platformio/espressif32/boards?version=5.3.0
+  flash_size: ${flash_size} # One of 2MB, 4MB, 8MB, 16MB or 32MB
 #  restore_from_flash: true
-  # framework:
-  #   type: arduino
+  framework:
+    type: ${framework_type} # arduino or esp-idf
+    version: ${framework_version} # like: latest, recommended, 4.4, ...
+
 
 # preferences:
 #   flash_write_interval: 2min

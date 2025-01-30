@@ -19,6 +19,7 @@
 # Pawelo, 20241222, added PSRAM support (includes/ and debug_with_psram sensor)
 # Pawelo, 20241222, changed to use includes/board_esp32.yaml with variables
 # Pawelo, 20250109, added option to select desired framework_type (for board include)
+# Pawelo, 20250130, added framework_version variable
 
 #! run with this command to override substitutions
 # esphome -s devicename espXX -s updates 1min -s room <Room name> -s mqtt_room <room> run esp32_MMmm_SSss__PP.yaml --device 192.168.x.x
@@ -27,10 +28,13 @@
 substitutions:
   devices: "Temperature and Humidity via SHTx30, Illuminance via BH1750, Water via YF-B10 G1"
   project_name: "pgolawsk.esp_home"
-  version: "20250109"
+  version: "20250130"
 
   # required by includes/board_esp32.yaml script
   framework_type: arduino # "arduino" or "esp-idf"
+  # framework_type: esp-idf # "arduino" or "esp-idf"
+  framework_version: recommended # or specific version like "latest", "recommended", "4.4.4"
+  # framework_version: latest # or specific version like "latest", "recommended", "4.4.4"
   board_variant: "" # empty for ESP32, other values to display like c3, c6, s2, s3
   board: "esp32dev" # like: esp32dev, esp32cam, esp32-c3-devkitm-1, esp32-s3-devkitc-1, esp32-s2-saola-1, full list here https://registry.platformio.org/platforms/platformio/espressif32/boards?version=5.3.0
   flash_size: 4MB # One of 2MB, 4MB, 8MB, 16MB or 32MB

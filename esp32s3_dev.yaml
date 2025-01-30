@@ -31,6 +31,7 @@
 # Pawelo, 20250119, added i2s sound level meter
 # Pawelo, 20250119, added i2s mic bits_per_sample and use_apll as variables
 # Pawelo, 20250123, added commented VA with micro_wake_word, changed mic to 32bit
+# Pawelo, 20250130, added framework_version variable
 
 #! run with this command to override substitutions
 # esphome -s devicename espXX -s updates 1min -s room <Room name> -s mqtt_room <room> run esp32_MMmm_SSss__PP.yaml --device 192.168.x.x
@@ -40,11 +41,14 @@ substitutions:
 #  devices: "Temperature and Humidity via SHTx30 and Illuminance via BH1750"
   devices: "DEV Kit"
   project_name: "pgolawsk.esp_home"
-  version: "202450119"
+  version: "20250130"
 
   # required by includes/board_esp32.yaml script
   # framework_type: arduino # "arduino" or "esp-idf"
   framework_type: esp-idf # "arduino" or "esp-idf"
+  # framework_type: esp-idf # "arduino" or "esp-idf"
+  framework_version: recommended # or specific version like "latest", "recommended", "4.4.4"
+  # framework_version: latest # or specific version like "latest", "recommended", "4.4.4"
   board_variant: "s3" # empty for ESP32, other values to display like c3, c6, s2, s3
   board: "esp32-s3-devkitc-1" # like: esp32dev, esp32cam, esp32-c3-devkitm-1, esp32-s3-devkitc-1, lolin_s2_mini, full list here https://registry.platformio.org/platforms/platformio/espressif32/boards?version=5.3.0
   flash_size: 16MB # One of 2MB, 4MB, 8MB, 16MB or 32MB

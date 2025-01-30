@@ -21,6 +21,7 @@
 # Pawelo, 20250104, switch RGB led from neopixelbus to esp32_rmt
 # Pawelo, 20250107, added web_server sorting_groups for IR remotes
 # Pawelo, 20250109, created c6 based on esp32c3_dev.yaml
+# Pawelo, 20250130, added framework_version variable
 
 #! run with this command to override substitutions
 # esphome -s devicename espXX -s updates 1min -s room <Room name> -s mqtt_room <room> run esp32_MMmm_SSss__PP.yaml --device 192.168.x.x
@@ -30,10 +31,13 @@ substitutions:
 #  devices: "Temperature and Humidity via SHTx30 and Illuminance via BH1750"
   devices: "DEV Kit"
   project_name: "pgolawsk.esp_home"
-  version: "202050109"
+  version: "20250130"
 
   # required by includes/board_esp32.yaml script
   framework_type: esp-idf # "arduino" or "esp-idf"
+  # framework_type: esp-idf # "arduino" or "esp-idf"
+  framework_version: recommended # or specific version like "latest", "recommended", "4.4.4"
+  # framework_version: latest # or specific version like "latest", "recommended", "4.4.4"
   board_variant: "c6" # empty for ESP32, other values to display like c3, c6, s2, s3
   board: "esp32-c6-devkitm-1" # like: esp32dev, esp32cam, esp32-c3-devkitm-1, esp32-s3-devkitc-1, esp32-s2-saola-1, full list here https://registry.platformio.org/platforms/platformio/espressif32/boards?version=5.3.0
   flash_size: 4MB # One of 2MB, 4MB, 8MB, 16MB or 32MB

@@ -14,6 +14,7 @@
 #? Pawelo, 20241222, created as copy of board_esp32.yaml with additional platformio_options to enable PSRAM gor N16R8 board variant
 # Pawelo, 20250103, renamed script and added flash_mode as dio
 # Pawelo, 20250109, added framework_type variable recognition
+# Pawelo, 20250130, added framework_version variable
 
 esphome:
   name: $devicename
@@ -37,6 +38,7 @@ esp32:
 #  restore_from_flash: true
   framework:
     type: ${framework_type} # arduino or esp-idf
+    version: ${framework_version} # like: latest, recommended, 4.4, ...
 
 preferences:
   flash_write_interval: ${flash_write_interval}

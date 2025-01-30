@@ -12,6 +12,7 @@
 # Pawelo, 20241222, added flash_size as variable
 # Pawelo, 20250101, small typo fixes in comments
 # Pawelo, 20250109, added framework_type variable recognition
+# Pawelo, 20250130, added framework_version variable
 
 esphome:
   name: $devicename
@@ -29,6 +30,7 @@ esp32:
 #  restore_from_flash: true
   framework:
     type: ${framework_type} # arduino or esp-idf
+    version: ${framework_version} # like: latest, recommended, 4.4, ...
 
 preferences:
   flash_write_interval: ${flash_write_interval}
