@@ -1,13 +1,13 @@
 ---
-#*  AQI Accuracy text sensor on BME68x BSEC2 configuration
+#*  IAQ Accuracy text sensor on BME68x BSEC2/BSEC configuration
 #* requires ESPHOME 2024.8
-#! not working with esp2866
 # Pawelo, 20240825, created based on https://esphome.io/components/sensor/bme68x_bsec2
+# Pawelo, 20250131, add platform variable - either bme680_bsec for ESP8266 or bme68x_bsec2 for ESP32
 
-platform: bme68x_bsec2
-#name: "$room AQI Accuracy"
+platform: ${platform} # bme680_bsec for ESP8266 or bme68x_bsec2 for ESP32
+#name: "$room IAQ Accuracy"
 iaq_accuracy:
-  name: "$room AQI Accuracy"
+  name: "$room IAQ Accuracy"
 # id: aqi_accuracy_text
 # # icon: mdi:state-machine
 # state_topic: $devicename/aqi_accuracy_text
