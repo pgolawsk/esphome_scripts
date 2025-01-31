@@ -28,7 +28,7 @@
 # here are default values if those are not given via command line
 
 substitutions:
-  devices: "Temperature, Humidity, Pressure, Gas, eCO2, VOC via BME680, Illuminance via BH1750, IR Receiver, IR Transmitter, RTTTL Buzzer"
+  devices: "Temperature, Humidity, Pressure, Gas, eCO2, VOC via BME680, Illuminance via BH1750, IR Receiver, IR Transmitter, RTTTL Buzzer, mic via INMP441"
   project_name: "pgolawsk.esp_home"
   version: "20250130"
 
