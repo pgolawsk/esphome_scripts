@@ -4,8 +4,9 @@
 #! not working with esp2866
 # Pawelo, 20240825, created based on https://esphome.io/components/sensor/bme68x_bsec2
 # Pawelo, 20240907, set device_class and icon for sensor values
+# Pawelo, 20250131, add platform variable - either bme680_bsec for ESP8266 or bme68x_bsec2 for ESP32
 
-platform: bme68x_bsec2
+platform: ${platform} # bme680_bsec for ESP8266 or bme68x_bsec2 for ESP32
 temperature:
   name: "$room Temperature${ix}"
   id: temp${ix}
@@ -74,28 +75,29 @@ iaq:
         topic: "$mqtt_location/$mqtt_room/iaq"
         payload: !lambda |-
           return to_string(id(iaq).state);
-iaq_static:
-  name: "$room IAQ Static"
-  id: iaq_static
-  # accuracy_decimals: 2
-  entity_category: diagnostic
-  state_topic: $devicename/iaq_static
-  on_value:
-    - mqtt.publish:
-        topic: "$mqtt_location/$mqtt_room/iaq_static"
-        payload: !lambda |-
-          return to_string(id(iaq_static).state);
-iaq_accuracy:
-  name: "$room IAQ Accuracy"
-  id: iaq_accuracy
-  entity_category: diagnostic
-  # accuracy_decimals: 2
-  state_topic: $devicename/iaq_accuracy
-  on_value:
-    - mqtt.publish:
-        topic: "$mqtt_location/$mqtt_room/iaq_accuracy"
-        payload: !lambda |-
-          return to_string(id(iaq_accuracy).state);
+# IAQ STATIC and ACCURACY is available on esp32 only
+# iaq_static:
+#   name: "$room IAQ Static"
+#   id: iaq_static
+#   # accuracy_decimals: 2
+#   entity_category: diagnostic
+#   state_topic: $devicename/iaq_static
+#   on_value:
+#     - mqtt.publish:
+#         topic: "$mqtt_location/$mqtt_room/iaq_static"
+#         payload: !lambda |-
+#           return to_string(id(iaq_static).state);
+# iaq_accuracy:
+#   name: "$room IAQ Accuracy"
+#   id: iaq_accuracy
+#   entity_category: diagnostic
+#   # accuracy_decimals: 2
+#   state_topic: $devicename/iaq_accuracy
+#   on_value:
+#     - mqtt.publish:
+#         topic: "$mqtt_location/$mqtt_room/iaq_accuracy"
+#         payload: !lambda |-
+#           return to_string(id(iaq_accuracy).state);
 co2_equivalent:
   name: "$room CO2"
   id: co2
