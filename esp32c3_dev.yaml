@@ -27,6 +27,7 @@
 # Pawelo, 20250119, refactor i2s audio
 # Pawelo, 20250119, added i2s mic bits_per_sample and use_apll as variables
 # Pawelo, 20250130, added framework_version variable
+# Pawelo, 20250130, added possibility for esp8266 of BME680 BSEC algorithm for IAQ, CO2 and VOC
 
 #! run with this command to override substitutions
 # esphome -s devicename espXX -s updates 1min -s room <Room name> -s mqtt_room <room> run esp32_MMmm_SSss__PP.yaml --device 192.168.x.x
@@ -36,7 +37,7 @@ substitutions:
 #  devices: "Temperature and Humidity via SHTx30 and Illuminance via BH1750"
   devices: "DEV Kit"
   project_name: "pgolawsk.esp_home"
-  version: "20250130"
+  version: "20250131"
 
   # required by includes/board_esp32.yaml script
   framework_type: arduino # "arduino" or "esp-idf"
@@ -83,7 +84,7 @@ substitutions:
 <<: !include { file: interfaces/rtttl.yaml, vars: { ix: "" } }
 # <<: !include { file: interfaces/spi.yaml, vars: { spi_id: "spi_a", clk: "GPIO6", mosi: "GPIO7", miso: "GPIO9" } }
 # <<: !include { file: interfaces/spi_rc522.yaml, vars: { spi_id: "spi_a", cs: "GPIO5", reset: "GPIO4" } }
-<<: !include { file: interfaces/i2c_bme68x_bsec2.yaml, vars: { ix: "", address: "0x77" } }
+<<: !include { file: interfaces/i2c_bme68x_bsec2.yaml, vars: { ix: "", address: "0x77", temp_offset: -1.7 } }
 # <<: !include { file: interfaces/ir_receiver.yaml, vars: { gpio: "GPIO3", dump: "nec", rmt_channel: 2 } } # for ESP32c3 can be 2-3, for ESP32 can be 0-7, for ESP32s2 0-3, for ESP32s3 4-7
 # <<: !include { file: interfaces/ir_transmitter.yaml, vars: { gpio: "GPIO4", rmt_channel: 0 } } # for ESP32c3 can be 0-1, for ESP32 can be 0-7, for ESP32s2 0-3, for ESP32s3 0-3
 
@@ -139,8 +140,8 @@ text_sensor:
 
   # Air Quality sensor
   # - !include { file: sensors/text_air_quality.yaml }
-  - !include sensors/text_air_quality_bme68x_bsec2.yaml
-  - !include sensors/text_IAQ_accuracy_bme68x_bsec2.yaml
+  - !include sensors/text_air_quality_bme68x.yaml
+  - !include { file: sensors/text_IAQ_accuracy_bme68x.yaml, vars: { platform: "bme68x_bsec2" } }
 
 binary_sensor:
   # HA Connected
@@ -169,7 +170,7 @@ sensor:
 
   # Temperature, Humidity, Pressure and Gas Resistance sensor
   # - !include { file: sensors/temp_hum_press_gas_BME680.yaml, vars: { ix: "", bus_id: "bus_a", address: "0x77", temp_offset: 0.0, hum_offset: 0.0, pressure_offset: 0.0 } }
-  - !include { file: sensors/temp_hum_press_gas_aqi_co2_voc_bme680.yaml, vars: { ix: "", bus_id: "bus_a", address: "0x77", temp_offset: -1.7, hum_offset: -3.0, pressure_offset: 7.0 } }  #!not working (bricked device)
+  - !include { file: sensors/temp_hum_press_gas_aqi_co2_voc_bme680.yaml, vars: { platform: "bme68x_bsec2", ix: "", bus_id: "bus_a", address: "0x77", temp_offset: -1.7, hum_offset: -3.0, pressure_offset: 7.0 } }
 
   # Illuminance sensor
   # - !include { file: sensors/lux_BH1750.yaml, vars: { ix: "", bus_id: "bus_a", address: "0x23" } }
