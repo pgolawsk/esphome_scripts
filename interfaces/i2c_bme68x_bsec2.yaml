@@ -1,8 +1,9 @@
 ---
-#* BME680 interface on I2C
+#* BME680 interface on I2C (BSEC2 algorithm)
 #* requires ESPHOME 2024.8
 #! not working with esp8266
 # Pawelo, 20240825, created based on https://esphome.io/components/sensor/bme68x_bsec2
+# Pawelo, 20250131, added temp_offset variable
 
 bme68x_bsec2_i2c:
   id: "i2c_bsec2${ix}"
@@ -12,5 +13,5 @@ bme68x_bsec2_i2c:
   operating_age: 28d # 4d or 28d
   sample_rate: LP
   supply_voltage: 3.3V
-  # temperature_offset: 0.0
+  temperature_offset: ${temp_offset}
   # state_save_interval: 6h
