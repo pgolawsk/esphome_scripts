@@ -73,7 +73,7 @@ Author: Pawel Golawski, <pawel.golawski@2com.pl>
   > Notes:
   > - GPIO15 is connected to blue LED.
   > - GPIO8 is connected to RGB LED.
-  > - Green LED (BAT) is not connected to any of GPIO, it shows when battery is charging. fast blinks where battery is disconnected.
+  > - Green LED (BAT) is not connected to any of GPIO, it shows when battery is charging. Fast blinks where battery is disconnected.
 
   > WARNING: This board work only with esp-idf framework (no arduino) and throws some frequent warnings, like:
   > - `[W][web_server_idf:070][httpd]: Only application/x-www-form-urlencoded supported for POST request`
@@ -83,7 +83,13 @@ Author: Pawel Golawski, <pawel.golawski@2com.pl>
 
   ![ESP32-S3 supermini pinout image](pinouts/ESP32s3_supermini.jpg "ESP32-S3 supermini pinout")
   > Notes:
-  > - GPIO48 is connected to RGB LED and blue LED.
+  > - GPIO48 is connected to RGB LED and red LED.
+  > - Blue LED (BAT) is not connected to any of GPIO, it shows when battery is charging. Fast blinks where battery is disconnected.
+  > - PSRAM (may) require to include platformio_options as described in [https://community.home-assistant.io/t/esp32-s3-devkitc-1-n16r8-using-psram-howto](https://community.home-assistant.io/t/esp32-s3-devkitc-1-n16r8-using-psram-howto)
+  > WARNING: To flash this board for the first time need to:
+  > 1. Hold 0 (BOOT)
+  > 2. Short press RST (RESET)
+  > 3. Release 0 (BOOT) after a few seconds (to allow computer to recognize USB)
 
 - 1x **ESP32-S3 N16R8**
 
@@ -191,7 +197,7 @@ Author: Pawel Golawski, <pawel.golawski@2com.pl>
 - 2x `L` - **LD2410B** - Radar sensor 24GHz
 - 2x `L` - **LD2410C** - Radar sensor 24GHz
 - 2x `L` - **LD2420** - Radar sensor 24GHz
-- 5x (+4) `M` - **INMP441** - I2S microphone
+- 9x `M` - **INMP441** - I2S microphone
 - 2x `N` - **ENS160** - TVOC and eCO2
 - 6x `O` - **SGP30** - TVOC and eCO2
 - 2x (-1) `P` - **BME280** - Temperature, Humidity, Pressure
@@ -212,11 +218,11 @@ Author: Pawel Golawski, <pawel.golawski@2com.pl>
 - 0x `b` - **9032A/9025A** - Active Buzzer 9mm diameter x 3.2/2.5mm height
 - 1x `i` - **IR Transmitter 38KHz** (Open-Smart, 1pin with signal)
 - 6x `r` - **9032/9025** - Passive Buzzer 9mm diameter x 3.2/2.5mm height (soldered package)
-- 5x (+10) `r` - **9032/9025** - Passive Buzzer 9mm diameter x 3.2/2.5mm height
-- 1x (-1)(+9) `m` - **Max98357** -  I2S mono amplifier
+- 15x `r` - **9032/9025** - Passive Buzzer 9mm diameter x 3.2/2.5mm height
+- 11x (-1) `m` - **Max98357** -  I2S mono amplifier
   > Note: Amp use cases ![Max98357 use case image](pinouts/MAX98357_use_cases.jpg "Max98357 use case")
-- 2x (+2) `s4` - small speaker 4 Ohm (1 - 3 W)
-- 0x (+6) `s8` - small speaker 8 Ohm (0.5 - 1 W)
+- 4x `s4` - small speaker 4 Ohm (1 - 3 W)
+- 6x `s8` - small speaker 8 Ohm (0.5 - 1 W)
 
 ### Other inventories
 
