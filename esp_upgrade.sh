@@ -10,6 +10,7 @@
 # Pawelo 20250109, added esp32-36 (c6) as TestC6 device
 # Pawelo 20250125, added esp32-39 as Attic device
 # Pawelo 20250125, added esp32-37 as TestS3SuperMini device
+# Pawelo 20250201, added esp32-38 as Test32ttgo device
 
 #*###########################
 #*** OR Upgrade ESP Home on mac/win
@@ -60,6 +61,7 @@ esphome -s devicename esp32-33 -s updates 1min -s room Test32s3rgb -s mqtt_locat
 esphome -s devicename esp32-34 -s updates 1min -s room Test32s2 -s mqtt_location measures -s mqtt_room test32s2 run esp32s2_dev.yaml
 esphome -s devicename esp32-36 -s updates 1min -s room Test32c6 -s mqtt_location measures -s mqtt_room test32c6 run esp32c6_dev.yaml
 esphome -s devicename esp32-37 -s updates 1min -s room Test32s3mini -s mqtt_location measures -s mqtt_room test32s3mini run esp32s3supermini_dev.yaml
+esphome -s devicename esp32-38 -s updates 1min -s room Test32ttgo -s mqtt_location measures -s mqtt_room test32ttgo run 0_DEV/esp32_display_ttgo.yaml
 
 # minimal config for S2
 esphome -s devicename esp32-34a run esp32s2_dev_minimal.yaml
