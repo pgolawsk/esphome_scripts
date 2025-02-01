@@ -27,7 +27,7 @@
 # Pawelo, 20250107, added INFO logs via USB for all _dev scripts
 # Pawelo, 20250111, added LEDs via switch to save on size of prometheus /metrics endpoint
 # Pawelo, 20250116, commented some sensors for generic device
-# Pawelo, 20250131, added BME680 BSEC algorithm sensor (for additional VOC, CO2, IAQ) ! not working when sensor is not connected
+# Pawelo, 20250131, tried BME680 BSEC algorithm sensor for additional VOC, CO2, IAQ - not working due to too less memory
 
 #! run with this command to override substitutions
 # esphome -s devicename espXX -s updates 1min -s room <Room name> -s mqtt_room <room> run esp12f_MMmm_SSss__PP.yaml --device 192.168.x.x
@@ -88,8 +88,7 @@ substitutions:
 # <<: !include { file: interfaces/uart_ld2410.yaml, vars: { ix: "ld", tx_pin: "TX", rx_pin: "RX", baud_rate: 256000, sensor_name: "LD2410" } }
 # <<: !include { file: interfaces/uart_ld2410.yaml, vars: { ix: "ld", tx_pin: "GPIO1", rx_pin: "GPIO3", baud_rate: 256000, sensor_name: "LD2410" } }
 # <<: !include { file: interfaces/uart_ld2420.yaml, vars: { ix: "ld", tx_pin: "TX", rx_pin: "RX", baud_rate: 256000 } }
-# <<: !include { file: interfaces/i2c_bme68x_bsec.yaml, vars: { ix: "", address: "0x77", temp_offset: 0.0 } } #!not working (bricked ESP12F device)
-# <<: !include { file: interfaces/i2c_bme68x_bsec2.yaml, vars: { ix: "", address: "0x77" } }  #!not working (bricked ESP12F device)
+# <<: !include { file: interfaces/i2c_bme68x_bsec.yaml, vars: { ix: "", address: "0x77", temp_offset: 0.0 } } #!not working (bricked ESP12F device - too less memory)
 
 text_sensor:
   - !include sensors/text_uptime.yaml
