@@ -131,8 +131,9 @@ Author: Pawel Golawski, <pawel.golawski@2com.pl>
 
   ![ESP32 T-Display pinout image](pinouts/ESP32_T-display_dev_board_pinout.jpg "ESP32 T-Display pinout")
 
-  > NOTE: Board has TF card slot, sliding power switch, micro-USB, battery connector (JST GH 2pin)
-  > NOTE: Board version is v1.1 XY-CP
+  > NOTE: Board has USB-C, battery connector (JST GH 2pin 1.25mm)
+  > NOTE: 1.14 ST87789 IPC LCD 135 x 240 px
+  > Board Size: 51,49 x 25,09 mm
 
 ### Displays inventory
 
