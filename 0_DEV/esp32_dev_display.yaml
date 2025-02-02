@@ -1,7 +1,7 @@
 ---
 #* ESP32 sensor board script name reflecting configuration esp32_MMmm_SSss__PP.yaml
 #* Please read README.md for details
-#* For pinout see: file://.//pinouts/ESP32_WROOM_32_pinout.jpg
+#* For pinout see: file://../pinouts/ESP32_WROOM_32_pinout.jpg
 ###
 # Pawelo 20230101, 1.1.5, created based on esp12f_.yaml
 # Pawelo 20230923, 1.1.5, added HA Connected binary sensor
@@ -19,6 +19,7 @@
 # Pawelo, 20241222, changed to use includes/board_esp32.yaml with variables
 # Pawelo, 20250109, added option to select desired framework_type (for board include)
 # Pawelo, 20250130, added framework_version variable
+# Pawelo, 20250202, moved to 0_DEV folder
 
 #! run with this command to override substitutions
 # esphome -s devicename espXX -s updates 1min -s room <Room name> -s mqtt_room <room> run esp32_MMmm_SSss__PP.yaml --device 192.168.x.x
@@ -28,9 +29,9 @@ substitutions:
 #  devices: "Temperature and Humidity via SHTx30 and Illuminance via BH1750"
   devices: "DEV Kit with ePaper display"
   project_name: "pgolawsk.esp_home"
-  version: "20250130"
+  version: "20250202"
 
-  # required by includes/board_esp32.yaml script
+  # required by ../includes/board_esp32.yaml script
   framework_type: arduino # "arduino" or "esp-idf"
   # framework_type: esp-idf # "arduino" or "esp-idf"
   framework_version: recommended # or specific version like "latest", "recommended", "4.4.4"
@@ -63,193 +64,194 @@ substitutions:
   display_updates_manual_cycle_delay: 5min
 
 # Override some settings included below in _board_ setup
-<<: !include includes/time_sntp_with_sun.yaml #WARN: this is to make sunrise and sunset sensor to be updated on every time sync event
-# <<: !include includes/mqtt_with_rtttl.yaml #WARN: override mqtt with RTTTL support if needed (buzzer and status led)
-# <<: !include { file: includes/logger_level.yaml, vars: { level: DEBUG, baud_rate: 115200 } } #WARN: override default log level to specific one
-# <<: !include { file: includes/logger_level.yaml, vars: { level: VERY_VERBOSE, baud_rate: 115200 } } #WARN: override default log level to specific one
-# <<: !include includes/wifi_outside.yaml #WARN: override wifi to connect to outside network instead of default
-# <<: !include { file: includes/wifi_main.yaml, vars: { } } #WARN: override wifi to connect to extended network instead of default
-# <<: !include { file: includes/wifi_extended.yaml, vars: { } } #WARN: override wifi to connect to extended network instead of default
-# <<: !include { file: includes/wifi_extended2.yaml, vars: { } } #WARN: override wifi to connect to extended network instead of default
-# <<: !include includes/api_services.yaml #WARN: this is to expose services like scan_wifi (results in scan_results sensor)
+<<: !include ../includes/time_sntp_with_sun.yaml #WARN: this is to make sunrise and sunset sensor to be updated on every time sync event
+# <<: !include ../includes/mqtt_with_rtttl.yaml #WARN: override mqtt with RTTTL support if needed (buzzer and status led)
+# <<: !include { file: ../includes/logger_level.yaml, vars: { level: DEBUG, baud_rate: 115200 } } #WARN: override default log level to specific one
+# <<: !include { file: ../includes/logger_level.yaml, vars: { level: VERY_VERBOSE, baud_rate: 115200 } } #WARN: override default log level to specific one
+# <<: !include ../includes/wifi_outside.yaml #WARN: override wifi to connect to outside network instead of default
+# <<: !include { file: ../includes/wifi_main.yaml, vars: { } } #WARN: override wifi to connect to extended network instead of default
+# <<: !include { file: ../includes/wifi_extended.yaml, vars: { } } #WARN: override wifi to connect to extended network instead of default
+# <<: !include { file: ../includes/wifi_extended2.yaml, vars: { } } #WARN: override wifi to connect to extended network instead of default
+# <<: !include ../includes/api_services.yaml #WARN: this is to expose services like scan_wifi (results in scan_results sensor)
 
 # Include basics of a board
-# <<: !include { file: includes/board_esp32.yaml, vars: { board_variant: "${board_variant}", board: "${board}", flash_size: "${flash_size}", flash_write_interval: "${flash_write_interval}" } }
-<<: !include { file: includes/board_esp32.yaml, vars: {} }
-# <<: !include { file: includes/psram.yaml, vars: { mode: "quad" } } # "quad' for 2MB, "octal" for 4-8MB PSRAM
-<<: !include includes/qr_guestwifi.yaml
+# <<: !include { file: ../includes/board_esp32.yaml, vars: { board_variant: "${board_variant}", board: "${board}", flash_size: "${flash_size}", flash_write_interval: "${flash_write_interval}" } }
+<<: !include { file: ../includes/board_esp32.yaml, vars: {} }
+# <<: !include { file: ../includes/psram.yaml, vars: { mode: "quad" } } # "quad' for 2MB, "octal" for 4-8MB PSRAM
+<<: !include ../includes/qr_guestwifi.yaml
+<<: !include ../includes/globals_display_cycle.yaml #! do not enable for board_esp32__water_pump.yaml
 
 # Include interfaces needed
-<<: !include { file: interfaces/debug.yaml, vars: { update_interval: "5s" } }
-# <<: !include { file: interfaces/i2c.yaml, vars: { bus_id: "bus_a", sda: "GPIO21", scl: "GPIO22" } }
+<<: !include { file: ../interfaces/debug.yaml, vars: { update_interval: "5s" } }
+# <<: !include { file: ../interfaces/i2c.yaml, vars: { bus_id: "bus_a", sda: "GPIO21", scl: "GPIO22" } }
 # note: when more i2c interfaces are needed then need to include those separately
 i2c:
-  - !include { file: interfaces/i2c__include.yaml, vars: { bus_id: "bus_a", sda: "GPIO21", scl: "GPIO22" } } # outside
-  - !include { file: interfaces/i2c__include.yaml, vars: { bus_id: "bus_b", sda: "GPIO17", scl: "GPIO18" } } # inside
-# <<: !include { file: interfaces/i2c_rc522.yaml, vars: { bus_id: "bus_b" } }
-# <<: !include { file: interfaces/dallas.yaml, vars: { gpio: "GPIO10" } }
-<<: !include { file: interfaces/rtttl.yaml, vars: { ix: "2" } }
+  - !include { file: ../interfaces/i2c__include.yaml, vars: { bus_id: "bus_a", sda: "GPIO21", scl: "GPIO22" } } # outside
+  - !include { file: ../interfaces/i2c__include.yaml, vars: { bus_id: "bus_b", sda: "GPIO17", scl: "GPIO18" } } # inside
+# <<: !include { file: ../interfaces/i2c_rc522.yaml, vars: { bus_id: "bus_b" } }
+# <<: !include { file: ../interfaces/dallas.yaml, vars: { gpio: "GPIO10" } }
+<<: !include { file: ../interfaces/rtttl.yaml, vars: { ix: "2" } }
 
 text_sensor:
-  - !include sensors/text_uptime.yaml
-  - !include sensors/text_version.yaml
-  - !include sensors/text_wifi_info.yaml
+  - !include ../sensors/text_uptime.yaml
+  - !include ../sensors/text_version.yaml
+  - !include ../sensors/text_wifi_info.yaml
 
   # DEBUG component
-  - !include sensors/text_debug.yaml
+  - !include ../sensors/text_debug.yaml
 
   # Sun component
-  - !include sensors/text_sun_sunrise.yaml
-  - !include sensors/text_sun_sunset.yaml
-  - !include sensors/text_sun_time_of_day.yaml
-  - !include sensors/text_sun_direction.yaml
+  - !include ../sensors/text_sun_sunrise.yaml
+  - !include ../sensors/text_sun_sunset.yaml
+  - !include ../sensors/text_sun_time_of_day.yaml
+  - !include ../sensors/text_sun_direction.yaml
 
   # Air Quality sensor
-  # - !include { file: sensors/text_air_quality.yaml }
+  # - !include { file: ../sensors/text_air_quality.yaml }
 
 binary_sensor:
   # HA Connected
-  - !include sensors/binary_ha_connected.yaml
+  - !include ../sensors/binary_ha_connected.yaml
 
 sensor:
-  - !include sensors/temp_internal.yaml
-  - !include sensors/uptime.yaml
-  - !include sensors/uptime_boot.yaml
-  - !include sensors/wifi_signal.yaml
-  - !include sensors/wifi_strength.yaml
+  - !include ../sensors/temp_internal.yaml
+  - !include ../sensors/uptime.yaml
+  - !include ../sensors/uptime_boot.yaml
+  - !include ../sensors/wifi_signal.yaml
+  - !include ../sensors/wifi_strength.yaml
 
   # DEBUG component
-  - !include sensors/debug.yaml
-  # - !include sensors/debug_with_psram.yaml
+  - !include ../sensors/debug.yaml
+  # - !include ../sensors/debug_with_psram.yaml
 
   # Sun component
-  - !include sensors/sun_elevation.yaml
-  - !include sensors/sun_azimuth.yaml
+  - !include ../sensors/sun_elevation.yaml
+  - !include ../sensors/sun_azimuth.yaml
 
   # Temperature and Humidity sensor
-#  - !include { file: sensors/temp_hum_SHT3x.yaml, vars: { ix: "", bus_id: "bus_a", address: "0x44" } }
-  - !include { file: sensors/temp_hum_SHT4x.yaml, vars: { ix: "2", bus_id: "bus_b", address: "0x44", room: "${room2}", mqtt_location: "${mqtt_location2}", mqtt_room: "${mqtt_room2}" } }
-  # - !include { file: sensors/temp_hum_AHT2x.yaml, vars: { ix: "", bus_id: "bus_a", address: "0x38" } }
+#  - !include { file: ../sensors/temp_hum_SHT3x.yaml, vars: { ix: "", bus_id: "bus_a", address: "0x44" } }
+  - !include { file: ../sensors/temp_hum_SHT4x.yaml, vars: { ix: "2", bus_id: "bus_b", address: "0x44", room: "${room2}", mqtt_location: "${mqtt_location2}", mqtt_room: "${mqtt_room2}" } }
+  # - !include { file: ../sensors/temp_hum_AHT2x.yaml, vars: { ix: "", bus_id: "bus_a", address: "0x38" } }
 
   # Temperature, Humidity and Pressure seensor
-  # - !include { file: sensors/temp_hum_press_BME280.yaml, vars: { ix: "", bus_id: "bus_a", address: "0x76" } }
+  # - !include { file: ../sensors/temp_hum_press_BME280.yaml, vars: { ix: "", bus_id: "bus_a", address: "0x76" } }
 
   # Temperature, Humidity, Pressure and Gas Resistance seensor
-  - !include { file: sensors/temp_hum_press_gas_BME680.yaml, vars: { ix: "", bus_id: "bus_a", address: "0x77", temp_offset: 0.05, hum_offset: 5.32, pressure_offset: 5.7 } }
+  - !include { file: ../sensors/temp_hum_press_gas_BME680.yaml, vars: { ix: "", bus_id: "bus_a", address: "0x77", temp_offset: 0.05, hum_offset: 5.32, pressure_offset: 5.7 } }
 
   # Illuminance sensor
-  - !include { file: sensors/lux_BH1750.yaml, vars: { ix: "2", bus_id: "bus_b", address: "0x23", room: "${room2}", mqtt_location: "${mqtt_location2}", mqtt_room: "${mqtt_room2}"  } }
-  # - !include { file: sensors/lux_color_TCS3472.yaml, vars: { ix: "2", bus_id: "bus_a", address: "0x29" } }
-  - !include { file: sensors/lux_uv_ltr390.yaml, vars: { ix: "", bus_id: "bus_a", address: "0x53" } }
+  - !include { file: ../sensors/lux_BH1750.yaml, vars: { ix: "2", bus_id: "bus_b", address: "0x23", room: "${room2}", mqtt_location: "${mqtt_location2}", mqtt_room: "${mqtt_room2}"  } }
+  # - !include { file: ../sensors/lux_color_TCS3472.yaml, vars: { ix: "2", bus_id: "bus_a", address: "0x29" } }
+  - !include { file: ../sensors/lux_uv_ltr390.yaml, vars: { ix: "", bus_id: "bus_a", address: "0x53" } }
 
   # TVOC and eCO2 sensor
-  # - !include { file: sensors/tvoc_eco2_SGP30.yaml, vars: { ix: "", bus_id: "bus_a", address: "0x58" } }
-  # - !include { file: sensors/tvoc_eco2_ENS160.yaml, vars: { ix: "", bus_id: "bus_a", address: "0x53" } }
+  # - !include { file: ../sensors/tvoc_eco2_SGP30.yaml, vars: { ix: "", bus_id: "bus_a", address: "0x58" } }
+  # - !include { file: ../sensors/tvoc_eco2_ENS160.yaml, vars: { ix: "", bus_id: "bus_a", address: "0x53" } }
 
   # Distance sensor
-  # - !include { file: sensors/distance_hc-sr04.yaml, vars: { ix: "", room: "Pellet", trigger_pin: "GPIO18", echo_pin: "GPIO17", updates: "5s" } }
-  # - !include { file: sensors/distance_vl53L0x.yaml, vars: { ix: "", room: "Pellet", bus_id: "bus_a", address: "0x29", updates: "5s", offset_filter: -0.05 } }
-  # - !include { file: sensors/percentage_distance.yaml, vars: { ix: "", thing: "Pellet", full_distance: "0.1", empty_distance: "0.6", updates: "5s" } }
+  # - !include { file: ../sensors/distance_hc-sr04.yaml, vars: { ix: "", room: "Pellet", trigger_pin: "GPIO18", echo_pin: "GPIO17", updates: "5s" } }
+  # - !include { file: ../sensors/distance_vl53L0x.yaml, vars: { ix: "", room: "Pellet", bus_id: "bus_a", address: "0x29", updates: "5s", offset_filter: -0.05 } }
+  # - !include { file: ../sensors/percentage_distance.yaml, vars: { ix: "", thing: "Pellet", full_distance: "0.1", empty_distance: "0.6", updates: "5s" } }
 
   # DC Current, Power, Voltage
-  # - !include { file: sensors/current_power_voltage_INA226.yaml, vars: { ix: "", bus_id: "bus_a", address: "0x40", max_current: "1.2A" } }
-  # - !include { file: sensors/current_power_voltage_INA3221.yaml, vars: { ix: "", bus_id: "bus_a", address: "0x40" } }
+  # - !include { file: ../sensors/current_power_voltage_INA226.yaml, vars: { ix: "", bus_id: "bus_a", address: "0x40", max_current: "1.2A" } }
+  # - !include { file: ../sensors/current_power_voltage_INA3221.yaml, vars: { ix: "", bus_id: "bus_a", address: "0x40" } }
 
   # Color and Proximity
-  # - !include { file: sensors/color_proximity_apds9960.yaml, vars: { type: "CLEAR" } }
-  # - !include { file: sensors/color_proximity_apds9960.yaml, vars: { type: "RED" } }
-  # - !include { file: sensors/color_proximity_apds9960.yaml, vars: { type: "GREEN" } }
-  # - !include { file: sensors/color_proximity_apds9960.yaml, vars: { type: "BLUE" } }
-  # - !include { file: sensors/color_proximity_apds9960.yaml, vars: { type: "PROXIMITY" } }
+  # - !include { file: ../sensors/color_proximity_apds9960.yaml, vars: { type: "CLEAR" } }
+  # - !include { file: ../sensors/color_proximity_apds9960.yaml, vars: { type: "RED" } }
+  # - !include { file: ../sensors/color_proximity_apds9960.yaml, vars: { type: "GREEN" } }
+  # - !include { file: ../sensors/color_proximity_apds9960.yaml, vars: { type: "BLUE" } }
+  # - !include { file: ../sensors/color_proximity_apds9960.yaml, vars: { type: "PROXIMITY" } }
 
   # Various MQTT sensors
-  - !include { file: sensors/value_mqtt_subscribe.yaml, vars: { topic: "home/entrance/temperature", id: "temp_entrance", name: "Temperature Entrance", unit: "°C", mdi_icon: "thermometer" } }
-  - !include { file: sensors/value_mqtt_subscribe.yaml, vars: { topic: "home/upstairs/temperature", id: "temp_upstairs", name: "Temperature Upstairs", unit: "°C", mdi_icon: "thermometer" } }
+  - !include { file: ../sensors/value_mqtt_subscribe.yaml, vars: { topic: "home/entrance/temperature", id: "temp_entrance", name: "Temperature Entrance", unit: "°C", mdi_icon: "thermometer" } }
+  - !include { file: ../sensors/value_mqtt_subscribe.yaml, vars: { topic: "home/upstairs/temperature", id: "temp_upstairs", name: "Temperature Upstairs", unit: "°C", mdi_icon: "thermometer" } }
 
-  - !include { file: sensors/value_mqtt_subscribe.yaml, vars: { topic: "measures/underfloor/temperature", id: "temp_underfloor", name: "Temperature Underfloor", unit: "°C", mdi_icon: "thermometer" } }
-  - !include { file: sensors/value_mqtt_subscribe.yaml, vars: { topic: "measures/underfloor/temperature_Dwall", id: "temp_underfloorW", name: "Temperature Underfloor Wall", unit: "°C", mdi_icon: "thermometer" } }
-  - !include { file: sensors/value_mqtt_subscribe.yaml, vars: { topic: "measures/underfloor/temperature_Dboiler", id: "temp_underfloorB", name: "Temperature Underfloor Boiler", unit: "°C", mdi_icon: "thermometer" } }
-  - !include { file: sensors/value_mqtt_subscribe.yaml, vars: { topic: "measures/aquarium_window/temperature", id: "temp_aquariumW", name: "Temperature Aquarium Window", unit: "°C", mdi_icon: "thermometer" } }
+  - !include { file: ../sensors/value_mqtt_subscribe.yaml, vars: { topic: "measures/underfloor/temperature", id: "temp_underfloor", name: "Temperature Underfloor", unit: "°C", mdi_icon: "thermometer" } }
+  - !include { file: ../sensors/value_mqtt_subscribe.yaml, vars: { topic: "measures/underfloor/temperature_Dwall", id: "temp_underfloorW", name: "Temperature Underfloor Wall", unit: "°C", mdi_icon: "thermometer" } }
+  - !include { file: ../sensors/value_mqtt_subscribe.yaml, vars: { topic: "measures/underfloor/temperature_Dboiler", id: "temp_underfloorB", name: "Temperature Underfloor Boiler", unit: "°C", mdi_icon: "thermometer" } }
+  - !include { file: ../sensors/value_mqtt_subscribe.yaml, vars: { topic: "measures/aquarium_window/temperature", id: "temp_aquariumW", name: "Temperature Aquarium Window", unit: "°C", mdi_icon: "thermometer" } }
 
-  - !include { file: sensors/value_mqtt_subscribe.yaml, vars: { topic: "home/entrance/humidity", id: "hum_entrance", name: "Humidity Entrance", unit: "%", mdi_icon: "water-percent" } }
-  - !include { file: sensors/value_mqtt_subscribe.yaml, vars: { topic: "home/upstairs/humidity", id: "hum_upstairs", name: "Humidity Upstairs", unit: "%", mdi_icon: "water-percent" } }
-  - !include { file: sensors/value_mqtt_subscribe.yaml, vars: { topic: "measures/underfloor/humidity", id: "hum_underfloor", name: "Humidity Underfloor", unit: "%", mdi_icon: "water-percent" } }
-  - !include { file: sensors/value_mqtt_subscribe.yaml, vars: { topic: "measures/aquarium_window/humidity", id: "hum_aquariumW", name: "Humidity Aquarium Window", unit: "%", mdi_icon: "water-percent" } }
+  - !include { file: ../sensors/value_mqtt_subscribe.yaml, vars: { topic: "home/entrance/humidity", id: "hum_entrance", name: "Humidity Entrance", unit: "%", mdi_icon: "water-percent" } }
+  - !include { file: ../sensors/value_mqtt_subscribe.yaml, vars: { topic: "home/upstairs/humidity", id: "hum_upstairs", name: "Humidity Upstairs", unit: "%", mdi_icon: "water-percent" } }
+  - !include { file: ../sensors/value_mqtt_subscribe.yaml, vars: { topic: "measures/underfloor/humidity", id: "hum_underfloor", name: "Humidity Underfloor", unit: "%", mdi_icon: "water-percent" } }
+  - !include { file: ../sensors/value_mqtt_subscribe.yaml, vars: { topic: "measures/aquarium_window/humidity", id: "hum_aquariumW", name: "Humidity Aquarium Window", unit: "%", mdi_icon: "water-percent" } }
 
 # switch:
 #   # Restart button
-#   - !include switches/platform_restart.yaml
+#   - !include ../switches/platform_restart.yaml
 
 button:
   # Restart, reset and shutdown buttons
-  - !include { file: buttons/restart_button.yaml }
+  - !include { file: ../buttons/restart_button.yaml }
   # for _dev.yaml scripts include additional buttons
-  - !include { file: buttons/safe_mode_restart_button.yaml }
-  - !include { file: buttons/factory_reset_button.yaml }
-  - !include { file: buttons/shutdown_button.yaml }
+  - !include { file: ../buttons/safe_mode_restart_button.yaml }
+  - !include { file: ../buttons/factory_reset_button.yaml }
+  - !include { file: ../buttons/shutdown_button.yaml }
 
   # Scan Wifi button (require wifi_info text sensor to be present to display results)
   # WARN: Performing the scan will disconnect device from current WiFi
-  - !include { file: buttons/scan_wifi_button.yaml }
+  - !include { file: ../buttons/scan_wifi_button.yaml }
 
   # Display buttons
-  - !include { file: buttons/display_button.yaml, vars: { ix: "Refresh", display_id: "weact_display", command: "", mdi_icon: "refresh" } }
-  - !include { file: buttons/display_button.yaml, vars: { ix: "Next", display_id: "weact_display", command: "next", mdi_icon: "page-next" } }
-  - !include { file: buttons/display_button.yaml, vars: { ix: "Prev", display_id: "weact_display", command: "previous", mdi_icon: "page-previous" } }
-  - !include { file: buttons/display_page_button.yaml, vars: { page_ix: "blank", display_id: "weact_display" } }
+  - !include { file: ../buttons/display_button.yaml, vars: { ix: "Refresh", display_id: "weact_display", command: "", mdi_icon: "refresh" } }
+  - !include { file: ../buttons/display_button.yaml, vars: { ix: "Next", display_id: "weact_display", command: "next", mdi_icon: "page-next" } }
+  - !include { file: ../buttons/display_button.yaml, vars: { ix: "Prev", display_id: "weact_display", command: "previous", mdi_icon: "page-previous" } }
+  - !include { file: ../buttons/display_page_button.yaml, vars: { page_ix: "blank", display_id: "weact_display" } }
 
 output:
   # LEDs
-  - !include { file: outputs/led.yaml, vars: { ix: "", gpio: "GPIO0", inverted: false } }
-  - !include { file: outputs/led.yaml, vars: { ix: "2", gpio: "GPIO1", inverted: false } }
+  - !include { file: ../outputs/led.yaml, vars: { ix: "", gpio: "GPIO0", inverted: false } }
+  - !include { file: ../outputs/led.yaml, vars: { ix: "2", gpio: "GPIO1", inverted: false } }
 
   # Passive/RTTTL Buzzer
-  - !include { file: outputs/passive_buzzer_ledc.yaml, vars: { ix: "", gpio: "GPIO4" } }
-  - !include { file: outputs/passive_buzzer_ledc.yaml, vars: { ix: "2", gpio: "GPIO5" } }
+  - !include { file: ../outputs/passive_buzzer_ledc.yaml, vars: { ix: "", gpio: "GPIO4" } }
+  - !include { file: ../outputs/passive_buzzer_ledc.yaml, vars: { ix: "2", gpio: "GPIO5" } }
 
 light:
   # LEDs
-  - !include { file: lights/led.yaml, vars: { ix: "", platform: "binary", off_delay: "5s" } }
-  - !include { file: lights/led.yaml, vars: { ix: "2", platform: "binary", off_delay: "5s", room: "${room2}", mqtt_location: "${mqtt_location2}", mqtt_room: "${mqtt_room2}" } }
+  - !include { file: ../lights/led.yaml, vars: { ix: "", platform: "binary", off_delay: "5s", entity_category: "diagnostic" } }
+  - !include { file: ../lights/led.yaml, vars: { ix: "2", platform: "binary", off_delay: "5s", room: "${room2}", mqtt_location: "${mqtt_location2}", mqtt_room: "${mqtt_room2}", entity_category: "diagnostic" } }
 
 switch:
   # LEDs cycle
-  - !include { file: switches/led_cycle.yaml, vars: { ID: "led", cycles: 5, on_delay: "1s", off_delay: "500ms" } }
-  - !include { file: switches/led_cycle.yaml, vars: { ID: "led2", cycles: 5, on_delay: "1s", off_delay: "500ms", room: "${room2}", mqtt_location: "${mqtt_location2}", mqtt_room: "${mqtt_room2}" } }
+  - !include { file: ../switches/led_cycle.yaml, vars: { ID: "led", cycles: 5, on_delay: "1s", off_delay: "500ms" } }
+  - !include { file: ../switches/led_cycle.yaml, vars: { ID: "led2", cycles: 5, on_delay: "1s", off_delay: "500ms", room: "${room2}", mqtt_location: "${mqtt_location2}", mqtt_room: "${mqtt_room2}" } }
 
   # Passive/RTTTL Buzzer
-  - !include { file: switches/passive_buzzer.yaml, vars: { ix: "", off_delay: "500ms" } }
-  - !include { file: switches/passive_buzzer_cycle.yaml, vars: { ix: "", cycles: 2, freq: "1000Hz", on_delay: "500ms", off_delay: "200ms" } }
-  - !include { file: switches/passive_buzzer_cycle.yaml, vars: { ix: "", cycles: 3, freq: "2000Hz", on_delay: "500ms", off_delay: "200ms" } }
-  - !include { file: switches/passive_buzzer_cycle.yaml, vars: { ix: "", cycles: 4, freq: "800Hz", on_delay: "500ms", off_delay: "200ms" } }
+  - !include { file: ../switches/passive_buzzer.yaml, vars: { ix: "", off_delay: "500ms" } }
+  - !include { file: ../switches/passive_buzzer_cycle.yaml, vars: { ix: "", cycles: 2, freq: "1000Hz", on_delay: "500ms", off_delay: "200ms" } }
+  - !include { file: ../switches/passive_buzzer_cycle.yaml, vars: { ix: "", cycles: 3, freq: "2000Hz", on_delay: "500ms", off_delay: "200ms" } }
+  - !include { file: ../switches/passive_buzzer_cycle.yaml, vars: { ix: "", cycles: 4, freq: "800Hz", on_delay: "500ms", off_delay: "200ms" } }
 
   # RTTTL Play (passive_buzzer)
-#  - !include { file: switches/rtttl_play.yaml, vars: { ix: "" } }
-  - !include { file: switches/rtttl_play.yaml, vars: { ix: "2", mqtt_location: "${mqtt_location2}", mqtt_room: "${mqtt_room2}" } }
+#  - !include { file: ../switches/rtttl_play.yaml, vars: { ix: "" } }
+  - !include { file: ../switches/rtttl_play.yaml, vars: { ix: "2", mqtt_location: "${mqtt_location2}", mqtt_room: "${mqtt_room2}" } }
 
 # Include fonts for display
-<<: !include fonts/fonts_weeact_display.yaml
+<<: !include ../fonts/fonts_weeact_display.yaml
 
 select:
   # Display Cycle Interval selection
   # id: select_display_cycle_interval
-  - !include { file: selects/display_cycle_interval.yaml, vars: { global_variable: "global_display_cycle_page", display_id: "weact_display" } }
+  - !include { file: ../selects/display_cycle_interval.yaml, vars: { global_variable: "global_display_cycle_page", display_id: "weact_display" } }
 
-<<: !include { file: scripts/interval_display_cycle_pages.yaml, vars: { display_id: weact_display, cycle_script: cycle_pages_in_lux_on_select, lux_sensor: lux2, lux_dark_threshold: 2.9, lux_dark_threshold_elevation_multiplier: 0.1, page_to_skip: page_wifi_qr } }
+<<: !include { file: ../scripts/interval_display_cycle_pages.yaml, vars: { display_id: weact_display, cycle_script: cycle_pages_in_day, lux_sensor: lux2, lux_dark_threshold: 2.9, lux_dark_threshold_elevation_multiplier: 0.1, page_to_skip: page_wifi_qr } }
 
-globals:
-  - id: global_display_cycle_page
-    type: int
-    # restore_value: true
-    initial_value: "4"
-  - id: global_display_current_cycle
-    type: int
-    # restore_value: true
-    initial_value: "0"
-  - id: global_display_enabled
-    type: int
-    # restore_value: true
-    initial_value: "1"
+# globals:
+#   - id: global_display_cycle_page
+#     type: int
+#     # restore_value: true
+#     initial_value: "4"
+#   - id: global_display_current_cycle
+#     type: int
+#     # restore_value: true
+#     initial_value: "0"
+#   - id: global_display_enabled
+#     type: int
+#     # restore_value: true
+#     initial_value: "1"
 
 external_components:
 #   - source: github://pr#4579

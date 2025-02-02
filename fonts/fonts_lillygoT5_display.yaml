@@ -1,20 +1,21 @@
 ---
 #* Fonts and colors include for LillyGoT5 displays
 # Pawelo, 20240628, created
+# Pawelo, 20250202, changed folders structure - include from subdirectory, hence ../
 
 # Fonts
 font:
-  - !include { file: fonts/font_from_file.yaml, vars: { ix: "big", font_file: "IBMPlexMono-Bold.ttf", size: 300 } }
-  - !include { file: fonts/font_from_file.yaml, vars: { ix: "med", font_file: "IBMPlexMono-Bold.ttf", size: 100 } }
-  - !include { file: fonts/font_from_file.yaml, vars: { ix: "med2", font_file: "IBMPlexMono-Bold.ttf", size: 40 } }
-  - !include { file: fonts/font_from_file.yaml, vars: { ix: "small", font_file: "IBMPlexMono-Bold.ttf", size: 30 } }
+  - !include { file: ../fonts/font_from_file.yaml, vars: { ix: "big", font_file: "IBMPlexMono-Bold.ttf", size: 300 } }
+  - !include { file: ../fonts/font_from_file.yaml, vars: { ix: "med", font_file: "IBMPlexMono-Bold.ttf", size: 100 } }
+  - !include { file: ../fonts/font_from_file.yaml, vars: { ix: "med2", font_file: "IBMPlexMono-Bold.ttf", size: 40 } }
+  - !include { file: ../fonts/font_from_file.yaml, vars: { ix: "small", font_file: "IBMPlexMono-Bold.ttf", size: 30 } }
 
-  - !include { file: fonts/font_from_file.yaml, vars: { ix: "name", font_file: "ProductSans-Bold.ttf", size: 40 } }
-  - !include { file: fonts/font_from_file.yaml, vars: { ix: "value", font_file: "ProductSans-Bold.ttf", size: 64 } }
-  - !include { file: fonts/font_from_file.yaml, vars: { ix: "footer", font_file: "ProductSans-Bold.ttf", size: 28 } }
+  - !include { file: ../fonts/font_from_file.yaml, vars: { ix: "name", font_file: "ProductSans-Bold.ttf", size: 40 } }
+  - !include { file: ../fonts/font_from_file.yaml, vars: { ix: "value", font_file: "ProductSans-Bold.ttf", size: 64 } }
+  - !include { file: ../fonts/font_from_file.yaml, vars: { ix: "footer", font_file: "ProductSans-Bold.ttf", size: 28 } }
 
   # https://pictogrammers.github.io/@mdi/font/5.3.45/
-  - file: 'fonts/materialdesignicons-webfont.ttf'
+  - file: '../fonts/materialdesignicons-webfont.ttf'
     id: font_icons
     size: 160
     glyphs:
@@ -34,7 +35,7 @@ font:
       - "\U000F059E" # windy-variant
       - "\U000F0F38" # exceptional
 
-  - file: 'fonts/materialdesignicons-webfont.ttf'
+  - file: '../fonts/materialdesignicons-webfont.ttf'
     id: font_icons_small
     size: 56
     glyphs:
@@ -58,7 +59,7 @@ font:
       - "\U000F140B" # Energy
       - "\U000F0F29" # Frost Alert
 
-  - file: 'fonts/materialdesignicons-webfont.ttf'
+  - file: '../fonts/materialdesignicons-webfont.ttf'
     id: font_icons_tiny
     size: 28
     glyphs:
@@ -70,7 +71,7 @@ font:
       - "\U000F12A1" # battery-low
       - "\U000F008E" # battery-outline
 
-  - file: 'fonts/materialdesignicons-webfont.ttf'
+  - file: '../fonts/materialdesignicons-webfont.ttf'
     id: mdi_sensor
     size: 50
     glyphs:
@@ -137,7 +138,7 @@ font:
       - "\U000F059E" # mdi-windy-variant
       - "\U000F0F38" # mdi-exceptional
 
-  - file: 'fonts/materialdesignicons-webfont.ttf'
+  - file: '../fonts/materialdesignicons-webfont.ttf'
     id:  mdi_footer
     size: 28
     glyphs:

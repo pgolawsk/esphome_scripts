@@ -1,0 +1,117 @@
+---
+#* ESP12F sensor board script name reflecting configuration esp12f_MMmm_SSss__PP.yaml
+#* Please read README.md for details
+#* For pinout see: file://../pinouts/ESP_12E_pinout.png
+# NOTE: pin 9 do not work (it hangs ESP)- reserved for flashing;
+# NOTE: pin 10 - use with caution, read https://www.letscontrolit.com/forum/viewtopic.php?t=1462
+###
+# Pawelo 20221117, 1.0.0, created based on edp12f_temp_hum.yml
+# Pawelo 20221119, 1.0.1. added updates as parameter
+# Pawelo 20221119, 1.1.0. moved to framework with !include statements
+# Pawelo 20221119, 1.1.1. added esp version and wifi info text sensors to publish on web
+# Pawelo 20221127, 1.1.2, renamed script to reflect sensors/switches and measures/manipulators
+# Pawelo 20221127, 1.1.3, added $devices variable to name configuration deployed
+# Pawelo 20221127, 1.1.4, moved i2c configuration to separate include file
+# Pawelo 20221203, 1.1.5, added Restart button on web
+# Pawelo 20230923, 1.1.5, added HA Connected binary sensor
+# Pawelo 20240628, 1.1.5, moved filters offset adjustments for BME280 to variables
+# Pawelo, 20240902, refactoring: "status_led" renamed to "led"
+# Pawelo, 20250111, changed to use includes/board_esp8266.yaml with variables
+# Pawelo, 20250202, moved to 0_DEV folder
+
+#! run with this command to override substitutions
+# esphome -s devicename espXX -s updates 1min -s room <Room name> -s mqtt_room <room> run esp12f_MMmm_SSss__PP.yaml --device 192.168.x.x
+# here are default values if those are not given via command line
+substitutions:
+  devices: "Temperature, Humidity and Pressure via BME280 and Illuminance via BH1750"
+  project_name: "pgolawsk.esp_home"
+  version: "20250202"
+
+  # required by ../includes/board_esp8266.yaml script
+  board_variant: "12F" # determine variant like 12F, 07s, 01m, ...
+  board: "esp12e" # like: esp12e, esp01_1m, full list here https://registry.platformio.org/platforms/platformio/espressif8266/boards
+  restore_from_flash: "false" # must be set as string to work
+  flash_write_interval: "5min"
+
+  devicename: esp12f-xx
+  updates: "30s"
+  room: Room # friendly name of room to display in HA/Web
+  # this is ADDITIONAL topic and sub-topic for MQTT - it publishes under <topic>/<sub-topic>/<sensor>
+  # by default it's also published under <devicename>/<id_sensor>
+  mqtt_location: home
+  mqtt_room: room
+
+  # default variable values for !include statements
+  accuracy_decimals: "2"
+
+# Override some settings included below in _board_ setup
+# <<: !include ../includes/time_sntp_with_sun.yaml #WARN: this is to make sunrise and sunset sensor to be updated on every time sync event
+# <<: !include ../includes/mqtt_with_rtttl.yaml #WARN: override mqtt with RTTTL support if needed (buzzer and status led)
+<<: !include { file: ../includes/logger_level.yaml, vars: { level: INFO, baud_rate: 115200 } } #WARN: override default log level to specific one
+# <<: !include { file: ../includes/logger_level.yaml, vars: { level: DEBUG, baud_rate: 115200 } } #WARN: override default log level to specific one
+# <<: !include { file: ../includes/logger_level.yaml, vars: { level: VERY_VERBOSE, baud_rate: 115200 } } #WARN: override default log level to specific one
+# <<: !include ../includes/wifi_outside.yaml #WARN: override wifi to connect to outside network instead of default
+# <<: !include { file: ../includes/wifi_main.yaml, vars: { } } #WARN: override wifi to connect to extended network instead of default
+# <<: !include { file: ../includes/wifi_extended.yaml, vars: { } } #WARN: override wifi to connect to extended network instead of default
+# <<: !include { file: ../includes/wifi_extended2.yaml, vars: { } } #WARN: override wifi to connect to extended network instead of default
+# <<: !include ../includes/api_services.yaml #WARN: this is to expose services like scan_wifi (results in scan_results sensor)
+
+# Include basics of a board
+# <<: !include { file: ../includes/board_esp8266.yaml, vars: { board: "${board}", board_variant: "${board_variant}", restore_from_flash: "${restore_from_flash}", flash_write_interval: "${flash_write_interval}" } }
+<<: !include { file: ../includes/board_esp8266.yaml, vars: {} }
+# <<: !include ../includes/board_esp12f.yaml
+# <<: !include ../includes/board_esp12f_with_sun.yaml
+
+# Include interfaces needed
+# <<: !include { file: ../interfaces/debug.yaml, vars: { update_interval: "15s" } }
+# <<: !include { file: ../interfaces/rtttl.yaml, vars: { ix: "" } }
+<<: !include { file: ../interfaces/i2c.yaml, vars: { bus_id: "bus_a", sda: "GPIO4", scl: "GPIO5" } }
+
+text_sensor:
+  - !include ../sensors/text_uptime.yaml
+  - !include ../sensors/text_version.yaml
+  - !include ../sensors/text_wifi_info.yaml
+
+  # DEBUG component
+  # - !include ../sensors/text_debug.yaml
+
+binary_sensor:
+  # HA Connected
+  - !include ../sensors/binary_ha_connected.yaml
+
+sensor:
+  - !include ../sensors/uptime.yaml
+  # - !include ../sensors/uptime_boot.yaml
+  - !include ../sensors/wifi_signal.yaml
+  - !include ../sensors/wifi_strength.yaml
+
+  # DEBUG component
+  # - !include ../sensors/debug.yaml
+
+  # Temperature and Humidity and Preasure sensor
+  - !include { file: ../sensors/temp_hum_press_BME280.yaml, vars: { ix: "", bus_id: "bus_a", address: "0x76", temp_offset: -2.1, hum_offset: +9.2, pressure_offset: +7.0 } }
+    # Illuminance sensor
+  - !include { file: ../sensors/lux_BH1750.yaml, vars: { ix: "", bus_id: "bus_a", address: "0x23" } }
+
+output:
+  # LED
+  - !include { file: ../outputs/led.yaml, vars: { ix: "", gpio: "GPIO16", inverted: false } }
+
+light:
+  # LED
+  - !include { file: ../lights/led.yaml, vars: { ix: "", platform: "binary", off_delay: "5s", entity_category: "" } }
+
+switch:
+  # LED cycle
+  - !include { file: ../switches/led_cycle.yaml, vars: { ID: "led", cycles: 3, on_delay: "1s" , off_delay: "500ms" } }
+
+button:
+  # Restart, reset and shutdown buttons
+  - !include { file: ../buttons/restart_button.yaml }
+  - !include { file: ../buttons/safe_mode_restart_button.yaml }
+  - !include { file: ../buttons/factory_reset_button.yaml }
+  - !include { file: ../buttons/shutdown_button.yaml }
+
+  # Scan Wifi button (require wifi_info text sensor to be present to display results)
+  # WARN: Performing the scan will disconnect device from current WiFi
+  - !include { file: ../buttons/scan_wifi_button.yaml }

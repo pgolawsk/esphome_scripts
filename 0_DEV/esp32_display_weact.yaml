@@ -1,7 +1,7 @@
 ---
 #* ESP32 WeAct 2.9' display
 #* Please read README.md for details
-#* For pinout see: file://.//pinouts/ESP32_WROOM_32_pinout.jpg
+#* For pinout see: file://../pinouts/ESP32_WROOM_32_pinout.jpg
 ###
 # Pawelo 20230921, created based on esp32_display.yaml and https://github.com/esphome/feature-requests/issues/2101
 # Pawelo 20230923, 1.1.5, added HA Connected binary sensor
@@ -25,6 +25,7 @@
 # Pawelo, 20241222, changed to use includes/board_esp32.yaml with variables
 # Pawelo, 20250109, added option to select desired framework_type (for board include)
 # Pawelo, 20250130, added framework_version variable
+# Pawelo, 20250202, moved to 0_DEV folder
 
 #! run with this command to override substitutions
 # esphome -s devicename espXX -s updates 1min -s room <Room name> -s mqtt_room <room> run esp32_MMmm_SSss__PP.yaml --device 192.168.x.x
@@ -34,9 +35,9 @@ substitutions:
 #  devices: "Temperature and Humidity via SHTx30 and Illuminance via BH1750"
   devices: "WeAct Display and MQTT sensors"
   project_name: "pgolawsk.esp_home"
-  version: "20250130"
+  version: "20250202"
 
-  # required by includes/board_esp32.yaml script
+  # required by ../includes/board_esp32.yaml script
   framework_type: arduino # "arduino" or "esp-idf"
   # framework_type: esp-idf # "arduino" or "esp-idf"
   framework_version: recommended # or specific version like "latest", "recommended", "4.4.4"
@@ -71,94 +72,97 @@ substitutions:
   refresh_interval: ${updates} #refresh when on USB power
 
 # Override some settings included below in _board_ setup
-<<: !include includes/time_sntp_with_sun.yaml #WARN: this is to make sunrise and sunset sensor to be updated on every time sync event
-# <<: !include includes/mqtt_with_rtttl.yaml #WARN: override mqtt with RTTTL support if needed (buzzer and status led)
-# <<: !include { file: includes/logger_level.yaml, vars: { level: DEBUG, baud_rate: 115200 } } #WARN: override default log level to specific one
-# <<: !include { file: includes/logger_level.yaml, vars: { level: VERY_VERBOSE, baud_rate: 115200 } } #WARN: override default log level to specific one
-# <<: !include includes/wifi_outside.yaml #WARN: override wifi to connect to outside network instead of default
-# <<: !include { file: includes/wifi_main.yaml, vars: { } } #WARN: override wifi to connect to extended network instead of default
-# <<: !include { file: includes/wifi_extended.yaml, vars: { } } #WARN: override wifi to connect to extended network instead of default
-# <<: !include { file: includes/wifi_extended2.yaml, vars: { } } #WARN: override wifi to connect to extended network instead of default
-# <<: !include includes/api_services.yaml #WARN: this is to expose services like scan_wifi (results in scan_results sensor)
+<<: !include ../includes/time_sntp_with_sun.yaml #WARN: this is to make sunrise and sunset sensor to be updated on every time sync event
+# <<: !include ../includes/mqtt_with_rtttl.yaml #WARN: override mqtt with RTTTL support if needed (buzzer and status led)
+# <<: !include { file: ../includes/logger_level.yaml, vars: { level: DEBUG, baud_rate: 115200 } } #WARN: override default log level to specific one
+# <<: !include { file: ../includes/logger_level.yaml, vars: { level: VERY_VERBOSE, baud_rate: 115200 } } #WARN: override default log level to specific one
+# <<: !include ../includes/wifi_outside.yaml #WARN: override wifi to connect to outside network instead of default
+# <<: !include { file: ../includes/wifi_main.yaml, vars: { } } #WARN: override wifi to connect to extended network instead of default
+# <<: !include { file: ../includes/wifi_extended.yaml, vars: { } } #WARN: override wifi to connect to extended network instead of default
+# <<: !include { file: ../includes/wifi_extended2.yaml, vars: { } } #WARN: override wifi to connect to extended network instead of default
+# <<: !include ../includes/api_services.yaml #WARN: this is to expose services like scan_wifi (results in scan_results sensor)
 
 # Include basics of a board
-<<: !include includes/board_esp32__water_pump.yaml
-# <<: !include { file: includes/board_esp32.yaml, vars: { board_variant: "${board_variant}", board: "${board}", flash_size: "${flash_size}", flash_write_interval: "${flash_write_interval}" } }
-# <<: !include { file: includes/psram.yaml, vars: { mode: "quad" } } # "quad' for 2MB, "octal" for 4-8MB PSRAM
-<<: !include includes/qr_guestwifi.yaml
+# <<: !include ../includes/board_esp32__water_pump.yaml
+<<: !include ../includes/board_esp32.yaml
+# <<: !include { file: ../../includes/board_esp32.yaml, vars: { board_variant: "${board_variant}", board: "${board}", flash_size: "${flash_size}", flash_write_interval: "${flash_write_interval}" } }
+# <<: !include { file: ../../includes/psram.yaml, vars: { mode: "quad" } } # "quad' for 2MB, "octal" for 4-8MB PSRAM
+<<: !include ../includes/qr_guestwifi.yaml
+<<: !include ../includes/globals_display_cycle.yaml #! do not enable for board_esp32__water_pump.yaml
 
 # Include interfaces needed
-<<: !include { file: interfaces/debug.yaml, vars: { update_interval: "5s" } }
-# <<: !include { file: interfaces/i2c.yaml, vars: { bus_id: "bus_a", sda: "GPIO21", scl: "GPIO22" } }
-# <<: !include { file: interfaces/i2c.yaml, vars: { bus_id: "bus_b", sda: "GPIO14", scl: "GPIO15" } }
-# <<: !include { file: interfaces/dallas.yaml, vars: { gpio: "GPIO10" } }
-# <<: !include { file: interfaces/rtttl.yaml, vars: { ix: "" } }
+<<: !include { file: ../interfaces/debug.yaml, vars: { update_interval: "5s" } }
+# <<: !include { file: ../interfaces/i2c.yaml, vars: { bus_id: "bus_a", sda: "GPIO21", scl: "GPIO22" } }
+# <<: !include { file: ../interfaces/i2c.yaml, vars: { bus_id: "bus_b", sda: "GPIO14", scl: "GPIO15" } }
+# <<: !include { file: ../interfaces/dallas.yaml, vars: { gpio: "GPIO10" } }
+# <<: !include { file: ../interfaces/rtttl.yaml, vars: { ix: "" } }
 
 text_sensor:
-  - !include sensors/text_uptime.yaml
-  - !include sensors/text_version.yaml
-  - !include sensors/text_wifi_info.yaml
+  - !include ../sensors/text_uptime.yaml
+  - !include ../sensors/text_version.yaml
+  - !include ../sensors/text_wifi_info.yaml
 
   # DEBUG component
-  - !include sensors/text_debug.yaml
+  - !include ../sensors/text_debug.yaml
 
   # Sun component
-  - !include sensors/text_sun_sunrise.yaml
-  - !include sensors/text_sun_sunset.yaml
-  - !include sensors/text_sun_time_of_day.yaml
-  - !include sensors/text_sun_direction.yaml
+  - !include ../sensors/text_sun_sunrise.yaml
+  - !include ../sensors/text_sun_sunset.yaml
+  - !include ../sensors/text_sun_time_of_day.yaml
+  - !include ../sensors/text_sun_direction.yaml
 
 binary_sensor:
   # HA Connected
-  - !include sensors/binary_ha_connected.yaml
+  - !include ../sensors/binary_ha_connected.yaml
 
   # # Physical buttons
-  # - !include { file: sensors/binary_display_button.yaml, vars: { ix: "Refresh", gpio: "GPIO39" } }
-  # - !include { file: sensors/binary_display_button.yaml, vars: { ix: "Next", gpio: "GPIO34" } }
-  # - !include { file: sensors/binary_display_button.yaml, vars: { ix: "Prev", gpio: "GPIO35" } }
+  # - !include { file: ../sensors/binary_display_button.yaml, vars: { ix: "Refresh", gpio: "GPIO39" } }
+  # - !include { file: ../sensors/binary_display_button.yaml, vars: { ix: "Next", gpio: "GPIO34" } }
+  # - !include { file: ../sensors/binary_display_button.yaml, vars: { ix: "Prev", gpio: "GPIO35" } }
 
 sensor:
-  - !include sensors/temp_internal.yaml
-  - !include sensors/uptime.yaml
-  - !include sensors/wifi_signal.yaml
-  - !include sensors/wifi_strength.yaml
+  - !include ../sensors/temp_internal.yaml
+  - !include ../sensors/uptime.yaml
+  - !include ../sensors/wifi_signal.yaml
+  - !include ../sensors/wifi_strength.yaml
 
   # DEBUG component
-  - !include sensors/debug.yaml
-  # - !include sensors/debug_with_psram.yaml
+  - !include ../sensors/debug.yaml
+  # - !include ../sensors/debug_with_psram.yaml
 
   # Sun component
-  - !include sensors/sun_elevation.yaml
-  - !include sensors/sun_azimuth.yaml
+  - !include ../sensors/sun_elevation.yaml
+  - !include ../sensors/sun_azimuth.yaml
 
-  # # Temperature and Humidity sensor
-  # - !include { file: sensors/temp_hum_SHT3x.yaml, vars: { ix: "", bus_id: "bus_a", address: "0x44" } }
-  # # Illuminance sensor
-  # - !include { file: sensors/lux_BH1750.yaml, vars: { ix: "", bus_id: "bus_a", address: "0x23" } }
+  # Temperature and Humidity sensor
+  # - !include { file: ../sensors/temp_hum_SHT3x.yaml, vars: { ix: "", bus_id: "bus_a", address: "0x44" } }
+
+  # Illuminance sensor
+  # - !include { file: ../sensors/lux_BH1750.yaml, vars: { ix: "", bus_id: "bus_a", address: "0x23", updates: "${display_updates_interval" } }
 
   # Various MQTT sensors
-  - !include { file: sensors/value_mqtt_subscribe.yaml, vars: { topic: "home/entrance/temperature", id: "temp_entrance", name: "Temperature Entrance", unit: "°C", mdi_icon: "thermometer" } }
-  - !include { file: sensors/value_mqtt_subscribe.yaml, vars: { topic: "home/upstairs/temperature", id: "temp_upstairs", name: "Temperature Upstairs", unit: "°C", mdi_icon: "thermometer" } }
+  - !include { file: ../sensors/value_mqtt_subscribe.yaml, vars: { topic: "home/entrance/temperature", id: "temp_entrance", name: "Temperature Entrance", unit: "°C", mdi_icon: "thermometer" } }
+  - !include { file: ../sensors/value_mqtt_subscribe.yaml, vars: { topic: "home/upstairs/temperature", id: "temp_upstairs", name: "Temperature Upstairs", unit: "°C", mdi_icon: "thermometer" } }
 
-  - !include { file: sensors/value_mqtt_subscribe.yaml, vars: { topic: "measures/underfloor/temperature", id: "temp_underfloor", name: "Temperature Underfloor", unit: "°C", mdi_icon: "thermometer" } }
-  - !include { file: sensors/value_mqtt_subscribe.yaml, vars: { topic: "measures/underfloor/temperature_Dwall", id: "temp_underfloorW", name: "Temperature Underfloor Wall", unit: "°C", mdi_icon: "thermometer" } }
-  - !include { file: sensors/value_mqtt_subscribe.yaml, vars: { topic: "measures/underfloor/temperature_Dboiler", id: "temp_underfloorB", name: "Temperature Underfloor Boiler", unit: "°C", mdi_icon: "thermometer" } }
-  - !include { file: sensors/value_mqtt_subscribe.yaml, vars: { topic: "measures/aquarium_window/temperature", id: "temp_aquariumW", name: "Temperature Aquarium Window", unit: "°C", mdi_icon: "thermometer" } }
+  - !include { file: ../sensors/value_mqtt_subscribe.yaml, vars: { topic: "measures/underfloor/temperature", id: "temp_underfloor", name: "Temperature Underfloor", unit: "°C", mdi_icon: "thermometer" } }
+  - !include { file: ../sensors/value_mqtt_subscribe.yaml, vars: { topic: "measures/underfloor/temperature_Dwall", id: "temp_underfloorW", name: "Temperature Underfloor Wall", unit: "°C", mdi_icon: "thermometer" } }
+  - !include { file: ../sensors/value_mqtt_subscribe.yaml, vars: { topic: "measures/underfloor/temperature_Dboiler", id: "temp_underfloorB", name: "Temperature Underfloor Boiler", unit: "°C", mdi_icon: "thermometer" } }
+  - !include { file: ../sensors/value_mqtt_subscribe.yaml, vars: { topic: "measures/aquarium_window/temperature", id: "temp_aquariumW", name: "Temperature Aquarium Window", unit: "°C", mdi_icon: "thermometer" } }
 
-  - !include { file: sensors/value_mqtt_subscribe.yaml, vars: { topic: "home/entrance/humidity", id: "hum_entrance", name: "Humidity Entrance", unit: "%", mdi_icon: "water-percent" } }
-  - !include { file: sensors/value_mqtt_subscribe.yaml, vars: { topic: "home/upstairs/humidity", id: "hum_upstairs", name: "Humidity Upstairs", unit: "%", mdi_icon: "water-percent" } }
-  - !include { file: sensors/value_mqtt_subscribe.yaml, vars: { topic: "measures/underfloor/humidity", id: "hum_underfloor", name: "Humidity Underfloor", unit: "%", mdi_icon: "water-percent" } }
-  - !include { file: sensors/value_mqtt_subscribe.yaml, vars: { topic: "measures/aquarium_window/humidity", id: "hum_aquariumW", name: "Humidity Aquarium Window", unit: "%", mdi_icon: "water-percent" } }
+  - !include { file: ../sensors/value_mqtt_subscribe.yaml, vars: { topic: "home/entrance/humidity", id: "hum_entrance", name: "Humidity Entrance", unit: "%", mdi_icon: "water-percent" } }
+  - !include { file: ../sensors/value_mqtt_subscribe.yaml, vars: { topic: "home/upstairs/humidity", id: "hum_upstairs", name: "Humidity Upstairs", unit: "%", mdi_icon: "water-percent" } }
+  - !include { file: ../sensors/value_mqtt_subscribe.yaml, vars: { topic: "measures/underfloor/humidity", id: "hum_underfloor", name: "Humidity Underfloor", unit: "%", mdi_icon: "water-percent" } }
+  - !include { file: ../sensors/value_mqtt_subscribe.yaml, vars: { topic: "measures/aquarium_window/humidity", id: "hum_aquariumW", name: "Humidity Aquarium Window", unit: "%", mdi_icon: "water-percent" } }
 
-  - !include { file: sensors/value_mqtt_subscribe.yaml, vars: { topic: "measures/garage/illuminance", id: "lux_garage", name: "Garage Illuminance", unit: "lx", mdi_icon: "decagram-outline", accuracy_decimals: 1 } }
+  - !include { file: ../sensors/value_mqtt_subscribe.yaml, vars: { topic: "measures/garage/illuminance", id: "lux_garage", name: "Garage Illuminance", unit: "lx", mdi_icon: "decagram-outline", accuracy_decimals: 1 } }
 
   # Pump sensors
-  - !include { file: sensors/value_mqtt_subscribe.yaml, vars: { topic: "measures/pump/temperature", id: "temp_pump", name: "Pump Temperature", unit: "°C", mdi_icon: "thermometer" } }
-  - !include { file: sensors/value_mqtt_subscribe.yaml, vars: { topic: "measures/pump/temperature_Floor", id: "temp_pumpFloor", name: "Pump Temperature Floor", unit: "°C", mdi_icon: "thermometer" } }
-  - !include { file: sensors/value_mqtt_subscribe.yaml, vars: { topic: "measures/pump/humidity", id: "hum_pump", name: "Pump Humidity", unit: "%", mdi_icon: "water-percent" } }
-  - !include { file: sensors/value_mqtt_subscribe.yaml, vars: { topic: "measures/pump/water_used_all", id: "water_used_all", name: "Pump Water Total", unit: "m³", mdi_icon: "water-plus", accuracy_decimals: 3 } }
-  - !include { file: sensors/value_mqtt_subscribe.yaml, vars: { topic: "measures/pump/water_used_home", id: "water_used_home", name: "Pump Water Home", unit: "m³", mdi_icon: "water-plus", accuracy_decimals: 3 } }
-  - !include { file: sensors/value_mqtt_subscribe.yaml, vars: { topic: "measures/pump/water_used_garden", id: "water_used_garden", name: "Pump Water Garden", unit: "m³", mdi_icon: "water-plus", accuracy_decimals: 3 } }
+  - !include { file: ../sensors/value_mqtt_subscribe.yaml, vars: { topic: "measures/pump/temperature", id: "temp_pump", name: "Pump Temperature", unit: "°C", mdi_icon: "thermometer" } }
+  - !include { file: ../sensors/value_mqtt_subscribe.yaml, vars: { topic: "measures/pump/temperature_Floor", id: "temp_pumpFloor", name: "Pump Temperature Floor", unit: "°C", mdi_icon: "thermometer" } }
+  - !include { file: ../sensors/value_mqtt_subscribe.yaml, vars: { topic: "measures/pump/humidity", id: "hum_pump", name: "Pump Humidity", unit: "%", mdi_icon: "water-percent" } }
+  - !include { file: ../sensors/value_mqtt_subscribe.yaml, vars: { topic: "measures/pump/water_used_all", id: "water_used_all", name: "Pump Water Total", unit: "m³", mdi_icon: "water-plus", accuracy_decimals: 3 } }
+  - !include { file: ../sensors/value_mqtt_subscribe.yaml, vars: { topic: "measures/pump/water_used_home", id: "water_used_home", name: "Pump Water Home", unit: "m³", mdi_icon: "water-plus", accuracy_decimals: 3 } }
+  - !include { file: ../sensors/value_mqtt_subscribe.yaml, vars: { topic: "measures/pump/water_used_garden", id: "water_used_garden", name: "Pump Water Garden", unit: "m³", mdi_icon: "water-plus", accuracy_decimals: 3 } }
 
     # on_value: # Actions to perform once data for the last sensor has been received
     #   then:
@@ -166,25 +170,25 @@ sensor:
 
 # switch:
 #   # Restart button
-#   - !include switches/platform_restart.yaml
+#   - !include ../switches/platform_restart.yaml
 
 button:
   # Restart, reset and shutdown buttons
-  - !include { file: buttons/restart_button.yaml }
+  - !include { file: ../buttons/restart_button.yaml }
   # for _dev.yaml scripts include additional buttons
-  - !include { file: buttons/safe_mode_restart_button.yaml }
-  - !include { file: buttons/factory_reset_button.yaml }
-  - !include { file: buttons/shutdown_button.yaml }
+  - !include { file: ../buttons/safe_mode_restart_button.yaml }
+  - !include { file: ../buttons/factory_reset_button.yaml }
+  - !include { file: ../buttons/shutdown_button.yaml }
 
   # Scan Wifi button (require wifi_info text sensor to be present to display results)
   # WARN: Performing the scan will disconnect device from current WiFi
-  - !include { file: buttons/scan_wifi_button.yaml }
+  - !include { file: ../buttons/scan_wifi_button.yaml }
 
   # display buttons
-  - !include { file: buttons/display_button.yaml, vars: { ix: "Refresh", display_id: "weact_display", command: "", mdi_icon: "refresh" } }
-  - !include { file: buttons/display_button.yaml, vars: { ix: "Next", display_id: "weact_display", command: "next", mdi_icon: "page-next" } }
-  - !include { file: buttons/display_button.yaml, vars: { ix: "Prev", display_id: "weact_display", command: "previous", mdi_icon: "page-previous" } }
-  - !include { file: buttons/display_page_button.yaml, vars: { page_ix: "blank", display_id: "weact_display" } }
+  - !include { file: ../buttons/display_button.yaml, vars: { ix: "Refresh", display_id: "weact_display", command: "", mdi_icon: "refresh" } }
+  - !include { file: ../buttons/display_button.yaml, vars: { ix: "Next", display_id: "weact_display", command: "next", mdi_icon: "page-next" } }
+  - !include { file: ../buttons/display_button.yaml, vars: { ix: "Prev", display_id: "weact_display", command: "previous", mdi_icon: "page-previous" } }
+  - !include { file: ../buttons/display_page_button.yaml, vars: { page_ix: "blank", display_id: "weact_display" } }
 
   # - platform: template
   #   name: "${devicename} Refresh"
@@ -202,219 +206,10 @@ button:
 #     mode: ALL_LOW
 
 # Include fonts for display
-<<: !include fonts/fonts_weeact_display.yaml
+<<: !include ../fonts/fonts_weeact_display.yaml
 
-# font:
-#   - file: 'fonts/Roboto-Medium.ttf'
-#     id: size_85_font
-#     size: 85
-#   - file: 'fonts/Roboto-Medium.ttf'
-#     id: size_75_font
-#     size: 75
-#   - file: 'fonts/Roboto-Medium.ttf'
-#     id: size_60_font
-#     size: 60
-#   - file: 'fonts/Roboto-Medium.ttf'
-#     id: size_50_font
-#     size: 50
-#   - file: 'fonts/Roboto-Medium.ttf'
-#     id: size_40_font
-#     size: 40
-#   - file: 'fonts/Roboto-Medium.ttf'
-#     id: size_30_font
-#     size: 30
-#   - file: 'fonts/Roboto-Medium.ttf'
-#     id: size_25_font
-#     size: 25
-#   - file: 'fonts/Roboto-Medium.ttf'
-#     id: size_20_font
-#     # glyphs:
-#     #   ['&', '@', '!', ',', '.', '?', '"', '%', '(', ')', '+', '-', '_', ':', '°', '0',
-#     #     '1', '2', '3', '4', '5', '6', '7', '8', '9', 'A', 'B', 'C', 'D', 'E',
-#     #     'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S',
-#     #     'T', 'U', 'V', 'W', 'X', 'Y', 'Z', ' ', 'a', 'b', 'c', 'd', 'e', 'f',
-#     #     'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't',
-#     #     'u', 'v', 'w', 'x', 'y', 'z', '/']
-#     size: 20
-#   - file: 'fonts/Roboto-Medium.ttf'
-#     id: size_15_font
-#     size: 15
-#   - file: 'fonts/Roboto-Medium.ttf'
-#     id: size_14_font
-#     size: 14
-#   - file: 'fonts/Roboto-Light.ttf'
-#     id: size_12_font
-#     size: 12
-#   - file: 'fonts/Roboto-Light.ttf'
-#     id: size_6_font
-#     size: 6
-#   - file: 'fonts/materialdesignicons-webfont.ttf'
-#     id: weather_font
-#     size: 120
-#     glyphs: [
-#       # Weather
-#       "\U000F0599", # mdi-weather-sunny
-#       "\U000F0590", # mdi-weather-cloudy
-#       "\U000F0596", # mdi-weather-pouring
-#       "\U000F067F", # mdi-weather-snowy-rainy
-#       "\U000F0F36", # mdi-weather-snowy-heavy
-#       "\U000F059E", # mdi-weather-windy-variant
-#       "\U000F0591", # mdi-weather-fog
-#       "\U000F0F31", # mdi-weather-night-partly-cloudy
-#       "\U000F0595", # mdi-weather-partly-cloudy
-#       "\U000F0597", # mdi-weather-rainy
-#       "\U000F0598", # mdi-weather-snowy
-#       "\U000F0594", # mdi-weather-clear-night
-#       "\U000F199F", # unknown
-#       ]
-#   - file: 'fonts/materialdesignicons-webfont.ttf'
-#     id: weather_temp_icon_font
-#     size: 25
-#     glyphs: [
-#       "\U000F0E03", # mdi-down
-#       "\U000F0E02", # mdi-up
-#       "\U000F058C", # raindrop
-#       "\U000F059D", # wind
-#       ]
-#   - file: 'fonts/materialdesignicons-webfont.ttf'
-#     id: measures_50_font
-#     size: 45
-#     glyphs: [
-#       "\U000F050F", # thermomether (temperature)
-#       "\U000F0F54", # home-thermomether (temperature)
-#       "\U000F0F55", # home-thermomether-outline (temperature)
-#       "\U000F058E", # water-percent (humidity)
-#       "\U000F0336", # lightbulb-outline (illuminance)
-#       "\U000F17FE", # sun-wireless (illuminance)
-#       "\U000F058F", # water-pump (water)
-#       ]
-#   - file: 'fonts/materialdesignicons-webfont.ttf'
-#     id: units_22_font
-#     size: 22
-#     glyphs: [
-#       "\U000F0504", # temperature-celcius
-#       "\U000F03F0", # percent (humidity)
-#       # "\U000", # illuminance
-#       # "\U000", # water
-#       ]
-#   - file: 'fonts/materialdesignicons-webfont.ttf'
-#     id: home_icon_font
-#     size: 24
-#     glyphs: [
-#       "\U000F0F48", # mdi-chair-rolling
-#       "\U000F02E3", # mdi-bed
-#       "\U000F04B9", # mdi-sofa
-#       "\U000F065A", # mdi-pot-steam
-#       "\U000F06D9", # mdi-garage
-#       "\U000F12BD", # mdi-stairs-up
-#       "\U000F112B", # mdi-home-roof
-#       "\U000F081A", # mdi-door
-#       "\U000F0DD3", # home-floor-negative-1
-#       "\U000F0DD2", # home-floor-0
-#       "\U000F0D80", # home-floor-1
-#       "\U000F02DC", # home
-#       "\U000F06A1", # home-outline
-#       "\U000F0710", # shovel (garden)
-#       "\U000F09F2", # flower-tulip-outline (garden)
-#       "\U000F058F", # water-pump (water)
-#       ]
-#   - file: 'fonts/materialdesignicons-webfont.ttf'
-#     id: weather_font_45
-#     size: 45
-#     glyphs: [
-#       # Moon
-#       "\U000F0F64", # new_moon
-#       "\U000F0F67", # waxing_crecent
-#       "\U000F0F61", # first_quarter
-#       "\U000F0F66", # waxing_gibbous
-#       "\U000F0F62", # full_moon
-#       "\U000F0F68", # waning_gibbous
-#       "\U000F0F63", # last_quarter
-#       "\U000F0F65", # waning_crescent
-#       "\U000F199F", # mdi-timer-sand-complete
-#       ]
-#   - file: 'fonts/materialdesignicons-webfont.ttf'
-#     id: sun_icon_font
-#     size: 20
-#     glyphs: [
-#       "\U000F059C", # sun rise
-#       "\U000F059B", # sun set
-#       "\U000F059A", # weather-sunset
-#       ]
-#   - file: 'fonts/materialdesignicons-webfont.ttf'
-#     id: wlan_icon_font
-#     size: 25
-#     glyphs: [
-#       "\U000F0920", # wifi-strength-1-alert
-#       "\U000F0922", # wifi-strenght-2
-#       "\U000F0925", # wifi-strenght-3
-#       "\U000F0928", # wifi-strenght-4
-#       "\U000F092E", # wifi-strength-off-outline
-#       ]
-
-# interval:
-#   - interval: ${display_updates_interval}
-#     then:
-#       - if:
-#           condition:
-#             not:
-#               - script.is_running: manual_pages
-#           then:
-#             - script.execute: cycle_pages_in_lux
-
-# script:
-#   - id: cycle_pages
-#     then:
-#       - display.page.show_next: weact_display
-#       - component.update: weact_display
-#   - id: cycle_pages_in_day
-#     then:
-#       - if:
-#           condition:
-#             text_sensor.state:
-#               id: time_of_day
-#               state: "DAY"
-#           then:
-#             - display.page.show_next: weact_display
-#             - while:
-#                 condition:
-#                   or:
-#                     - display.is_displaying_page: page_blank
-#                     - display.is_displaying_page: page_wifi_qr
-#                 then:
-#                   - display.page.show_next: weact_display
-#             - component.update: weact_display
-#           else:
-#             - display.page.show: page_blank
-#             - component.update: weact_display
-#   - id: cycle_pages_in_lux
-#     # parameters:
-#     #   sensor_name: string
-#     then:
-#       - if:
-#           condition:
-#             sensor.in_range:
-#               id: lux_garage
-#               above: 11
-#           then:
-#             - display.page.show_next: weact_display
-#             - while:
-#                 condition:
-#                   or:
-#                     - display.is_displaying_page: page_blank
-#                     - display.is_displaying_page: page_wifi_qr
-#                 then:
-#                   - display.page.show_next: weact_display
-#             - component.update: weact_display
-#           else:
-#             - display.page.show: page_blank
-#             - component.update: weact_display
-#   - id: manual_pages
-#     then:
-#       - delay: ${display_updates_manual_cycle_delay}
-
-<<: !include { file: scripts/interval_display_cycle_pages.yaml, vars: { display_id: weact_display, cycle_script: cycle_pages_in_lux, lux_sensor: lux_garage, lux_dark_threshold: 11, page_to_skip: page_wifi_qr } }
-
+# Scripts
+<<: !include { file: ../scripts/interval_display_cycle_pages.yaml, vars: { display_id: weact_display, cycle_script: cycle_pages_in_day, page_to_skip: page_wifi_qr } }
 
 # external_components:
 #   # - source: github://pr#4579

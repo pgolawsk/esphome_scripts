@@ -1,0 +1,17 @@
+---
+#* Set global variables for display scripts and cycle through pages
+# Pawelo, 20250202, created based on board_esp32__water_pump.yaml
+
+globals:
+  - id: global_display_cycle_page
+    type: int
+    # restore_value: true
+    initial_value: "3"
+  - id: global_display_current_cycle
+    type: int
+    # restore_value: true
+    initial_value: "0"
+  - id: global_display_enabled
+    type: int
+    # restore_value: true
+    initial_value: "1"

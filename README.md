@@ -169,11 +169,11 @@ To see full installation procedure please follow `esp_setup.sh` file and run spe
 Before running it please:
 
 - Copy `secrets_example.yaml` script into `secrets.yaml` and modify values for secret variables, like WiFi password
-- Review the script actions. See `esp12_dev.yaml` as example as it contains almost all available configurations with `!include <file>` files parameters. For full list of include file parameters please see inside specific include file.
+- Review the script actions. See `0_DEV/esp12_dev.yaml` as example as it contains almost all available configurations with `!include <file>` files parameters. For full list of include file parameters please see inside specific include file.
 
 #### Sample command
 
-`esphome -s devicename esp12f_office -s updates 30s -s room Office -s mqtt_room office run esp12f_THIddb_STr.yaml`
+`esphome -s devicename esp12f_office -s updates 30s -s room Office -s mqtt_room office run 0_PROD/esp12f-10_Office.yaml`
 
 To trigger only OTA update for particular IP please add `--device 192.168.x.x` at the end of above command.
 
@@ -195,7 +195,17 @@ Some scripts which have sensors or manipulators in 2 areas have the parameters f
 
 ## Repo description
 
+### Device script folders
+
+Those are primary folders to look for full device configurations.
+
+- `0_DEV` - folder contain development scripts (`esp*.yaml`) which are working but there is no physical device using them
+- `1_UAT` - folder contain scripts for devices not yet deployed on production
+- `2_PROD` - folder contain scripts for devices which are deployed on production
+
 ### Folders
+
+Remaining folder contain partial YAML configurations for single elements or sets which are used by above **Device script folders**.
 
 - `buttons` - list of buttons intended to include them under `button:` section;
   - folder contains also `set_of_...` files which contain multiple buttons (like for IR remote controls), but those should be included in `packages:` section

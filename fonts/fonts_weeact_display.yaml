@@ -3,46 +3,46 @@
 # Pawelo, 20240628, created
 
 font:
-  - file: 'fonts/Roboto-Medium.ttf'
+  - file: '../fonts/Roboto-Medium.ttf'
     id: size_85_font
     size: 85
-  - file: 'fonts/Roboto-Medium.ttf'
+  - file: '../fonts/Roboto-Medium.ttf'
     id: size_75_font
     size: 75
-  - file: 'fonts/Roboto-Medium.ttf'
+  - file: '../fonts/Roboto-Medium.ttf'
     id: size_60_font
     size: 60
-  - file: 'fonts/Roboto-Medium.ttf'
+  - file: '../fonts/Roboto-Medium.ttf'
     id: size_50_font
     size: 50
-  - file: 'fonts/Roboto-Medium.ttf'
+  - file: '../fonts/Roboto-Medium.ttf'
     id: size_45_font
     size: 45
-  - file: 'fonts/Roboto-Medium.ttf'
+  - file: '../fonts/Roboto-Medium.ttf'
     id: size_40_font
     size: 40
-  - file: 'fonts/Roboto-Medium.ttf'
+  - file: '../fonts/Roboto-Medium.ttf'
     id: size_30_font
     size: 30
-  - file: 'fonts/Roboto-Medium.ttf'
+  - file: '../fonts/Roboto-Medium.ttf'
     id: size_25_font
     size: 25
-  - file: 'fonts/Roboto-Medium.ttf'
+  - file: '../fonts/Roboto-Medium.ttf'
     id: size_20_font
     size: 20
-  - file: 'fonts/Roboto-Medium.ttf'
+  - file: '../fonts/Roboto-Medium.ttf'
     id: size_15_font
     size: 15
-  - file: 'fonts/Roboto-Medium.ttf'
+  - file: '../fonts/Roboto-Medium.ttf'
     id: size_14_font
     size: 14
-  - file: 'fonts/Roboto-Light.ttf'
+  - file: '../fonts/Roboto-Light.ttf'
     id: size_12_font
     size: 12
-  - file: 'fonts/Roboto-Light.ttf'
+  - file: '../fonts/Roboto-Light.ttf'
     id: size_6_font
     size: 6
-  - file: 'fonts/materialdesignicons-webfont.ttf'
+  - file: '../fonts/materialdesignicons-webfont.ttf'
     id: weather_font
     size: 120
     glyphs: [
@@ -61,7 +61,7 @@ font:
       "\U000F0594", # mdi-weather-clear-night
       "\U000F199F", # unknown
       ]
-  - file: 'fonts/materialdesignicons-webfont.ttf'
+  - file: '../fonts/materialdesignicons-webfont.ttf'
     id: weather_temp_icon_font
     size: 25
     glyphs: [
@@ -70,7 +70,7 @@ font:
       "\U000F058C", # raindrop
       "\U000F059D", # wind
       ]
-  - file: 'fonts/materialdesignicons-webfont.ttf'
+  - file: '../fonts/materialdesignicons-webfont.ttf'
     id: measures_50_font
     size: 45
     glyphs: [
@@ -83,7 +83,7 @@ font:
       "\U000F17FF", # sun-wireless-outline (illuminance)
       "\U000F058F", # water-pump (water)
       ]
-  - file: 'fonts/materialdesignicons-webfont.ttf'
+  - file: '../fonts/materialdesignicons-webfont.ttf'
     id: measures_40_font
     size: 37
     glyphs: [
@@ -96,7 +96,7 @@ font:
       "\U000F17FF", # sun-wireless-outline (illuminance)
       "\U000F058F", # water-pump (water)
       ]
-  - file: 'fonts/materialdesignicons-webfont.ttf'
+  - file: '../fonts/materialdesignicons-webfont.ttf'
     id: measures_30_font
     size: 28
     glyphs: [
@@ -109,7 +109,7 @@ font:
       "\U000F17FF", # sun-wireless-outline (illuminance)
       "\U000F058F", # water-pump (water)
       ]
-  - file: 'fonts/materialdesignicons-webfont.ttf'
+  - file: '../fonts/materialdesignicons-webfont.ttf'
     id: units_30_font
     size: 30
     glyphs: [
@@ -118,7 +118,7 @@ font:
       # "\U000", # illuminance
       # "\U000", # water
       ]
-  - file: 'fonts/materialdesignicons-webfont.ttf'
+  - file: '../fonts/materialdesignicons-webfont.ttf'
     id: units_22_font
     size: 22
     glyphs: [
@@ -127,7 +127,7 @@ font:
       # "\U000", # illuminance
       # "\U000", # water
       ]
-  - file: 'fonts/materialdesignicons-webfont.ttf'
+  - file: '../fonts/materialdesignicons-webfont.ttf'
     id: home_icon_font
     size: 24
     glyphs: [
@@ -148,7 +148,7 @@ font:
       "\U000F09F2", # flower-tulip-outline (garden)
       "\U000F058F", # water-pump (water)
       ]
-  - file: 'fonts/materialdesignicons-webfont.ttf'
+  - file: '../fonts/materialdesignicons-webfont.ttf'
     id: weather_font_45
     size: 45
     glyphs: [
@@ -163,7 +163,7 @@ font:
       "\U000F0F65", # waning_crescent
       "\U000F199F", # mdi-timer-sand-complete
       ]
-  - file: 'fonts/materialdesignicons-webfont.ttf'
+  - file: '../fonts/materialdesignicons-webfont.ttf'
     id: sun_icon_font
     size: 20
     glyphs: [
@@ -171,7 +171,7 @@ font:
       "\U000F059B", # sun set
       "\U000F059A", # weather-sunset
       ]
-  - file: 'fonts/materialdesignicons-webfont.ttf'
+  - file: '../fonts/materialdesignicons-webfont.ttf'
     id: wlan_icon_font
     size: 25
     glyphs: [
@@ -181,7 +181,7 @@ font:
       "\U000F0928", # wifi-strenght-4
       "\U000F092E", # wifi-strength-off-outline
       ]
-  - file: 'fonts/materialdesignicons-webfont.ttf'
+  - file: '../fonts/materialdesignicons-webfont.ttf'
     id: cycle_icon_font
     size: 24
     glyphs: [
