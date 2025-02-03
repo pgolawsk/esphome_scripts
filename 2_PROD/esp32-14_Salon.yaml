@@ -1,5 +1,5 @@
 ---
-#* ESP32s3 - Salon device configuration
+#* ESP32s3 - Salon device script
 #* Please read README.md for details
 #* For pinout see: file://../pinouts/ESP32s3_N16R8_2xTypeC_dev_board_pinout.jpg
 # NOTE: ESP32s3 - RGB led is on GPIO48
@@ -23,6 +23,7 @@
 # Pawelo, 20250130, added framework_version variable
 # Pawelo, 20250131, adjusted BME68x BSEC sensor variables
 # Pawelo, 20250201, renamed and moved to 2_PROD folder
+# Pawelo, 20250203, switch to arduino framework version "latest" to enable internal temperature sensor
 
 #! run with this command to override substitutions
 # esphome -s devicename espXX -s updates 1min -s room <Room name> -s mqtt_room <room> run esp32_MMmm_SSss__PP.yaml --device 192.168.x.x
@@ -31,13 +32,13 @@
 substitutions:
   devices: "Temperature, Humidity, Pressure, Gas, eCO2, VOC via BME680, Illuminance via BH1750, IR Receiver, IR Transmitter, RTTTL Buzzer, mic via INMP441"
   project_name: "pgolawsk.esp_home"
-  version: "20250201"
+  version: "20250203"
 
   # required by ../includes/board_esp32.yaml script
   framework_type: arduino # "arduino" or "esp-idf"
   # framework_type: esp-idf # "arduino" or "esp-idf"
-  framework_version: recommended # or specific version like "latest", "recommended", "4.4.4"
-  # framework_version: latest # or specific version like "latest", "recommended", "4.4.4"
+  # framework_version: recommended # or specific version like "latest", "recommended", "4.4.4"
+  framework_version: latest # or specific version like "latest", "recommended", "4.4.4"
   board_variant: "s3" # empty for ESP32, other values to display like c3, c6, s2, s3
   board: "esp32-s3-devkitc-1" # like: esp32dev, esp32cam, esp32-c3-devkitm-1, esp32-s3-devkitc-1, lolin_s2_mini, full list here https://registry.platformio.org/platforms/platformio/espressif32/boards?version=5.3.0
   flash_size: 8MB # One of 2MB, 4MB, 8MB, 16MB or 32MB
@@ -144,7 +145,7 @@ binary_sensor:
   - !include ../sensors/binary_ha_connected.yaml
 
 sensor:
-  # - !include sensors/temp_internal.yaml
+  - !include ../sensors/temp_internal.yaml #! requires "4.4.4" framework version - use latest as framework_version
   - !include ../sensors/uptime.yaml
   - !include ../sensors/wifi_signal.yaml
   - !include ../sensors/wifi_strength.yaml
