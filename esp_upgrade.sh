@@ -13,6 +13,7 @@
 # Pawelo 20250201, added esp32-38 as Test32ttgo device
 # Pawelo 20250201, moved some scripts to 0_DEV, 1_UAT or 2_PROD folders
 # Pawelo 20250202, added test of compile on each script in 0_DEV, 1_UAT, 2_PROD
+# Pawelo 20250203, exclude not ready (.yml) scripts from compilation tests
 
 #*###########################
 #*** OR Upgrade ESP Home on mac/win
@@ -39,6 +40,7 @@ esphome version
 #? uses tr to change uppercase to lowercase
 #? sed s/_.*// to delete all after 1st underscore
 #? sed s/_/-/g to replace underscores with dashes as those are used as DHCP hostname
+#! some scripts were renamed to .yml from .yaml to exclude them from compilation tests
 find 0_DEV -maxdepth 1 -type f -name "*.yaml" -exec echo ........ DEV COMPILE {} ....... \; -exec sh -c 'esphome -s devicename $(basename {} .yaml | tr "[:upper:]" "[:lower:]" | sed "s/_/-/g") compile {}' sh {} \;
 find 1_UAT -maxdepth 1 -type f -name "*.yaml" -exec echo ........ UAT COMPILE {} ....... \; -exec sh -c 'esphome -s devicename $(basename {} .yaml | tr "[:upper:]" "[:lower:]" | sed "s/_.*// ; s/_/-/g") compile {}' sh {} \;
 find 2_PROD -maxdepth 1 -type f -name "*.yaml" -exec echo ........ PROD COMPILE {} ....... \; -exec sh -c 'esphome -s devicename $(basename {} .yaml | tr "[:upper:]" "[:lower:]" | sed "s/_.*// ; s/_/-/g") compile {}' sh {} \;
