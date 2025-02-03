@@ -15,6 +15,7 @@
 # Pawelo, 20250109, added option to select desired framework_type (for board include)
 # Pawelo, 20250130, added framework_version variable
 # Pawelo, 20250202, moved to 0_DEV folder
+# Pawelo, 20250203, fix for led - entity_category was missing
 
 #! run with this command to override substitutions
 # esphome -s devicename espXX -s updates 1min -s room <Room name> -s mqtt_room <room> run esp32_MMmm_SSss__PP.yaml --device 192.168.x.x
@@ -115,7 +116,7 @@ output:
 
 light:
   # LED
-  - !include { file: ../lights/led.yaml, vars: { ix: "", platform: "binary", off_delay: "5s" } }
+  - !include { file: ../lights/led.yaml, vars: { ix: "", platform: "binary", off_delay: "5s", entity_category: "diagnostic" } }
 
 switch:
   # LED cycle
