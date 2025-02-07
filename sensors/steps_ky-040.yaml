@@ -1,0 +1,20 @@
+---
+#* Steps sensor for KY-040 rotary encoder
+# Pawelo, 20250207, created based on https://esphome.io/components/sensor/rotary_encoder.html
+
+platform: rotary_encoder
+name: "$room Encoder${ix}"
+id: encoder${ix}
+pin_a: ${clk}
+pin_b: ${dt}
+# icon: mdi:arrow-expand-vertical
+state_topic: $devicename/encoder${ix}
+on_value:
+  - mqtt.publish:
+      topic: "$mqtt_location/$mqtt_room/encoder${ix}"
+      payload: !lambda |-
+        return to_string(id(encoder${ix}).state);
+# on_clockwise:
+#   - logger.log: "Turned Clockwise"
+# on_anticlockwise:
+#   - logger.log: "Turned Anticlockwise"

@@ -1,0 +1,28 @@
+---
+#* Joystick sensor for KY-023
+#? include this twice (for X and Y axis) + separate include binary sensor for button
+# Pawelo, 20250207, created based on https://community.home-assistant.io/t/using-a-joystick-with-esphome/285762/3
+# Pawelo, 20250207, remapped sensor values to -100% to 100% (using filters)
+
+platform: adc
+name: "$room Joystick${ix}"
+id: joystick${ix}
+pin: ${gpio}
+attenuation: auto
+update_interval: 300ms
+icon: mdi:gamepad
+state_topic: $devicename/joystick${ix}
+on_value:
+  - mqtt.publish:
+      topic: "$mqtt_location/$mqtt_room/joystick${ix}"
+      payload: !lambda |-
+        return to_string(id(joystick${ix}).state);
+filters:
+  - offset: -1.7 # translate midpoint 1.7V to 0%
+  - multiply: 90.90 # translate 1.1V to 100%
+  - delta: 1.0
+  - clamp:
+      min_value: -100
+      max_value: 100
+unit_of_measurement: "%"
+accuracy_decimals: 0
