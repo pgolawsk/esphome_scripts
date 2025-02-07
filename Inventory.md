@@ -195,6 +195,8 @@ Author: Pawel Golawski, <pawel.golawski@2com.pl>
 - 3x `G` - **BME680** - Temperature, Humidity, Pressure, Gas Resistance
 - 0x `H` - **AHTx21** - Temperature and Humidity
 - 1x `I` - **IR Receiver 38KHz** (Open-Smart, 1pin with signal)
+- 1x `J` - **KY-023** - Direction, Steps from small joystick
+- 2x `K` - **KY-040** - Direction, Steps from rotary encoder
 - 2x `L` - **LD2410B** - Radar sensor 24GHz
 - 2x `L` - **LD2410C** - Radar sensor 24GHz
 - 2x `L` - **LD2420** - Radar sensor 24GHz
@@ -220,6 +222,8 @@ Author: Pawel Golawski, <pawel.golawski@2com.pl>
 - 1x `i` - **IR Transmitter 38KHz** (Open-Smart, 1pin with signal)
 - 6x `r` - **9032/9025** - Passive Buzzer 9mm diameter x 3.2/2.5mm height (soldered package)
 - 15x `r` - **9032/9025** - Passive Buzzer 9mm diameter x 3.2/2.5mm height
+- 1x `l8x8` - **5050 RGB matrix** WS2812 LED 5050 RGB 8x8
+- 1x `l1` - **5050 RGB strip** WS2812 LED 5050 RGB strip (1m - 60leds per 1m)
 - 11x (-1) `m` - **Max98357** -  I2S mono amplifier
   > Note: Amp use cases ![Max98357 use case image](pinouts/MAX98357_use_cases.jpg "Max98357 use case")
 - 4x `s4` - small speaker 4 Ohm (1 - 3 W)
@@ -252,7 +256,7 @@ Author: Pawel Golawski, <pawel.golawski@2com.pl>
 
 #### Full configurations (bought as device)
 
-- 1x DYI Smart Switch (on bk7231n) - 230V
+- 1x DIY Smart Switch (on bk7231n) - 230V
 - 1x ESP32-CAM
 
 #### Power modules/boards and relays
@@ -295,8 +299,7 @@ To be added
 #### Entrance
 
 - PRODUCTION since: ~ 2022
-- Script `esp12f_THIPGbdss_BGr__G.yaml`.
-- Alias `esp12f-11_Entrance_Entry`.
+- Script `file://./2_PROD/esp12f-11_Entrance_Entry.yaml`
 
 ESP12F board with Temperature, Humidity, Pressure, Gas and Illuminance sensors. Powered from intercom 12V bus. Board has a switch to open gate and sensor to check if intercom button is pressed. Whole device is put inside intercom.
 
@@ -312,8 +315,7 @@ Components:
 #### Upstairs
 
 - PRODUCTION since: ~ 2022
-- Script `esp12f_THP_P.yaml`.
-- Alias `esp12f-15_Upstairs`.
+- Script `file:/.//2_PROD/esp12f-15_Upstairs.yaml`
 
 ESP12F board with Temperature, Humidity, and Pressure sensors. Powered from intercom 12V bus.
 
@@ -330,8 +332,7 @@ TBD
 #### Salon
 
 - PRODUCTION since: 2025 Jan
-- Script `esp32s3_THIGPEOdbi_GBIi.yaml`.
-- Alias `esp32-14_Salon`.
+- Script `file://./2_PROD/esp32-14_Salon.yaml`
 
 ESP32 board with IR Receiver and IR Transmitter, Temperature, Humidity, Pressure and Illuminance sensors. Includes Voice Assistant as well (mic and speaker) Powered from 230V.
 
@@ -354,8 +355,7 @@ Components:
 #### Shades
 
 - PRODUCTION since: June 2024
-- Script `esp32_THIUGPdb_GSUBr_display.yaml`.
-- Alias `esp32-05_Shades_WinterGardenUpp`.
+- Script `file://./2_PROD/esp32-05_Shades_WinterGardenUpp.yaml`
 
 ESP32 board with Temperature, Humidity, Pressure, Gas Resistance, UV and Illuminance sensors. Powered from alarm/security 12V bus.
 
@@ -375,9 +375,8 @@ Components:
 
 #### Attic
 
-- PRODUCTION since: TBD
-- Script `esp32_THPI_SBPD.yaml`.
-- Alias `esp32-39_Attic`.
+- PRODUCTION since: Feb 2025
+- Script `file://./1_UAT/esp32-39_Attic.yaml`
 
 ESP32 board with Temperature, Humidity, Pressure and Illuminance sensors. Powered from 230V.
 
@@ -397,8 +396,7 @@ Components:
 #### Garage, Pump
 
 - PRODUCTION since: Sep 2023
-- Script `esp32_THIWdb_SBYr_display.yaml`.
-- Alias `esp32-35_Pump_Garage`.
+- Script `file://./2_PROD/esp32-35_Pump_Garage.yaml`
 
 ESP32 board with Temperature, Humidity, and Illuminance sensors. Powered from micro USB-A. Saves total counters in FRAM.
 
@@ -418,8 +416,7 @@ Components:
 #### Aquarium Window
 
 - PRODUCTION since: ~ 2022
-- Script `esp12f_THIddb_STr.yaml`.
-- Alias `esp12f-25_AquariumWindow`.
+- Script `file://./2_PROD/esp12f-25_AquariumWindow.yaml`
 
 ESP12F board with Temperature, Humidity, Illuminance and Color sensors. Powered from alarm/security 12V bus.
 
@@ -436,8 +433,7 @@ Components:
 #### Under Floor
 
 - PRODUCTION since: ~ 2022
-- Script `esp12f_THdb_SDr.yaml`.
-- Alias `esp12f-21_Underfloor`.
+- Script `file://./2_PROD/esp12f-21_Underfloor.yaml`
 
 ESP12F board with Temperature, Humidity sensors. Powered from 12V DC (from 230V charger).
 
