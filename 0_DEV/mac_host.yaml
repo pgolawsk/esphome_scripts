@@ -1,6 +1,7 @@
 ---
 #* Mac host emulation for ESPHome
 # Pawelo, 20240830, created based on https://esphome.io/components/display/sdl#sdl
+# Pawelo, 20250207, moved to 0_DEV folder
 
 #* FIRST install software run those:
 # brew install sdl2 libsodium (install step)

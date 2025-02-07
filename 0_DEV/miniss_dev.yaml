@@ -2,10 +2,11 @@
 #* Mini Smart Switch (BK7231N chip) board, script name reflecting configuration esp12f_MMmm_SSss__PP.yaml
 #* Please read README.md for details
 # Pawelo, 20230311, created based on https://www.elektroda.pl/rtvforum/topic3912748.html
+# Pawelo, 20250207, moved to 0_DEV folder
 #
-#! run with this command to override sunstitutions
+#! run with this command to override substitutions
 # esphome -s devicename esp-xx -s updates 1min -s room <Room name> -s mqtt_room <room> -s delay_off <time of active output> run esp01s_SSss_MMmm__PP.yaml --device 192.168.x.x
-# heare are default values if those are not given via command line
+# here are default values if those are not given via command line
 substitutions:
   devices: "Single Relay Switch"
   project_name: "pgolawsk.esp_home"
