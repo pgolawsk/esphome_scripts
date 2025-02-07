@@ -29,6 +29,7 @@
 # Pawelo, 20250130, added framework_version variable
 # Pawelo, 20250130, added possibility for esp8266 of BME680 BSEC algorithm for IAQ, CO2 and VOC
 # Pawelo, 20250201, moved to 0_DEV folder
+# Pawelo, 20250207, testing support for rotary encoder and X-Y joystick
 
 #! run with this command to override substitutions
 # esphome -s devicename espXX -s updates 1min -s room <Room name> -s mqtt_room <room> run esp32_MMmm_SSss__PP.yaml --device 192.168.x.x
@@ -63,7 +64,7 @@ substitutions:
 
 # Override some settings included below in _board_ setup
 <<: !include ../includes/time_sntp_with_sun.yaml #WARN: this is to make sunrise and sunset sensor to be updated on every time sync event
-<<: !include ../includes/mqtt_with_rtttl.yaml #WARN: override mqtt with RTTTL support if needed (buzzer and status led)
+# <<: !include ../includes/mqtt_with_rtttl.yaml #WARN: override mqtt with RTTTL support if needed (buzzer and status led)
 <<: !include { file: ../includes/logger_level.yaml, vars: { level: INFO, baud_rate: 115200 } } #WARN: override default log level to specific one
 # <<: !include { file: ../includes/logger_level.yaml, vars: { level: DEBUG, baud_rate: 115200 } } #WARN: override default log level to specific one
 # <<: !include { file: ../includes/logger_level.yaml, vars: { level: VERY_VERBOSE, baud_rate: 115200 } } #WARN: override default log level to specific one
@@ -82,27 +83,27 @@ substitutions:
 <<: !include { file: ../interfaces/debug.yaml, vars: { update_interval: "5s" } }
 <<: !include { file: ../interfaces/i2c.yaml, vars: { bus_id: "bus_a", sda: "GPIO21", scl: "GPIO20" } }
 # <<: !include { file: ../interfaces/dallas.yaml, vars: { gpio: "GPIO10" } }
-<<: !include { file: ../interfaces/rtttl.yaml, vars: { ix: "" } }
+# <<: !include { file: ../interfaces/rtttl.yaml, vars: { ix: "" } }
 # <<: !include { file: ../interfaces/spi.yaml, vars: { spi_id: "spi_a", clk: "GPIO6", mosi: "GPIO7", miso: "GPIO9" } }
 # <<: !include { file: ../interfaces/spi_rc522.yaml, vars: { spi_id: "spi_a", cs: "GPIO5", reset: "GPIO4" } }
-<<: !include { file: ../interfaces/i2c_bme68x_bsec2.yaml, vars: { ix: "", address: "0x77", temp_offset: -1.7 } }
+# <<: !include { file: ../interfaces/i2c_bme68x_bsec2.yaml, vars: { ix: "", address: "0x77", temp_offset: -1.7 } }
 # <<: !include { file: ../interfaces/ir_receiver.yaml, vars: { gpio: "GPIO3", dump: "nec", rmt_channel: 2 } } # for ESP32c3 can be 2-3, for ESP32 can be 0-7, for ESP32s2 0-3, for ESP32s3 4-7
 # <<: !include { file: ../interfaces/ir_transmitter.yaml, vars: { gpio: "GPIO4", rmt_channel: 0 } } # for ESP32c3 can be 0-1, for ESP32 can be 0-7, for ESP32s2 0-3, for ESP32s3 0-3
 
 # I2S Audio (!cannot be used with "I2S Sound Level Meter" below)
-i2s_audio:
-  - <<: !include { file: ../i2s/i2s_audio.yaml, vars: { i2s_id: "i2s_all", ws_pin: "GPIO6", sck_pin: "GPIO7" } }
-  # - <<: !include { file: ../i2s/i2s_audio.yaml, vars: { i2s_id: "i2s_in", ws_pin: "GPIO6", sck_pin: "GPIO7" } }
-  # - <<: !include { file: ../i2s/i2s_audio.yaml, vars: { i2s_id: "i2s_out", ws_pin: "GPIO17", sck_pin: "GPIO16" } }
+# i2s_audio:
+#   - <<: !include { file: ../i2s/i2s_audio.yaml, vars: { i2s_id: "i2s_all", ws_pin: "GPIO6", sck_pin: "GPIO7" } }
+#   # - <<: !include { file: ../i2s/i2s_audio.yaml, vars: { i2s_id: "i2s_in", ws_pin: "GPIO6", sck_pin: "GPIO7" } }
+#   # - <<: !include { file: ../i2s/i2s_audio.yaml, vars: { i2s_id: "i2s_out", ws_pin: "GPIO17", sck_pin: "GPIO16" } }
 
-<<: !include { file: ../i2s/mic.yaml, vars: { ix: "", i2s_id: "i2s_all", sd_pin: "GPIO5", channel: "left", bits_per_sample: 24bit, use_apll: true } }
+# <<: !include { file: ../i2s/mic.yaml, vars: { ix: "", i2s_id: "i2s_all", sd_pin: "GPIO5", channel: "left", bits_per_sample: 24bit, use_apll: true } }
 
-# <<: !include { file: ../i2s/media_player.yaml, vars: { ix: "", i2s_id: "i2s_all", dout_pin: "GPIO2", mode: "mono" } } #! media_player do not work on C3 - do not compile
-<<: !include { file: ../i2s/speaker.yaml, vars: { ix: "", i2s_id: "i2s_all", dout_pin: "GPIO2", channel: "mono" } }
+# # <<: !include { file: ../i2s/media_player.yaml, vars: { ix: "", i2s_id: "i2s_all", dout_pin: "GPIO2", mode: "mono" } } #! media_player do not work on C3 - do not compile
+# <<: !include { file: ../i2s/speaker.yaml, vars: { ix: "", i2s_id: "i2s_all", dout_pin: "GPIO2", channel: "mono" } }
 
-# <<: !include { file: ../i2s/voice_assistant_mic_only.yaml, vars: { mic_id: "mic" } }
-# <<: !include { file: ../i2s/voice_assistant_mplayer.yaml, vars: { mic_id: "mic", mplayer_id: "mplayer" } }
-<<: !include { file: ../i2s/voice_assistant_speaker.yaml, vars: { mic_id: "mic", speaker_id: "spk" } }
+# # <<: !include { file: ../i2s/voice_assistant_mic_only.yaml, vars: { mic_id: "mic" } }
+# # <<: !include { file: ../i2s/voice_assistant_mplayer.yaml, vars: { mic_id: "mic", mplayer_id: "mplayer" } }
+# <<: !include { file: ../i2s/voice_assistant_speaker.yaml, vars: { mic_id: "mic", speaker_id: "spk" } }
 
 # packages:
 #   # I2S Sound Level Meter (!cannot be used with "I2S Audio" above)
@@ -140,15 +141,21 @@ text_sensor:
 
   # Air Quality sensor
   # - !include { file: ../sensors/text_air_quality.yaml }
-  - !include ../sensors/text_air_quality_bme68x.yaml
-  - !include { file: ../sensors/text_IAQ_accuracy_bme68x.yaml, vars: { platform: "bme68x_bsec2" } }
+  # - !include ../sensors/text_air_quality_bme68x.yaml
+  # - !include { file: ../sensors/text_IAQ_accuracy_bme68x.yaml, vars: { platform: "bme68x_bsec2" } }
 
 binary_sensor:
   # HA Connected
   - !include ../sensors/binary_ha_connected.yaml
 
   # Voice Assistant
-  - !include { file: ../sensors/binary_voice_assistant_button.yaml, vars: { gpio: GPIO0 } }
+  # - !include { file: ../sensors/binary_voice_assistant_button.yaml, vars: { gpio: GPIO0 } }
+
+  # Steps encoder button
+  # - !include { file: ../sensors/binary_button.yaml, vars: { ix: "", gpio: "GPIO10", inverted: true } }
+
+  # Joystick button
+  - !include { file: ../sensors/binary_button.yaml, vars: { ix: "", gpio: "GPIO10", inverted: true } }
 
 sensor:
   - !include ../sensors/temp_internal.yaml
@@ -170,7 +177,7 @@ sensor:
 
   # Temperature, Humidity, Pressure and Gas Resistance sensor
   # - !include { file: ../sensors/temp_hum_press_gas_BME680.yaml, vars: { ix: "", bus_id: "bus_a", address: "0x77", temp_offset: 0.0, hum_offset: 0.0, pressure_offset: 0.0 } }
-  - !include { file: ../sensors/temp_hum_press_gas_aqi_co2_voc_bme680.yaml, vars: { platform: "bme68x_bsec2", ix: "", bus_id: "bus_a", address: "0x77", temp_offset: -1.7, hum_offset: -3.0, pressure_offset: 7.0 } }
+  # - !include { file: ../sensors/temp_hum_press_gas_aqi_co2_voc_bme680.yaml, vars: { platform: "bme68x_bsec2", ix: "", bus_id: "bus_a", address: "0x77", temp_offset: -1.7, hum_offset: -3.0, pressure_offset: 7.0 } }
 
   # Illuminance sensor
   # - !include { file: ../sensors/lux_BH1750.yaml, vars: { ix: "", bus_id: "bus_a", address: "0x23" } }
@@ -178,6 +185,13 @@ sensor:
   # TVOC and eCO2 sensor
   # - !include { file: ../sensors/tvoc_eco2_SGP30.yaml, vars: { ix: "", bus_id: "bus_a", address: "0x58" } }
   # - !include { file: ../sensors/tvoc_eco2_ENS160.yaml, vars: { ix: "", bus_id: "bus_a", address: "0x53" } }
+
+  # Steps sensor (Rotary Encoder KY-040)
+  # - !include { file: ../sensors/steps_KY-040.yaml, vars: { ix: "", clk: "GPIO9", dt: "GPIO7" } }
+
+  # Joystick sensor (KY-023)
+  - !include { file: ../sensors/joystick_KY-023.yaml, vars: { ix: "X", gpio: "GPIO0" } }
+  - !include { file: ../sensors/joystick_KY-023.yaml, vars: { ix: "Y", gpio: "GPIO1" } }
 
 button:
   # Restart, reset and shutdown buttons
@@ -204,7 +218,7 @@ button:
   # - !include { file: ../buttons/rc_nec_button.yaml, vars: { receiver: "LG_TV", action: "1", address: 0xFB04, command: 0xEE11 } }
   # - !include { file: ../buttons/rc_nec_button.yaml, vars: { receiver: "LG_TV", action: "HOME", address: 0xFB04, command: 0xBC43 } }
 
-output:
+# output:
   # LED blue (C3 supermini)
   # - !include { file: ../outputs/led.yaml, vars: { ix: "", gpio: "GPIO8", inverted: true } }
 
@@ -216,33 +230,33 @@ output:
   # LED blue (S3, C3 supermini plus)
   # - !include { file: ../outputs/led.yaml, vars: { ix: "blue", gpio: "GPIO44", inverted: true } }
   #! blue lead is not on GPIO7-9 on C3, need to check further which GPIO it's connected. 0-2 are not
-  - !include { file: ../outputs/led.yaml, vars: { ix: "", gpio: "GPIO9", inverted: true } }
+  # - !include { file: ../outputs/led.yaml, vars: { ix: "", gpio: "GPIO9", inverted: true } }
 
   # LED RGB (required only when RGB led is used as status led)
   # - !include { file: ../outputs/led_rgb.yaml, vars: { ix: "", ID: "rgb_led" } }
 
   # Passive/RTTTL Buzzer
-  - !include { file: ../outputs/passive_buzzer_ledc.yaml, vars: { ix: "", gpio: "GPIO4" } }
+  # - !include { file: ../outputs/passive_buzzer_ledc.yaml, vars: { ix: "", gpio: "GPIO4" } }
 
 light:
   # LED green (S3)
   # - !include { file: ../lights/led.yaml, vars: { ix: "green", platform: "binary", off_delay: "1days", entity_category: "" } }
   # LED blue (S3, C3 supermini/plus)
-  - !include { file: ../lights/led.yaml, vars: { ix: "", platform: "status_led", off_delay: "1days", entity_category: "diagnostic" } }
+  # - !include { file: ../lights/led.yaml, vars: { ix: "", platform: "status_led", off_delay: "1days", entity_category: "diagnostic" } }
   # LED RGB (S3, C3 supermini plus)
   - !include { file: ../lights/led_rgb.yaml, vars: { ix: "", gpio: "GPIO8", entity_category: "", rmt_channel: 1 } }
   #- !include { file: ../lights/led_rgb_neopixelbus.yaml, vars: { ix: "", gpio: "GPIO8", entity_category: "" } }
 
 switch:
   # LED cycle
-  - !include { file: ../switches/led_cycle.yaml, vars: { ID: "led", cycles: 3, on_delay: "1s" , off_delay: "1000ms" } }
+  # - !include { file: ../switches/led_cycle.yaml, vars: { ID: "led", cycles: 3, on_delay: "1s" , off_delay: "1000ms" } }
 
   # Passive/RTTTL Buzzer
-  - !include { file: ../switches/passive_buzzer.yaml, vars: { ix: "", off_delay: "500ms" } }
+  # - !include { file: ../switches/passive_buzzer.yaml, vars: { ix: "", off_delay: "500ms" } }
   # - !include { file: ../switches/passive_buzzer_cycle.yaml, vars: { ix: "", cycles: 2, freq: "1000Hz", on_delay: "500ms", off_delay: "200ms" } }
   # - !include { file: ../switches/passive_buzzer_cycle.yaml, vars: { ix: "", cycles: 3, freq: "2000Hz", on_delay: "500ms", off_delay: "200ms" } }
   # - !include { file: ../switches/passive_buzzer_cycle.yaml, vars: { ix: "", cycles: 4, freq: "800Hz", on_delay: "500ms", off_delay: "200ms" } }
 
   # RTTTL Play (passive_buzzer)
-  - !include { file: ../switches/rtttl_play.yaml, vars: { ix: "" } }
+  # - !include { file: ../switches/rtttl_play.yaml, vars: { ix: "" } }
   # - !include { file: ../switches/rtttl_play.yaml, vars: { ix: "2", mqtt_location: "${mqtt_location2}", mqtt_room: "${mqtt_room2}" } }
