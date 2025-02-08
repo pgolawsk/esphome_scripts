@@ -14,6 +14,7 @@
 # Pawelo 20250201, moved some scripts to 0_DEV, 1_UAT or 2_PROD folders
 # Pawelo 20250202, added test of compile on each script in 0_DEV, 1_UAT, 2_PROD
 # Pawelo 20250203, exclude not ready (.yml) scripts from compilation tests
+# Pawelo 20250125, moved esp32-39 Attic device to 2_PROD
 
 #*###########################
 #*** OR Upgrade ESP Home on mac/win
@@ -54,11 +55,10 @@ esphome -s devicename esp12f-15 -s updates 30s -s room Upstairs -s mqtt_room ups
 esphome -s devicename esp12f-21 -s updates 30s -s room Underfloor -s mqtt_location measures -s mqtt_room underfloor run 2_PROD/esp12f-21_Underfloor.yaml
 esphome -s devicename esp12f-25 -s updates 30s -s room AquariumW -s mqtt_location measures -s mqtt_room aquarium_window run 2_PROD/esp12f-25_AquariumWindow.yaml
 esphome -s devicename esp32-35 -s updates 1min -s room Pump -s mqtt_location measures -s mqtt_room pump -s room2 Garage -s mqtt_location2 outside -s mqtt_room2 garage run 2_PROD/esp32-35_Pump_Garage.yaml
-#esphome -s devicename esp32-39 -s updates 1min -s room Attic -s mqtt_location home -s mqtt_room attic run 2_PROD/esp32-39_Attic.yaml
+esphome -s devicename esp32-39 -s updates 1min -s room Attic -s mqtt_location home -s mqtt_room attic run 2_PROD/esp32-39_Attic.yaml
 
 #* Future devices via OTA (with "compile" instead of "run")
 esphome -s devicename esp12f-10 -s updates 30s -s room Office -s mqtt_room office compile 1_UAT/esp12f-10_Office.yaml
-esphome -s devicename esp32-39 -s updates 1min -s room Attic -s mqtt_location home -s mqtt_room attic compile 1_UAT/esp32-39_Attic.yaml
 
 #* New exploring devices
 esphome -s devicename esp12f-29 -s updates 30s -s room Test -s mqtt_location measures -s mqtt_room test run 0_DEV/esp12f_dev.yaml
