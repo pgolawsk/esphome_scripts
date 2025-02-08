@@ -26,6 +26,7 @@
 # Pawelo, 20250109, added option to select desired framework_type (for board include)
 # Pawelo, 20250130, added framework_version variable
 # Pawelo, 20250202, renamed and moved to 2_PROD folder
+# Pawelo, 20250208, added BSEC2 i2c_id selection
 
 #! run with this command to override substitutions
 # esphome -s devicename espXX -s updates 1min -s room <Room name> -s mqtt_room <room> run esp32_MMmm_SSss__PP.yaml --device 192.168.x.x
@@ -34,7 +35,7 @@
 substitutions:
   devices: "Temperature, Humidity, Pressure, Gas Resistance via BME680/SHT41 and UV, Illuminance via LTR390/BH1750"
   project_name: "pgolawsk.esp_home"
-  version: "20250202"
+  version: "20250208"
 
   # required by includes/board_esp32.yaml script
   framework_type: arduino # "arduino" or "esp-idf"
@@ -93,8 +94,8 @@ substitutions:
 i2c:
   - !include { file: ../interfaces/i2c__include.yaml, vars: { bus_id: "bus_a", sda: "GPIO21", scl: "GPIO22" } }
   - !include { file: ../interfaces/i2c__include.yaml, vars: { bus_id: "bus_b", sda: "GPIO17", scl: "GPIO18" } }
-# <<: !include { file: ../interfaces/dallas.yaml, vars: { gpio: "GPIO10" } }
 <<: !include { file: ../interfaces/rtttl.yaml, vars: { ix: "U" } }
+<<: !include { file: ../interfaces/i2c_bme68x_bsec2.yaml, vars: { ix: "", bus_id: "bus_a", address: "0x77", temp_offset: 0.0 } }
 
 text_sensor:
   - !include ../sensors/text_uptime.yaml
@@ -112,6 +113,8 @@ text_sensor:
 
   # Air Quality sensor
   # - !include { file: ../sensors/text_air_quality.yaml }
+  - !include ../sensors/text_air_quality_bme68x.yaml
+  - !include { file: ../sensors/text_IAQ_accuracy_bme68x.yaml, vars: { platform: "bme68x_bsec2" } }
 
 binary_sensor:
   # HA Connected
@@ -138,7 +141,8 @@ sensor:
   # - !include { file: ../sensors/temp_hum_AHT2x.yaml, vars: { ix: "", bus_id: "bus_a", address: "0x38", temp_offset: 0.0, hum_offset: 0.0 } }
 
   # # Temperature, Humidity, Pressure and Gas Resistance sensor
-  - !include { file: ../sensors/temp_hum_press_gas_BME680.yaml, vars: { ix: "", bus_id: "bus_a", address: "0x77", temp_offset: 0.0, hum_offset: 0.0, pressure_offset: 0.0 } }
+  # - !include { file: ../sensors/temp_hum_press_gas_BME680.yaml, vars: { ix: "", bus_id: "bus_a", address: "0x77", temp_offset: 0.0, hum_offset: 0.0, pressure_offset: 0.0 } }
+  - !include { file: ../sensors/temp_hum_press_gas_aqi_co2_voc_bme680.yaml, vars: { platform: "bme68x_bsec2", ix: "", bus_id: "bus_a", address: "0x77", temp_offset: 0.0, hum_offset: 0.0, pressure_offset: 0.0 } }
 
   # Illuminance sensor
   # - !include { file: ../sensors/lux_BH1750.yaml, vars: { ix: "U", bus_id: "bus_a", address: "0x23" } }
@@ -226,20 +230,6 @@ select:
   # Display Cycle Interval selection
   # id: select_display_cycle_interval
   - !include { file: ../selects/display_cycle_interval.yaml, vars: { global_variable: "global_display_cycle_page", display_id: "weact_display" } }
-
-# globals:
-#   - id: global_display_cycle_page
-#     type: int
-#     # restore_value: true
-#     initial_value: "4"
-#   - id: global_display_current_cycle
-#     type: int
-#     # restore_value: true
-#     initial_value: "0"
-#   - id: global_display_enabled
-#     type: int
-#     # restore_value: true
-#     initial_value: "1"
 
 external_components:
 #   - source: github://pr#4579
