@@ -4,9 +4,11 @@
 #! not working with esp8266
 # Pawelo, 20240825, created based on https://esphome.io/components/sensor/bme68x_bsec2
 # Pawelo, 20250131, added temp_offset variable
+# Pawelo, 20250208, added bus_id variable to select i2c interface
 
 bme68x_bsec2_i2c:
   id: "i2c_bsec2${ix}"
+  i2c_id: "${bus_id}"
   address: ${address}
   model: bme680
   # algorithm_output: classification # classification or regression (only for BME688)
