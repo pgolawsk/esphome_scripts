@@ -29,6 +29,7 @@
 # Pawelo, 20250116, commented some sensors for generic device
 # Pawelo, 20250131, tried BME680 BSEC algorithm sensor for additional VOC, CO2, IAQ - not working due to too less memory
 # Pawelo, 20250201, moved to 0_DEV folder
+# Pawelo, 20250208, replaced deprecated dallas by one_wire
 
 #! run with this command to override substitutions
 # esphome -s devicename espXX -s updates 1min -s room <Room name> -s mqtt_room <room> run esp12f_MMmm_SSss__PP.yaml --device 192.168.x.x
@@ -84,7 +85,7 @@ substitutions:
 <<: !include { file: ../interfaces/rtttl.yaml, vars: { ix: "" } }
 <<: !include { file: ../interfaces/i2c.yaml, vars: { bus_id: "bus_a", sda: "GPIO4", scl: "GPIO5" } }
 # <<: !include { file: ../interfaces/i2c_apds9960.yaml, vars: { address: "0x39" } }
-# <<: !include { file: ../interfaces/dallas.yaml, vars: { gpio: "GPIO10" } }
+# <<: !include { file: ../interfaces/one_wire.yaml, vars: { wire_id: "ow_a", gpio: "GPIO10" } }
 # OR
 # <<: !include { file: ../interfaces/dallasng.yaml, vars: { gpio: "GPIO10" } }
 # <<: !include { file: ../interfaces/uart_ld2410.yaml, vars: { ix: "ld", tx_pin: "TX", rx_pin: "RX", baud_rate: 256000, sensor_name: "LD2410" } }
@@ -153,9 +154,9 @@ sensor:
   - !include ../sensors/sun_azimuth.yaml
 
   # Temperature Dallas sensor
-  #  - !include { file: ../sensors/temp_DS18B20.yaml, vars: { ix: "Dtest", address: "0xc00000000c511a28" } }
+  #  - !include { file: ../sensors/temp_DS18B20.yaml, vars: { ix: "Dtest", wire_id: "ow_a", address: "0xc00000000c511a28", min_temp: -15, max_temp: 85 } }
   # OR
-  #  - !include { file: ../sensors/temp_DS18B20_on_dallasng.yaml, vars: { ix: "Dtest", address: "0xc00000000c511a28" } }
+  #  - !include { file: ../sensors/temp_DS18B20_on_dallasng.yaml, vars: { ix: "Dtest", address: "0xc00000000c511a28", min_temp: -15, max_temp: 85 } }
 
   # Temperature and Humidity sensor
   # - !include { file: ../sensors/temp_hum_SHT3x.yaml, vars: { ix: "", bus_id: "bus_a", address: "0x44" } }

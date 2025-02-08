@@ -16,6 +16,7 @@
 # Pawelo 20230923, 1.1.5, added HA Connected binary sensor
 # Pawelo, 20250111, changed to use includes/board_esp8266.yaml with variables
 # Pawelo, 20250202, moved to 0_DEV folder
+# Pawelo, 20250208, replaced deprecated dallas by one_wire
 
 #! run with this command to override substitutions
 # esphome -s devicename espXX -s updates 1min -s room <Room name> -s mqtt_room <room> run esp12f_MMmm_SSss__PP.yaml --device 192.168.x.x
@@ -65,7 +66,7 @@ substitutions:
 # <<: !include { file: ../interfaces/rtttl.yaml, vars: { ix: "" } }
 <<: !include { file: ../interfaces/i2c.yaml, vars: { bus_id: "bus_a", sda: "GPIO4", scl: "GPIO5" } }
 # <<: !include { file: ../interfaces/i2c_apds9960.yaml, vars: { address: "0x39" } }
-# <<: !include { file: ../interfaces/dallas.yaml, vars: { gpio: "GPIO10" } }
+# <<: !include { file: ../interfaces/one_wire.yaml, vars: { wire_id: "ow_a", gpio: "GPIO10" } }
 # OR
 # <<: !include { file: ../interfaces/dallasng.yaml, vars: { gpio: "GPIO10" } }
 # <<: !include { file: ../interfaces/uart_ld2410.yaml, vars: { ix: "ld", tx_pin: "TX", rx_pin: "RX", baud_rate: 256000, sensor_name: "LD2410" } }

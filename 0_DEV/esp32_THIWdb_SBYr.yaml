@@ -21,6 +21,7 @@
 # Pawelo, 20250109, added option to select desired framework_type (for board include)
 # Pawelo, 20250130, added framework_version variable
 # Pawelo, 20250202, moved to 0_DEV folder
+# Pawelo, 20250208, replaced deprecated dallas by one_wire
 
 #! run with this command to override substitutions
 # esphome -s devicename espXX -s updates 1min -s room <Room name> -s mqtt_room <room> run esp32_MMmm_SSss__PP.yaml --device 192.168.x.x
@@ -77,9 +78,10 @@ substitutions:
 # Include interfaces needed
 <<: !include { file: ../interfaces/debug.yaml, vars: { update_interval: "5s" } }
 <<: !include { file: ../interfaces/i2c.yaml, vars: { bus_id: "bus_a", sda: "GPIO21", scl: "GPIO22" } }
-#<<: !include { file: ../interfaces/dallas.yaml, vars: { gpio: "GPIO27" } }
-# <<: !include { file: ../interfaces/rtttl.yaml, vars: { ix: "" } }
+# <<: !include { file: ../interfaces/one_wire.yaml, vars: { wire_id: "ow_a", gpio: "GPIO27" } }
+# OR
 <<: !include { file: ../interfaces/dallasng.yaml, vars: { gpio: "GPIO27" } }
+# <<: !include { file: ../interfaces/rtttl.yaml, vars: { ix: "" } }
 # <<: !include { file: ../interfaces/uart_ld2410.yaml, vars: { ix: "ld", tx_pin: "TX", rx_pin: "RX", baud_rate: 256000, sensor_name: "LD2420" } }
 # <<: !include { file: ../interfaces/uart_ld2420.yaml, vars: { ix: "ld", tx_pin: "TX", rx_pin: "RX", baud_rate: 256000 } }
 # <<: !include { file: ../interfaces/i2c_apds9960.yaml, vars: { address: "0x39" } }
@@ -134,8 +136,8 @@ sensor:
   - !include ../sensors/sun_azimuth.yaml
 
   # Temperature Dallas sensor
-  #- !include { file: ../sensors/temp_DS18B20.yaml, vars: { ix: "Floor", address: "0x450417c411e3ff28" } }
-  - !include { file: ../sensors/temp_DS18B20_on_dallasng.yaml, vars: { ix: "Floor", address: "0x450417c411e3ff28" } }
+  # - !include { file: ../sensors/temp_DS18B20.yaml, vars: { ix: "Floor", wire_id: "ow_a", address: "0x450417c411e3ff28", min_temp: -15, max_temp: 85 } }
+  - !include { file: ../sensors/temp_DS18B20_on_dallasng.yaml, vars: { ix: "Floor", address: "0x450417c411e3ff28", min_temp: -15, max_temp: 85 } }
 
   # Temperature and Humidity sensor
   - !include { file: ../sensors/temp_hum_SHT3x.yaml, vars: { ix: "", bus_id: "bus_a", address: "0x44" } }
