@@ -23,6 +23,8 @@
 # Pawelo, 20250103, added entity_category to LED
 # Pawelo, 20250107, changed to use includes/board_esp8266.yaml with variables
 # Pawelo, 20250202, renamed and moved to 2_PROD folder
+# Pawelo, 20250208, added min_temp and max_temp properties to Dallas temperature sensors
+# Pawelo, 20250208, added one_wire due to deprecated dallas interface
 
 #! run with this command to override substitutions
 # esphome -s devicename espXX -s updates 1min -s room <Room name> -s mqtt_room <room> run esp12f_SSss_MMmm__PP.yaml --device 192.168.x.x
@@ -30,7 +32,7 @@
 substitutions:
   devices: "Temperatures via DS18B20, Temperature and Humidity via SHTx30"
   project_name: "pgolawsk.esp_home"
-  version: "20250202"
+  version: "20250208"
 
   # required by ../includes/board_esp8266.yaml script
   board_variant: "12F" # determine variant like 12F, 07s, 01m, ...
@@ -70,7 +72,7 @@ substitutions:
 # <<: !include { file: ../interfaces/debug.yaml, vars: { update_interval: "15s" } }
 <<: !include { file: ../interfaces/rtttl.yaml, vars: { ix: "" } }
 <<: !include { file: ../interfaces/i2c.yaml, vars: { bus_id: "bus_a", sda: "GPIO4", scl: "GPIO5" } }
-# <<: !include { file: ../interfaces/dallas.yaml, vars: { gpio: "GPIO14" } }
+# <<: !include { file: ../interfaces/one_wire.yaml, vars: { wire_id: "ow_a", gpio: "GPIO14" } }
 # OR
 <<: !include { file: ../interfaces/dallasng.yaml, vars: { gpio: "GPIO14" } }
 
@@ -102,11 +104,11 @@ sensor:
   # - !include ../sensors/debug.yaml
 
   # Temperature Dallas sensor
-  # - !include { file: ../sensors/temp_DS18B20.yaml, vars: { ix: "Dwall", address: "0xc00000000c511a28" } } # 1m cable
-  # - !include { file: ../sensors/temp_DS18B20.yaml, vars: { ix: "Dboiler", address: "0xba0000000ab27528" } } # 1m cable
-  - !include { file: ../sensors/temp_DS18B20_on_dallasng.yaml, vars: { ix: "Dwall", address: "0xc00000000c511a28" } } # 1m cable
-  - !include { file: ../sensors/temp_DS18B20_on_dallasng.yaml, vars: { ix: "Dboiler", address: "0xba0000000ab27528" } } # 1m cable
-#  - !include { file: ../sensors/temp_DS18B20.yaml, vars: { ix: "Dlong", address: "0x0b0417c42dceff28" } } # 2m cable
+  # - !include { file: ../sensors/temp_DS18B20.yaml, vars: { ix: "Dwall", wire_id: "ow_a, address: "0xc00000000c511a28", min_temp: -10, max_temp: 50 } } # 1m cable
+  # - !include { file: ../sensors/temp_DS18B20.yaml, vars: { ix: "Dboiler", wire_id: "ow_a, address: "0xba0000000ab27528", min_temp: -10, max_temp: 50 } } # 1m cable
+  - !include { file: ../sensors/temp_DS18B20_on_dallasng.yaml, vars: { ix: "Dwall", address: "0xc00000000c511a28", min_temp: -10, max_temp: 50 } } # 1m cable
+  - !include { file: ../sensors/temp_DS18B20_on_dallasng.yaml, vars: { ix: "Dboiler", address: "0xba0000000ab27528", min_temp: -10, max_temp: 50 } } # 1m cable
+#  - !include { file: ../sensors/temp_DS18B20.yaml, vars: { ix: "Dlong", wire_id: "ow_a, address: "0x0b0417c42dceff28", min_temp: -10, max_temp: 50 } } # 2m cable
 
   # Temperature and Humidity sensor
   - !include { file: ../sensors/temp_hum_SHT3x.yaml, vars: { ix: "", bus_id: "bus_a", address: "0x44" } }
