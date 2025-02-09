@@ -6,7 +6,7 @@
 # NOTE: ESP32s3 - blue led is on GPIO44
 # NOTE: ESP32s3 - green led is on GPIO43
 # NOTE: PSRAM 8MB is not working? then https://community.home-assistant.io/t/esp32-s3-devkitc-1-n16r8-using-psram-howto###
-# NOTE: DO NOT use 5V pin, as it provides 2.5V only and od not deliver enough power for I2C devices (those are recognized during scan, but won't work)
+# NOTE: use 5V pin only if IN-OUT pads are soldered, otherwise it will deliver 2.5V only
 ###
 # Pawelo, 20241223, created based on esp32c3_dev.yaml
 # Pawelo, 20241223, added "CREATIVE" IR remote control buttons
@@ -25,15 +25,16 @@
 # Pawelo, 20250201, renamed and moved to 2_PROD folder
 # Pawelo, 20250203, switch to arduino framework version "latest" to enable internal temperature sensor
 # Pawelo, 20250208, added BSEC2 i2c_id selection
+# Pawelo, 20250209, disabled Sound Level Meter, added MAX98357A I2S audio output with small speaker
 
 #! run with this command to override substitutions
 # esphome -s devicename espXX -s updates 1min -s room <Room name> -s mqtt_room <room> run esp32_MMmm_SSss__PP.yaml --device 192.168.x.x
 # here are default values if those are not given via command line
 
 substitutions:
-  devices: "Temperature, Humidity, Pressure, Gas, eCO2, VOC via BME680, Illuminance via BH1750, IR Receiver, IR Transmitter, RTTTL Buzzer, mic via INMP441"
+  devices: "Env monitoring via BME680, Illuminance via BH1750, IR Receiver/Transmitter, RTTTL Buzzer, mic via INMP441, speaker via MAX98357A"
   project_name: "pgolawsk.esp_home"
-  version: "20250208"
+  version: "20250209"
 
   # required by ../includes/board_esp32.yaml script
   framework_type: arduino # "arduino" or "esp-idf"
@@ -87,14 +88,14 @@ substitutions:
 <<: !include { file: ../interfaces/ir_transmitter.yaml, vars: { gpio: "GPIO6", rmt_channel: 0 } } # for ESP32c3 can be 0-1, for ESP32 can be 0-7, for ESP32s2 0-3, for ESP32s3 0-3
 
 # I2S Audio (!cannot be used with "I2S Sound Level Meter" below)
-# i2s_audio:
-#   - <<: !include { file: ../i2s/i2s_audio.yaml, vars: { i2s_id: "i2s_all", ws_pin: "GPIO37", sck_pin: "GPIO38" } }
-#   # - <<: !include { file: ../i2s/i2s_audio.yaml, vars: { i2s_id: "i2s_in", ws_pin: "GPIO6", sck_pin: "GPIO7" } }
-#   # - <<: !include { file: ../i2s/i2s_audio.yaml, vars: { i2s_id: "i2s_out", ws_pin: "GPIO17", sck_pin: "GPIO16" } }
+i2s_audio:
+  # - <<: !include { file: ../i2s/i2s_audio.yaml, vars: { i2s_id: "i2s_all", ws_pin: "GPIO38", sck_pin: "GPIO39" } }
+  - <<: !include { file: ../i2s/i2s_audio.yaml, vars: { i2s_id: "i2s_in", ws_pin: "GPIO38", sck_pin: "GPIO39" } }
+  - <<: !include { file: ../i2s/i2s_audio.yaml, vars: { i2s_id: "i2s_out", ws_pin: "GPIO18", sck_pin: "GPIO17" } }
 
-# <<: !include { file: ../i2s/mic.yaml, vars: { ix: "", i2s_id: "i2s_all", sd_pin: "GPIO15", channel: "left", bits_per_sample: 24bit, use_apll: true } }
+<<: !include { file: ../i2s/mic.yaml, vars: { ix: "", i2s_id: "i2s_in", sd_pin: "GPIO15", channel: "left", bits_per_sample: 24bit, use_apll: true } }
 
-# <<: !include { file: ../i2s/media_player.yaml, vars: { ix: "", i2s_id: "i2s_all", dout_pin: "GPIO16", mode: "mono" } }
+<<: !include { file: ../i2s/media_player.yaml, vars: { ix: "", i2s_id: "i2s_out", dout_pin: "GPIO16", mode: "mono" } }
 # # <<: !include { file: ../i2s/speaker.yaml, vars: { ix: "", i2s_id: "i2s_all", dout_pin: "GPIO16", channel: "mono" } }
 
 # # <<: !include { file: ../i2s/voice_assistant_mic_only.yaml, vars: { mic_id: "mic" } }
@@ -104,7 +105,7 @@ substitutions:
 
 packages:
   # I2S Sound Level Meter (!cannot be used with "I2S Audio" above)
-  slm: !include { file: ../i2s/set_i2s_sound_level_meter.yaml, vars: { updates: "15s", i2s_id: "i2s_db", din_pin: "GPIO15", ws_pin: "GPIO37", bck_pin: "GPIO38", channel: "left" } }
+  # slm: !include { file: ../i2s/set_i2s_sound_level_meter.yaml, vars: { updates: "15s", i2s_id: "i2s_db", din_pin: "GPIO15", ws_pin: "GPIO38", bck_pin: "GPIO39", channel: "left" } }
 
   # IR Remote control buttons added from packages
   apple_tv: !include { file: ../buttons/set_apple_tv_ir_remote.yaml, vars: { receiver: "ATV" } }
