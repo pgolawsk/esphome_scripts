@@ -81,7 +81,7 @@ substitutions:
 # <<: !include { file: ../interfaces/i2c_bme68x_bsec2.yaml, vars: { ix: "", address: "0x77" } }  #!not working (bricked ESP12F device)
 
 text_sensor:
-  - !include ../sensors/text_uptime.yaml
+  # - !include ../sensors/text_uptime.yaml
   # - !include ../sensors/text_uptime_boot.yaml
   - !include ../sensors/text_version.yaml
   - !include ../sensors/text_wifi_info.yaml
