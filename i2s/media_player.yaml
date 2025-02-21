@@ -6,6 +6,7 @@
 # Pawelo, 20250115, created based on https://esphome.io/components/media_player/#config-media-player
 # and https://esphome.io/components/media_player/i2s_audio
 # Pawelo, 20250116, added i2s_id as variable
+# Pawelo, 20250221, tested i2s_comm_fmt (unsuccessful)
 
 media_player:
 - platform: i2s_audio
@@ -15,6 +16,7 @@ media_player:
   name: "$room Media Player${ix}"
   icon: "mdi:play-pause"
   dac_type: external
+  # i2s_comm_fmt: lsb # msb or lsb
   # mute_pin: GPIOXX
   mode: ${mode} # mono or stereo
 
