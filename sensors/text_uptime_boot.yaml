@@ -1,0 +1,25 @@
+---
+#* Uptime Boot Time text sensor configuration
+# Pawelo, 20250221, created based on https://github.com/esphome/issues/issues/6065
+
+platform: template
+name: $room $devicename Boot Time
+id: boot_text
+# icon: mdi:timer-outline
+icon: mdi:clock-outline
+internal: true
+entity_category: diagnostic
+device_class: timestamp
+state_topic: $devicename/boot_text
+update_interval: never
+on_value:
+  - mqtt.publish:
+      topic: "$mqtt_location/$mqtt_room/boot_time_$devicename"
+      payload: !lambda |-
+        return to_string(id(boot_text).state);
+lambda: |-
+  char result[32];
+  time_t ts_boot = id(boot).state;
+  strftime(result, sizeof(result), "%Y-%m-%d %H:%M:%S", localtime(&ts_boot));
+  return { result };
+
