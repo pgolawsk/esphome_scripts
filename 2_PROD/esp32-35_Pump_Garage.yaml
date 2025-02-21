@@ -40,7 +40,7 @@
 # Pawelo, 20250202, renamed and moved to 2_PROD folder
 # Pawelo, 20250208, added min_temp and max_temp properties to Dallas temperature sensors
 # Pawelo, 20250208, added one_wire due to deprecated dallas interface
-# Pawelo, 20250221, added uptime_boot text sensor (disabled)
+# Pawelo, 20250221, added uptime_boot text sensor
 
 #! run with this command to override substitutions
 # esphome -s devicename espXX -s updates 1min -s room <Room name> -s mqtt_room <room> run esp32_MMmm_SSss__PP.yaml --device 192.168.x.x
