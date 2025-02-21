@@ -16,6 +16,7 @@
 # Pawelo 20250203, exclude not ready (.yml) scripts from compilation tests
 # Pawelo 20250125, moved esp32-39 Attic device to 2_PROD
 # Pawelo 20250220, added venv creation for python3
+# Pawelo 20250221, added "esphome --version" prior testing cycles
 
 #*###########################
 #* Check Python VENV
@@ -57,9 +58,9 @@ esphome version
 #? sed s/_.*// to delete all after 1st underscore
 #? sed s/_/-/g to replace underscores with dashes as those are used as DHCP hostname
 #! some scripts were renamed to .yml from .yaml to exclude them from compilation tests
-find 0_DEV -maxdepth 1 -type f -name "*.yaml" -exec echo ........ DEV COMPILE {} ....... \; -exec sh -c 'esphome -s devicename $(basename {} .yaml | tr "[:upper:]" "[:lower:]" | sed "s/_/-/g") compile {}' sh {} \;
-find 1_UAT -maxdepth 1 -type f -name "*.yaml" -exec echo ........ UAT COMPILE {} ....... \; -exec sh -c 'esphome -s devicename $(basename {} .yaml | tr "[:upper:]" "[:lower:]" | sed "s/_.*// ; s/_/-/g") compile {}' sh {} \;
-find 2_PROD -maxdepth 1 -type f -name "*.yaml" -exec echo ........ PROD COMPILE {} ....... \; -exec sh -c 'esphome -s devicename $(basename {} .yaml | tr "[:upper:]" "[:lower:]" | sed "s/_.*// ; s/_/-/g") compile {}' sh {} \;
+esphome --version && find 0_DEV -maxdepth 1 -type f -name "*.yaml" -exec echo ........ DEV COMPILE {} ....... \; -exec sh -c 'esphome -s devicename $(basename {} .yaml | tr "[:upper:]" "[:lower:]" | sed "s/_/-/g") compile {}' sh {} \;
+esphome --version && find 1_UAT -maxdepth 1 -type f -name "*.yaml" -exec echo ........ UAT COMPILE {} ....... \; -exec sh -c 'esphome -s devicename $(basename {} .yaml | tr "[:upper:]" "[:lower:]" | sed "s/_.*// ; s/_/-/g") compile {}' sh {} \;
+esphome --version && find 2_PROD -maxdepth 1 -type f -name "*.yaml" -exec echo ........ PROD COMPILE {} ....... \; -exec sh -c 'esphome -s devicename $(basename {} .yaml | tr "[:upper:]" "[:lower:]" | sed "s/_.*// ; s/_/-/g") compile {}' sh {} \;
 
 ############################
 # In case this error you need to install ltchiptool manually
