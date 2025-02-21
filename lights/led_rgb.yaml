@@ -3,6 +3,7 @@
 # Pawelo, 20250103, created based on https://community.home-assistant.io/t/esp32-s3-devkitc-1-n16r8-using-psram-howto/652601/38
 # Pawelo, 20250103, make entity_category as variable
 # Pawelo, 20250125, added va_effect
+# Pawelo, 20250221, tested use_pram (not working)
 
 platform: esp32_rmt_led_strip
 chipset: WS2812
@@ -13,6 +14,7 @@ icon: "mdi:led-outline"
 id: rgb_led${ix}
 state_topic: $devicename/rgb_led${ix}
 pin: ${gpio}
+# use_psram: false
 num_leds: 1
 entity_category: ${entity_category} # "" or config or diagnostic
 restore_mode: ALWAYS_OFF
