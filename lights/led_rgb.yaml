@@ -4,11 +4,13 @@
 # Pawelo, 20250103, make entity_category as variable
 # Pawelo, 20250125, added va_effect
 # Pawelo, 20250221, tested use_pram (not working)
+# Pawelo, 20250221, disable rmt_channel as it is only for arduino framework
 
 platform: esp32_rmt_led_strip
 chipset: WS2812
 rgb_order: GRB
-rmt_channel: ${rmt_channel} # for ESP32c3 can be 0-1, for ESP32 can be 0-7, for ESP32s2 0-3, for ESP32s3 0-3
+# rmt_channel is only for Arduino
+# rmt_channel: ${rmt_channel} # for ESP32c3 can be 0-1, for ESP32 can be 0-7, for ESP32s2 0-3, for ESP32s3 0-3
 name: "$room LED RGB${ix}"
 icon: "mdi:led-outline"
 id: rgb_led${ix}
