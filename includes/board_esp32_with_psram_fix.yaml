@@ -15,7 +15,7 @@
 # Pawelo, 20250103, renamed script and added flash_mode as dio
 # Pawelo, 20250109, added framework_type variable recognition
 # Pawelo, 20250130, added framework_version variable
-# Pawelo, 20250221, testing SDK_OPTIONS
+# Pawelo, 20250221, tested SDK_OPTIONS (not working)
 
 esphome:
   name: $devicename
@@ -44,14 +44,14 @@ esp32:
     type: ${framework_type} # arduino or esp-idf
     version: ${framework_version} # like: latest, recommended, 4.4, ...
 
-    sdkconfig_options:
-        CONFIG_ESP32_S3_BOX_BOARD: "y"
-        CONFIG_ESP32_WIFI_STATIC_RX_BUFFER_NUM: "16"
-        CONFIG_ESP32_WIFI_DYNAMIC_RX_BUFFER_NUM: "512"
-        CONFIG_TCPIP_RECVMBOX_SIZE: "512"
-        CONFIG_TCP_SND_BUF_DEFAULT: "65535"
-        CONFIG_TCP_WND_DEFAULT: "512000"
-        CONFIG_TCP_RECVMBOX_SIZE: "512"
+    # sdkconfig_options:
+    #     CONFIG_ESP32_S3_BOX_BOARD: "y"
+    #     CONFIG_ESP32_WIFI_STATIC_RX_BUFFER_NUM: "16"
+    #     CONFIG_ESP32_WIFI_DYNAMIC_RX_BUFFER_NUM: "512"
+    #     CONFIG_TCPIP_RECVMBOX_SIZE: "512"
+    #     CONFIG_TCP_SND_BUF_DEFAULT: "65535"
+    #     CONFIG_TCP_WND_DEFAULT: "512000"
+    #     CONFIG_TCP_RECVMBOX_SIZE: "512"
 
 preferences:
   flash_write_interval: ${flash_write_interval}
