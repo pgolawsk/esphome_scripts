@@ -91,7 +91,6 @@ binary_sensor:
   - !include ../sensors/binary_ha_connected.yaml
 
 sensor:
-  - !include ../sensors/uptime.yaml
   # - !include ../sensors/uptime.yaml
   # - !include ../sensors/uptime_boot.yaml
   - !include ../sensors/wifi_signal.yaml
