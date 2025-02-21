@@ -16,7 +16,7 @@
 substitutions:
   devices: "Single Relay Switch"
   project_name: "pgolawsk.esp_home"
-  version: "20250202"
+  version: "20250221"
 
   # required by ../includes/board_esp8266.yaml script
   board_variant: "01s" # determine variant like 12F, 07s, 01m, ...

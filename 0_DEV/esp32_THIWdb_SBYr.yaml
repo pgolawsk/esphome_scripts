@@ -22,6 +22,7 @@
 # Pawelo, 20250130, added framework_version variable
 # Pawelo, 20250202, moved to 0_DEV folder
 # Pawelo, 20250208, replaced deprecated dallas by one_wire
+# Pawelo, 20250221, added uptime_boot text sensor
 
 #! run with this command to override substitutions
 # esphome -s devicename espXX -s updates 1min -s room <Room name> -s mqtt_room <room> run esp32_MMmm_SSss__PP.yaml --device 192.168.x.x
@@ -30,7 +31,7 @@
 substitutions:
   devices: "Temperature and Humidity via SHTx30, Illuminance via BH1750, Water via YF-B10 G1"
   project_name: "pgolawsk.esp_home"
-  version: "20250202"
+  version: "20250221"
 
   # required by ../includes/board_esp32.yaml script
   framework_type: arduino # "arduino" or "esp-idf"
@@ -78,9 +79,9 @@ substitutions:
 # Include interfaces needed
 <<: !include { file: ../interfaces/debug.yaml, vars: { update_interval: "5s" } }
 <<: !include { file: ../interfaces/i2c.yaml, vars: { bus_id: "bus_a", sda: "GPIO21", scl: "GPIO22" } }
-# <<: !include { file: ../interfaces/one_wire.yaml, vars: { wire_id: "ow_a", gpio: "GPIO27" } }
+<<: !include { file: ../interfaces/one_wire.yaml, vars: { wire_id: "ow_a", gpio: "GPIO27" } }
 # OR
-<<: !include { file: ../interfaces/dallasng.yaml, vars: { gpio: "GPIO27" } }
+# <<: !include { file: ../interfaces/dallasng.yaml, vars: { gpio: "GPIO27" } }
 # <<: !include { file: ../interfaces/rtttl.yaml, vars: { ix: "" } }
 # <<: !include { file: ../interfaces/uart_ld2410.yaml, vars: { ix: "ld", tx_pin: "TX", rx_pin: "RX", baud_rate: 256000, sensor_name: "LD2420" } }
 # <<: !include { file: ../interfaces/uart_ld2420.yaml, vars: { ix: "ld", tx_pin: "TX", rx_pin: "RX", baud_rate: 256000 } }
@@ -89,6 +90,7 @@ substitutions:
 
 text_sensor:
   - !include ../sensors/text_uptime.yaml
+  - !include ../sensors/text_uptime_boot.yaml
   - !include ../sensors/text_version.yaml
   - !include ../sensors/text_wifi_info.yaml
 
@@ -124,6 +126,7 @@ binary_sensor:
 sensor:
   - !include ../sensors/temp_internal.yaml
   - !include ../sensors/uptime.yaml
+  - !include ../sensors/uptime_boot.yaml
   - !include ../sensors/wifi_signal.yaml
   - !include ../sensors/wifi_strength.yaml
 
@@ -136,8 +139,8 @@ sensor:
   - !include ../sensors/sun_azimuth.yaml
 
   # Temperature Dallas sensor
-  # - !include { file: ../sensors/temp_DS18B20.yaml, vars: { ix: "Floor", wire_id: "ow_a", address: "0x450417c411e3ff28", min_temp: -15, max_temp: 85 } }
-  - !include { file: ../sensors/temp_DS18B20_on_dallasng.yaml, vars: { ix: "Floor", address: "0x450417c411e3ff28", min_temp: -15, max_temp: 85 } }
+  - !include { file: ../sensors/temp_DS18B20.yaml, vars: { ix: "Floor", wire_id: "ow_a", address: "0x450417c411e3ff28", min_temp: -15, max_temp: 85 } }
+  # - !include { file: ../sensors/temp_DS18B20_on_dallasng.yaml, vars: { ix: "Floor", address: "0x450417c411e3ff28", min_temp: -15, max_temp: 85 } }
 
   # Temperature and Humidity sensor
   - !include { file: ../sensors/temp_hum_SHT3x.yaml, vars: { ix: "", bus_id: "bus_a", address: "0x44" } }

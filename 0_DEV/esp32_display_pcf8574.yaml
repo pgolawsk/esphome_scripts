@@ -19,6 +19,8 @@
 # Pawelo, 20250109, added option to select desired framework_type (for board include)
 # Pawelo, 20250130, added framework_version variable
 # Pawelo, 20250202, moved to 0_DEV folder
+# Pawelo, 20250221, added uptime_boot text sensor
+# Pawelo, 20250221, changed Dallas NG to regular Dallas (via onewire)
 
 #! run with this command to override substitutions
 # esphome -s devicename espXX -s updates 1min -s room <Room name> -s mqtt_room <room> run esp32_MMmm_SSss__PP.yaml --device 192.168.x.x
@@ -28,7 +30,7 @@ substitutions:
 #  devices: "Temperature and Humidity via SHTx30 and Illuminance via BH1750"
   devices: "LCD PCF8574 Display and MQTT sensors"
   project_name: "pgolawsk.esp_home"
-  version: "20250202"
+  version: "20250221"
 
   # required by ../includes/board_esp32.yaml script
   framework_type: arduino # "arduino" or "esp-idf"
@@ -78,10 +80,13 @@ substitutions:
 # <<: !include { file: ../interfaces/i2c.yaml, vars: { bus_id: "bus_b", sda: "GPIO14", scl: "GPIO15" } }
 # <<: !include { file: ../interfaces/dallas.yaml, vars: { gpio: "GPIO10" } }
 # <<: !include { file: ../interfaces/rtttl.yaml, vars: { ix: "" } }
-<<: !include { file: ../interfaces/dallasng.yaml, vars: { gpio: "GPIO27" } }
+<<: !include { file: ../interfaces/one_wire.yaml, vars: { wire_id: "ow_a", gpio: "GPIO27" } }
+# OR
+# <<: !include { file: ../interfaces/dallasng.yaml, vars: { gpio: "GPIO27" } }
 
 text_sensor:
   - !include ../sensors/text_uptime.yaml
+  - !include ../sensors/text_uptime_boot.yaml
   - !include ../sensors/text_version.yaml
   - !include ../sensors/text_wifi_info.yaml
 
@@ -111,6 +116,7 @@ binary_sensor:
 sensor:
   - !include ../sensors/temp_internal.yaml
   - !include ../sensors/uptime.yaml
+  - !include ../sensors/uptime_boot.yaml
   - !include ../sensors/wifi_signal.yaml
   - !include ../sensors/wifi_strength.yaml
 
@@ -123,8 +129,8 @@ sensor:
   - !include ../sensors/sun_azimuth.yaml
 
   # Temperature Dallas sensor
-  #- !include { file: ../sensors/temp_DS18B20.yaml, vars: { ix: "Floor", address: "0x450417c411e3ff28" } }
-  - !include { file: ../sensors/temp_DS18B20_on_dallasng.yaml, vars: { ix: "Floor", address: "0x450417c411e3ff28" } }
+  - !include { file: ../sensors/temp_DS18B20.yaml, vars: { ix: "Floor", wire_id: "ow_a", address: "0x450417c411e3ff28", min_temp: -10, max_temp: 50 } }
+  # - !include { file: ../sensors/temp_DS18B20_on_dallasng.yaml, vars: { ix: "Floor", address: "0x450417c411e3ff28", min_temp: -10, max_temp: 50 } }
 
   # Temperature and Humidity sensor
   - !include { file: ../sensors/temp_hum_SHT3x.yaml, vars: { ix: "", bus_id: "bus_a", address: "0x44" } }

@@ -17,6 +17,7 @@
 # Pawelo, 20250111, changed to use includes/board_esp8266.yaml with variables
 # Pawelo, 20250202, moved to 0_DEV folder
 # Pawelo, 20250208, replaced deprecated dallas by one_wire
+# Pawelo, 20250221, added uptime_boot text sensor (disabled)
 
 #! run with this command to override substitutions
 # esphome -s devicename espXX -s updates 1min -s room <Room name> -s mqtt_room <room> run esp12f_MMmm_SSss__PP.yaml --device 192.168.x.x
@@ -24,7 +25,7 @@
 substitutions:
   devices: "Temperature and Humidity via SHTx30 and Illuminance via BH1750"
   project_name: "pgolawsk.esp_home_THI_SB"
-  version: "20250202"
+  version: "20250221"
 
   # required by ../includes/board_esp8266.yaml script
   board_variant: "12F" # determine variant like 12F, 07s, 01m, ...
@@ -76,6 +77,7 @@ substitutions:
 
 text_sensor:
   - !include ../sensors/text_uptime.yaml
+  # - !include ../sensors/text_uptime_boot.yaml
   - !include ../sensors/text_version.yaml
   - !include ../sensors/text_wifi_info.yaml
 

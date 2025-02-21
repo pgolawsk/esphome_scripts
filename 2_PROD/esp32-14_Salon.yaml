@@ -228,7 +228,8 @@ light:
   # LED blue (S3, C3 supermini/plus)
   - !include { file: ../lights/led.yaml, vars: { ix: "blue", platform: "status_led", off_delay: "1days", entity_category: "diagnostic" } }
   # LED RGB (S3, C3 supermini plus)
-  - !include { file: ../lights/led_rgb.yaml, vars: { ix: "", gpio: "GPIO48", entity_category: "", rmt_channel: 1 } }
+  - !include { file: ../lights/led_rgb__arduino.yaml, vars: { ix: "", gpio: "GPIO48", entity_category: "", rmt_channel: 1 } }
+  # - !include { file: ../lights/led_rgb.yaml, vars: { ix: "", gpio: "GPIO48", entity_category: "" } }
   # - !include { file: ../lights/led_rgb_neopixelbus.yaml, vars: { ix: "", gpio: "GPIO48", entity_category: "" } }
 
 switch:
