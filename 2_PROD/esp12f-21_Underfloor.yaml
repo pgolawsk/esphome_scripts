@@ -25,6 +25,7 @@
 # Pawelo, 20250202, renamed and moved to 2_PROD folder
 # Pawelo, 20250208, added min_temp and max_temp properties to Dallas temperature sensors
 # Pawelo, 20250208, added one_wire due to deprecated dallas interface
+# Pawelo, 20250221, added uptime_boot text sensor (disabled)
 
 #! run with this command to override substitutions
 # esphome -s devicename espXX -s updates 1min -s room <Room name> -s mqtt_room <room> run esp12f_SSss_MMmm__PP.yaml --device 192.168.x.x
@@ -32,7 +33,7 @@
 substitutions:
   devices: "Temperatures via DS18B20, Temperature and Humidity via SHTx30"
   project_name: "pgolawsk.esp_home"
-  version: "20250208"
+  version: "20250221"
 
   # required by ../includes/board_esp8266.yaml script
   board_variant: "12F" # determine variant like 12F, 07s, 01m, ...
@@ -83,7 +84,8 @@ substitutions:
 # #     refresh: $updates
 
 text_sensor:
-  - !include ../sensors/text_uptime.yaml
+  # - !include ../sensors/text_uptime.yaml
+  # - !include ../sensors/text_uptime_boot.yaml
   - !include ../sensors/text_version.yaml
   - !include ../sensors/text_wifi_info.yaml
 
@@ -96,6 +98,7 @@ binary_sensor:
 
 sensor:
   - !include ../sensors/uptime.yaml
+  # - !include ../sensors/uptime.yaml
   # - !include ../sensors/uptime_boot.yaml
   - !include ../sensors/wifi_signal.yaml
   - !include ../sensors/wifi_strength.yaml

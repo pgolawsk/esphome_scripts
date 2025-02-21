@@ -8,6 +8,7 @@
 # Pawelo, 20250107, typo corrections
 # Pawelo, 20250111, changed to use includes/board_esp8266.yaml with variables
 # Pawelo, 20250202, moved to 0_DEV folder
+# Pawelo, 20250221, added uptime_boot text sensor (disabled)
 
 #! run with this command to override substitutions
 # esphome -s devicename espXX -s updates 1min -s room <Room name> -s mqtt_room <room> -s delay_off <time of active output> run esp01s_SSss_MMmm__PP.yaml --device 192.168.x.x
@@ -60,6 +61,7 @@ substitutions:
 
 text_sensor:
   - !include ../sensors/text_uptime.yaml
+  # - !include ../sensors/text_uptime_boot.yaml
   - !include ../sensors/text_version.yaml
   - !include ../sensors/text_wifi_info.yaml
 

@@ -26,6 +26,7 @@
 # Pawelo, 20250203, switch to arduino framework version "latest" to enable internal temperature sensor
 # Pawelo, 20250208, added BSEC2 i2c_id selection
 # Pawelo, 20250209, disabled Sound Level Meter, added MAX98357A I2S audio output with small speaker
+# Pawelo, 20250221, added uptime_boot text sensor
 
 #! run with this command to override substitutions
 # esphome -s devicename espXX -s updates 1min -s room <Room name> -s mqtt_room <room> run esp32_MMmm_SSss__PP.yaml --device 192.168.x.x
@@ -34,7 +35,7 @@
 substitutions:
   devices: "Env monitoring via BME680, Illuminance via BH1750, IR Receiver/Transmitter, RTTTL Buzzer, mic via INMP441, speaker via MAX98357A"
   project_name: "pgolawsk.esp_home"
-  version: "20250209"
+  version: "20250221"
 
   # required by ../includes/board_esp32.yaml script
   framework_type: arduino # "arduino" or "esp-idf"
@@ -125,6 +126,7 @@ packages:
 
 text_sensor:
   - !include ../sensors/text_uptime.yaml
+  - !include ../sensors/text_uptime_boot.yaml
   - !include ../sensors/text_version.yaml
   - !include ../sensors/text_wifi_info.yaml
 
@@ -149,6 +151,7 @@ binary_sensor:
 sensor:
   - !include ../sensors/temp_internal.yaml #! requires "4.4.4" framework version - use latest as framework_version
   - !include ../sensors/uptime.yaml
+  - !include ../sensors/uptime_boot.yaml
   - !include ../sensors/wifi_signal.yaml
   - !include ../sensors/wifi_strength.yaml
 

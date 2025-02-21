@@ -19,6 +19,7 @@
 # Pawelo, 20250115, disabled wifi_strength to avoid cut prometheus (/metrics) in some rare cases
 #! Pawelo, 20250125, confirmed to "RTTTL on mqtt" needs to be disabled as it makes OTA unstable
 # Pawelo, 20250202, renamed and moved to 2_PROD folder
+# Pawelo, 20250221, added uptime_boot text sensor (disabled)
 
 # WARN: DO NOT ADD any more sensors as it will impact /metrics (prometheus) and in worst case brick the device
 #! run with this command to override substitutions
@@ -27,7 +28,7 @@
 substitutions:
   devices: "Temperature and Humidity via SHTx30, Illuminance, Color via TCS34725"
   project_name: "pgolawsk.esp_home"
-  version: "20250202"
+  version: "20250221"
 
   # required by ../includes/board_esp8266.yaml script
   board_variant: "12F" # determine variant like 12F, 07s, 01m, ...
@@ -70,7 +71,8 @@ substitutions:
 <<: !include { file: ../interfaces/i2c.yaml, vars: { bus_id: "bus_a", sda: "GPIO4", scl: "GPIO5" } }
 
 text_sensor:
-  - !include ../sensors/text_uptime.yaml
+  # - !include ../sensors/text_uptime.yaml
+  # - !include ../sensors/text_uptime_boot.yaml
   - !include ../sensors/text_version.yaml
   - !include ../sensors/text_wifi_info.yaml
   # - !include ../sensors/text_firmware.yaml
@@ -90,6 +92,7 @@ binary_sensor:
 
 sensor:
   - !include ../sensors/uptime.yaml
+  # - !include ../sensors/uptime.yaml
   # - !include ../sensors/uptime_boot.yaml
   - !include ../sensors/wifi_signal.yaml
   # - !include ../sensors/wifi_strength.yaml
