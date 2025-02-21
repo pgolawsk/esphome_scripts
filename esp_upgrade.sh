@@ -15,17 +15,32 @@
 # Pawelo 20250202, added test of compile on each script in 0_DEV, 1_UAT, 2_PROD
 # Pawelo 20250203, exclude not ready (.yml) scripts from compilation tests
 # Pawelo 20250125, moved esp32-39 Attic device to 2_PROD
+# Pawelo 20250220, added venv creation for python3
 
 #*###########################
-#*** OR Upgrade ESP Home on mac/win
+#* Check Python VENV
+python --version
+# Python 3.13.2
+
+# if not VENV is active, activate it
+source venv/bin/activate
+
+pip install --upgrade pip
+pip --version
+# pip 25.0.1 from /Users/pawelo/dev/esphome_scripts/venv/lib/python3.13/site-packages/pip (python 3.13)
+python --version
+# Python 3.13.2
+
+#*###########################
+#* Upgrade ESP Home on mac/win
 
 # check current version
 esphome version
 
-python3.11 -m pip install --upgrade pip
-pip3.11 install -U esphome
+pip install --upgrade pip
+pip install -U esphome
 # platformio is updated by esphome to minimum version required anyway
-# pip3.11 install -U platformio
+# pip install -U platformio
 
 # clean unnecessary packages
 # pio system prune --dry-run
@@ -45,6 +60,16 @@ esphome version
 find 0_DEV -maxdepth 1 -type f -name "*.yaml" -exec echo ........ DEV COMPILE {} ....... \; -exec sh -c 'esphome -s devicename $(basename {} .yaml | tr "[:upper:]" "[:lower:]" | sed "s/_/-/g") compile {}' sh {} \;
 find 1_UAT -maxdepth 1 -type f -name "*.yaml" -exec echo ........ UAT COMPILE {} ....... \; -exec sh -c 'esphome -s devicename $(basename {} .yaml | tr "[:upper:]" "[:lower:]" | sed "s/_.*// ; s/_/-/g") compile {}' sh {} \;
 find 2_PROD -maxdepth 1 -type f -name "*.yaml" -exec echo ........ PROD COMPILE {} ....... \; -exec sh -c 'esphome -s devicename $(basename {} .yaml | tr "[:upper:]" "[:lower:]" | sed "s/_.*// ; s/_/-/g") compile {}' sh {} \;
+
+############################
+# In case this error you need to install ltchiptool manually
+# INFO Resolving dependencies...
+# Installing/updating ltchiptool
+# ERROR: Invalid requirement: 'ltchiptool >= ^3.0.1, < 4.0': Expected end or semicolon (after name and no valid version specifier)
+#     ltchiptool >= ^3.0.1, < 4.0
+# pip install --upgrade setuptools wheel
+pip install --upgrade "ltchiptool>=3.0.1,<4.0"
+
 
 #*###########################
 #* Upgrade PROD ESP devices via OTA

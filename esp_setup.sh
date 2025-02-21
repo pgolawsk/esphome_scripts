@@ -14,6 +14,7 @@
 # Pawelo 20230305, upgrade esphome to 2023.2 version and platformio
 # Pawelo 20231205, added esp32c3_dev flashing
 # Pawelo 20250107, some typos corrected, some obsolete script names corrected
+# Pawelo 20250220, added venv creation for python3
 
 #TODO: Read more complicated AIQ measurement on https://github.com/nkitanov/iaq_board
 #TODO: Read about speaker with PAM8403 (amplifier) connection to ESP826 on: https://www.instructables.com/MQTT-Audio-Notifier-for-ESP8266-Play-MP3-TTS-RTTL/
@@ -39,14 +40,17 @@
 
 #######################
 #* Install ESP Home on mac/win
+python3 -m venv venv
+source venv/bin/activate
 
-# assuming python3 is installed
-pip3 install esphome
+pip install --upgrade pip
+pip --version
+# pip 25.0.1 from /Users/pawelo/dev/esphome_scripts/venv/lib/python3.13/site-packages/pip (python 3.13)
+python --version
+# Python 3.13.2
 
-#######################
-#*** OR Upgrade ESP Home on mac/win
-pip3 install -U esphome
-pip3 install -U platformio
+pip install -U esphome
+# pip install -U platformio
 
 # clean unnecessary packages
 # pio system prune --dry-run
