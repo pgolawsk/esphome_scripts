@@ -1,18 +1,20 @@
 ---
-#* Uptime (human readable) virtual sensor configuration
+#* Uptime text sensor configuration
 # Pawelo, 20221119, created as my framework based on !include statements
 # Pawelo, 20221222, added $devicename to friendly names of those sensors
 # Pawelo, 20240907, set entity_category for sensor
+# Pawelo, 20250221, adjusted to native "uptime" platform since esphome 2025.02
 
-platform: template
+platform: uptime
 name: $room $devicename Uptime
-id: uptime_human
+id: uptime_text
 icon: mdi:clock-start
 internal: true
-entity_category: diagnostic
+# entity_category: diagnostic
 state_topic: $devicename/uptime_text
+update_interval: $updates
 on_value:
   - mqtt.publish:
       topic: "$mqtt_location/$mqtt_room/uptime_$devicename"
       payload: !lambda |-
-        return to_string(id(uptime_human).state);
+        return to_string(id(uptime_text).state);

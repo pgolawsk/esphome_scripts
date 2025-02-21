@@ -5,6 +5,7 @@
 # Pawelo, 20221222, adjusted units displayed to "min"
 # Pawelo, 20240717, adjusted for 2024.07, added "type" as "seconds" property
 # Pawelo, 20250123, replaced String() with c++ standard to_string() in lambda to support both arduino and ESP-IDF frameworks
+# Pawelo, 20250221, adjusted to native "uptime" platform since esphome 2025.02 - disabled template text sensor update
 
 platform: uptime
 name: "$room $devicename Uptime [min]"
@@ -19,24 +20,24 @@ state_topic: $devicename/uptime
 #       payload: !lambda |-
 #         return to_string(id(uptime_sensor).state);
 update_interval: $updates
-on_raw_value:
-  then:
-    - text_sensor.template.publish:
-        id: uptime_human
-        state: !lambda |-
-          int seconds = round(id(uptime_sensor).raw_state);
-          int days = seconds / (24 * 3600);
-          seconds = seconds % (24 * 3600);
-          int hours = seconds / 3600;
-          seconds = seconds % 3600;
-          int minutes = seconds /  60;
-          seconds = seconds % 60;
-          return (
-            (days ? to_string(days) + "d " : "") +
-            (hours ? to_string(hours) + "h " : "") +
-            (minutes ? to_string(minutes) + "m " : "") +
-            (to_string(seconds) + "s")
-          ).c_str();
+# on_raw_value:
+#   then:
+#     - text_sensor.template.publish:
+#         id: uptime_human
+#         state: !lambda |-
+#           int seconds = round(id(uptime_sensor).raw_state);
+#           int days = seconds / (24 * 3600);
+#           seconds = seconds % (24 * 3600);
+#           int hours = seconds / 3600;
+#           seconds = seconds % 3600;
+#           int minutes = seconds /  60;
+#           seconds = seconds % 60;
+#           return (
+#             (days ? to_string(days) + "d " : "") +
+#             (hours ? to_string(hours) + "h " : "") +
+#             (minutes ? to_string(minutes) + "m " : "") +
+#             (to_string(seconds) + "s")
+#           ).c_str();
 filters:
   - lambda: return x / 60;
 unit_of_measurement: "min"
