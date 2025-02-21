@@ -3,14 +3,15 @@
 #* Please read README.md for details
 # Pawelo, 20230311, created based on https://www.elektroda.pl/rtvforum/topic3912748.html
 # Pawelo, 20250207, moved to 0_DEV folder
-#
+# Pawelo, 20250221, added uptime_boot text sensor (disabled)
+
 #! run with this command to override substitutions
 # esphome -s devicename esp-xx -s updates 1min -s room <Room name> -s mqtt_room <room> -s delay_off <time of active output> run esp01s_SSss_MMmm__PP.yaml --device 192.168.x.x
 # here are default values if those are not given via command line
 substitutions:
   devices: "Single Relay Switch"
   project_name: "pgolawsk.esp_home"
-  version: "1.1.5"
+  version: "20250221"
 
   devicename: miniss-xx
   updates: "30s"
@@ -24,36 +25,26 @@ substitutions:
   dalay_off: 0s
 
 # Include basics of a board
-<<: !include includes/board_miniss_bk7231n.yaml
+<<: !include ../includes/board_miniss_bk7231n.yaml
 #! reinclude MQTT separately as via nested include it do not work:/
-<<: !include includes/mqtt.yaml
+<<: !include ../includes/mqtt.yaml
 
 # Include interfaces needed
 # <<: !include { file: interfaces/i2c.yaml, vars: { bus_id: "bus_a", sda: "GPIO4", scl: "GPIO2" } }
 # <<: !include { file: interfaces/dallas.yaml, vars: { gpio: "GPIO10" } }
 # <<: !include { file: interfaces/rtttl.yaml, vars: { ix: "" } }
 
-# # reinclude MQTT as a bug in ESPHOME, see: https://github.com/esphome/issues/issues/2180, https://github.com/esphome/issues/issues/1487
-# mqtt:
-#   broker: !secret mqtt_ip
-#   port: !secret mqtt_port
-# #  username: $devicename
-#   username: !secret mqtt_user
-#   password: !secret mqtt_password
-#   client_id: $devicename
-# # id: $devicename
-
 # text_sensor:
-#   - !include sensors/text_uptime.yaml
-#   - !include sensors/text_version.yaml
-#   - !include sensors/text_wifi_info.yaml
+#   - !include ../sensors/text_uptime.yaml
+#   - !include ../sensors/text_uptime_boot.yaml
+#   - !include ../sensors/text_version.yaml
+#   - !include ../sensors/text_wifi_info.yaml
 
 # sensor:
-#   - !include sensors/uptime.yaml
-#   - !include sensors/wifi_signal.yaml
-
-# #  # Temperature and Humidity sensor
-# #  - !include { file: sensors/temp_hum_SHT3x.yaml, vars: { ix: "", bus_id: "bus_a", address: "0x44" } }
+#   - !include ../sensors/uptime.yaml
+#   - !include ../sensors/uptime_boot.yaml
+#   - !include ../sensors/wifi_signal.yaml
+#   - !include ../sensors/wifi_strength.yaml
 
 # output:
 #   # Relay
