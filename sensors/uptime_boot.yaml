@@ -3,17 +3,19 @@
 # require min 2024.07
 # require Time Component to be included separately
 # Pawelo, 20240717, created based on https://esphome.io/components/sensor/uptime.html
+# Pawelo, 20250221, renamed sensor id to "boot"
 
 platform: uptime
-name: "$room $devicename Uptime Boot"
-id: uptime_boot
-icon: mdi:clock-start
+name: "$room $devicename Last Boot"
+id: boot
+icon: mdi:clock
 type: timestamp
 internal: true
-state_topic: $devicename/uptime_boot
+state_topic: $devicename/boot
 on_value:
   - mqtt.publish:
-      topic: "$mqtt_location/$mqtt_room/uptime_boot_$devicename"
+      topic: "$mqtt_location/$mqtt_room/boot_$devicename"
       payload: !lambda |-
-        return to_string(id(uptime_boot).state);
+        return to_string(id(boot).state);
+  - component.update: boot_text
 # update_interval: $updates
