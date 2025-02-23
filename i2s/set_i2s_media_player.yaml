@@ -1,0 +1,91 @@
+---
+#* Voice Assistant component with mic and Media Player
+# Pawelo, 20250223, created based onhttps://github.com/esphome/wake-word-voice-assistants/blob/main/esp32-s3-box-3/esp32-s3-box-3.yaml
+
+i2s_audio:
+  - id: "i2s_in"
+    i2s_lrclk_pin: ${in_ws_pin} # WS or LRC
+    i2s_bclk_pin: ${in_sck_pin} # SCK or BCLK
+    # i2s_mclk_pin: GPIOXX
+  - id: "i2s_out"
+    i2s_lrclk_pin: ${out_ws_pin} # WS or LRC
+    i2s_bclk_pin: ${out_sck_pin} # SCK or BCLK
+
+# i2s_audio:
+#   - id: i2s_audio_bus
+#     i2s_lrclk_pin: GPIO45
+#     i2s_bclk_pin: GPIO17
+#     i2s_mclk_pin: GPIO2
+
+# audio_adc:
+#   - platform: es7210
+#     id: es7210_adc
+#     bits_per_sample: 16bit
+#     sample_rate: 16000
+
+# audio_dac:
+#   - platform: es8311
+#     id: es8311_dac
+#     bits_per_sample: 16bit
+#     sample_rate: 48000
+
+microphone:
+  - platform: i2s_audio
+    id: "mic_id"
+    channel: ${din_channel} # The channel of the microphone. One of left, right, or stereo. If stereo, the output data will be twice as big, with each right sample followed by a left sample. Defaults to right.
+    sample_rate: 16000 # I2S sample rate. Defaults to 16000.
+    bits_per_sample: 16bit # The bit depth of the audio samples. Note that while set to 24bit or 32bit, the samples will be scaled down to 16bit before being forwarded. One of 8bit, 16bit, 24bit, or 32bit. Defaults to 32bit.
+    # bits_per_sample: ${din_bits_per_sample} # The bit depth of the audio samples. Note that while set to 24bit or 32bit, the samples will be scaled down to 16bit before being forwarded. One of 8bit, 16bit, 24bit, or 32bit. Defaults to 32bit.
+    # bits_per_channel: ${bits_per_sample} # The bit depth of the audio channels. See the datasheet of your I2S device for details. Defaults to bits_per_sample.
+    # use_apll: ${din_use_apll} # I2S using APLL as main I2S clock, enable it to get accurate clock. Defaults to false.
+    # i2s_mode: primary # The I2S mode to use. One of primary (clock driven by the host) or secondary (clock driven by the attached device). Defaults to primary.
+    adc_type: external
+    pdm: false
+    i2s_audio_id: "i2s_in"
+    i2s_din_pin: ${din_pin} #sd
+
+# microphone:
+#   - platform: i2s_audio
+#     id: box_mic
+#     sample_rate: 16000
+#     i2s_din_pin: GPIO16
+#     bits_per_sample: 16bit
+#     adc_type: external
+
+speaker:
+  - platform: i2s_audio
+    i2s_audio_id: i2s_out
+    id: speaker_id
+    i2s_dout_pin: ${dout_pin}
+    dac_type: external
+    sample_rate: 48000
+    bits_per_sample: 16bit
+    channel: left
+    # buffer_duration: 300ms
+  - platform: mixer
+    id: mixer_speaker_id
+    output_speaker: speaker_id
+    source_speakers:
+      - id: announcement_spk_mixer_input
+      - id: media_spk_mixer_input
+  - platform: resampler
+    id: media_spk_resampling_input
+    output_speaker: media_spk_mixer_input
+  - platform: resampler
+    id: announcement_spk_resampling_input
+    output_speaker: announcement_spk_mixer_input
+
+media_player:
+  - platform: speaker
+    name: "$room Media Player"
+    # icon: "mdi:play-pause"
+    id: "mp_id"
+    volume_min: 0.5
+    volume_max: 0.8
+    media_pipeline:
+        speaker: media_spk_resampling_input
+        num_channels: 2
+    announcement_pipeline:
+        speaker: announcement_spk_resampling_input
+        num_channels: 1
+
