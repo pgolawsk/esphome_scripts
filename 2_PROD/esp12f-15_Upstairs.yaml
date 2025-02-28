@@ -10,7 +10,7 @@
 # Pawelo 20221119, 1.1.0. moved to framework with !include statements
 # Pawelo 20221119, 1.1.1. added esp version and wifi info text sensors to publish on web
 # Pawelo 20221127, 1.1.2, renamed script to reflect sensors/switches and measures/manipulators
-# Pawelo 20221127, 1.1.3, added $devices variable to name configutation deployed
+# Pawelo 20221127, 1.1.3, added $devices variable to name configuration deployed
 # Pawelo 20221127, 1.1.4, moved i2c configuration to separate include file
 # Pawelo 20221203, 1.1.5, added Restart button on web
 # Pawelo 20230923, 1.1.5, added HA Connected binary sensor
@@ -24,6 +24,7 @@
 # Pawelo, 20250111, added pinout reference
 # Pawelo, 20250202, renamed and moved to 2_PROD folder
 # Pawelo, 20250221, added uptime_boot text sensor
+# Pawelo, 20250228, removed debug sensor as prometheus endpoint stopped working
 
 #! run with this command to override substitutions
 # esphome -s devicename espXX -s updates 1min -s room <Room name> -s mqtt_room <room> run esp12f_MMmm_SSss__PP.yaml --device 192.168.x.x
@@ -32,7 +33,7 @@
 substitutions:
   devices: "Temperature, Humidity and Pressure via BME280"
   project_name: "pgolawsk.esp_home"
-  version: "20250221"
+  version: "20250228"
 
   # required by ../includes/board_esp8266.yaml script
   board_variant: "12F" # determine variant like 12F, 07s, 01m, ...
@@ -70,7 +71,7 @@ substitutions:
 # <<: !include ../includes/board_esp12f_with_sun.yaml
 
 # Include interfaces needed
-<<: !include { file: ../interfaces/debug.yaml, vars: { update_interval: "15s" } }
+# <<: !include { file: ../interfaces/debug.yaml, vars: { update_interval: "15s" } }
 # <<: !include { file: ../interfaces/rtttl.yaml, vars: { ix: "" } }
 <<: !include { file: ../interfaces/i2c.yaml, vars: { bus_id: "bus_a", sda: "GPIO4", scl: "GPIO5" } }
 
@@ -81,7 +82,7 @@ text_sensor:
   - !include ../sensors/text_wifi_info.yaml
 
   # DEBUG component
-  - !include ../sensors/text_debug.yaml
+  # - !include ../sensors/text_debug.yaml
 
   # # Sun component
   # - !include ../sensors/text_sun_sunrise.yaml
@@ -100,7 +101,7 @@ sensor:
   - !include ../sensors/wifi_strength.yaml
 
   # DEBUG component
-  - !include ../sensors/debug.yaml
+  # - !include ../sensors/debug.yaml
 
   # # Sun component
   # - !include ../sensors/sun_elevation.yaml
