@@ -32,6 +32,7 @@
 # Pawelo, 20250207, testing support for rotary encoder and X-Y joystick
 # Pawelo, 20250208, added BSEC2 i2c_id selection
 # Pawelo, 20250221, added uptime_boot text sensor
+# Pawelo, 20250228, disabled joystick, enabled SHT3x
 
 #! run with this command to override substitutions
 # esphome -s devicename espXX -s updates 1min -s room <Room name> -s mqtt_room <room> run esp32_MMmm_SSss__PP.yaml --device 192.168.x.x
@@ -41,7 +42,7 @@ substitutions:
 #  devices: "Temperature and Humidity via SHTx30 and Illuminance via BH1750"
   devices: "DEV Kit"
   project_name: "pgolawsk.esp_home"
-  version: "20250221"
+  version: "20250228"
 
   # required by ../includes/board_esp32.yaml script
   framework_type: arduino # "arduino" or "esp-idf"
@@ -158,7 +159,7 @@ binary_sensor:
   # - !include { file: ../sensors/binary_button.yaml, vars: { ix: "", gpio: "GPIO10", inverted: true } }
 
   # Joystick button
-  - !include { file: ../sensors/binary_button.yaml, vars: { ix: "", gpio: "GPIO10", inverted: true } }
+  # - !include { file: ../sensors/binary_button.yaml, vars: { ix: "", gpio: "GPIO10", inverted: true } }
 
 sensor:
   - !include ../sensors/temp_internal.yaml
@@ -176,7 +177,7 @@ sensor:
   - !include ../sensors/sun_azimuth.yaml
 
   # Temperature and Humidity sensor
-  # - !include { file: ../sensors/temp_hum_SHT3x.yaml, vars: { ix: "", bus_id: "bus_a", address: "0x44" } }
+  - !include { file: ../sensors/temp_hum_SHT3x.yaml, vars: { ix: "", bus_id: "bus_a", address: "0x44" } }
   # - !include { file: ../sensors/temp_hum_AHT2x.yaml, vars: { ix: "", bus_id: "bus_a", address: "0x38" } }
 
   # Temperature, Humidity, Pressure and Gas Resistance sensor
@@ -194,8 +195,8 @@ sensor:
   # - !include { file: ../sensors/steps_KY-040.yaml, vars: { ix: "", clk: "GPIO9", dt: "GPIO7" } }
 
   # Joystick sensor (KY-023)
-  - !include { file: ../sensors/joystick_KY-023.yaml, vars: { ix: "X", gpio: "GPIO0" } }
-  - !include { file: ../sensors/joystick_KY-023.yaml, vars: { ix: "Y", gpio: "GPIO1" } }
+  # - !include { file: ../sensors/joystick_KY-023.yaml, vars: { ix: "X", gpio: "GPIO0" } }
+  # - !include { file: ../sensors/joystick_KY-023.yaml, vars: { ix: "Y", gpio: "GPIO1" } }
 
 button:
   # Restart, reset and shutdown buttons
