@@ -29,6 +29,7 @@
 # Pawelo, 20250208, added BSEC2 i2c_id selection
 # Pawelo, 20250221, added uptime_boot text sensor
 # Pawelo, 20250221, disabled BSEC2 for BME680
+# Pawelo, 20250227, added correction for UV index based on sun azimuth and elevation - increase sensor sensitivity when sun is far outside of south/horizon
 
 #! run with this command to override substitutions
 # esphome -s devicename espXX -s updates 1min -s room <Room name> -s mqtt_room <room> run esp32_MMmm_SSss__PP.yaml --device 192.168.x.x
@@ -37,7 +38,7 @@
 substitutions:
   devices: "Temperature, Humidity, Pressure, Gas Resistance via BME680/SHT41 and UV, Illuminance via LTR390/BH1750"
   project_name: "pgolawsk.esp_home"
-  version: "20250221"
+  version: "20250227"
 
   # required by includes/board_esp32.yaml script
   framework_type: arduino # "arduino" or "esp-idf"
@@ -152,7 +153,7 @@ sensor:
   # Illuminance sensor
   # - !include { file: ../sensors/lux_BH1750.yaml, vars: { ix: "U", bus_id: "bus_a", address: "0x23" } }
   - !include { file: ../sensors/lux_BH1750.yaml, vars: { ix: "U", bus_id: "bus_b", address: "0x23", room: "${room2}", mqtt_location: "${mqtt_location2}", mqtt_room: "${mqtt_room2}"  } }
-  - !include { file: ../sensors/lux_uv_ltr390.yaml, vars: { ix: "", bus_id: "bus_a", address: "0x53" } }
+  - !include { file: ../sensors/lux_uv_ltr390.yaml, vars: { ix: "", bus_id: "bus_a", address: "0x53", uv_step: 7.0, uv_step_min_degree: 40.0 } }
 
   # Various MQTT sensors
   - !include { file: ../sensors/value_mqtt_subscribe.yaml, vars: { topic: "home/entrance/temperature", id: "temp_entrance", name: "Temperature Entrance", unit: "°C", mdi_icon: "thermometer" } }

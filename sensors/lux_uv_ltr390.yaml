@@ -6,6 +6,7 @@
 # Pawelo, 20240622, changed gain and resolution, since sensor reported UV=1 in noon only and tops lux on 8387lx... (this is du to window glass...)
 # Pawelo, 20240717, fix for 2024.07 - separate gain and resolution for ambient_light and uv.
 # Pawelo, 20240907, set entity_category and icon for counters sensor values
+# Pawelo, 20250223, adjust UV values based on sun azimuth and declination
 
 platform: ltr390
 uv_index:
@@ -31,6 +32,37 @@ uv:
         topic: "$mqtt_location/$mqtt_room/uv_counts${ix}"
         payload: !lambda |-
           return to_string(id(uv${ix}).state);
+  filters:
+    lambda: |-
+      // correct sensor value as per sun azimuth and elevation as sensor is facing south horizon, hence UV for any direction +30 degrees should be increased
+      // "uv_step_min_degree": 30.0 means outside cone with 30 degrees from south/horizon center will increase UV factor by x1 per uv_step
+      // "uv_step": 5.0
+      // for example if sun is 45 degrees from south/horizon center then UV factor will be increased by 1 * (45 - 30) / 5 = 3
+      float val = x;
+      float az = id(sun_azimuth).state;
+      float el = id(sun_elevation).state;
+
+      // calculate radius of the sun away from south/horizon center
+      float sun_radius = sqrt(pow(az - 180.0, 2.0f) + pow(el, 2.0f));
+
+      // if sun is within sensor range (uf_stem_min_degree) then return original UV factor
+      if(sun_radius <= ${uv_step_min_degree}) {
+        return val;
+      }
+      // if sun is on north side of the sensor then return original UV factor
+      if(az <= 90 || az >= 270) {
+        return val;
+      }
+      // else calculate UV factor
+      return val * (1.0 + (sun_radius - ${uv_step_min_degree}) / ${uv_step});
+
+      // // calculate azimuth normalized
+      // float az_normalized = abs(az - 180.0) - ${uv_step_min_degree};
+      // // calculate elevator normalized
+      // float el_normalized = abs(el) - ${uv_step_min_degree};
+
+      // // calculate UV factor
+      // return val * (1.0 + az_normalized / (2 * ${uv_step})) * (1 + el_normalized / ${uv_step});
 #  internal: true
 light:
   name: "$room Illuminance${ix}"
