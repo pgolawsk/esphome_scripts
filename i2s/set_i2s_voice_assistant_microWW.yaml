@@ -3,65 +3,128 @@
 # !only on ESP-IDF framework due to micro_wake_word
 # Pawelo, 20250120 created based on https://smarthomecircle.com/created-voice-assistant-esp32-with-wake-word-in-home-assistant
 # Pawelo, 20250123 added micro_wake_word based on https://smarthomecircle.com/How-to-setup-on-device-wake-word-for-voice-assistant-home-assistant
-#! NOT TESTED
+# Pawelo, 20250304, added select to choose WAKE word engine location, based on https://github.com/esphome/issues/issues/6807
+
+# i2s_audio:
+#   - id: "${i2s_id}"
+#     i2s_lrclk_pin: ${ws_pin} # WS or LRC
+#     i2s_bclk_pin: ${sck_pin} # SCK or BCLK
+#     # i2s_mclk_pin: GPIOXX
+#   # 2nd I2S just for tests
+#   - id: "i2s_out"
+#     i2s_lrclk_pin: GPIO9 # WS or LRC
+#     i2s_bclk_pin: GPIO8 # SCK or BCLK
+
+# microphone:
+#   - platform: i2s_audio
+#     id: "mic${ix}"
+#     channel: ${din_channel} # The channel of the microphone. One of left, right, or stereo. If stereo, the output data will be twice as big, with each right sample followed by a left sample. Defaults to right.
+#     # sample_rate: 16000 # I2S sample rate. Defaults to 16000.
+#     bits_per_sample: ${din_bits_per_sample} # The bit depth of the audio samples. Note that while set to 24bit or 32bit, the samples will be scaled down to 16bit before being forwarded. One of 8bit, 16bit, 24bit, or 32bit. Defaults to 32bit.
+#     # bits_per_channel: ${bits_per_sample} # The bit depth of the audio channels. See the datasheet of your I2S device for details. Defaults to bits_per_sample.
+#     # use_apll: ${din_use_apll} # I2S using APLL as main I2S clock, enable it to get accurate clock. Defaults to false.
+#     # i2s_mode: primary # The I2S mode to use. One of primary (clock driven by the host) or secondary (clock driven by the attached device). Defaults to primary.
+#     adc_type: external
+#     pdm: false
+#     i2s_audio_id: ${i2s_id}
+#     i2s_din_pin: ${din_pin} #sd
+
+# speaker:
+#   - platform: i2s_audio
+#     id: "spk${ix}"
+#     # i2s_audio_id: ${i2s_id}
+#     i2s_audio_id: i2s_out
+#     i2s_dout_pin: ${dout_pin}
+#     # name: "$room Speaker${ix}"
+#     # icon: "mdi:speaker"
+#     dac_type: external
+#     # mute_pin: GPIOXX
+#     channel: ${dout_mode} # mono or stereo
 
 i2s_audio:
-  - id: "${i2s_id}"
-    i2s_lrclk_pin: ${ws_pin} # WS or LRC
-    i2s_bclk_pin: ${sck_pin} # SCK or BCLK
+  - id: "i2s_in"
+    i2s_lrclk_pin: ${in_ws_pin} # WS or LRC
+    i2s_bclk_pin: ${in_sck_pin} # SCK or BCLK
     # i2s_mclk_pin: GPIOXX
-  # 2nd I2S just for tests
   - id: "i2s_out"
-    i2s_lrclk_pin: GPIO9 # WS or LRC
-    i2s_bclk_pin: GPIO8 # SCK or BCLK
+    i2s_lrclk_pin: ${out_ws_pin} # WS or LRC
+    i2s_bclk_pin: ${out_sck_pin} # SCK or BCLK
 
 microphone:
   - platform: i2s_audio
-    id: "mic${ix}"
+    id: "mic_id"
     channel: ${din_channel} # The channel of the microphone. One of left, right, or stereo. If stereo, the output data will be twice as big, with each right sample followed by a left sample. Defaults to right.
-    # sample_rate: 16000 # I2S sample rate. Defaults to 16000.
-    bits_per_sample: ${din_bits_per_sample} # The bit depth of the audio samples. Note that while set to 24bit or 32bit, the samples will be scaled down to 16bit before being forwarded. One of 8bit, 16bit, 24bit, or 32bit. Defaults to 32bit.
+    sample_rate: 16000 # I2S sample rate. Defaults to 16000.
+    bits_per_sample: 16bit # The bit depth of the audio samples. Note that while set to 24bit or 32bit, the samples will be scaled down to 16bit before being forwarded. One of 8bit, 16bit, 24bit, or 32bit. Defaults to 32bit.
+    # bits_per_sample: ${din_bits_per_sample} # The bit depth of the audio samples. Note that while set to 24bit or 32bit, the samples will be scaled down to 16bit before being forwarded. One of 8bit, 16bit, 24bit, or 32bit. Defaults to 32bit.
     # bits_per_channel: ${bits_per_sample} # The bit depth of the audio channels. See the datasheet of your I2S device for details. Defaults to bits_per_sample.
     # use_apll: ${din_use_apll} # I2S using APLL as main I2S clock, enable it to get accurate clock. Defaults to false.
     # i2s_mode: primary # The I2S mode to use. One of primary (clock driven by the host) or secondary (clock driven by the attached device). Defaults to primary.
     adc_type: external
     pdm: false
-    i2s_audio_id: ${i2s_id}
+    i2s_audio_id: "i2s_in"
     i2s_din_pin: ${din_pin} #sd
 
 speaker:
   - platform: i2s_audio
-    id: "spk${ix}"
-    # i2s_audio_id: ${i2s_id}
     i2s_audio_id: i2s_out
+    id: speaker_id
     i2s_dout_pin: ${dout_pin}
-    # name: "$room Speaker${ix}"
-    # icon: "mdi:speaker"
     dac_type: external
-    # mute_pin: GPIOXX
-    channel: ${dout_mode} # mono or stereo
+    sample_rate: 48000
+    bits_per_sample: 16bit
+    channel: left
+    # buffer_duration: 300ms
+  - platform: mixer
+    id: mixer_speaker_id
+    output_speaker: speaker_id
+    source_speakers:
+      - id: announcement_spk_mixer_input
+      - id: media_spk_mixer_input
+  - platform: resampler
+    id: media_spk_resampling_input
+    output_speaker: media_spk_mixer_input
+  - platform: resampler
+    id: announcement_spk_resampling_input
+    output_speaker: announcement_spk_mixer_input
+
+media_player:
+  - platform: speaker
+    name: "$room Media Player"
+    # icon: "mdi:play-pause"
+    id: "mp_id"
+    volume_min: 0.5
+    volume_max: 0.8
+    media_pipeline:
+        speaker: media_spk_resampling_input
+        num_channels: 2
+    announcement_pipeline:
+        speaker: announcement_spk_resampling_input
+        num_channels: 1
 
 micro_wake_word:
-  on_wake_word_detected:
-    # then:
-    - voice_assistant.start:
-        wake_word: !lambda return wake_word;
-    - light.turn_on:
-        id: ${rgb_light_id}
-        red: 30%
-        green: 30%
-        blue: 70%
-        brightness: 60%
-        effect: fast pulse
   models:
     - model: hey_jarvis
     - model: okay_nabu
     - model: alexa
+  vad:
+  on_wake_word_detected:
+    # then:
+    - voice_assistant.start:
+        wake_word: !lambda return wake_word;
+    # - light.turn_on:
+    #     id: ${rgb_light_id}
+    #     red: 30%
+    #     green: 30%
+    #     blue: 70%
+    #     brightness: 60%
+    #     effect: va_effect
+
 
 voice_assistant:
-  id: va${ix}
-  microphone: mic${ix}
-  speaker: spk${ix}
+  id: va
+  microphone: mic_id
+  speaker: announcement_spk_resampling_input
   noise_suppression_level: 2
   auto_gain: 31dBFS
   volume_multiplier: 4.0
@@ -73,7 +136,7 @@ voice_assistant:
   on_listening:
     - light.turn_on:
         id: ${rgb_light_id}
-        effect: "VA Effect"
+        effect: va_effect
         red: 63%
         green: 13%
         blue: 93%
@@ -93,62 +156,133 @@ voice_assistant:
         blue: 0%
     - if:
         condition:
-          switch.is_on: va${ix}_use_wake_word
+          # switch.is_on: va_use_wake_word
+          - lambda: return id(ww_el).state == "In Home Assistant";
         then:
-          - switch.turn_off: va${ix}_use_wake_word
+          - voice_assistant.stop:
           - delay: 1sec
-          - switch.turn_on: va${ix}_use_wake_word
+          - voice_assistant.start_continuous:
+    - if:
+        condition:
+          # switch.is_on: va_use_wake_word
+          - lambda: return id(ww_el).state == "On device";
+        then:
+          - micro_wake_word.stop:
+          - delay: 1sec
+          - micro_wake_word.start:
   on_client_connected:
     - if:
         condition:
-          switch.is_on: va${ix}_use_wake_word
+          # switch.is_on: va_use_wake_word
+          - lambda: return id(ww_el).state == "In Home Assistant";
         then:
           - voice_assistant.start_continuous:
+    - if:
+        condition:
+          - lambda: return id(ww_el).state == "On device";
+        then:
+          - micro_wake_word.start:
   on_client_disconnected:
     - if:
         condition:
-          switch.is_on: va${ix}_use_wake_word
+          # switch.is_on: va_use_wake_word
+          - lambda: return id(ww_el).state == "In Home Assistant";
         then:
           - voice_assistant.stop:
+    - if:
+        condition:
+          - lambda: return id(ww_el).state == "On device";
+        then:
+          - micro_wake_word.stop:
   on_end:
     - light.turn_off:
         id: ${rgb_light_id}
+    - wait_until:
+        and:
+          - not:
+              media_player.is_announcing:
+          - not:
+              voice_assistant.is_running:
+    - if:
+        condition:
+            - lambda: return id(ww_el).state == "On device";
+        then:
+          - micro_wake_word.start:
 
-binary_sensor:
-  - platform: status
-    name: $room VA${ix} Connection
-    id: va${ix}_connection
-    filters:
-      - delayed_on: 1s
-    on_press:
-      - if:
-          condition:
-            switch.is_on: va${ix}_use_wake_word
-          then:
-            - voice_assistant.start_continuous:
-    on_release:
-      - if:
-          condition:
-            switch.is_on: va${ix}_use_wake_word
-          then:
-            - voice_assistant.stop:
+# binary_sensor:
+#   - platform: status
+#     name: $room VA Connection
+#     id: va_connection
+#     filters:
+#       - delayed_on: 1s
+#     on_press:
+#       - if:
+#           condition:
+#             # switch.is_on: va_use_wake_word
+#             - lambda: 'return id(ww_el).state == "In Home Assistant";'
+#           then:
+#             - voice_assistant.start_continuous:
+#     on_release:
+#       - if:
+#           condition:
+#             # switch.is_on: va_use_wake_word
+#             - lambda: 'return id(ww_el).state == "In Home Assistant";'
+#           then:
+#             - voice_assistant.stop:
 
-switch:
+# switch:
+#   - platform: template
+#     name: $room VA use WAKE word
+#     id: va_use_wake_word
+#     optimistic: true
+#     restore_mode: RESTORE_DEFAULT_ON
+#     entity_category: config
+#     on_turn_on:
+#       - lambda: id(va).set_use_wake_word(true);
+#       - if:
+#           condition:
+#             not:
+#               - voice_assistant.is_running
+#           then:
+#             - voice_assistant.start_continuous
+#     on_turn_off:
+#       - voice_assistant.stop
+#       - lambda: id(va).set_use_wake_word(false);
+
+
+select:
   - platform: template
-    name: $room VA${ix} use WAKE word
-    id: va${ix}_use_wake_word
-    optimistic: true
-    restore_mode: RESTORE_DEFAULT_ON
     entity_category: config
-    on_turn_on:
-      - lambda: id(va${ix}).set_use_wake_word(true);
+    name: $room WAKE word engine location
+    id: ww_el
+    optimistic: true
+    restore_value: true
+    options:
+      - In Home Assistant
+      - On device
+      - Disabled
+    initial_option: On device
+    on_value:
       - if:
           condition:
-            not:
-              - voice_assistant.is_running
+            lambda: return x == "In Home Assistant";
           then:
-            - voice_assistant.start_continuous
-    on_turn_off:
-      - voice_assistant.stop
-      - lambda: id(va${ix}).set_use_wake_word(false);
-
+            - micro_wake_word.stop:
+            - delay: 500ms
+            - lambda: id(va).set_use_wake_word(true);
+            - voice_assistant.start_continuous:
+      - if:
+          condition:
+            lambda: return x == "On device";
+          then:
+            - lambda: id(va).set_use_wake_word(false);
+            - voice_assistant.stop:
+            - delay: 500ms
+            - micro_wake_word.start:
+      - if:
+          condition:
+            lambda: return x == "Disabled";
+          then:
+            - lambda: id(va).set_use_wake_word(false);
+            - voice_assistant.stop:
+            - micro_wake_word.stop:
