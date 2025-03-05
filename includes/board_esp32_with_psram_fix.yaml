@@ -52,6 +52,7 @@ esp32:
       CONFIG_ESP32S3_DEFAULT_CPU_FREQ_240: "y"
       CONFIG_ESP32S3_DATA_CACHE_64KB: "y"
       CONFIG_ESP32S3_DATA_CACHE_LINE_64B: "y"
+      CONFIG_AUDIO_BOARD_CUSTOM: "y"
       # some of LWIP options removed those 2 info/errors messages from logs:
       # [I][esp-idf:000][httpd]: E (39736) httpd: httpd_accept_conn: error in accept (23)
       # [I][esp-idf:000][httpd]: W (39742) httpd: httpd_server: error accepting new connection
