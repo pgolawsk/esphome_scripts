@@ -37,6 +37,7 @@
 # Pawelo, 20250221, added uptime_boot text sensor (disabled)
 # Pawelo, 20250223, added esphome_min_version variable
 # Pawelo, 20250223, moved to esp-idf and enabled speaker media player
+# Pawelo, 20250304, testing voice assistant with mic and speaker
 
 #! run with this command to override substitutions
 # esphome -s devicename espXX -s updates 1min -s room <Room name> -s mqtt_room <room> run esp32_MMmm_SSss__PP.yaml --device 192.168.x.x
@@ -96,8 +97,10 @@ substitutions:
 # <<: !include { file: ../interfaces/rtttl.yaml, vars: { ix: "" } }
 # <<: !include { file: ../interfaces/spi.yaml, vars: { spi_id: "spi_a", clk: "GPIO6", mosi: "GPIO7", miso: "GPIO9" } }
 # <<: !include { file: ../interfaces/spi_rc522.yaml, vars: { spi_id: "spi_a", cs: "GPIO5", reset: "GPIO4" } }
-# <<: !include { file: ../interfaces/ir_receiver.yaml, vars: { gpio: "GPIO6", dump: "nec", rmt_channel: 2 } } # for ESP32c3 can be 2-3, for ESP32 can be 0-7, for ESP32s2 0-3, for ESP32s3 4-7
-# <<: !include { file: ../interfaces/ir_transmitter.yaml, vars: { gpio: "GPIO5", rmt_channel: 0 } } # for ESP32c3 can be 0-1, for ESP32 can be 0-7, for ESP32s2 0-3, for ESP32s3 0-3
+# <<: !include { file: ../interfaces/ir_receiver.yaml, vars: { gpio: "GPIO6", dump: "nec" } }
+# <<: !include { file: ../interfaces/ir_receiver__arduino.yaml, vars: { gpio: "GPIO6", dump: "nec", rmt_channel: 2 } } # for ESP32c3 can be 2-3, for ESP32 can be 0-7, for ESP32s2 0-3, for ESP32s3 4-7
+# <<: !include { file: ../interfaces/ir_transmitter.yaml, vars: { gpio: "GPIO5" } }
+# <<: !include { file: ../interfaces/ir_transmitter__arduino.yaml, vars: { gpio: "GPIO5", rmt_channel: 0 } } # for ESP32c3 can be 0-1, for ESP32 can be 0-7, for ESP32s2 0-3, for ESP32s3 0-3
 # <<: !include { file: ../interfaces/i2s_audio.yaml, vars: { i2s_id: "i2s_a", ws_pin: "GPIO6", sck_pin: "GPIO7" } }
 
 
@@ -118,13 +121,16 @@ substitutions:
 
 packages:
   # I2S Media Player (!cannot be used with "I2S Sound Level Meter" below)
-  mp: !include { file: ../i2s/set_i2s_media_player.yaml, vars: { dout_mode: mono, dout_pin: "GPIO8", out_ws_pin: "GPIO2", out_sck_pin: "GPIO1", din_channel: "left", din_pin: "GPIO4", in_ws_pin: "GPIO5", in_sck_pin: "GPIO6" } }
+  # mp: !include { file: ../i2s/set_i2s_media_player.yaml, vars: { dout_mode: mono, dout_pin: "GPIO8", out_ws_pin: "GPIO2", out_sck_pin: "GPIO1", din_channel: "left", din_pin: "GPIO4", in_ws_pin: "GPIO5", in_sck_pin: "GPIO6" } }
 
   # I2S Voice Assistant (!cannot be used with "I2S Sound Level Meter" below)
+  vass: !include { file: ../i2s/set_i2s_voice_assistant_microWW.yaml, vars: { dout_mode: mono, dout_pin: "GPIO8", out_ws_pin: "GPIO2", out_sck_pin: "GPIO1", din_channel: "left", din_pin: "GPIO4", in_ws_pin: "GPIO5", in_sck_pin: "GPIO6", rgb_light_id: rgb_led } }
+
   # va: !include { file: ../i2s/set_i2s_voice_assistant.yaml, vars: { ix: "", i2s_id: "i2s_va", dout_pin: "GPIO15", ws_pin: "GPIO6", sck_pin: "GPIO7", din_pin: "GPIO5", dout_mode: mono, din_channel: "left", din_bits_per_sample: 24bit, din_use_apll: false, rgb_light_id: rgb_led } }
   # va: !include { file: ../i2s/set_i2s_voice_assistant_microWW.yaml, vars: { ix: "", i2s_id: "i2s_va", dout_pin: "GPIO3", ws_pin: "GPIO5", sck_pin: "GPIO6", din_pin: "GPIO4", dout_mode: mono, din_channel: "left", din_bits_per_sample: 24bit, din_use_apll: false, rgb_light_id: rgb_led } }
 
   # I2S Sound Level Meter (!cannot be used with "I2S Voice Assistant" above)
+  #! NOT working since 2025.02
   # slm: !include { file: ../i2s/set_i2s_sound_level_meter.yaml, vars: { i2s_id: "i2s_db", din_pin: "GPIO4", ws_pin: "GPIO5", bck_pin: "GPIO6", channel: "left" } }
 
   # IR Remote control buttons added from packages
