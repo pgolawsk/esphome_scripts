@@ -27,6 +27,7 @@
 # Pawelo, 20250208, added BSEC2 i2c_id selection
 # Pawelo, 20250209, disabled Sound Level Meter, added MAX98357A I2S audio output with small speaker
 # Pawelo, 20250221, added uptime_boot text sensor
+# Pawelo, 20250304, switched to ESP-IDF (disabled BSEC2)
 
 #! run with this command to override substitutions
 # esphome -s devicename espXX -s updates 1min -s room <Room name> -s mqtt_room <room> run esp32_MMmm_SSss__PP.yaml --device 192.168.x.x
@@ -36,12 +37,13 @@ substitutions:
   devices: "Env monitoring via BME680, Illuminance via BH1750, IR Receiver/Transmitter, RTTTL Buzzer, mic via INMP441, speaker via MAX98357A"
   project_name: "pgolawsk.esp_home"
   version: "20250221"
+  esphome_min_version: 2025.2.0
 
   # required by ../includes/board_esp32.yaml script
-  framework_type: arduino # "arduino" or "esp-idf"
-  # framework_type: esp-idf # "arduino" or "esp-idf"
-  # framework_version: recommended # or specific version like "latest", "recommended", "4.4.4"
-  framework_version: latest # or specific version like "latest", "recommended", "4.4.4"
+  # framework_type: arduino # "arduino" or "esp-idf"
+  framework_type: esp-idf # "arduino" or "esp-idf"
+  framework_version: recommended # or specific version like "latest", "recommended", "4.4.4"
+  # framework_version: latest # or specific version like "latest", "recommended", "4.4.4"
   board_variant: "s3" # empty for ESP32, other values to display like c3, c6, s2, s3
   board: "esp32-s3-devkitc-1" # like: esp32dev, esp32cam, esp32-c3-devkitm-1, esp32-s3-devkitc-1, lolin_s2_mini, full list here https://registry.platformio.org/platforms/platformio/espressif32/boards?version=5.3.0
   flash_size: 8MB # One of 2MB, 4MB, 8MB, 16MB or 32MB
@@ -72,8 +74,8 @@ substitutions:
 
 # Include basics of a board
 # <<: !include { file: ../includes/board_esp32.yaml, vars: { board_variant: "${board_variant}", board: "${board}", flash_size: "${flash_size}", flash_write_interval: "${flash_write_interval}" } }
-<<: !include { file: ../includes/board_esp32.yaml, vars: {} }
-# <<: !include { file: ../includes/board_esp32_with_psram_fix.yaml, vars: { board_variant: "${board_variant}", board: "${board}", flash_size: "${flash_size}", flash_write_interval: "${flash_write_interval}" } }
+# <<: !include { file: ../includes/board_esp32.yaml, vars: {} }
+<<: !include { file: ../includes/board_esp32_with_psram_fix.yaml, vars: {} }
 <<: !include { file: ../includes/psram.yaml, vars: { mode: "quad" } } # "quad' for 2MB, "octal" for 4-8MB PSRAM
 
 # Include interfaces needed
@@ -84,27 +86,35 @@ substitutions:
 <<: !include { file: ../interfaces/rtttl.yaml, vars: { ix: "" } }
 # <<: !include { file: ../interfaces/spi.yaml, vars: { spi_id: "spi_a", clk: "GPIO6", mosi: "GPIO7", miso: "GPIO9" } }
 # <<: !include { file: ../interfaces/spi_rc522.yaml, vars: { spi_id: "spi_a", cs: "GPIO5", reset: "GPIO4" } }
-<<: !include { file: ../interfaces/i2c_bme68x_bsec2.yaml, vars: { ix: "", bus_id: "bus_a", address: "0x77", temp_offset: 0.0 } }
-<<: !include { file: ../interfaces/ir_receiver.yaml, vars: { gpio: "GPIO5", dump: "nec", rmt_channel: 4 } } # for ESP32c3 can be 2-3, for ESP32 can be 0-7, for ESP32s2 0-3, for ESP32s3 4-7
-<<: !include { file: ../interfaces/ir_transmitter.yaml, vars: { gpio: "GPIO6", rmt_channel: 0 } } # for ESP32c3 can be 0-1, for ESP32 can be 0-7, for ESP32s2 0-3, for ESP32s3 0-3
+# <<: !include { file: ../interfaces/i2c_bme68x_bsec2.yaml, vars: { ix: "", bus_id: "bus_a", address: "0x77", temp_offset: 0.0 } }
+<<: !include { file: ../interfaces/ir_receiver.yaml, vars: { gpio: "GPIO5", dump: "nec" } }
+# <<: !include { file: ../interfaces/ir_receiver__arduino.yaml, vars: { gpio: "GPIO5", dump: "nec", rmt_channel: 4 } } # for ESP32c3 can be 2-3, for ESP32 can be 0-7, for ESP32s2 0-3, for ESP32s3 4-7
+<<: !include { file: ../interfaces/ir_transmitter.yaml, vars: { gpio: "GPIO6", rmt_symbols: 1024 } }
+# <<: !include { file: ../interfaces/ir_transmitter__arduino.yaml, vars: { gpio: "GPIO6", rmt_channel: 0 } } # for ESP32c3 can be 0-1, for ESP32 can be 0-7, for ESP32s2 0-3, for ESP32s3 0-3
 
-# I2S Audio (!cannot be used with "I2S Sound Level Meter" below)
-i2s_audio:
-  # - <<: !include { file: ../i2s/i2s_audio.yaml, vars: { i2s_id: "i2s_all", ws_pin: "GPIO38", sck_pin: "GPIO39" } }
-  - <<: !include { file: ../i2s/i2s_audio.yaml, vars: { i2s_id: "i2s_in", ws_pin: "GPIO38", sck_pin: "GPIO39" } }
-  - <<: !include { file: ../i2s/i2s_audio.yaml, vars: { i2s_id: "i2s_out", ws_pin: "GPIO18", sck_pin: "GPIO17" } }
+# # I2S Audio (!cannot be used with "I2S Sound Level Meter" below)
+# i2s_audio:
+#   # - <<: !include { file: ../i2s/i2s_audio.yaml, vars: { i2s_id: "i2s_all", ws_pin: "GPIO38", sck_pin: "GPIO39" } }
+#   - <<: !include { file: ../i2s/i2s_audio.yaml, vars: { i2s_id: "i2s_in", ws_pin: "GPIO38", sck_pin: "GPIO39" } }
+#   - <<: !include { file: ../i2s/i2s_audio.yaml, vars: { i2s_id: "i2s_out", ws_pin: "GPIO18", sck_pin: "GPIO17" } }
 
-<<: !include { file: ../i2s/mic.yaml, vars: { ix: "", i2s_id: "i2s_in", sd_pin: "GPIO15", channel: "left", bits_per_sample: 24bit, use_apll: true } }
+# <<: !include { file: ../i2s/mic.yaml, vars: { ix: "", i2s_id: "i2s_in", sd_pin: "GPIO15", channel: "left", bits_per_sample: 24bit, use_apll: true } }
 
-<<: !include { file: ../i2s/media_player.yaml, vars: { ix: "", i2s_id: "i2s_out", dout_pin: "GPIO16", mode: "mono" } }
-# # <<: !include { file: ../i2s/speaker.yaml, vars: { ix: "", i2s_id: "i2s_all", dout_pin: "GPIO16", channel: "mono" } }
+# <<: !include { file: ../i2s/media_player.yaml, vars: { ix: "", i2s_id: "i2s_out", dout_pin: "GPIO16", mode: "mono" } }
+# # # <<: !include { file: ../i2s/speaker.yaml, vars: { ix: "", i2s_id: "i2s_all", dout_pin: "GPIO16", channel: "mono" } }
 
-# # <<: !include { file: ../i2s/voice_assistant_mic_only.yaml, vars: { mic_id: "mic" } }
-# <<: !include { file: ../i2s/voice_assistant_mplayer.yaml, vars: { mic_id: "mic", mplayer_id: "mplayer" } }
-# # <<: !include { file: ../i2s/voice_assistant_speaker.yaml, vars: { mic_id: "mic", speaker_id: "spk" } }
+# # # <<: !include { file: ../i2s/voice_assistant_mic_only.yaml, vars: { mic_id: "mic" } }
+# # <<: !include { file: ../i2s/voice_assistant_mplayer.yaml, vars: { mic_id: "mic", mplayer_id: "mplayer" } }
+# # # <<: !include { file: ../i2s/voice_assistant_speaker.yaml, vars: { mic_id: "mic", speaker_id: "spk" } }
 
 
 packages:
+  # I2S Media Player (!cannot be used with "I2S Sound Level Meter" below)
+  mp: !include { file: ../i2s/set_i2s_media_player.yaml, vars: { dout_mode: mono, dout_pin: "GPIO16", out_ws_pin: "GPIO18", out_sck_pin: "GPIO17", din_channel: "left", din_pin: "GPIO15", in_ws_pin: "GPIO38", in_sck_pin: "GPIO39" } }
+
+  # I2S Voice Assistant (!cannot be used with "I2S Sound Level Meter" below)
+  # vass: !include { file: ../i2s/set_i2s_voice_assistant_microWW.yaml, vars: { dout_mode: mono, dout_pin: "GPIO8", out_ws_pin: "GPIO2", out_sck_pin: "GPIO1", din_channel: "left", din_pin: "GPIO4", in_ws_pin: "GPIO5", in_sck_pin: "GPIO6", rgb_light_id: rgb_led } }
+
   # I2S Sound Level Meter (!cannot be used with "I2S Audio" above)
   # slm: !include { file: ../i2s/set_i2s_sound_level_meter.yaml, vars: { updates: "15s", i2s_id: "i2s_db", din_pin: "GPIO15", ws_pin: "GPIO38", bck_pin: "GPIO39", channel: "left" } }
 
@@ -141,8 +151,8 @@ text_sensor:
 
   # Air Quality sensor
   # - !include { file: ../sensors/text_air_quality.yaml }
-  - !include ../sensors/text_air_quality_bme68x.yaml
-  - !include { file: ../sensors/text_IAQ_accuracy_bme68x.yaml, vars: { platform: "bme68x_bsec2" } }
+  # - !include ../sensors/text_air_quality_bme68x.yaml
+  # - !include { file: ../sensors/text_IAQ_accuracy_bme68x.yaml, vars: { platform: "bme68x_bsec2" } }
 
 binary_sensor:
   # HA Connected
@@ -168,8 +178,8 @@ sensor:
   # - !include { file: ../sensors/temp_hum_AHT2x.yaml, vars: { ix: "", bus_id: "bus_a", address: "0x38" } }
 
   # Temperature, Humidity, Pressure and Gas Resistance sensor
-  # - !include { file: ../sensors/temp_hum_press_gas_BME680.yaml, vars: { ix: "", bus_id: "bus_a", address: "0x77", temp_offset: 0.0, hum_offset: 0.0, pressure_offset: 0.0 } }
-  - !include { file: ../sensors/temp_hum_press_gas_aqi_co2_voc_bme680.yaml, vars: { platform: "bme68x_bsec2", ix: "", bus_id: "bus_a", address: "0x77", temp_offset: 0, hum_offset: 0, pressure_offset: 0 } }
+  - !include { file: ../sensors/temp_hum_press_gas_BME680.yaml, vars: { ix: "", bus_id: "bus_a", address: "0x77", temp_offset: 0.0, hum_offset: 0.0, pressure_offset: 0.0 } }
+  # - !include { file: ../sensors/temp_hum_press_gas_aqi_co2_voc_bme680.yaml, vars: { platform: "bme68x_bsec2", ix: "", bus_id: "bus_a", address: "0x77", temp_offset: 0, hum_offset: 0, pressure_offset: 0 } }
 
   # Illuminance sensor
   - !include { file: ../sensors/lux_BH1750.yaml, vars: { ix: "", bus_id: "bus_a", address: "0x23" } }
@@ -228,8 +238,8 @@ light:
   # LED blue (S3, C3 supermini/plus)
   - !include { file: ../lights/led.yaml, vars: { ix: "blue", platform: "status_led", off_delay: "1days", entity_category: "diagnostic" } }
   # LED RGB (S3, C3 supermini plus)
-  - !include { file: ../lights/led_rgb__arduino.yaml, vars: { ix: "", gpio: "GPIO48", entity_category: "", rmt_channel: 1 } }
-  # - !include { file: ../lights/led_rgb.yaml, vars: { ix: "", gpio: "GPIO48", entity_category: "" } }
+  # - !include { file: ../lights/led_rgb__arduino.yaml, vars: { ix: "", gpio: "GPIO48", entity_category: "", rmt_channel: 1 } }
+  - !include { file: ../lights/led_rgb.yaml, vars: { ix: "", gpio: "GPIO48", entity_category: "" } }
   # - !include { file: ../lights/led_rgb_neopixelbus.yaml, vars: { ix: "", gpio: "GPIO48", entity_category: "" } }
 
 switch:
