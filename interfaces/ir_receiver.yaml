@@ -13,3 +13,6 @@ remote_receiver:
     #   pullup: true
   dump: ${dump}
 #  rmt_channel: ${rmt_channel} # for ESP32c3 can be 2-3, for ESP32 can be 0-7, for ESP32s2 0-3, for ESP32s3 4-7
+  # rmt_symbols: 256
+  # receive_symbols: 256
+  # filter_symbols: 50
