@@ -13,5 +13,6 @@ remote_transmitter:
     #   pullup: true
   carrier_duty_percent: 50%
 #  rmt_channel: ${rmt_channel} # for ESP32c3 can be 0-1, for ESP32 can be 0-7, for ESP32s2 0-3, for ESP32s3 0-3
-  use_dma: true
-  rmt_symbols: ${rmt_symbols}
+  # eot_level: false
+  # use_dma: true
+  # rmt_symbols: ${rmt_symbols}
