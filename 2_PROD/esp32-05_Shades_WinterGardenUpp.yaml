@@ -30,6 +30,7 @@
 # Pawelo, 20250221, added uptime_boot text sensor
 # Pawelo, 20250221, disabled BSEC2 for BME680
 # Pawelo, 20250227, added correction for UV index based on sun azimuth and elevation - increase sensor sensitivity when sun is far outside of south/horizon
+# Pawelo, 20250322, lowered lux_dark_treshold from 3.9 to 0.9
 
 #! run with this command to override substitutions
 # esphome -s devicename espXX -s updates 1min -s room <Room name> -s mqtt_room <room> run esp32_MMmm_SSss__PP.yaml --device 192.168.x.x
@@ -38,7 +39,7 @@
 substitutions:
   devices: "Temperature, Humidity, Pressure, Gas Resistance via BME680/SHT41 and UV, Illuminance via LTR390/BH1750"
   project_name: "pgolawsk.esp_home"
-  version: "20250227"
+  version: "20250322"
 
   # required by includes/board_esp32.yaml script
   framework_type: arduino # "arduino" or "esp-idf"
@@ -230,7 +231,7 @@ button:
 # Include fonts for display
 <<: !include ../fonts/fonts_weeact_display.yaml
 
-<<: !include { file: ../scripts/interval_display_cycle_pages_with_lux.yaml, vars: { display_id: weact_display, cycle_script: cycle_pages_in_lux_on_select, lux_sensor: luxU, lux_dark_threshold: 3.9, lux_dark_threshold_elevation_multiplier: 0.1, page_to_skip: page_wifi_qr } }
+<<: !include { file: ../scripts/interval_display_cycle_pages_with_lux.yaml, vars: { display_id: weact_display, cycle_script: cycle_pages_in_lux_on_select, lux_sensor: luxU, lux_dark_threshold: 0.9, lux_dark_threshold_elevation_multiplier: 0.1, page_to_skip: page_wifi_qr } }
 
 select:
   # Display Cycle Interval selection
