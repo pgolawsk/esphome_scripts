@@ -43,7 +43,7 @@ Author: Pawel Golawski, <pawel.golawski@2com.pl>
 
   ![ESP32-D1 mini pinout image](pinouts/ESP32_D1_mini_pinout.png "ESP32-D1 mini pinout")
 
-- 5x **ESP32-C3 super mini**
+- (-1) 5x **ESP32-C3 super mini**
 
   ![ESP32-C3 super-mini pinout back image](pinouts/ESP32c3_pinout_back.jpeg "ESP32-C3 super-mini pinout back")
   ![ESP32-C3 super-mini pinout front image](pinouts/ESP32c3_pinout_front.jpeg "ESP32-C3 super-mini pinout front")
@@ -186,13 +186,13 @@ Author: Pawel Golawski, <pawel.golawski@2com.pl>
 ### Sensors inventory
 
 - 5x `A` - **APDS9660** - Illuminance, Color(s), Gesture and Motion
-- 10x (-1) `B` - **BH1750** - Illuminance
+- 9x `B` - **BH1750** - Illuminance
 - `C` - **SCD40** - CO2, Temperature, Humidity
-- 4x (+2) 1m `D` - **DS18B20** (Dallas) - Temperature
+- 6x 1m `D` - **DS18B20** (Dallas) - Temperature
 - 1x 2m `D` - **DS18B20** (Dallas) - Temperature
 - 2x `E` - **INA226** - DC Current, Power, Voltage (max. 30V DC)
 - 2x `F` - **INA3221** - 3-channel DC Current, Power, Voltage (max. 26V DC)
-- 3x `G` - **BME680** - Temperature, Humidity, Pressure, Gas Resistance
+- 3x (-1) `G` - **BME680** - Temperature, Humidity, Pressure, Gas Resistance
 - 0x `H` - **AHTx21** - Temperature and Humidity
 - 1x `I` - **IR Receiver 38KHz** (Open-Smart, 1pin with signal)
 - 1x `J` - **KY-023** - Direction, Steps from small joystick
@@ -203,7 +203,7 @@ Author: Pawel Golawski, <pawel.golawski@2com.pl>
 - 9x `M` - **INMP441** - I2S microphone
 - 2x `N` - **ENS160** - TVOC and eCO2
 - 6x `O` - **SGP30** - TVOC and eCO2
-- 2x (-1) `P` - **BME280** - Temperature, Humidity, Pressure
+- 1x `P` - **BME280** - Temperature, Humidity, Pressure
 - 2x `R` - **RC522** - RFID tag sensor
 - 11x `S` - **SHTx30** - Temperature and Humidity
 - 2x 1m `S` - **SHTx30** - Temperature and Humidity as waterproof probe
@@ -266,7 +266,7 @@ Author: Pawel Golawski, <pawel.golawski@2com.pl>
 - 9x AC 230V to DC 5V Hi-Link module
 - 3x DC 30V to DC 3.3V board
 - 8x DC 30V to DC 5V board
-- 0x (+1) AC 230V to DC 5V (1A) board
+- 1x (+2) AC 230V to DC 5V (1A) board
 - 14x single relay SRD-05DC-SL-C (5V)
 - 4x single relay HFD4-3V-S (3.3V)
 - 7x AVT5785 board (to put 230C to (5V or 3.3V) Hi-Link module)
@@ -279,10 +279,11 @@ Author: Pawel Golawski, <pawel.golawski@2com.pl>
 
 - 1 + 4x white waterproof IP65 box (various sizes)
 - 3x white plastic box 60mm x 30mm x 15mm
-- 5x (-1) white plastic box 90mm x 40mm x 15mm
+- 5x white plastic box 90mm x 40mm x 15mm
 - 4x color buttons for a case
 - 1x white plastic box 75mm x 75mm x 30mm
 - 1x white plastic box 100mm x 100mm x 36mm
+- 1x black fuse box (5x20mm)
 
 #### Breadboards (X x Y pins)
 
@@ -388,7 +389,8 @@ Components:
 - 1x `P` - BME280 - Temperature, Humidity, Pressure
 - 1x `B` - BH1750 - Illuminance
 - 1x `S` - SHTx30 - Temperature and Humidity as waterproof probe
-- 1x ? white plastic box 90mm x 40mm x 15mm
+- 1x gray plastic box 115mm x 125mm x 58mm
+- 1x black fuse box (5x20mm)
 - 1x AC 230V to DC 3.3V board (with Hi-Link module)
 
 ### Measures
@@ -412,6 +414,22 @@ Components:
 - 1x FRAM 32KB
 - 1x WeAct Studio 2.90 inch ePaper module, 296 x 128 px (91.8 x 37.5 mm)
 - 1x Transparent IP44 case (gray)
+
+#### Garage, Gate
+
+- PRODUCTION since: TBD
+- Script `file://./2_PROD/esp32-36_Garage_Gate.yaml`
+
+ESP32c3 board with Temperature, Humidity, Pressure and GATE switch.
+
+Components:
+
+- 1x ESP32c3 supermini
+- 1x `G` - BME680 - Temperature, Humidity, Pressure, Gas Resistance
+- 1x `b/r` - 9032 - Passive Buzzer 9mm diameter x 3.2mm height
+- 1x single relay HFD4-3V-S (3.3V)
+- 1x AC 230V to DC 5V (1A) board
+- no case (used case with gate transformer)
 
 #### Aquarium Window
 
