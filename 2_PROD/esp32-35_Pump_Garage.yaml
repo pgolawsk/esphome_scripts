@@ -42,6 +42,7 @@
 # Pawelo, 20250208, added one_wire due to deprecated dallas interface
 # Pawelo, 20250221, added uptime_boot text sensor
 # Pawelo, 20250221, changed Dallas NG to regular Dallas (via onewire)
+# Pawelo, 20250322, adjusted pulses per liter for _total water sensor from 476 to 466 (based on difference on garage measure while use only garage)
 
 #! run with this command to override substitutions
 # esphome -s devicename espXX -s updates 1min -s room <Room name> -s mqtt_room <room> run esp32_MMmm_SSss__PP.yaml --device 192.168.x.x
@@ -50,7 +51,7 @@
 substitutions:
   devices: "ePaper Temperature and Humidity via SHTx30, Illuminance via BH1750, Water via YF-B10 G1"
   project_name: "pgolawsk.esp_home"
-  version: "20250221"
+  version: "20250322"
 
   # required by ../includes/board_esp32.yaml script
   framework_type: arduino # "arduino" or "esp-idf"
@@ -76,7 +77,7 @@ substitutions:
 
   # default variable values for !include statements
   accuracy_decimals: "2"
-  pulses_per_liter: "476"
+  pulses_per_liter: "466"
   pulses_per_liter_garden: "443"
   water_updates_interval: 5s
   water_flow_min_delta: "0.1"
