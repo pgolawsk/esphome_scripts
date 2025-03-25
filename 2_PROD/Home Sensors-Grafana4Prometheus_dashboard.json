@@ -27,7 +27,7 @@
       "type": "grafana",
       "id": "grafana",
       "name": "Grafana",
-      "version": "11.4.0"
+      "version": "11.5.2"
     },
     {
       "type": "datasource",
@@ -156,7 +156,6 @@
           "calcs": [
             "lastNotNull",
             "min",
-            "mean",
             "max"
           ],
           "displayMode": "table",
@@ -165,12 +164,13 @@
           "width": 450
         },
         "tooltip": {
+          "hideZeros": false,
           "maxHeight": 600,
           "mode": "single",
           "sort": "none"
         }
       },
-      "pluginVersion": "11.4.0",
+      "pluginVersion": "11.5.2",
       "targets": [
         {
           "datasource": {
@@ -244,7 +244,7 @@
               }
             ]
           },
-          "unit": "volt"
+          "unit": "celsius"
         },
         "overrides": []
       },
@@ -254,13 +254,12 @@
         "x": 0,
         "y": 9
       },
-      "id": 33,
+      "id": 34,
       "options": {
         "legend": {
           "calcs": [
             "lastNotNull",
             "min",
-            "mean",
             "max"
           ],
           "displayMode": "table",
@@ -269,12 +268,13 @@
           "width": 450
         },
         "tooltip": {
+          "hideZeros": false,
           "maxHeight": 600,
           "mode": "single",
           "sort": "none"
         }
       },
-      "pluginVersion": "11.4.0",
+      "pluginVersion": "11.5.2",
       "targets": [
         {
           "datasource": {
@@ -282,13 +282,13 @@
             "uid": "${DS_PROMETHEUS}"
           },
           "editorMode": "builder",
-          "expr": "esphome_sensor_value{id=~\".+voltage.*\"}",
+          "expr": "esphome_sensor_value{id=~\".+-.+temperature.*\"}",
           "legendFormat": "{{name}}",
           "range": true,
           "refId": "A"
         }
       ],
-      "title": "Voltage",
+      "title": "Device Temperature",
       "type": "timeseries"
     },
     {
@@ -348,22 +348,23 @@
               }
             ]
           },
-          "unit": "celsius"
+          "unit": "volt"
         },
         "overrides": []
       },
       "gridPos": {
-        "h": 8,
+        "h": 4,
         "w": 24,
         "x": 0,
         "y": 17
       },
-      "id": 34,
+      "id": 33,
       "options": {
         "legend": {
           "calcs": [
             "lastNotNull",
             "min",
+            "mean",
             "max"
           ],
           "displayMode": "table",
@@ -372,12 +373,13 @@
           "width": 450
         },
         "tooltip": {
+          "hideZeros": false,
           "maxHeight": 600,
           "mode": "single",
           "sort": "none"
         }
       },
-      "pluginVersion": "11.4.0",
+      "pluginVersion": "11.5.2",
       "targets": [
         {
           "datasource": {
@@ -385,13 +387,13 @@
             "uid": "${DS_PROMETHEUS}"
           },
           "editorMode": "builder",
-          "expr": "esphome_sensor_value{id=~\".+-.+temperature.*\"}",
+          "expr": "esphome_sensor_value{id=~\".+voltage.*\"}",
           "legendFormat": "{{name}}",
           "range": true,
           "refId": "A"
         }
       ],
-      "title": "Device Temperature",
+      "title": "Voltage",
       "type": "timeseries"
     },
     {
@@ -400,7 +402,7 @@
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 25
+        "y": 21
       },
       "id": 6,
       "panels": [
@@ -420,7 +422,8 @@
                 "mode": "absolute",
                 "steps": [
                   {
-                    "color": "transparent"
+                    "color": "transparent",
+                    "value": null
                   }
                 ]
               },
@@ -432,10 +435,12 @@
             "h": 6,
             "w": 12,
             "x": 0,
-            "y": 50
+            "y": 22
           },
           "id": 21,
           "options": {
+            "minVizHeight": 75,
+            "minVizWidth": 75,
             "orientation": "auto",
             "reduceOptions": {
               "calcs": [
@@ -445,9 +450,10 @@
               "values": false
             },
             "showThresholdLabels": false,
-            "showThresholdMarkers": true
+            "showThresholdMarkers": true,
+            "sizing": "auto"
           },
-          "pluginVersion": "9.4.7",
+          "pluginVersion": "11.5.2",
           "targets": [
             {
               "datasource": {
@@ -482,7 +488,8 @@
                 "mode": "absolute",
                 "steps": [
                   {
-                    "color": "transparent"
+                    "color": "transparent",
+                    "value": null
                   }
                 ]
               },
@@ -494,10 +501,12 @@
             "h": 6,
             "w": 12,
             "x": 12,
-            "y": 50
+            "y": 22
           },
           "id": 14,
           "options": {
+            "minVizHeight": 75,
+            "minVizWidth": 75,
             "orientation": "auto",
             "reduceOptions": {
               "calcs": [
@@ -507,9 +516,10 @@
               "values": false
             },
             "showThresholdLabels": false,
-            "showThresholdMarkers": true
+            "showThresholdMarkers": true,
+            "sizing": "auto"
           },
-          "pluginVersion": "9.4.7",
+          "pluginVersion": "11.5.2",
           "targets": [
             {
               "datasource": {
@@ -544,7 +554,8 @@
                 "mode": "absolute",
                 "steps": [
                   {
-                    "color": "text"
+                    "color": "text",
+                    "value": null
                   },
                   {
                     "color": "#6ED0E0",
@@ -577,13 +588,15 @@
             "overrides": []
           },
           "gridPos": {
-            "h": 6,
+            "h": 9,
             "w": 24,
             "x": 0,
-            "y": 56
+            "y": 28
           },
           "id": 8,
           "options": {
+            "minVizHeight": 75,
+            "minVizWidth": 75,
             "orientation": "auto",
             "reduceOptions": {
               "calcs": [
@@ -593,9 +606,10 @@
               "values": false
             },
             "showThresholdLabels": false,
-            "showThresholdMarkers": true
+            "showThresholdMarkers": true,
+            "sizing": "auto"
           },
-          "pluginVersion": "9.4.7",
+          "pluginVersion": "11.5.2",
           "targets": [
             {
               "datasource": {
@@ -630,7 +644,8 @@
                 "mode": "absolute",
                 "steps": [
                   {
-                    "color": "text"
+                    "color": "text",
+                    "value": null
                   },
                   {
                     "color": "red",
@@ -667,13 +682,15 @@
             "overrides": []
           },
           "gridPos": {
-            "h": 6,
+            "h": 11,
             "w": 24,
             "x": 0,
-            "y": 62
+            "y": 37
           },
           "id": 10,
           "options": {
+            "minVizHeight": 75,
+            "minVizWidth": 75,
             "orientation": "auto",
             "reduceOptions": {
               "calcs": [
@@ -683,9 +700,10 @@
               "values": false
             },
             "showThresholdLabels": false,
-            "showThresholdMarkers": true
+            "showThresholdMarkers": true,
+            "sizing": "auto"
           },
-          "pluginVersion": "9.4.7",
+          "pluginVersion": "11.5.2",
           "targets": [
             {
               "datasource": {
@@ -714,7 +732,7 @@
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 26
+        "y": 22
       },
       "id": 4,
       "panels": [],
@@ -786,7 +804,7 @@
         "h": 8,
         "w": 24,
         "x": 0,
-        "y": 27
+        "y": 23
       },
       "id": 22,
       "options": {
@@ -799,15 +817,16 @@
           "displayMode": "table",
           "placement": "right",
           "showLegend": true,
-          "width": 350
+          "width": 400
         },
         "tooltip": {
+          "hideZeros": false,
           "maxHeight": 600,
           "mode": "single",
           "sort": "none"
         }
       },
-      "pluginVersion": "11.4.0",
+      "pluginVersion": "11.5.2",
       "targets": [
         {
           "datasource": {
@@ -907,10 +926,10 @@
         "overrides": []
       },
       "gridPos": {
-        "h": 9,
+        "h": 11,
         "w": 24,
         "x": 0,
-        "y": 35
+        "y": 31
       },
       "id": 2,
       "options": {
@@ -922,15 +941,16 @@
           "displayMode": "table",
           "placement": "right",
           "showLegend": true,
-          "width": 350
+          "width": 400
         },
         "tooltip": {
+          "hideZeros": false,
           "maxHeight": 600,
           "mode": "single",
           "sort": "none"
         }
       },
-      "pluginVersion": "11.4.0",
+      "pluginVersion": "11.5.2",
       "targets": [
         {
           "datasource": {
@@ -1036,10 +1056,10 @@
         "overrides": []
       },
       "gridPos": {
-        "h": 8,
+        "h": 9,
         "w": 24,
         "x": 0,
-        "y": 44
+        "y": 42
       },
       "id": 12,
       "options": {
@@ -1053,15 +1073,16 @@
           "showLegend": true,
           "sortBy": "Name",
           "sortDesc": true,
-          "width": 350
+          "width": 400
         },
         "tooltip": {
+          "hideZeros": false,
           "maxHeight": 600,
           "mode": "single",
           "sort": "none"
         }
       },
-      "pluginVersion": "11.4.0",
+      "pluginVersion": "11.5.2",
       "targets": [
         {
           "datasource": {
@@ -1144,7 +1165,7 @@
         "h": 8,
         "w": 24,
         "x": 0,
-        "y": 52
+        "y": 51
       },
       "id": 18,
       "options": {
@@ -1156,15 +1177,16 @@
           "displayMode": "table",
           "placement": "right",
           "showLegend": true,
-          "width": 350
+          "width": 400
         },
         "tooltip": {
+          "hideZeros": false,
           "maxHeight": 600,
           "mode": "single",
           "sort": "none"
         }
       },
-      "pluginVersion": "11.4.0",
+      "pluginVersion": "11.5.2",
       "targets": [
         {
           "datasource": {
@@ -1246,7 +1268,7 @@
         "h": 8,
         "w": 24,
         "x": 0,
-        "y": 60
+        "y": 59
       },
       "id": 38,
       "options": {
@@ -1261,12 +1283,13 @@
           "width": 350
         },
         "tooltip": {
+          "hideZeros": false,
           "maxHeight": 600,
           "mode": "single",
           "sort": "none"
         }
       },
-      "pluginVersion": "11.4.0",
+      "pluginVersion": "11.5.2",
       "targets": [
         {
           "datasource": {
@@ -1352,7 +1375,7 @@
         "h": 8,
         "w": 24,
         "x": 0,
-        "y": 68
+        "y": 67
       },
       "id": 39,
       "options": {
@@ -1367,12 +1390,13 @@
           "width": 350
         },
         "tooltip": {
+          "hideZeros": false,
           "maxHeight": 600,
           "mode": "single",
           "sort": "none"
         }
       },
-      "pluginVersion": "11.4.0",
+      "pluginVersion": "11.5.2",
       "targets": [
         {
           "datasource": {
@@ -1399,7 +1423,7 @@
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 76
+        "y": 75
       },
       "id": 24,
       "panels": [],
@@ -1471,7 +1495,7 @@
         "h": 8,
         "w": 24,
         "x": 0,
-        "y": 77
+        "y": 76
       },
       "id": 26,
       "options": {
@@ -1488,12 +1512,13 @@
           "width": 450
         },
         "tooltip": {
+          "hideZeros": false,
           "maxHeight": 600,
           "mode": "single",
           "sort": "none"
         }
       },
-      "pluginVersion": "11.4.0",
+      "pluginVersion": "11.5.2",
       "targets": [
         {
           "datasource": {
@@ -1576,7 +1601,7 @@
         "h": 8,
         "w": 24,
         "x": 0,
-        "y": 85
+        "y": 84
       },
       "id": 28,
       "options": {
@@ -1593,12 +1618,13 @@
           "width": 450
         },
         "tooltip": {
+          "hideZeros": false,
           "maxHeight": 600,
           "mode": "single",
           "sort": "none"
         }
       },
-      "pluginVersion": "11.4.0",
+      "pluginVersion": "11.5.2",
       "targets": [
         {
           "datasource": {
@@ -1687,7 +1713,7 @@
         "h": 8,
         "w": 24,
         "x": 0,
-        "y": 93
+        "y": 92
       },
       "id": 35,
       "options": {
@@ -1701,12 +1727,13 @@
           "showLegend": true
         },
         "tooltip": {
+          "hideZeros": false,
           "maxHeight": 600,
           "mode": "single",
           "sort": "none"
         }
       },
-      "pluginVersion": "11.4.0",
+      "pluginVersion": "11.5.2",
       "targets": [
         {
           "datasource": {
@@ -1793,7 +1820,7 @@
         "h": 8,
         "w": 24,
         "x": 0,
-        "y": 101
+        "y": 100
       },
       "id": 36,
       "options": {
@@ -1807,12 +1834,13 @@
           "showLegend": true
         },
         "tooltip": {
+          "hideZeros": false,
           "maxHeight": 600,
           "mode": "single",
           "sort": "none"
         }
       },
-      "pluginVersion": "11.4.0",
+      "pluginVersion": "11.5.2",
       "targets": [
         {
           "datasource": {
@@ -1882,7 +1910,7 @@
         "h": 8,
         "w": 24,
         "x": 0,
-        "y": 109
+        "y": 108
       },
       "id": 37,
       "options": {
@@ -1903,6 +1931,7 @@
         "showValue": "auto",
         "stacking": "none",
         "tooltip": {
+          "hideZeros": false,
           "maxHeight": 600,
           "mode": "single",
           "sort": "none"
@@ -1911,7 +1940,7 @@
         "xTickLabelRotation": 0,
         "xTickLabelSpacing": 100
       },
-      "pluginVersion": "11.4.0",
+      "pluginVersion": "11.5.2",
       "targets": [
         {
           "datasource": {
@@ -2002,7 +2031,7 @@
         "h": 8,
         "w": 24,
         "x": 0,
-        "y": 117
+        "y": 116
       },
       "id": 27,
       "options": {
@@ -2018,12 +2047,13 @@
           "showLegend": true
         },
         "tooltip": {
+          "hideZeros": false,
           "maxHeight": 600,
           "mode": "single",
           "sort": "none"
         }
       },
-      "pluginVersion": "11.4.0",
+      "pluginVersion": "11.5.2",
       "targets": [
         {
           "datasource": {
@@ -2105,7 +2135,7 @@
         "h": 8,
         "w": 24,
         "x": 0,
-        "y": 125
+        "y": 124
       },
       "id": 29,
       "options": {
@@ -2122,12 +2152,13 @@
           "width": 450
         },
         "tooltip": {
+          "hideZeros": false,
           "maxHeight": 600,
           "mode": "single",
           "sort": "none"
         }
       },
-      "pluginVersion": "11.4.0",
+      "pluginVersion": "11.5.2",
       "targets": [
         {
           "datasource": {
@@ -2209,7 +2240,7 @@
         "h": 8,
         "w": 24,
         "x": 0,
-        "y": 133
+        "y": 132
       },
       "id": 40,
       "maxPerRow": 2,
@@ -2283,13 +2314,13 @@
     ]
   },
   "time": {
-    "from": "now-12h",
+    "from": "now-24h",
     "to": "now"
   },
   "timepicker": {},
   "timezone": "",
   "title": "Home Sensors",
   "uid": "DFFJKedVz",
-  "version": 51,
+  "version": 60,
   "weekStart": ""
 }
