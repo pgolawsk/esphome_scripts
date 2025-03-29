@@ -81,6 +81,7 @@ esphome -s devicename esp12f-15 -s updates 30s -s room Upstairs -s mqtt_room ups
 esphome -s devicename esp12f-21 -s updates 30s -s room Underfloor -s mqtt_location measures -s mqtt_room underfloor run 2_PROD/esp12f-21_Underfloor.yaml
 esphome -s devicename esp12f-25 -s updates 30s -s room AquariumW -s mqtt_location measures -s mqtt_room aquarium_window run 2_PROD/esp12f-25_AquariumWindow.yaml
 esphome -s devicename esp32-35 -s updates 1min -s room Pump -s mqtt_location measures -s mqtt_room pump -s room2 Garage -s mqtt_location2 outside -s mqtt_room2 garage run 2_PROD/esp32-35_Pump_Garage.yaml
+esphome -s devicename esp32-36 -s updates 30s -s room Garage -s mqtt_location outside -s mqtt_room garage -s room2 Gate -s mqtt_location2 outside -s mqtt_room2 gate  run 2_PROD/esp32-36_Garage_Gate.yaml
 esphome -s devicename esp32-39 -s updates 1min -s room Attic -s mqtt_location home -s mqtt_room attic run 2_PROD/esp32-39_Attic.yaml
 
 #* Future devices via OTA (with "compile" instead of "run")
@@ -98,7 +99,7 @@ esphome -s devicename esp32-31 -s updates 15s -s room Test32c3 -s mqtt_location 
 esphome -s devicename esp32-32 -s updates 15s -s room Test32c3rgb -s mqtt_location measures -s mqtt_room test32c3rgb run 0_DEV/esp32c3_dev.yaml
 esphome -s devicename esp32-33 -s updates 1min -s room Test32s3rgb -s mqtt_location measures -s mqtt_room test32s3rgb run 0_DEV/esp32s3_dev.yaml
 esphome -s devicename esp32-34 -s updates 1min -s room Test32s2 -s mqtt_location measures -s mqtt_room test32s2 run 0_DEV/esp32s2_dev.yaml
-esphome -s devicename esp32-36 -s updates 1min -s room Test32c6 -s mqtt_location measures -s mqtt_room test32c6 run 0_DEV/esp32c6_dev.yaml
+esphome -s devicename esp32-36a -s updates 1min -s room Test32c6 -s mqtt_location measures -s mqtt_room test32c6 run 0_DEV/esp32c6_dev.yaml
 esphome -s devicename esp32-37 -s updates 1min -s room Test32s3mini -s mqtt_location measures -s mqtt_room test32s3mini run 0_DEV/esp32s3supermini_dev.yaml
 esphome -s devicename esp32-38 -s updates 1min -s room Test32ttgo -s mqtt_location measures -s mqtt_room test32ttgo run 0_DEV/esp32_display_ttgo.yaml
 

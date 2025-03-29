@@ -279,7 +279,7 @@ Author: Pawel Golawski, <pawel.golawski@2com.pl>
 
 - 1 + 4x white waterproof IP65 box (various sizes)
 - 3x white plastic box 60mm x 30mm x 15mm
-- 5x white plastic box 90mm x 40mm x 15mm
+- 4x white plastic box 90mm x 40mm x 15mm
 - 4x color buttons for a case
 - 1x white plastic box 75mm x 75mm x 30mm
 - 1x white plastic box 100mm x 100mm x 36mm
@@ -417,19 +417,20 @@ Components:
 
 #### Garage, Gate
 
-- PRODUCTION since: TBD
+- PRODUCTION since: March 2025
 - Script `file://./2_PROD/esp32-36_Garage_Gate.yaml`
 
-ESP32c3 board with Temperature, Humidity, Pressure and GATE switch.
+ESP32c3 board with Temperature, Humidity, Pressure, Gas Resistance, Illuminance and GATE switch.
 
 Components:
 
 - 1x ESP32c3 supermini
 - 1x `G` - BME680 - Temperature, Humidity, Pressure, Gas Resistance
-- 1x `b/r` - 9032 - Passive Buzzer 9mm diameter x 3.2mm height
-- 1x single relay HFD4-3V-S (3.3V)
+- 1x `B` - BH1750 - Illuminance
+- 0x `b/r` - 9032 - Passive Buzzer 9mm diameter x 3.2mm height
+- 0x single relay HFD4-3V-S (3.3V)
 - 1x AC 230V to DC 5V (1A) board
-- no case (used case with gate transformer)
+- 1x white plastic box 90mm x 40mm x 15mm (used inside the transformer case)
 
 #### Aquarium Window
 
