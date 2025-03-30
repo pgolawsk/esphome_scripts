@@ -8,6 +8,7 @@
 # Pawelo, 20250329, added Gate switch
 # Pawelo, 20250330, changed Gate switch to Gate cover, button and output
 # Pawelo, 20250330, added open/closed door state based on illuminance sensor
+# Pawelo, 20250330, added open/closed door state from HA (disabled illuminance)
 
 #! run with this command to override substitutions
 # esphome -s devicename espXX -s updates 1min -s room <Room name> -s mqtt_room <room> run esp32_MMmm_SSss__PP.yaml --device 192.168.x.x
@@ -92,8 +93,9 @@ binary_sensor:
   - !include ../sensors/binary_ha_connected.yaml
 
   # Door open/closed sensors based on illuminance sensor
-  - !include { file: ../sensors/binary_from_lux_sensor.yaml, vars: { ix: "OPEN", sensor: "Door", mdi_icon: "garage-open-variant", device_class: garage_door,  lux_sensor_id: "luxG", lux_upper_threshold: 10000.0, lux_lower_threshold: 1.6, off_delay: "500ms" } }
-  - !include { file: ../sensors/binary_from_lux_sensor.yaml, vars: { ix: "CLOSED", sensor: "Door", mdi_icon: "garage-variant", device_class: garage_door, lux_sensor_id: "luxG", lux_upper_threshold: 1.5999, lux_lower_threshold: -1.0, off_delay: "500ms" } }
+  # - !include { file: ../sensors/binary_from_lux_sensor.yaml, vars: { ix: "OPEN", sensor: "Door", mdi_icon: "garage-open-variant", device_class: garage_door,  lux_sensor_id: "luxG", lux_upper_threshold: 10000.0, lux_lower_threshold: 1.6, off_delay: "500ms" } }
+  # - !include { file: ../sensors/binary_from_lux_sensor.yaml, vars: { ix: "CLOSED", sensor: "Door", mdi_icon: "garage-variant", device_class: garage_door, lux_sensor_id: "luxG", lux_upper_threshold: 1.5999, lux_lower_threshold: -1.0, off_delay: "500ms" } }
+  - !include { file: ../sensors/binary_from_HA_sensor.yaml, vars: { ix: "", sensor: "open", mdi_icon: "garage-variant", device_class: garage_door, entity_id: binary_sensor.garage_main_door } }
 
 sensor:
   - !include ../sensors/temp_internal.yaml
@@ -187,4 +189,4 @@ switch:
 
 cover:
   # Garage door cover
-  - !include { file: ../covers/door_cover.yaml, vars: { ix: "", mdi_icon: "garage", device_class: "garage", open_duration: "18s", close_duration: "18s" } }
+  - !include { file: ../covers/door_cover.yaml, vars: { ix: "", mdi_icon: "garage", device_class: "garage", open_duration: "18s", close_duration: "18s", open_endstop_binary_sensor: ha_open } }
