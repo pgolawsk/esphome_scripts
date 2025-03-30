@@ -1,0 +1,10 @@
+---
+#* Binary sensor received from Home Assistant
+# Pawelo, 20250330, created based on https://esphome.io/components/binary_sensor/homeassistant
+
+platform: homeassistant
+name: "$room ${sensor}${ix}"
+id: "ha_${sensor}${ix}"
+entity_id: "${entity_id}"
+device_class: ${device_class}
+icon: "mdi:${mdi_icon}"
