@@ -4,7 +4,10 @@
 #* For pinout see: file://../pinouts/ESP32c3_pinout_front.jpeg and file://../pinouts/ESP32c3_pinout_back.jpeg
 ###
 # Pawelo, 20250329, created based on esp32c3_dev.yaml
-# Pawelo, 20250329, added BME680 sensor
+# Pawelo, 20250329, added BME680 sensor and Illuminance sensor
+# Pawelo, 20250329, added Gate switch
+# Pawelo, 20250330, changed Gate switch to Gate cover, button and output
+# Pawelo, 20250330, added open/closed door state based on illuminance sensor
 
 #! run with this command to override substitutions
 # esphome -s devicename espXX -s updates 1min -s room <Room name> -s mqtt_room <room> run esp32_MMmm_SSss__PP.yaml --device 192.168.x.x
@@ -13,7 +16,7 @@
 substitutions:
   devices: "Temperature, Humidity, Pressure, Gas Resistance via BME680, Illuminance via BH1750 and Gate via GPIO"
   project_name: "pgolawsk.esp_home"
-  version: "20250329"
+  version: "20250330"
 
   # required by ../includes/board_esp32.yaml script
   framework_type: arduino # "arduino" or "esp-idf"
@@ -88,6 +91,10 @@ binary_sensor:
   # HA Connected
   - !include ../sensors/binary_ha_connected.yaml
 
+  # Door open/closed sensors based on illuminance sensor
+  - !include { file: ../sensors/binary_from_lux_sensor.yaml, vars: { ix: "OPEN", sensor: "Door", mdi_icon: "garage-open-variant", device_class: garage_door,  lux_sensor_id: "luxG", lux_upper_threshold: 10000.0, lux_lower_threshold: 1.6, off_delay: "500ms" } }
+  - !include { file: ../sensors/binary_from_lux_sensor.yaml, vars: { ix: "CLOSED", sensor: "Door", mdi_icon: "garage-variant", device_class: garage_door, lux_sensor_id: "luxG", lux_upper_threshold: 1.5999, lux_lower_threshold: -1.0, off_delay: "500ms" } }
+
 sensor:
   - !include ../sensors/temp_internal.yaml
   - !include ../sensors/uptime.yaml
@@ -111,7 +118,7 @@ sensor:
   # - !include { file: ../sensors/temp_hum_press_gas_aqi_co2_voc_bme680.yaml, vars: { platform: "bme68x_bsec2", ix: "", bus_id: "bus_a", address: "0x77", temp_offset: -1.7, hum_offset: -3.0, pressure_offset: 7.0 } }
 
   # Illuminance sensor
-  - !include { file: ../sensors/lux_BH1750.yaml, vars: { ix: "G", bus_id: "bus_a", address: "0x23" } }
+  - !include { file: ../sensors/lux_BH1750.yaml, vars: { ix: "G", bus_id: "bus_a", address: "0x23", updates: 3s } }
 
 button:
   # Restart, reset and shutdown buttons
@@ -124,6 +131,9 @@ button:
   # Scan Wifi button (require wifi_info text sensor to be present to display results)
   # WARN: Performing the scan will disconnect device from current WiFi
   - !include { file: ../buttons/scan_wifi_button.yaml }
+
+  # Door button (Garage door, enable output as well)
+  - !include { file: ../buttons/door_button.yaml, vars: { ix: "", mdi_icon: "garage"} }
 
 output:
   # LED blue (C3 supermini)
@@ -144,6 +154,9 @@ output:
 
   # Passive/RTTTL Buzzer
   # - !include { file: ../outputs/passive_buzzer_ledc.yaml, vars: { ix: "", gpio: "GPIO4" } }
+
+  # Garage door relay
+  - !include { file: ../outputs/door.yaml, vars: { ix: "", gpio: "GPIO0", inverted: false } }
 
 light:
   # LED green (S3)
@@ -170,4 +183,8 @@ switch:
   # - !include { file: ../switches/rtttl_play.yaml, vars: { ix: "2", mqtt_location: "${mqtt_location2}", mqtt_room: "${mqtt_room2}" } }
 
   # Gate switch
-  - !include { file: ../switches/gate.yaml, vars: { ix: "", gpio: "GPIO0", off_delay: "1s" } }
+  # - !include { file: ../switches/gate.yaml, vars: { ix: "", gpio: "GPIO0", off_delay: "1s" } }
+
+cover:
+  # Garage door cover
+  - !include { file: ../covers/door_cover.yaml, vars: { ix: "", mdi_icon: "garage", device_class: "garage", open_duration: "18s", close_duration: "18s" } }
