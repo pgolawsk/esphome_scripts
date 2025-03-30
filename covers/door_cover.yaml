@@ -1,5 +1,6 @@
 #* Room Door cover
 # Pawelo, 20250330, created based on https://esphome.io/components/cover/feedback
+# Pawelo, 20250330, added open_endstop sensor
 
 platform: feedback
 name: "$room Door${ix}"
@@ -14,14 +15,14 @@ open_action:
   - delay: 500ms
   - output.turn_off: o_door${ix}
 open_duration: ${open_duration}
-# open_endstop: open_endstop_binary_sensor
+open_endstop: ${open_endstop_binary_sensor}
 # open_sensor: open_movement_binary_sensor
 close_action:
   - output.turn_on: o_door${ix}
   - delay: 500ms
   - output.turn_off: o_door${ix}
 close_duration: ${close_duration}
-# close_endstop: close_endstop_binary_sensor
+# close_endstop: ${close_endstop_binary_sensor}
 # close_sensor: close_movement_binary_sensor
 stop_action:
   - output.turn_on: o_door${ix}
