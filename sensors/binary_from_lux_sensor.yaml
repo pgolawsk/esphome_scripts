@@ -1,0 +1,22 @@
+---
+#* Binary sensor based on illuminance sensor
+# Pawelo, 20250330, created based on https://esphome.io/components/binary_sensor/analog_threshold
+
+platform: analog_threshold
+name: "$room ${sensor} ${ix}"
+id: "${sensor}${ix}"
+sensor_id: "${lux_sensor_id}"
+threshold:
+  upper: ${lux_upper_threshold}
+  lower: ${lux_lower_threshold}
+# entity_category: config
+device_class: ${device_class}
+icon: "mdi:${mdi_icon}"
+state_topic: "$devicename/${sensor}${ix}"
+on_state:
+  - mqtt.publish:
+      topic: "$mqtt_location/$mqtt_room/${sensor}${ix}"
+      payload: !lambda |-
+        return to_string(id(${sensor}${ix}).state);
+filters:
+  - delayed_off: ${off_delay}

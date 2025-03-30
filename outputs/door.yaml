@@ -1,0 +1,11 @@
+---
+#* Door output
+# Pawelo, 20250330, created from my examples
+
+platform: gpio
+id: o_door${ix}
+pin:
+  number: ${gpio} # GPIO2 with inverted
+  #  mode: INPUT_PULLUP
+  # icon: mdi:led-off
+  inverted: ${inverted} # false

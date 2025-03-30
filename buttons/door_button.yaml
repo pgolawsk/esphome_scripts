@@ -1,0 +1,15 @@
+---
+#* Door button on interface
+# Pawelo, 20250330, created as new based on framework
+
+platform: template
+name: "$room Door Button${ix}"
+id: door_button${ix}
+# entity_category: config
+icon: "mdi:${mdi_icon}"
+state_topic: $devicename/door_button${ix}
+on_press:
+  then:
+    - output.turn_on: o_door${ix}
+    - delay: 500ms
+    - output.turn_off: o_door${ix}
