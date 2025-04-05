@@ -5,6 +5,7 @@
 # Pawelo, 20240825, created based on https://esphome.io/components/sensor/bme68x_bsec2
 # Pawelo, 20240907, set device_class and icon for sensor values
 # Pawelo, 20250131, add platform variable - either bme680_bsec for ESP8266 or bme68x_bsec2 for ESP32
+# Pawelo, 20250405, re-set device_class of some sensors
 
 platform: ${platform} # bme680_bsec for ESP8266 or bme68x_bsec2 for ESP32
 temperature:
@@ -40,7 +41,7 @@ humidity:
 pressure:
   name: "$room Pressure"
   id: press
-  device_class: pressure
+  device_class: atmospheric_pressure
   icon: mdi:gauge
   accuracy_decimals: 2
   filters:
@@ -55,7 +56,7 @@ pressure:
 gas_resistance:
   name: "$room Gas Resistance"
   id: gas
-  device_class: gas
+  # device_class: None
   icon: mdi:gas-cylinder
   accuracy_decimals: 2
   state_topic: $devicename/pressure
@@ -68,6 +69,7 @@ iaq:
   name: "$room IAQ"
   id: iaq
   # accuracy_decimals: 2
+  device_class: aqi
   entity_category: diagnostic
   state_topic: $devicename/iaq
   on_value:
@@ -113,6 +115,7 @@ co2_equivalent:
 breath_voc_equivalent:
   name: "$room VOC"
   id: voc
+  device_class: volatile_organic_compounds
   icon: mdi:radiator
   # accuracy_decimals: 2
   state_topic: $devicename/voc

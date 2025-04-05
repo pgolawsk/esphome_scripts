@@ -2,12 +2,13 @@
 #* Temperature, Humidity, Pressure, Gas sensor BME680 configuration
 # Pawelo, 20221203, created based on framework and https://esphome.io/components/sensor/bme680.html
 # Pawelo, 20221231, calibrating temp/humid sensors based on Entrance data (see also https://esphome.io/components/sensor/index.html#offset)
-# Pawelo, 20230101, ranaming /gas to/gas_resistance sensor in MQTT additional message
+# Pawelo, 20230101, renaming /gas to/gas_resistance sensor in MQTT additional message
 # Pawelo, 20230107, adjusted calibration pressure after 1w observations
 # Pawelo, 20230111, added i2c bus identification
 # Pawelo, 20230121, add variables to configure sensor
 # Pawelo, 20240628, add variables for filter offsets (temp, hum, pressure)
 # Pawelo, 20240907, set device_class and icon for sensor values
+# Pawelo, 20250405, re-set device_class of some sensors
 
 platform: bme680
 temperature:
@@ -45,7 +46,7 @@ humidity:
 pressure:
   name: "$room Pressure"
   id: press
-  device_class: pressure
+  device_class: atmospheric_pressure
   icon: mdi:gauge
   oversampling: 8x
   accuracy_decimals: 2
@@ -61,7 +62,7 @@ pressure:
 gas_resistance:
   name: "$room Gas Resistance"
   id: gas
-  device_class: gas
+  # device_class: None
   icon: mdi:gas-cylinder
   accuracy_decimals: 2
   state_topic: $devicename/pressure
