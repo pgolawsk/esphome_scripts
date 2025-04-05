@@ -6,6 +6,7 @@
 # Pawelo, 20230728, set integration time to 24ms (no effect) to get rid of warning that sensor check should not be longer than 200-300ms
 # Pawelo, 20230728, set integration time to auto to get rid of another warning message "[W][tcs34725:162]: No light detected on red channel, switch to auto gain or adjust timing, values will be unreliable"
 # Pawelo, 20230929, added filters based on https://github.com/esphome/issues/issues/3575
+# Pawelo, 20250405, filter out NaN values
 
 platform: tcs34725
 illuminance:
@@ -20,6 +21,7 @@ illuminance:
         payload: !lambda |-
           return to_string(id(lux${ix}).state);
   filters:
+    - filter_out: NaN
     - exponential_moving_average:
         alpha: 0.05
         send_every: 2
@@ -40,6 +42,7 @@ red_channel:
         payload: !lambda |-
           return to_string(id(red).state);
   filters:
+    - filter_out: NaN
     - exponential_moving_average:
         alpha: 0.05
         send_every: 2
@@ -58,6 +61,7 @@ green_channel:
         payload: !lambda |-
           return to_string(id(green).state);
   filters:
+    - filter_out: NaN
     - exponential_moving_average:
         alpha: 0.05
         send_every: 2
@@ -76,6 +80,7 @@ blue_channel:
         payload: !lambda |-
           return to_string(id(blue).state);
   filters:
+    - filter_out: NaN
     - exponential_moving_average:
         alpha: 0.05
         send_every: 2
@@ -94,6 +99,7 @@ clear_channel:
         payload: !lambda |-
           return to_string(id(clear).state);
   filters:
+    - filter_out: NaN
     - exponential_moving_average:
         alpha: 0.05
         send_every: 2
@@ -112,6 +118,7 @@ color_temperature:
         payload: !lambda |-
           return to_string(id(color).state);
   filters:
+    - filter_out: NaN
     - exponential_moving_average:
         alpha: 0.05
         send_every: 2
