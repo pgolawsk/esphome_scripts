@@ -10,6 +10,7 @@
 # Pawelo, 20240628, change platform to bme280_i2c
 # Pawelo, 20240628, add variables for filter offsets (temp, hum, pressure)
 # Pawelo, 20240907, set device_class and icon for sensor values
+# Pawelo, 20250405, set device_class of pressure sensor to atmospheric_pressure
 
 platform: bme280_i2c
 temperature:
@@ -47,7 +48,7 @@ humidity:
 pressure:
   name: "$room Pressure"
   id: press
-  device_class: pressure
+  device_class: atmospheric_pressure
   icon: mdi:gauge
   oversampling: 16x
   accuracy_decimals: 2
