@@ -13,6 +13,7 @@
 # Pawelo, 20241115, added area and friendly name
 # Pawelo, 20241122, simplified - added regular mqtt (no RTTL support), as it can be override PRIOR this file include
 # Pawelo, 20250130, added framework_version variable
+# Pawelo, 20250413, added web_server_basic.yaml to avoid sorting groups (not supported in 2.x)
 
 globals:
   - id: global_watertotal_all
@@ -89,7 +90,8 @@ esp32:
 <<: !include api.yaml
 <<: !include ota.yaml
 <<: !include logger.yaml
-<<: !include { file: web_server.yaml, vars: { ota_enabled: false } }
+# <<: !include { file: web_server_basic.yaml, vars: { ota_enabled: false, web_server_version: 1 } } # ver 1 or 2 only
+<<: !include { file: web_server.yaml, vars: { ota_enabled: false, web_server_version: 3 } } # ver 3 only
 <<: !include time_sntp_with_sun.yaml
 <<: !include sun.yaml
 <<: !include prometheus.yaml

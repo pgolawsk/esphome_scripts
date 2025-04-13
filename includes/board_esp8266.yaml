@@ -11,6 +11,7 @@
 # Pawelo, 20241223, created as copy of board_esp12f.yaml
 # Pawelo, 20241223, refactor script to accept variables, like "board" and "board variant", ...
 # Pawelo, 20250111, commented "area" and "friendly name" as for ESP12F which have little RAM is too much (prometheus /metrics output is cut)
+# Pawelo, 20250413, added web_server_basic.yaml to avoid sorting groups (not supported in 2.x)
 
 esphome:
   name: $devicename
@@ -39,7 +40,8 @@ preferences:
 <<: !include api.yaml
 <<: !include ota.yaml
 <<: !include logger.yaml
-<<: !include { file: web_server.yaml, vars: { ota_enabled: false } }
+# <<: !include { file: web_server_basic.yaml, vars: { ota_enabled: false, web_server_version: 1 } } # ver 1 or 2 only
+<<: !include { file: web_server.yaml, vars: { ota_enabled: false, web_server_version: 3 } } # ver 3 only
 <<: !include time_sntp.yaml
 <<: !include sun.yaml
 <<: !include prometheus.yaml
