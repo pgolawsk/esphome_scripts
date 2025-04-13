@@ -9,6 +9,7 @@
 # Pawelo, 20250330, changed Gate switch to Gate cover, button and output
 # Pawelo, 20250330, added open/closed door state based on illuminance sensor
 # Pawelo, 20250330, added open/closed door state from HA (disabled illuminance)
+# Pawelo, 20250413, switched to wifi_extended.yaml
 
 #! run with this command to override substitutions
 # esphome -s devicename espXX -s updates 1min -s room <Room name> -s mqtt_room <room> run esp32_MMmm_SSss__PP.yaml --device 192.168.x.x
@@ -17,7 +18,7 @@
 substitutions:
   devices: "Temperature, Humidity, Pressure, Gas Resistance via BME680, Illuminance via BH1750 and Gate via GPIO"
   project_name: "pgolawsk.esp_home"
-  version: "20250330"
+  version: "20250413"
 
   # required by ../includes/board_esp32.yaml script
   framework_type: arduino # "arduino" or "esp-idf"
@@ -48,7 +49,7 @@ substitutions:
 # <<: !include { file: ../includes/logger_level.yaml, vars: { level: VERY_VERBOSE, baud_rate: 115200 } } #WARN: override default log level to specific one
 # <<: !include ../includes/wifi_outside.yaml #WARN: override wifi to connect to outside network instead of default
 # <<: !include { file: ../includes/wifi_main.yaml, vars: { } } #WARN: override wifi to connect to extended network instead of default
-# <<: !include { file: ../includes/wifi_extended.yaml, vars: { } } #WARN: override wifi to connect to extended network instead of default
+<<: !include { file: ../includes/wifi_extended.yaml, vars: { } } #WARN: override wifi to connect to extended network instead of default
 # <<: !include { file: ../includes/wifi_extended2.yaml, vars: { } } #WARN: override wifi to connect to extended network instead of default
 <<: !include ../includes/api_services.yaml #WARN: this is to expose services like scan_wifi (results in scan_results sensor)
 
