@@ -4,6 +4,7 @@
 # Pawelo, 20221119, created as my framework based on !include statements
 # Pawelo, 20230311, make ota as ota_enabled input variable
 # Pawelo, 20250106, added sorting groups to separate IR remotes
+# Pawelo, 20250413, added web_server_version as input variable
 
 web_server:
   port: 80
@@ -13,7 +14,7 @@ web_server:
 #  auth:
 #    username: !secret web_username
 #    password: !secret web_password
-  version: 3
+  version: ${web_server_version} # 3 only
   sorting_groups:
     - id: sg_tv_remotes
       name: "TV Remote Controls"
