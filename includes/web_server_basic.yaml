@@ -1,0 +1,17 @@
+---
+#* Enable WEB server
+#NOTE: sorting_weight positive is after core groups, negative is before core groups
+# Pawelo, 20221119, created as my framework based on !include statements
+# Pawelo, 20230311, make ota as ota_enabled input variable
+# Pawelo, 20250106, added sorting groups to separate IR remotes
+# Pawelo, 20250413, created as copy of web_server.yaml with no sorting groups (supported only in ver 3)
+
+web_server:
+  port: 80
+  include_internal: true
+  # ota: false # disable OTA via web
+  ota: ${ota_enabled}
+#  auth:
+#    username: !secret web_username
+#    password: !secret web_password
+  version: ${web_server_version} # 1 or 2 or 3
