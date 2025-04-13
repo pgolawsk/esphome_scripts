@@ -1,11 +1,12 @@
 ---
-#* FAN Relay output
+#* LIGHT Relay output
 # Pawelo, 20230128, created from examples
+# Pawelo, 20250413, added mdi_icon variable
 
 platform: binary
 name: "$room Light ${ix}"
 id: light_${ix}
-#icon: "mdi:fan"
+icon: "mdi:${mdi_icon}"
 output: relay_${ix}
 state_topic: $devicename/light${ix}
 # on_turn_on:
