@@ -1,0 +1,11 @@
+---
+#* Wake-on-LAN action
+# Pawelo, 20250419, created based on https://esphome.io/components/button/wake_on_lan
+
+#WARN: The device require to be in the same network as the target device
+
+platform: wake_on_lan
+name: "Wake ${wol_name}"
+id: wol_button_${wol_name}
+icon: mdi:remote-desktop
+target_mac_address: ${wol_mac}

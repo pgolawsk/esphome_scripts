@@ -33,6 +33,7 @@
 # Pawelo, 20250208, added BSEC2 i2c_id selection
 # Pawelo, 20250221, added uptime_boot text sensor
 # Pawelo, 20250228, disabled joystick, enabled SHT3x
+# Pawelo, 20250419, added Wake-on-LAN button vor computer1
 
 #! run with this command to override substitutions
 # esphome -s devicename espXX -s updates 1min -s room <Room name> -s mqtt_room <room> run esp32_MMmm_SSss__PP.yaml --device 192.168.x.x
@@ -42,7 +43,7 @@ substitutions:
 #  devices: "Temperature and Humidity via SHTx30 and Illuminance via BH1750"
   devices: "DEV Kit"
   project_name: "pgolawsk.esp_home"
-  version: "20250228"
+  version: "20250419"
 
   # required by ../includes/board_esp32.yaml script
   framework_type: arduino # "arduino" or "esp-idf"
@@ -209,6 +210,9 @@ button:
   # Scan Wifi button (require wifi_info text sensor to be present to display results)
   # WARN: Performing the scan will disconnect device from current WiFi
   - !include { file: ../buttons/scan_wifi_button.yaml }
+
+  # Wake-on-LAN buttons
+  - !include { file: ../buttons/wake-on-lan_button.yaml, vars: { wol_name: !secret computer1_wol_name, wol_mac: !secret computer1_wol_mac } }
 
   # IR Remote control buttons - include as a package
   # single remote buttons can be included here separately
