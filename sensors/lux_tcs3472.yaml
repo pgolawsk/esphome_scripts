@@ -1,0 +1,135 @@
+---
+#* Illuminance sensor TCS3472 configuration
+# Pawelo, 20230103, created based on https://esphome.io/components/sensor/tcs34725.html and lux_bh1750.yaml a
+# Pawelo, 20230111, added i2c bus identification
+# Pawelo, 20230121, add variables to configure sensor
+# Pawelo, 20230728, set integration time to 24ms (no effect) to get rid of warning that sensor check should not be longer than 200-300ms
+# Pawelo, 20230728, set integration time to auto to get rid of another warning message "[W][tcs34725:162]: No light detected on red channel, switch to auto gain or adjust timing, values will be unreliable"
+# Pawelo, 20230929, added filters based on https://github.com/esphome/issues/issues/3575
+# Pawelo, 20250405, filter out NaN values
+# Pawelo, 20250418, copy of lux_color_tcs3472.yaml with disabled all color sensors (minimum version)
+
+platform: tcs34725
+illuminance:
+  name: "$room Illuminance${ix}"
+  accuracy_decimals: 1
+  id: lux${ix}
+  icon: mdi:decagram-outline
+  state_topic: $devicename/illuminance${ix}
+  on_value:
+    - mqtt.publish:
+        topic: "$mqtt_location/$mqtt_room/illuminance${ix}"
+        payload: !lambda |-
+          return to_string(id(lux${ix}).state);
+  filters:
+    - filter_out: NaN
+    - exponential_moving_average:
+        alpha: 0.05
+        send_every: 2
+        send_first_at: 2
+    - or:
+      - throttle: 10s
+      - delta: 0.5
+# red_channel:
+#   name: "$room Channel Red"
+#   id: red
+#   icon: mdi:palette
+#   state_topic: $devicename/red
+#   # filters:
+#   #   - lambda: if(id(lux${ix}).state > 0) { return x; } return 0;
+#   on_value:
+#     - mqtt.publish:
+#         topic: "$mqtt_location/$mqtt_room/red"
+#         payload: !lambda |-
+#           return to_string(id(red).state);
+#   filters:
+#     - filter_out: NaN
+#     - exponential_moving_average:
+#         alpha: 0.05
+#         send_every: 2
+#         send_first_at: 2
+#     - or:
+#       - throttle: 10s
+#       - delta: 0.5
+# green_channel:
+#   name: "$room Channel Green"
+#   id: green
+#   icon: mdi:palette
+#   state_topic: $devicename/green
+#   on_value:
+#     - mqtt.publish:
+#         topic: "$mqtt_location/$mqtt_room/green"
+#         payload: !lambda |-
+#           return to_string(id(green).state);
+#   filters:
+#     - filter_out: NaN
+#     - exponential_moving_average:
+#         alpha: 0.05
+#         send_every: 2
+#         send_first_at: 2
+#     - or:
+#       - throttle: 10s
+#       - delta: 0.5
+# blue_channel:
+#   name: "$room Channel Blue"
+#   id: blue
+#   icon: mdi:palette
+#   state_topic: $devicename/blue
+#   on_value:
+#     - mqtt.publish:
+#         topic: "$mqtt_location/$mqtt_room/blue"
+#         payload: !lambda |-
+#           return to_string(id(blue).state);
+#   filters:
+#     - filter_out: NaN
+#     - exponential_moving_average:
+#         alpha: 0.05
+#         send_every: 2
+#         send_first_at: 2
+#     - or:
+#       - throttle: 10s
+#       - delta: 0.5
+# clear_channel:
+#   name: "$room Channel Clear"
+#   id: clear
+#   icon: mdi:palette-outline
+#   state_topic: $devicename/clear
+#   on_value:
+#     - mqtt.publish:
+#         topic: "$mqtt_location/$mqtt_room/clear"
+#         payload: !lambda |-
+#           return to_string(id(clear).state);
+#   filters:
+#     - filter_out: NaN
+#     - exponential_moving_average:
+#         alpha: 0.05
+#         send_every: 2
+#         send_first_at: 2
+#     - or:
+#       - throttle: 10s
+#       - delta: 0.5
+# color_temperature:
+#   name: "$room Color Temperature"
+#   id: color
+#   icon: mdi:temperature-kelvin
+#   state_topic: $devicename/color_temp
+#   on_value:
+#     - mqtt.publish:
+#         topic: "$mqtt_location/$mqtt_room/color_temp"
+#         payload: !lambda |-
+#           return to_string(id(color).state);
+#   filters:
+#     - filter_out: NaN
+#     - exponential_moving_average:
+#         alpha: 0.05
+#         send_every: 2
+#         send_first_at: 2
+#     - or:
+#       - throttle: 10s
+#       - delta: 0.5
+glass_attenuation_factor: 1.0
+# integration_time: 24ms
+i2c_id: ${bus_id}
+#address: 0x29
+address: ${address}
+update_interval: $updates
