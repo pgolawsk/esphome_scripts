@@ -1,0 +1,22 @@
+---
+#* PCF8574 interface on I2C
+# Pawelo, 20250428, created based on https://esphome.io/components/pcf8574.html
+
+pcf8574:
+  - id: 'pcf_hub${ix}'
+    # address: 0x21
+    address: ${address}
+    pcf8575: false
+
+# # Individual outputs
+# switch:
+#   - platform: gpio
+#     name: "PCF8574 Pin #0"
+#     pin:
+#       pcf8574: pcf8574_hub
+#       # Use pin number 0
+#       number: 0
+#       # One of INPUT or OUTPUT
+#       mode:
+#         output: true
+#       inverted: false
