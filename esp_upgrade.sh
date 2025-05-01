@@ -62,6 +62,22 @@ esphome --version && find 0_DEV -maxdepth 1 -type f -name "*.yaml" -exec echo ..
 esphome --version && find 1_UAT -maxdepth 1 -type f -name "*.yaml" -exec echo ........ UAT COMPILE {} ....... \; -exec sh -c 'esphome -s devicename $(basename {} .yaml | tr "[:upper:]" "[:lower:]" | sed "s/_.*// ; s/_/-/g") compile {}' sh {} \;
 esphome --version && find 2_PROD -maxdepth 1 -type f -name "*.yaml" -exec echo ........ PROD COMPILE {} ....... \; -exec sh -c 'esphome -s devicename $(basename {} .yaml | tr "[:upper:]" "[:lower:]" | sed "s/_.*// ; s/_/-/g") compile {}' sh {} \;
 
+#*###########################
+#* Clean all build files and restore free space
+#? uses "sh -c" to execute subcommands within "find -exec"
+#? uses "basename" to get the filename without path and extension
+#? uses tr to change uppercase to lowercase
+#? sed s/_.*// to delete all after 1st underscore
+#? sed s/_/-/g to replace underscores with dashes as those are used as DHCP hostname
+#! some scripts were renamed to .yml from .yaml to exclude them from compilation tests
+# esphome --version && find 0_DEV -maxdepth 1 -type f -name "*.yaml" -exec echo ........ DEV CLEAN {} ....... \; -exec sh -c 'esphome -s devicename $(basename {} .yaml | tr "[:upper:]" "[:lower:]" | sed "s/_/-/g") clean {}' sh {} \;
+# esphome --version && find 1_UAT -maxdepth 1 -type f -name "*.yaml" -exec echo ........ UAT CLEAN {} ....... \; -exec sh -c 'esphome -s devicename $(basename {} .yaml | tr "[:upper:]" "[:lower:]" | sed "s/_/-/g") clean {}' sh {} \;
+# esphome --version && find 2_PROD -maxdepth 1 -type f -name "*.yaml" -exec echo ........ PROD CLEAN {} ....... \; -exec sh -c 'esphome -s devicename $(basename {} .yaml | tr "[:upper:]" "[:lower:]" | sed "s/_/-/g") clean {}' sh {} \;
+rm -rf .esphome
+rm -rf 0_DEV/.esphome
+rm -rf 1_UAT/.esphome
+rm -rf 2_PROD/.esphome
+
 ############################
 # In case this error you need to install ltchiptool manually
 # INFO Resolving dependencies...
