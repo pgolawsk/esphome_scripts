@@ -34,6 +34,8 @@
 # Pawelo, 20250221, added uptime_boot text sensor
 # Pawelo, 20250228, disabled joystick, enabled SHT3x
 # Pawelo, 20250419, added Wake-on-LAN button vor computer1
+# Pawelo, 20250506, testing relay on GPIO 1-4
+# Pawelo, 20250506, testing GPIO extender PCF8574
 
 #! run with this command to override substitutions
 # esphome -s devicename espXX -s updates 1min -s room <Room name> -s mqtt_room <room> run esp32_MMmm_SSss__PP.yaml --device 192.168.x.x
@@ -43,7 +45,7 @@ substitutions:
 #  devices: "Temperature and Humidity via SHTx30 and Illuminance via BH1750"
   devices: "DEV Kit"
   project_name: "pgolawsk.esp_home"
-  version: "20250419"
+  version: "20250506"
 
   # required by ../includes/board_esp32.yaml script
   framework_type: arduino # "arduino" or "esp-idf"
@@ -93,6 +95,7 @@ substitutions:
 # <<: !include { file: ../interfaces/spi_rc522.yaml, vars: { spi_id: "spi_a", cs: "GPIO5", reset: "GPIO4" } }
 # <<: !include { file: ../interfaces/ir_receiver.yaml, vars: { gpio: "GPIO3", dump: "nec", rmt_channel: 2 } } # for ESP32c3 can be 2-3, for ESP32 can be 0-7, for ESP32s2 0-3, for ESP32s3 4-7
 # <<: !include { file: ../interfaces/ir_transmitter.yaml, vars: { gpio: "GPIO4", rmt_channel: 0 } } # for ESP32c3 can be 0-1, for ESP32 can be 0-7, for ESP32s2 0-3, for ESP32s3 0-3
+# <<: !include { file: ../interfaces/i2c_pcf857x.yaml, vars: { ix: "", address: "0x20", pcf8575: false } }
 
 # I2S Audio (!cannot be used with "I2S Sound Level Meter" below)
 # i2s_audio:
@@ -227,7 +230,7 @@ button:
   # - !include { file: ../buttons/rc_nec_button.yaml, vars: { receiver: "LG_TV", action: "1", address: 0xFB04, command: 0xEE11 } }
   # - !include { file: ../buttons/rc_nec_button.yaml, vars: { receiver: "LG_TV", action: "HOME", address: 0xFB04, command: 0xBC43 } }
 
-# output:
+output:
   # LED blue (C3 supermini)
   # - !include { file: ../outputs/led.yaml, vars: { ix: "", gpio: "GPIO8", inverted: true } }
 
@@ -247,6 +250,13 @@ button:
   # Passive/RTTTL Buzzer
   # - !include { file: ../outputs/passive_buzzer_ledc.yaml, vars: { ix: "", gpio: "GPIO4" } }
 
+  # Relays
+  # - !include { file: ../outputs/relay.yaml, vars: { ix: "", gpio: "GPIO0", inverted: true } }
+  # - !include { file: ../outputs/relay.yaml, vars: { ix: "1", gpio: "GPIO1", inverted: true } }
+  # - !include { file: ../outputs/relay.yaml, vars: { ix: "2", gpio: "GPIO2", inverted: true } }
+  # - !include { file: ../outputs/relay.yaml, vars: { ix: "3", gpio: "GPIO3", inverted: true } }
+  # - !include { file: ../outputs/relay.yaml, vars: { ix: "4", gpio: "GPIO4", inverted: true } }
+
 light:
   # LED green (S3)
   # - !include { file: ../lights/led.yaml, vars: { ix: "green", platform: "binary", off_delay: "1days", entity_category: "" } }
@@ -256,6 +266,12 @@ light:
   - !include { file: ../lights/led_rgb__arduino.yaml, vars: { ix: "", gpio: "GPIO8", entity_category: "", rmt_channel: 1 } }
   # - !include { file: ../lights/led_rgb.yaml, vars: { ix: "", gpio: "GPIO8", entity_category: "" } }
   # - !include { file: ../lights/led_rgb_neopixelbus.yaml, vars: { ix: "", gpio: "GPIO8", entity_category: "" } }
+
+  # Relays
+  # - !include { file: ../lights/light_on_relay.yaml, vars: { ix: "1", mdi_icon: "ceiling-light-outline" } }
+  # - !include { file: ../lights/light_on_relay.yaml, vars: { ix: "2", mdi_icon: "floor-lamp" } }
+  # - !include { file: ../lights/light_on_relay.yaml, vars: { ix: "3", mdi_icon: "ceiling-light" } }
+  # - !include { file: ../lights/light_on_relay.yaml, vars: { ix: "4", mdi_icon: "floor-lamp-outline" } }
 
 switch:
   # LED cycle
@@ -270,3 +286,11 @@ switch:
   # RTTTL Play (passive_buzzer)
   # - !include { file: ../switches/rtttl_play.yaml, vars: { ix: "" } }
   # - !include { file: ../switches/rtttl_play.yaml, vars: { ix: "2", mqtt_location: "${mqtt_location2}", mqtt_room: "${mqtt_room2}" } }
+
+  # Relays
+  # - !include { file: ../switches/relay.yaml, vars: { ix: "1", mdi_icon: "light-switch", gpio: GPIO1, inverted: true, off_delay: 10min } }
+  # - !include { file: ../switches/relay.yaml, vars: { ix: "2", mdi_icon: "light-switch", gpio: GPIO2, inverted: true, off_delay: 10min } }
+  # - !include { file: ../switches/relay.yaml, vars: { ix: "3", mdi_icon: "light-switch", gpio: GPIO3, inverted: true, off_delay: 10min } }
+  # - !include { file: ../switches/relay.yaml, vars: { ix: "4", mdi_icon: "light-switch", gpio: GPIO4, inverted: true, off_delay: 10min } }
+
+#  - !include { file: ../switches/relay_on_pcf857x.yaml, vars: { hub_ix: "", ix: "1", mdi_icon: "light-switch", gpio: 0, inverted: true, off_delay: 10min } }
