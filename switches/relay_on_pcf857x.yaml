@@ -1,0 +1,22 @@
+---
+#* Relay connected to GPIO extender PCF8574 or PCF8575
+# Pawelo, 20250506, created based on https://esphome.io/components/switch/gpio
+
+platform: gpio
+pin:
+  pcf8574: pcf_hub${hub_ix}
+  number: ${gpio} # GPIO2 with inverted
+  inverted: ${inverted}
+  mode:
+    output: true
+#    pullup: true
+#    pulldown: true
+#  mode: INPUT_PULLUP
+id: s_relay${ix}
+#icon: "mdi:gate"
+icon: "mdi:${mdi_icon}"
+name: "${room} Switch ${ix}"
+state_topic: $devicename/s_relay${ix}
+on_turn_on:
+- delay: $off_delay
+- switch.turn_off: s_relay${ix}
