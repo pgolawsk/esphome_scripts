@@ -1,12 +1,13 @@
 ---
-#* PCF8574 interface on I2C
+#* PCF8574 or PCF8575 interface on I2C
 # Pawelo, 20250428, created based on https://esphome.io/components/pcf8574.html
+# Pawelo, 20250506, added support for PCF8575
 
 pcf8574:
   - id: 'pcf_hub${ix}'
     # address: 0x21
     address: ${address}
-    pcf8575: false
+    pcf8575: ${pcf8575}
 
 # # Individual outputs
 # switch:
