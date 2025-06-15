@@ -18,6 +18,9 @@
 # Pawelo, 20250221, added uptime_boot text sensor
 # Pawelo, 20250413, re-flashed with latest esphome and tests with SCD40 and SGP30
 # Pawelo, 20250413, changed LED as switch to avoid light as it brakes prometheus (/metrics) due to multiple rows for light
+# Pawelo, 20250615, commented "B" relay and light as it is not used in this room
+# Pawelo, 20250615, set temp offset for SCD40 to -11.5C and humidity offset to 18.0% as it was tested in this room
+# Pawelo, 20250615, moved the script to 2_PROD
 
 #! run with this command to override substitutions
 # esphome -s devicename espXX -s updates 1min -s room <Room name> -s mqtt_room <room> run esp12f_MMmm_SSss__PP.yaml --device 192.168.x.x
@@ -25,7 +28,7 @@
 substitutions:
   devices: "Temperature, Humidity, CO2 via SCD40, TVOC and eCO2 via SGP30, Illuminance via BH1750 and Double Light Switch via AVT5713"
   project_name: "pgolawsk.esp_home"
-  version: "20250413"
+  version: "20250615"
 
   # required by ../includes/board_esp8266.yaml script
   board_variant: "12F" # determine variant like 12F, 07s, 01m, ...
@@ -71,7 +74,7 @@ substitutions:
 #   - !include ../sensors/text_uptime.yaml
 #   - !include ../sensors/text_uptime_boot.yaml
 #   - !include ../sensors/text_version.yaml
-#   - !include ../sensors/text_wifi_info.yaml
+  # - !include ../sensors/text_wifi_info.yaml
 
   # DEBUG component
   # - !include ../sensors/text_debug.yaml
@@ -81,8 +84,8 @@ binary_sensor:
   - !include ../sensors/binary_ha_connected.yaml
 
   # Double light Switch on AVT5713
-  - !include { file: ../sensors/binary_switch.yaml, vars: { ix: "A", gpio: "GPIO13" } }
-  - !include { file: ../sensors/binary_switch.yaml, vars: { ix: "B", gpio: "GPIO14" } }
+  - !include { file: ../sensors/binary_switch.yaml, vars: { ix: "Top", gpio: "GPIO13" } }
+  # - !include { file: ../sensors/binary_switch.yaml, vars: { ix: "B", gpio: "GPIO14" } }
 
 sensor:
   - !include ../sensors/uptime.yaml
@@ -100,7 +103,7 @@ sensor:
   - !include { file: ../sensors/lux_BH1750.yaml, vars: { ix: "", bus_id: "bus_a", address: "0x23" } }
 
   # CO2, Temperature and Humidity sensor
-  - !include { file: ../sensors/temp_hum_co2_SCD40.yaml, vars: { ix: "", bus_id: "bus_a", address: "0x62", temp_offset: 0.0, hum_offset: 0.0 } }
+  - !include { file: ../sensors/temp_hum_co2_SCD40.yaml, vars: { ix: "", bus_id: "bus_a", address: "0x62", temp_offset: -11.5, hum_offset: 18.0 } }
 
   # TVOC and eCO2 sensor
   - !include { file: ../sensors/tvoc_eco2_SGP30.yaml, vars: { ix: "", bus_id: "bus_a", address: "0x58" } }
@@ -113,16 +116,16 @@ output:
   - !include { file: ../outputs/passive_buzzer.yaml, vars: { ix: "", gpio: "GPIO16" } }
 
   # Double relay on AVT5713
-  - !include { file: ../outputs/relay.yaml, vars: { ix: "A", gpio: "GPIO5", inverted: false } }
-  - !include { file: ../outputs/relay.yaml, vars: { ix: "B", gpio: "GPIO12", inverted: false } }
+  - !include { file: ../outputs/relay.yaml, vars: { ix: "Top", gpio: "GPIO5", inverted: false } }
+#  - !include { file: ../outputs/relay.yaml, vars: { ix: "B", gpio: "GPIO12", inverted: false } }
 
 light:
   # LED
   # - !include { file: ../lights/led.yaml, vars: { ix: "", platform: "binary", off_delay: "5s", entity_category: "" } }
 
   # Double relay on AVT5713
-  - !include { file: ../lights/light_on_relay.yaml, vars: { ix: "A", mdi_icon: "ceiling-light-outline" } }
-  - !include { file: ../lights/light_on_relay.yaml, vars: { ix: "B", mdi_icon: "ceiling-light-multiple-outline" } }
+  - !include { file: ../lights/light_on_relay.yaml, vars: { ix: "Top", mdi_icon: "ceiling-light-outline" } }
+#  - !include { file: ../lights/light_on_relay.yaml, vars: { ix: "B", mdi_icon: "ceiling-light-multiple-outline" } }
 
 switch:
   # LED
