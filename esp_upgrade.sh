@@ -1,22 +1,23 @@
 #* Upgrade of ESP version and active ESP sensors
-# Pawelo 20230923, created based on esp_setup.sh
-# Pawelo 20231205, added esp32-31
-# Pawelo 20240408, added esp32-05
-# Pawelo 20241222, added esp32-14, esp32-39
-# Pawelo 20241223, compiled esp32-14 successfully
-# Pawelo 20241231, added esp32-33 (s3) and esp32-34 (s2)
-# Pawelo 20250101, added examples how to read logs
-# Pawelo 20250101, added relay switches on esp01s circuit
-# Pawelo 20250109, added esp32-36 (c6) as TestC6 device
-# Pawelo 20250125, added esp32-39 as Attic device
-# Pawelo 20250125, added esp32-37 as TestS3SuperMini device
-# Pawelo 20250201, added esp32-38 as Test32ttgo device
-# Pawelo 20250201, moved some scripts to 0_DEV, 1_UAT or 2_PROD folders
-# Pawelo 20250202, added test of compile on each script in 0_DEV, 1_UAT, 2_PROD
-# Pawelo 20250203, exclude not ready (.yml) scripts from compilation tests
-# Pawelo 20250125, moved esp32-39 Attic device to 2_PROD
-# Pawelo 20250220, added venv creation for python3
-# Pawelo 20250221, added "esphome --version" prior testing cycles
+# Pawelo, 20230923, created based on esp_setup.sh
+# Pawelo, 20231205, added esp32-31
+# Pawelo, 20240408, added esp32-05
+# Pawelo, 20241222, added esp32-14, esp32-39
+# Pawelo, 20241223, compiled esp32-14 successfully
+# Pawelo, 20241231, added esp32-33 (s3) and esp32-34 (s2)
+# Pawelo, 20250101, added examples how to read logs
+# Pawelo, 20250101, added relay switches on esp01s circuit
+# Pawelo, 20250109, added esp32-36 (c6) as TestC6 device
+# Pawelo, 20250125, added esp32-39 as Attic device
+# Pawelo, 20250125, added esp32-37 as TestS3SuperMini device
+# Pawelo, 20250201, added esp32-38 as Test32ttgo device
+# Pawelo, 20250201, moved some scripts to 0_DEV, 1_UAT or 2_PROD folders
+# Pawelo, 20250202, added test of compile on each script in 0_DEV, 1_UAT, 2_PROD
+# Pawelo, 20250203, exclude not ready (.yml) scripts from compilation tests
+# Pawelo, 20250125, moved esp32-39 Attic device to 2_PROD
+# Pawelo, 20250220, added venv creation for python3
+# Pawelo, 20250221, added "esphome --version" prior testing cycles
+# Pawelo, 20250615, moved esp12f-10 script to 2_PROD
 
 #*###########################
 #* Check Python VENV
@@ -91,6 +92,7 @@ pip install --upgrade "ltchiptool>=3.0.1,<4.0"
 #*###########################
 #* Upgrade PROD ESP devices via OTA
 esphome -s devicename esp32-05 -s updates 1min -s room Shades -s mqtt_location outside -s mqtt_room shades -s room2 WinterGardenUpp -s mqtt_location2 home -s mqtt_room2 winter_garden_upp run 2_PROD/esp32-05_Shades_WinterGardenUpp.yaml
+esphome -s devicename esp12f-10 -s updates 30s -s room Office -s mqtt_room office run 2_PROD/esp12f-10_Office.yaml
 esphome -s devicename esp12f-11 -s updates 30s -s room Entrance -s mqtt_room entrance -s room2 Entry -s mqtt_location2 outside -s mqtt_room2 entry run 2_PROD/esp12f-11_Entrance_Entry.yaml
 esphome -s devicename esp32-14 -s updates 30s -s room Salon -s mqtt_room salon run 2_PROD/esp32-14_Salon.yaml
 esphome -s devicename esp12f-15 -s updates 30s -s room Upstairs -s mqtt_room upstairs run 2_PROD/esp12f-15_Upstairs.yaml
@@ -101,7 +103,6 @@ esphome -s devicename esp32-36 -s updates 30s -s room Garage -s mqtt_location ou
 esphome -s devicename esp32-39 -s updates 1min -s room Attic -s mqtt_location home -s mqtt_room attic run 2_PROD/esp32-39_Attic.yaml
 
 #* Future devices via OTA (with "compile" instead of "run")
-esphome -s devicename esp12f-10 -s updates 30s -s room Office -s mqtt_room office compile 1_UAT/esp12f-10_Office.yaml
 
 #* New exploring devices
 esphome -s devicename esp12f-29 -s updates 30s -s room Test -s mqtt_location measures -s mqtt_room test run 0_DEV/esp12f_dev.yaml
