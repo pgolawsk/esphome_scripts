@@ -75,6 +75,7 @@ esp32:
     #     CONFIG_TCP_SND_BUF_DEFAULT: "65535"
     #     CONFIG_TCP_WND_DEFAULT: "512000"
     #     CONFIG_TCP_RECVMBOX_SIZE: "512"
+      # CONFIG_RMT_RECV_FUNC_IN_IRAM: "y" # to avoid "RMT receiver is not in IRAM" warning
 
 preferences:
   flash_write_interval: ${flash_write_interval}
