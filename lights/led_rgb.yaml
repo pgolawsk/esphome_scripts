@@ -5,6 +5,7 @@
 # Pawelo, 20250125, added va_effect
 # Pawelo, 20250221, tested use_pram (not working)
 # Pawelo, 20250221, disable rmt_channel as it is only for arduino framework
+# Pawelo, 20250619, added use_psram=false, use_dma=false and rmt_symbols as parameter; PSRAM is corrupting IR receiver and transmitter
 
 platform: esp32_rmt_led_strip
 chipset: WS2812
@@ -16,7 +17,9 @@ icon: "mdi:led-outline"
 id: rgb_led${ix}
 state_topic: $devicename/rgb_led${ix}
 pin: ${gpio}
-# use_psram: false
+use_psram: false # needs be here to do not interfere with ir_reciever and ir_transmitter
+# use_dma: true
+rmt_symbols: ${rmt_symbols} # minimum 64
 num_leds: 1
 entity_category: ${entity_category} # "" or config or diagnostic
 restore_mode: ALWAYS_OFF
