@@ -21,14 +21,15 @@
 # Pawelo, 20250615, commented "B" relay and light as it is not used in this room
 # Pawelo, 20250615, set temp offset for SCD40 to -11.5C and humidity offset to 18.0% as it was tested in this room
 # Pawelo, 20250615, moved the script to 2_PROD
+# Pawelo, 20250619, disabled eCO2 and TVOC sensor to fix prometheus /metrics endpoint
 
 #! run with this command to override substitutions
 # esphome -s devicename espXX -s updates 1min -s room <Room name> -s mqtt_room <room> run esp12f_MMmm_SSss__PP.yaml --device 192.168.x.x
 # here are default values if those are not given via command line
 substitutions:
-  devices: "Temperature, Humidity, CO2 via SCD40, TVOC and eCO2 via SGP30, Illuminance via BH1750 and Double Light Switch via AVT5713"
+  devices: "Temperature, Humidity, CO2 via SCD40, TVOC via SGP30, Illuminance via BH1750 and Light Switch via AVT5713"
   project_name: "pgolawsk.esp_home"
-  version: "20250615"
+  version: "20250619"
 
   # required by ../includes/board_esp8266.yaml script
   board_variant: "12F" # determine variant like 12F, 07s, 01m, ...
@@ -91,7 +92,7 @@ sensor:
   - !include ../sensors/uptime.yaml
   # - !include ../sensors/uptime_boot.yaml
   - !include ../sensors/wifi_signal.yaml
-  - !include ../sensors/wifi_strength.yaml
+  # - !include ../sensors/wifi_strength.yaml
 
   # DEBUG component
   # - !include ../sensors/debug.yaml
@@ -106,7 +107,8 @@ sensor:
   - !include { file: ../sensors/temp_hum_co2_SCD40.yaml, vars: { ix: "", bus_id: "bus_a", address: "0x62", temp_offset: -11.5, hum_offset: 18.0 } }
 
   # TVOC and eCO2 sensor
-  - !include { file: ../sensors/tvoc_eco2_SGP30.yaml, vars: { ix: "", bus_id: "bus_a", address: "0x58" } }
+  # - !include { file: ../sensors/tvoc_SGP30.yaml, vars: { ix: "", bus_id: "bus_a", address: "0x58" } }
+  # - !include { file: ../sensors/tvoc_eco2_SGP30.yaml, vars: { ix: "", bus_id: "bus_a", address: "0x58" } }
 
 output:
   # LED
