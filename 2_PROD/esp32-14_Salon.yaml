@@ -28,6 +28,8 @@
 # Pawelo, 20250209, disabled Sound Level Meter, added MAX98357A I2S audio output with small speaker
 # Pawelo, 20250221, added uptime_boot text sensor
 # Pawelo, 20250304, switched to ESP-IDF (disabled BSEC2)
+# Pawelo, 20250619, enabled BSEC2 for BME680, as ESPHome ESP-IDF supporting is since 2025.06 onwards
+# Pawelo, 20250619, fixed IR transmitter not enabled in ESP-IDF - by forcing no PSRAM for RMT led strip component
 
 #! run with this command to override substitutions
 # esphome -s devicename espXX -s updates 1min -s room <Room name> -s mqtt_room <room> run esp32_MMmm_SSss__PP.yaml --device 192.168.x.x
@@ -36,8 +38,8 @@
 substitutions:
   devices: "Env monitoring via BME680, Illuminance via BH1750, IR Receiver/Transmitter, RTTTL Buzzer, mic via INMP441, speaker via MAX98357A"
   project_name: "pgolawsk.esp_home"
-  version: "20250221"
-  esphome_min_version: 2025.2.0
+  version: "20250619"
+  esphome_min_version: 2025.6.0
 
   # required by ../includes/board_esp32.yaml script
   # framework_type: arduino # "arduino" or "esp-idf"
@@ -86,10 +88,10 @@ substitutions:
 <<: !include { file: ../interfaces/rtttl.yaml, vars: { ix: "" } }
 # <<: !include { file: ../interfaces/spi.yaml, vars: { spi_id: "spi_a", clk: "GPIO6", mosi: "GPIO7", miso: "GPIO9" } }
 # <<: !include { file: ../interfaces/spi_rc522.yaml, vars: { spi_id: "spi_a", cs: "GPIO5", reset: "GPIO4" } }
-# <<: !include { file: ../interfaces/i2c_bme68x_bsec2.yaml, vars: { ix: "", bus_id: "bus_a", address: "0x77", temp_offset: 0.0 } }
-<<: !include { file: ../interfaces/ir_receiver.yaml, vars: { gpio: "GPIO5", dump: "nec" } }
+<<: !include { file: ../interfaces/i2c_bme68x_bsec2.yaml, vars: { ix: "", bus_id: "bus_a", address: "0x77", temp_offset: 0.0 } }
+<<: !include { file: ../interfaces/ir_receiver.yaml, vars: { gpio: "GPIO5", dump: "nec", rmt_symbols: 64 } }
 # <<: !include { file: ../interfaces/ir_receiver__arduino.yaml, vars: { gpio: "GPIO5", dump: "nec", rmt_channel: 4 } } # for ESP32c3 can be 2-3, for ESP32 can be 0-7, for ESP32s2 0-3, for ESP32s3 4-7
-<<: !include { file: ../interfaces/ir_transmitter.yaml, vars: { gpio: "GPIO6", rmt_symbols: 1024 } }
+<<: !include { file: ../interfaces/ir_transmitter.yaml, vars: { gpio: "GPIO6", rmt_symbols: 256 } }
 # <<: !include { file: ../interfaces/ir_transmitter__arduino.yaml, vars: { gpio: "GPIO6", rmt_channel: 0 } } # for ESP32c3 can be 0-1, for ESP32 can be 0-7, for ESP32s2 0-3, for ESP32s3 0-3
 
 # # I2S Audio (!cannot be used with "I2S Sound Level Meter" below)
@@ -151,8 +153,8 @@ text_sensor:
 
   # Air Quality sensor
   # - !include { file: ../sensors/text_air_quality.yaml }
-  # - !include ../sensors/text_air_quality_bme68x.yaml
-  # - !include { file: ../sensors/text_IAQ_accuracy_bme68x.yaml, vars: { platform: "bme68x_bsec2" } }
+  - !include { file: ../sensors/text_air_quality_bme68x.yaml }
+  - !include { file: ../sensors/text_IAQ_accuracy_bme68x.yaml, vars: { platform: "bme68x_bsec2" } }
 
 binary_sensor:
   # HA Connected
@@ -178,8 +180,8 @@ sensor:
   # - !include { file: ../sensors/temp_hum_AHT2x.yaml, vars: { ix: "", bus_id: "bus_a", address: "0x38" } }
 
   # Temperature, Humidity, Pressure and Gas Resistance sensor
-  - !include { file: ../sensors/temp_hum_press_gas_BME680.yaml, vars: { ix: "", bus_id: "bus_a", address: "0x77", temp_offset: 0.0, hum_offset: 0.0, pressure_offset: 0.0 } }
-  # - !include { file: ../sensors/temp_hum_press_gas_aqi_co2_voc_bme680.yaml, vars: { platform: "bme68x_bsec2", ix: "", bus_id: "bus_a", address: "0x77", temp_offset: 0, hum_offset: 0, pressure_offset: 0 } }
+  # - !include { file: ../sensors/temp_hum_press_gas_BME680.yaml, vars: { ix: "", bus_id: "bus_a", address: "0x77", temp_offset: 0.0, hum_offset: 0.0, pressure_offset: 0.0 } }
+  - !include { file: ../sensors/temp_hum_press_gas_aqi_co2_voc_bme680.yaml, vars: { platform: "bme68x_bsec2", ix: "", bus_id: "bus_a", address: "0x77", temp_offset: 0, hum_offset: 0, pressure_offset: 0 } }
 
   # Illuminance sensor
   - !include { file: ../sensors/lux_BH1750.yaml, vars: { ix: "", bus_id: "bus_a", address: "0x23" } }
@@ -239,7 +241,7 @@ light:
   - !include { file: ../lights/led.yaml, vars: { ix: "blue", platform: "status_led", off_delay: "1days", entity_category: "diagnostic" } }
   # LED RGB (S3, C3 supermini plus)
   # - !include { file: ../lights/led_rgb__arduino.yaml, vars: { ix: "", gpio: "GPIO48", entity_category: "", rmt_channel: 1 } }
-  - !include { file: ../lights/led_rgb.yaml, vars: { ix: "", gpio: "GPIO48", entity_category: "" } }
+  - !include { file: ../lights/led_rgb.yaml, vars: { ix: "", gpio: "GPIO48", entity_category: "", rmt_symbols: 64  } }
   # - !include { file: ../lights/led_rgb_neopixelbus.yaml, vars: { ix: "", gpio: "GPIO48", entity_category: "" } }
 
 switch:
