@@ -2,6 +2,7 @@
 #* IR Transmitter (38kHz) interface via GPIO
 # Pawelo, 20241219, created based on https://esphome.io/components/remote_transmitter
 # Pawelo, 20250304, disabled rmt_channel parameter for esp-idf
+# Pawelo, 20250619, added use_dma and rmt_symbols as parameter
 
 remote_transmitter:
   id: ir_transmitter
@@ -14,5 +15,5 @@ remote_transmitter:
   carrier_duty_percent: 50%
 #  rmt_channel: ${rmt_channel} # for ESP32c3 can be 0-1, for ESP32 can be 0-7, for ESP32s2 0-3, for ESP32s3 0-3
   # eot_level: false
-  # use_dma: true
-  # rmt_symbols: ${rmt_symbols}
+  use_dma: true
+  rmt_symbols: ${rmt_symbols}
