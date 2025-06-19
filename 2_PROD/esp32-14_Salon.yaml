@@ -30,6 +30,7 @@
 # Pawelo, 20250304, switched to ESP-IDF (disabled BSEC2)
 # Pawelo, 20250619, enabled BSEC2 for BME680, as ESPHome ESP-IDF supporting is since 2025.06 onwards
 # Pawelo, 20250619, fixed IR transmitter not enabled in ESP-IDF - by forcing no PSRAM for RMT led strip component
+# Pawelo, 20250619, disabled BSEC2 for BME680, as CO2 and VOC readings are definitely not true
 
 #! run with this command to override substitutions
 # esphome -s devicename espXX -s updates 1min -s room <Room name> -s mqtt_room <room> run esp32_MMmm_SSss__PP.yaml --device 192.168.x.x
@@ -88,7 +89,7 @@ substitutions:
 <<: !include { file: ../interfaces/rtttl.yaml, vars: { ix: "" } }
 # <<: !include { file: ../interfaces/spi.yaml, vars: { spi_id: "spi_a", clk: "GPIO6", mosi: "GPIO7", miso: "GPIO9" } }
 # <<: !include { file: ../interfaces/spi_rc522.yaml, vars: { spi_id: "spi_a", cs: "GPIO5", reset: "GPIO4" } }
-<<: !include { file: ../interfaces/i2c_bme68x_bsec2.yaml, vars: { ix: "", bus_id: "bus_a", address: "0x77", temp_offset: 0.0 } }
+# <<: !include { file: ../interfaces/i2c_bme68x_bsec2.yaml, vars: { ix: "", bus_id: "bus_a", address: "0x77", temp_offset: 0.0 } }
 <<: !include { file: ../interfaces/ir_receiver.yaml, vars: { gpio: "GPIO5", dump: "nec", rmt_symbols: 64 } }
 # <<: !include { file: ../interfaces/ir_receiver__arduino.yaml, vars: { gpio: "GPIO5", dump: "nec", rmt_channel: 4 } } # for ESP32c3 can be 2-3, for ESP32 can be 0-7, for ESP32s2 0-3, for ESP32s3 4-7
 <<: !include { file: ../interfaces/ir_transmitter.yaml, vars: { gpio: "GPIO6", rmt_symbols: 256 } }
@@ -153,8 +154,8 @@ text_sensor:
 
   # Air Quality sensor
   # - !include { file: ../sensors/text_air_quality.yaml }
-  - !include { file: ../sensors/text_air_quality_bme68x.yaml }
-  - !include { file: ../sensors/text_IAQ_accuracy_bme68x.yaml, vars: { platform: "bme68x_bsec2" } }
+  # - !include { file: ../sensors/text_air_quality_bme68x.yaml }
+  # - !include { file: ../sensors/text_IAQ_accuracy_bme68x.yaml, vars: { platform: "bme68x_bsec2" } }
 
 binary_sensor:
   # HA Connected
@@ -180,8 +181,8 @@ sensor:
   # - !include { file: ../sensors/temp_hum_AHT2x.yaml, vars: { ix: "", bus_id: "bus_a", address: "0x38" } }
 
   # Temperature, Humidity, Pressure and Gas Resistance sensor
-  # - !include { file: ../sensors/temp_hum_press_gas_BME680.yaml, vars: { ix: "", bus_id: "bus_a", address: "0x77", temp_offset: 0.0, hum_offset: 0.0, pressure_offset: 0.0 } }
-  - !include { file: ../sensors/temp_hum_press_gas_aqi_co2_voc_bme680.yaml, vars: { platform: "bme68x_bsec2", ix: "", bus_id: "bus_a", address: "0x77", temp_offset: 0, hum_offset: 0, pressure_offset: 0 } }
+  - !include { file: ../sensors/temp_hum_press_gas_BME680.yaml, vars: { ix: "", bus_id: "bus_a", address: "0x77", temp_offset: 0.0, hum_offset: 0.0, pressure_offset: 0.0 } }
+  # - !include { file: ../sensors/temp_hum_press_gas_aqi_co2_voc_bme680.yaml, vars: { platform: "bme68x_bsec2", ix: "", bus_id: "bus_a", address: "0x77", temp_offset: 0, hum_offset: 0, pressure_offset: 0 } }
 
   # Illuminance sensor
   - !include { file: ../sensors/lux_BH1750.yaml, vars: { ix: "", bus_id: "bus_a", address: "0x23" } }
@@ -193,8 +194,8 @@ sensor:
 button:
   # Restart, reset and shutdown buttons
   - !include { file: ../buttons/restart_button.yaml }
-  # for _dev.yaml scripts include additional buttons
   - !include { file: ../buttons/safe_mode_restart_button.yaml }
+  # for _dev.yaml scripts include additional buttons
   - !include { file: ../buttons/factory_reset_button.yaml }
   - !include { file: ../buttons/shutdown_button.yaml }
 
