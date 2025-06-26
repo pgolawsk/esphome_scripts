@@ -8,6 +8,7 @@
 # Pawelo, 20231017, added water_updates_interval for water sensors updates (much often than $updates)
 # Pawelo, 20231017, added delta filter to prevent very frequent mqtt messages on every pulse
 # Pawelo, 20231017, added water_flow_min_delta variable for water sensors updates (to have no publish on every pulse)
+# Pawelo, 20250626, changed clamp min_value to -0.05 to allow for +/- small pressure changes to not be recorded as flow
 
 platform: pulse_meter
 pin:
@@ -29,7 +30,7 @@ on_value:
 filters:
   - lambda: return x / ${pulses_per_liter};
   - clamp:
-      min_value: 0
+      min_value: -0.05
       max_value: 80
   - delta: ${water_flow_min_delta}
 total:
