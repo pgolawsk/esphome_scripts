@@ -9,6 +9,7 @@
 # Pawelo, 20231017, added delta filter to prevent very frequent mqtt messages on every pulse
 # Pawelo, 20231017, added water_flow_min_delta variable for water sensors updates (to have no publish on every pulse)
 # Pawelo, 20250626, changed clamp min_value to -0.05 to allow for +/- small pressure changes to not be recorded as flow
+# Pawelo, 20250626, added throttle_average filter for 5s to prevent very frequent mqtt messages on every pulse
 
 platform: pulse_meter
 pin:
@@ -28,11 +29,13 @@ on_value:
       payload: !lambda |-
         return to_string(x);
 filters:
+  - throttle_average: 5s # average over 5 seconds
+  - filter_out: nan # filter out NaN values if no flow is detected
   - lambda: return x / ${pulses_per_liter};
   - clamp:
       min_value: -0.05
       max_value: 80
-  - delta: ${water_flow_min_delta}
+#  - delta: ${water_flow_min_delta}
 total:
   name: "$room Water Total${ix}"
   id: water_total${ix}
