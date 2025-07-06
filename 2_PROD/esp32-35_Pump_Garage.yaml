@@ -45,6 +45,7 @@
 # Pawelo, 20250322, adjusted pulses per liter for _total water sensor from 476 to 466 (based on difference on garage measure while use only garage)
 # Pawelo, 20250504, adjusted pulses per liter for _total water sensor from 466 to 476 and _garage from 443 to 451
 # Pawelo, 20250626, adjusted water_flow_min_delta to 0.01 to minimize mqtt messages on every pulse
+# Pawelo, 20250504, adjusted pulses per liter for _garage water sensor from 451 to 443
 
 #! run with this command to override substitutions
 # esphome -s devicename espXX -s updates 1min -s room <Room name> -s mqtt_room <room> run esp32_MMmm_SSss__PP.yaml --device 192.168.x.x
@@ -80,7 +81,7 @@ substitutions:
   # default variable values for !include statements
   accuracy_decimals: "2"
   pulses_per_liter: "476"
-  pulses_per_liter_garden: "451"
+  pulses_per_liter_garden: "443" # from experience it should be set as 42,9
   water_updates_interval: 5s
   water_flow_min_delta: "0.01"
 
