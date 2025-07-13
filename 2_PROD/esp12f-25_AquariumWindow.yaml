@@ -24,6 +24,7 @@
 # Pawelo, 20250418, enabled boot and uptime sensors (maybe it will work with prometheus)
 # Pawelo, 20250619, disabled text sensors, wifi_scan button, factory reset button to fix prometheus /metrics endpoint
 # Pawelo, 20250712, enabled version and uptime_boot text sensors
+# Pawelo, 20250713, disable uptime_boot text sensor to fix /metrics endpoint
 
 # WARN: DO NOT ADD any more sensors as it will impact /metrics (prometheus) and in worst case brick the device
 #! run with this command to override substitutions
@@ -32,7 +33,7 @@
 substitutions:
   devices: "Temperature and Humidity via SHTx30, Illuminance, Color via TCS34725"
   project_name: "pgolawsk.esp_home"
-  version: "20250712"
+  version: "20250713"
 
   # required by ../includes/board_esp8266.yaml script
   board_variant: "12F" # determine variant like 12F, 07s, 01m, ...
@@ -75,7 +76,7 @@ substitutions:
 <<: !include { file: ../interfaces/i2c.yaml, vars: { bus_id: "bus_a", sda: "GPIO4", scl: "GPIO5" } }
 
 text_sensor:
-  - !include ../sensors/text_uptime.yaml
+  # - !include ../sensors/text_uptime.yaml
   # - !include ../sensors/text_uptime_boot.yaml
   - !include ../sensors/text_version.yaml
   # - !include ../sensors/text_wifi_info.yaml
