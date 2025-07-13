@@ -29,6 +29,7 @@
 # Pawelo, 20250221, changed Dallas NG to regular Dallas (via onewire)
 # Pawelo, 20250619, disabled text sensors, wifi_scan button, factory reset button to fix prometheus /metrics endpoint
 # Pawelo, 20250712, enabled version and uptime_boot text sensors
+# Pawelo, 20250713, switch LED from light to switch type to shorten /metrics output and avoid prometheus /metrics issue
 
 #! run with this command to override substitutions
 # esphome -s devicename espXX -s updates 1min -s room <Room name> -s mqtt_room <room> run esp12f_SSss_MMmm__PP.yaml --device 192.168.x.x
@@ -36,7 +37,7 @@
 substitutions:
   devices: "Temperatures via DS18B20, Temperature and Humidity via SHTx30"
   project_name: "pgolawsk.esp_home"
-  version: "20250712"
+  version: "20250713"
 
   # required by ../includes/board_esp8266.yaml script
   board_variant: "12F" # determine variant like 12F, 07s, 01m, ...
@@ -120,19 +121,26 @@ sensor:
   - !include { file: ../sensors/temp_hum_SHT3x.yaml, vars: { ix: "", bus_id: "bus_a", address: "0x44" } }
 
 output:
-  #! needed for RTTTL but its not connected to this device
+  #! needed LED for RTTTL but its not connected to this device
   # LED
   - !include { file: ../outputs/led.yaml, vars: { ix: "", gpio: "GPIO10", inverted: false } }
 
   # RTTTL Buzzer (passive_buzzer)
   - !include { file: ../outputs/passive_buzzer.yaml, vars: { ix: "", gpio: "GPIO16" } }
 
-light:
-  #! needed for RTTTL but its not connected to this device
-  # LED
-  - !include { file: ../lights/led.yaml, vars: { ix: "", platform: "binary", off_delay: "5s", entity_category: "" } }
+# light:
+#   #! needed LED for RTTTL but its not connected to this device
+#   # LED
+#   - !include { file: ../lights/led.yaml, vars: { ix: "", platform: "binary", off_delay: "5s", entity_category: "" } }
 
 switch:
+  #! needed LED for RTTTL but its not connected to this device
+  # LED
+  - !include { file: ../switches/led.yaml, vars: { ix: "", off_delay: "5s", entity_category: "" } }
+
+  # # LED cycle (works only with "light" type LED)
+  # - !include { file: ../switches/led_cycle.yaml, vars: { ID: "led", cycles: 3, on_delay: "1s" , off_delay: "500ms" } }
+
   # RTTTL Play (passive_buzzer)
   - !include { file: ../switches/rtttl_play.yaml, vars: { ix: "" } }
 
