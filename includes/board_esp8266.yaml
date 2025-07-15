@@ -12,6 +12,7 @@
 # Pawelo, 20241223, refactor script to accept variables, like "board" and "board variant", ...
 # Pawelo, 20250111, commented "area" and "friendly name" as for ESP12F which have little RAM is too much (prometheus /metrics output is cut)
 # Pawelo, 20250413, added web_server_basic.yaml to avoid sorting groups (not supported in 2.x)
+# Pawelo, 20250715, added custom_components/prometheus to external_components
 
 esphome:
   name: $devicename
@@ -27,6 +28,15 @@ esphome:
       # for details see https://docs.platformio.org/en/latest/platforms/espressif8266.html
       - -DPIO_FRAMEWORK_ARDUINO_MMU_CACHE16_IRAM48
   #     - -DPIO_FRAMEWORK_ARDUINO_MMU_CACHE16_IRAM32_SECHEAP_NOTSHARED
+  # includes:
+  #   - ../src/esphome/components/prometheus/prometheus_handler.h
+  #   - ../src/esphome/components/prometheus/prometheus_handler.cpp
+
+external_components:
+  - source:
+      type: local
+      path: ../custom_components
+    components: [prometheus]
 
 esp8266:
   board: ${board} # like: esp12e, esp01_1m, full list here https://registry.platformio.org/platforms/platformio/espressif8266/boards
