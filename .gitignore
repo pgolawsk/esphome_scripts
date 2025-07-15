@@ -3,3 +3,4 @@
 /secrets.yaml
 *.bin
 /temp
+__pycache__
