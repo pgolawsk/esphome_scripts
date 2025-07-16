@@ -1,6 +1,7 @@
 ---
 #* Powered From text sensor on LilyGo T5 screen
 # Pawelo, 20230314, created on my own
+# Pawelo, 20250716, adjusted to arduino 3.1.3 and esphome 2025.07 - replaced to_string() with optional<std::string>()
 
 platform: template
 name: "${devicename} Powered From${ix}"
@@ -8,12 +9,12 @@ id: powered_from${ix}
 icon: mdi:power-plug
 state_topic: $devicename/powered_from${ix}
 lambda: |-
-  if (to_string(id(batt_volt${ix})->state) == "nan" ) {
-    return to_string("Checking...");
+  if (optional<std::string>(id(batt_volt${ix})->state) == "nan" ) {
+    return optional<std::string>("Checking...");
   }
   if (id(batt_volt${ix})->state > ${usb_threshold_voltage}) {
-    return to_string("USB");
+    return optional<std::string>("USB");
   }
-  return to_string("BATTERY");
+  return optional<std::string>("BATTERY");
 internal: true
 update_interval: ${updates}

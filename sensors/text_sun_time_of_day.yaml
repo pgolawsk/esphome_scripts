@@ -1,7 +1,8 @@
 ---
 #* Sun Time Of Day sensor configuration
 # Pawelo, 20230924, created based on my own idea
-# Pawelo, 20240907, set entity_category for sensor to have it separateluy on web
+# Pawelo, 20240907, set entity_category for sensor to have it separately on web
+# Pawelo, 20250716, adjusted to arduino 3.1.3 and esphome 2025.07 - replaced to_string() with optional<std::string>()
 
 platform: template
 name: Time Of Day
@@ -11,10 +12,14 @@ icon: mdi:theme-light-dark
 internal: true
 state_topic: $devicename/time_of_day
 lambda: |-
-  if ( int(id(sun_elevation).state) > 0  ) { return to_string("DAY"); } return to_string("NIGHT");
+  if ( int(id(sun_elevation).state) > 0  ) {
+      return optional<std::string>("DAY");
+    } else {
+      return optional<std::string>("NIGHT");
+    }
 on_value:
   - mqtt.publish:
       topic: "$mqtt_location/$mqtt_room/time_of_day"
       payload: !lambda |-
-        return to_string(id(time_of_day).state);
+        return id(time_of_day).state;
 update_interval: ${updates}
