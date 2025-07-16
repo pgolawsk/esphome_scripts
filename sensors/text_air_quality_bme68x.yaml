@@ -3,6 +3,7 @@
 #* requires ESPHOME 2024.8
 #! not working with esp2866
 # Pawelo, 20240825, created based on https://esphome.io/components/sensor/bme68x_bsec2
+# Pawelo, 20250716, adjusted to arduino 3.1.3 and esphome 2025.07 - removed to_string() wrapper
 
 platform: template
 name: $room Air Quality
@@ -39,4 +40,4 @@ on_value:
   - mqtt.publish:
       topic: "$mqtt_location/$mqtt_room/air_quality"
       payload: !lambda |-
-        return to_string(id(air_quality).state);
+        return id(air_quality).state;
