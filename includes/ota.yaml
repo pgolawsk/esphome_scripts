@@ -5,10 +5,9 @@
 # Pawelo, 20250716, updated with 2025.7 version of ESPHome - added web_server OTA option
 
 ota:
-  platform: esphome
-  # - platform: web_server
-  # safe_mode: true
-  password: !secret ota_password
+  - platform: esphome
+    password: !secret ota_password
+# - platform: web_server
 
 safe_mode:
   # boot_is_good_after: 1min
