@@ -25,6 +25,8 @@
 # Pawelo, 20250619, disabled text sensors, wifi_scan button, factory reset button to fix prometheus /metrics endpoint
 # Pawelo, 20250712, enabled version and uptime_boot text sensors
 # Pawelo, 20250713, disable uptime_boot text sensor to fix /metrics endpoint
+# Pawelo, 20250720, switch LEDs back to light type (resolved by custom components/prometheus)
+# Pawelo, 20250720, enabled RTTTL via MQTT
 
 # WARN: DO NOT ADD any more sensors as it will impact /metrics (prometheus) and in worst case brick the device
 #! run with this command to override substitutions
@@ -33,7 +35,7 @@
 substitutions:
   devices: "Temperature and Humidity via SHTx30, Illuminance, Color via TCS34725"
   project_name: "pgolawsk.esp_home"
-  version: "20250713"
+  version: "20250720"
 
   # required by ../includes/board_esp8266.yaml script
   board_variant: "12F" # determine variant like 12F, 07s, 01m, ...
@@ -54,7 +56,7 @@ substitutions:
 
 # Override some settings included below in _board_ setup
 # <<: !include ../includes/time_sntp_with_sun.yaml #WARN: this is to make sunrise and sunset sensor to be updated on every time sync event
-# <<: !include ../includes/mqtt_with_rtttl.yaml #WARN: override mqtt with RTTTL support if needed (buzzer and status led)
+<<: !include ../includes/mqtt_with_rtttl.yaml #WARN: override mqtt with RTTTL support if needed (buzzer and status led)
 # <<: !include { file: ../includes/logger_level.yaml, vars: { level: INFO, baud_rate: 115200 } } #WARN: override default log level to specific one
 # <<: !include { file: ../includes/logger_level.yaml, vars: { level: DEBUG, baud_rate: 115200 } } #WARN: override default log level to specific one
 # <<: !include { file: ../includes/logger_level.yaml, vars: { level: VERY_VERBOSE, baud_rate: 115200 } } #WARN: override default log level to specific one
@@ -129,17 +131,18 @@ output:
 
 light:
   # LED
-  # - !include { file: ../lights/led.yaml, vars: { ix: "", platform: "binary", off_delay: "3s", entity_category: "" } }
+  - !include { file: ../lights/led.yaml, vars: { ix: "", platform: "binary", off_delay: "3s", entity_category: "" } }
 
-  # Measurement LED
+  # Measurement LED (ledm)
+  - !include { file: ../lights/led.yaml, vars: { ix: "m", platform: "binary", off_delay: "30s", entity_category: "" } }
   # - !include { file: ../lights/measurement_led.yaml, vars: { ix: "", off_delay: "30s" } }
 
 switch:
   # LED
-  - !include { file: ../switches/led.yaml, vars: { ix: "", off_delay: "5s", entity_category: "" } }
+  # - !include { file: ../switches/led.yaml, vars: { ix: "", off_delay: "5s", entity_category: "" } }
 
   # Measurement LED (ledm)
-  - !include { file: ../switches/led.yaml, vars: { ix: "m", off_delay: "30s", entity_category: "" } }
+  # - !include { file: ../switches/led.yaml, vars: { ix: "m", off_delay: "30s", entity_category: "" } }
 
   # LED cycle a few times (works only with "light" type LED)
   # - !include { file: ../switches/led_cycle.yaml, vars: { ID: "led", cycles: 5, on_delay: "1s" , off_delay: "500ms" } }
