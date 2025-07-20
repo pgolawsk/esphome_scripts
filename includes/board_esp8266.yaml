@@ -39,7 +39,7 @@ external_components:
   - source:
       type: local
       path: ../custom_components
-    components: [prometheus]
+    components: [prometheus, bme680]
 
 esp8266:
   board: ${board} # like: esp12e, esp01_1m, full list here https://registry.platformio.org/platforms/platformio/espressif8266/boards
