@@ -13,6 +13,7 @@
 # Pawelo, 20250111, commented "area" and "friendly name" as for ESP12F which have little RAM is too much (prometheus /metrics output is cut)
 # Pawelo, 20250413, added web_server_basic.yaml to avoid sorting groups (not supported in 2.x)
 # Pawelo, 20250715, added custom_components/prometheus to external_components
+# Pawelo, 20250720, added set of build_flags to avoid issues with cache and heap size (for /metrics prometheus)
 
 esphome:
   name: $devicename
@@ -26,8 +27,10 @@ esphome:
   platformio_options:
     build_flags:
       # for details see https://docs.platformio.org/en/latest/platforms/espressif8266.html
-      - -DPIO_FRAMEWORK_ARDUINO_MMU_CACHE16_IRAM48
-  #     - -DPIO_FRAMEWORK_ARDUINO_MMU_CACHE16_IRAM32_SECHEAP_NOTSHARED
+        - -DVTABLES_IN_FLASH # default PIO config value
+      # - -DPIO_FRAMEWORK_ARDUINO_MMU_CACHE16_IRAM48
+      # - -DPIO_FRAMEWORK_ARDUINO_MMU_CACHE16_IRAM48_SECHEAP_SHARED
+        - -DPIO_FRAMEWORK_ARDUINO_MMU_CACHE16_IRAM32_SECHEAP_NOTSHARED # 16kB for cache, 32kB instructions, 16kB for heap/data
   # includes:
   #   - ../src/esphome/components/prometheus/prometheus_handler.h
   #   - ../src/esphome/components/prometheus/prometheus_handler.cpp
