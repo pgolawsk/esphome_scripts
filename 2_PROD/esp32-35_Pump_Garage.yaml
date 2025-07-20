@@ -46,6 +46,7 @@
 # Pawelo, 20250504, adjusted pulses per liter for _total water sensor from 466 to 476 and _garage from 443 to 451
 # Pawelo, 20250626, adjusted water_flow_min_delta to 0.01 to minimize mqtt messages on every pulse
 # Pawelo, 20250504, adjusted pulses per liter for _garage water sensor from 451 to 443
+# Pawelo, 20250720, adjusted pulses per liter for _garage water sensor from 443 to 450 based on experience
 
 #! run with this command to override substitutions
 # esphome -s devicename espXX -s updates 1min -s room <Room name> -s mqtt_room <room> run esp32_MMmm_SSss__PP.yaml --device 192.168.x.x
@@ -54,7 +55,8 @@
 substitutions:
   devices: "ePaper Temperature and Humidity via SHTx30, Illuminance via BH1750, Water via YF-B10 G1"
   project_name: "pgolawsk.esp_home"
-  version: "20250322"
+  version: "20250720"
+  esphome_min_version: 2025.6.3 # worked on previous versions as well
 
   # required by ../includes/board_esp32.yaml script
   framework_type: arduino # "arduino" or "esp-idf"
@@ -81,7 +83,7 @@ substitutions:
   # default variable values for !include statements
   accuracy_decimals: "2"
   pulses_per_liter: "476"
-  pulses_per_liter_garden: "443" # from experience it should be set as 42,9
+  pulses_per_liter_garden: "450" # from experience it should be set as 42,9
   water_updates_interval: 5s
   water_flow_min_delta: "0.01"
 
