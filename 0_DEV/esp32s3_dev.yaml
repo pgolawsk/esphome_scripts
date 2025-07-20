@@ -38,6 +38,7 @@
 # Pawelo, 20250223, added esphome_min_version variable
 # Pawelo, 20250223, moved to esp-idf and enabled speaker media player
 # Pawelo, 20250304, testing voice assistant with mic and speaker
+# Pawelo, 20250720, set rmt_symbols to 48 for RGB LED, as it works with 48 block size symbols only
 
 #! run with this command to override substitutions
 # esphome -s devicename espXX -s updates 1min -s room <Room name> -s mqtt_room <room> run esp32_MMmm_SSss__PP.yaml --device 192.168.x.x
@@ -47,7 +48,7 @@ substitutions:
 #  devices: "Temperature and Humidity via SHTx30 and Illuminance via BH1750"
   devices: "DEV Kit"
   project_name: "pgolawsk.esp_home"
-  version: "20250223"
+  version: "20250720"
   esphome_min_version: 2025.2.0
 
   # required by ../includes/board_esp32.yaml script
@@ -254,7 +255,7 @@ light:
   - !include { file: ../lights/led.yaml, vars: { ix: "blue", platform: "status_led", off_delay: "1days", entity_category: "diagnostic" } }
   # LED RGB (S3, C3 supermini plus)
   # - !include { file: ../lights/led_rgb__arduino.yaml, vars: { ix: "", gpio: "GPIO48", entity_category: "", rmt_channel: 1 } }
-  - !include { file: ../lights/led_rgb.yaml, vars: { ix: "", gpio: "GPIO48", entity_category: "" } }
+  - !include { file: ../lights/led_rgb.yaml, vars: { ix: "", gpio: "GPIO48", entity_category: "", rmt_symbols: 48 } } #note: rmt_symbols block size is 48 symbols, for regular esp32 and S2 it's 64 symbols
   # - !include { file: ../lights/led_rgb_neopixelbus.yaml, vars: { ix: "", gpio: "GPIO48", entity_category: "" } }
 
 switch:
