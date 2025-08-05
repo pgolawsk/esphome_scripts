@@ -246,6 +246,7 @@ Author: Pawel Golawski, <pawel.golawski@2com.pl>
 - 1x ESP12 development board, fits ESP12E, ESP12F
 - 1x ESP32 development board
 - 6x ESP32C3 pin board (require ESP32C3 supermini, ESP32C3 supermini plus, ESP32S6 supermini, ESP32S3 supermini)
+- 1x ESP32C6 pin board (require ESP32C3 supermini, ESP32C3 supermini plus, ESP32S6 supermini, ESP32S3 supermini)
 
 #### USB modules
 
