@@ -1,31 +1,27 @@
 ---
-#* ESP32 Garage Gate sensor script
+#* ESP32 Outside Gateway sensor script
 #* Please read README.md for details
-#* For pinout see: file://../pinouts/ESP32c3_pinout_front.jpeg and file://../pinouts/ESP32c3_pinout_back.jpeg
+#* For pinout see: file://..//pinouts/ESP32_WROOM_32_pinout.jpg
 ###
-# Pawelo, 20250329, created based on esp32c3_dev.yaml
-# Pawelo, 20250329, added BME680 sensor and Illuminance sensor
-# Pawelo, 20250329, added Gate switch
-# Pawelo, 20250330, changed Gate switch to Gate cover, button and output
-# Pawelo, 20250330, added open/closed door state based on illuminance sensor
-# Pawelo, 20250330, added open/closed door state from HA (disabled illuminance)
+# Pawelo, 20250815, created based on esp32_dev.yaml
 
 #! run with this command to override substitutions
 # esphome -s devicename espXX -s updates 1min -s room <Room name> -s mqtt_room <room> run esp32_MMmm_SSss__PP.yaml --device 192.168.x.x
 # here are default values if those are not given via command line
 
 substitutions:
-  devices: "Temperature, Humidity, Pressure, Gas Resistance via BME680, Illuminance via BH1750 and Gate via GPIO"
+  devices: "Temperature, Humidity, Pressure via BME280, Gateway via GPIOs"
   project_name: "pgolawsk.esp_home"
-  version: "20250330"
+  version: "20250815"
+  esphome_min_version: 2025.6.3 # worked on previous versions as well
 
   # required by ../includes/board_esp32.yaml script
   framework_type: arduino # "arduino" or "esp-idf"
   # framework_type: esp-idf # "arduino" or "esp-idf"
   framework_version: recommended # or specific version like "latest", "recommended", "4.4.4"
   # framework_version: latest # or specific version like "latest", "recommended", "4.4.4"
-  board_variant: "c3" # empty for ESP32, other values to display like c3, c6, s2, s3
-  board: "esp32-c3-devkitm-1" # like: esp32dev, esp32cam, esp32-c3-devkitm-1, esp32-s3-devkitc-1, esp32-s2-saola-1, full list here https://registry.platformio.org/platforms/platformio/espressif32/boards?version=5.3.0
+  board_variant: "" # empty for ESP32, other values to display like c3, c6, s2, s3
+  board: "esp32dev" # like: esp32dev, esp32cam, esp32-c3-devkitm-1, esp32-s3-devkitc-1, esp32-s2-saola-1, full list here https://registry.platformio.org/platforms/platformio/espressif32/boards?version=5.3.0
   flash_size: 4MB # One of 2MB, 4MB, 8MB, 16MB or 32MB
   flash_write_interval: "5min"
 
@@ -42,7 +38,7 @@ substitutions:
 
 # Override some settings included below in _board_ setup
 <<: !include ../includes/time_sntp_with_sun.yaml #WARN: this is to make sunrise and sunset sensor to be updated on every time sync event
-# <<: !include ../includes/mqtt_with_rtttl.yaml #WARN: override mqtt with RTTTL support if needed (buzzer and status led)
+<<: !include ../includes/mqtt_with_rtttl.yaml #WARN: override mqtt with RTTTL support if needed (buzzer and status led)
 <<: !include { file: ../includes/logger_level.yaml, vars: { level: INFO, baud_rate: 115200 } } #WARN: override default log level to specific one
 # <<: !include { file: ../includes/logger_level.yaml, vars: { level: DEBUG, baud_rate: 115200 } } #WARN: override default log level to specific one
 # <<: !include { file: ../includes/logger_level.yaml, vars: { level: VERY_VERBOSE, baud_rate: 115200 } } #WARN: override default log level to specific one
@@ -59,10 +55,10 @@ substitutions:
 
 # Include interfaces needed
 <<: !include { file: ../interfaces/debug.yaml, vars: { update_interval: "5s" } }
-<<: !include { file: ../interfaces/i2c.yaml, vars: { bus_id: "bus_a", sda: "GPIO4", scl: "GPIO3" } }
+<<: !include { file: ../interfaces/i2c.yaml, vars: { bus_id: "bus_a", sda: "GPIO21", scl: "GPIO22" } }
 # <<: !include { file: ../interfaces/i2c_bme68x_bsec2.yaml, vars: { ix: "", bus_id: "bus_a", address: "0x77", temp_offset: -1.7 } }
 # <<: !include { file: ../interfaces/one_wire.yaml, vars: { wire_id: "ow_a", gpio: "GPIO10" } }
-# <<: !include { file: ../interfaces/rtttl.yaml, vars: { ix: "" } }
+<<: !include { file: ../interfaces/rtttl.yaml, vars: { ix: "" } }
 # <<: !include { file: ../interfaces/spi.yaml, vars: { spi_id: "spi_a", clk: "GPIO6", mosi: "GPIO7", miso: "GPIO9" } }
 # <<: !include { file: ../interfaces/spi_rc522.yaml, vars: { spi_id: "spi_a", cs: "GPIO5", reset: "GPIO4" } }
 # <<: !include { file: ../interfaces/ir_receiver.yaml, vars: { gpio: "GPIO3", dump: "nec", rmt_channel: 2 } } # for ESP32c3 can be 2-3, for ESP32 can be 0-7, for ESP32s2 0-3, for ESP32s3 4-7
@@ -95,7 +91,11 @@ binary_sensor:
   # Door open/closed sensors based on illuminance sensor
   # - !include { file: ../sensors/binary_from_lux_sensor.yaml, vars: { ix: "OPEN", sensor: "Door", mdi_icon: "garage-open-variant", device_class: garage_door,  lux_sensor_id: "luxG", lux_upper_threshold: 10000.0, lux_lower_threshold: 1.6, off_delay: "500ms" } }
   # - !include { file: ../sensors/binary_from_lux_sensor.yaml, vars: { ix: "CLOSED", sensor: "Door", mdi_icon: "garage-variant", device_class: garage_door, lux_sensor_id: "luxG", lux_upper_threshold: 1.5999, lux_lower_threshold: -1.0, off_delay: "500ms" } }
-  - !include { file: ../sensors/binary_from_HA_sensor.yaml, vars: { ix: "", sensor: "open", mdi_icon: "garage-variant", device_class: garage_door, entity_id: binary_sensor.garage_main_door } }
+  # - !include { file: ../sensors/binary_from_HA_sensor.yaml, vars: { ix: "", sensor: "open", mdi_icon: "garage-variant", device_class: garage_door, entity_id: binary_sensor.garage_main_door } }
+
+  # Reed sensors for gateway
+  - !include { file: ../sensors/binary_gpio.yaml, vars: { ix: "", sensor: "Open", gpio: "GPIO13", inverted: false, mdi_icon: "gate-open", room: "$room2" } }
+  - !include { file: ../sensors/binary_gpio.yaml, vars: { ix: "", sensor: "Closed", gpio: "GPIO14", inverted: false, mdi_icon: "gate", room: "$room2" } }
 
 sensor:
   - !include ../sensors/temp_internal.yaml
@@ -115,12 +115,15 @@ sensor:
   # - !include { file: ../sensors/temp_hum_SHT3x.yaml, vars: { ix: "", bus_id: "bus_a", address: "0x44" } }
   # - !include { file: ../sensors/temp_hum_AHT2x.yaml, vars: { ix: "", bus_id: "bus_a", address: "0x38" } }
 
+  # # Temperature, Humidity and Pressure sensor
+  - !include { file: ../sensors/temp_hum_press_BME280.yaml, vars: { ix: "", bus_id: "bus_a", address: "0x76", temp_offset: 0.0, hum_offset: 0.0, pressure_offset: 0.0 } }
+
   # Temperature, Humidity, Pressure and Gas Resistance sensor
-  - !include { file: ../sensors/temp_hum_press_gas_BME680.yaml, vars: { ix: "", bus_id: "bus_a", address: "0x77", temp_offset: 0.0, hum_offset: 0.0, pressure_offset: 0.0 } }
+  # - !include { file: ../sensors/temp_hum_press_gas_BME680.yaml, vars: { ix: "", bus_id: "bus_a", address: "0x77", temp_offset: 0.0, hum_offset: 0.0, pressure_offset: 0.0 } }
   # - !include { file: ../sensors/temp_hum_press_gas_aqi_co2_voc_bme680.yaml, vars: { platform: "bme68x_bsec2", ix: "", bus_id: "bus_a", address: "0x77", temp_offset: -1.7, hum_offset: -3.0, pressure_offset: 7.0 } }
 
   # Illuminance sensor
-  - !include { file: ../sensors/lux_BH1750.yaml, vars: { ix: "G", bus_id: "bus_a", address: "0x23", updates: 3s } }
+  # - !include { file: ../sensors/lux_BH1750.yaml, vars: { ix: "G", bus_id: "bus_a", address: "0x23", updates: 3s } }
 
 button:
   # Restart, reset and shutdown buttons
@@ -135,11 +138,14 @@ button:
   - !include { file: ../buttons/scan_wifi_button.yaml }
 
   # Door button (Garage door, enable output as well)
-  - !include { file: ../buttons/door_button.yaml, vars: { ix: "", mdi_icon: "garage"} }
+  - !include { file: ../buttons/door_button.yaml, vars: { ix: "", mdi_icon: "gate-arrow-right", room: "$room2" } }
 
 output:
+  # LED soldered
+  - !include { file: ../outputs/led.yaml, vars: { ix: "", gpio: "GPIO1", inverted: true } }
+
   # LED blue (C3 supermini)
-  - !include { file: ../outputs/led.yaml, vars: { ix: "", gpio: "GPIO8", inverted: true } }
+  # - !include { file: ../outputs/led.yaml, vars: { ix: "", gpio: "GPIO8", inverted: true } }
 
   # LED blue (S2 mini)
   # - !include { file: ../outputs/led.yaml, vars: { ix: "", gpio: "GPIO15", inverted: false } }
@@ -155,10 +161,10 @@ output:
   # - !include { file: ../outputs/led_rgb.yaml, vars: { ix: "", ID: "rgb_led" } }
 
   # Passive/RTTTL Buzzer
-  # - !include { file: ../outputs/passive_buzzer_ledc.yaml, vars: { ix: "", gpio: "GPIO4" } }
+  - !include { file: ../outputs/passive_buzzer_ledc.yaml, vars: { ix: "", gpio: "GPIO4" } }
 
   # Garage door relay
-  - !include { file: ../outputs/door.yaml, vars: { ix: "", gpio: "GPIO0", inverted: false } }
+  - !include { file: ../outputs/door.yaml, vars: { ix: "", gpio: "GPIO3", inverted: false } }
 
 light:
   # LED green (S3)
@@ -182,11 +188,11 @@ switch:
 
   # RTTTL Play (passive_buzzer)
   # - !include { file: ../switches/rtttl_play.yaml, vars: { ix: "" } }
-  # - !include { file: ../switches/rtttl_play.yaml, vars: { ix: "2", mqtt_location: "${mqtt_location2}", mqtt_room: "${mqtt_room2}" } }
+  - !include { file: ../switches/rtttl_play.yaml, vars: { ix: "", mqtt_location: "${mqtt_location2}", mqtt_room: "${mqtt_room2}" } }
 
   # Gate switch
   # - !include { file: ../switches/gate.yaml, vars: { ix: "", gpio: "GPIO0", off_delay: "1s" } }
 
-cover:
-  # Garage door cover
-  - !include { file: ../covers/door_cover.yaml, vars: { ix: "", mdi_icon: "garage", device_class: "garage", open_duration: "18s", close_duration: "18s", open_endstop_binary_sensor: ha_open } }
+# cover:
+#   # Garage door cover
+#   - !include { file: ../covers/door_cover.yaml, vars: { ix: "", mdi_icon: "garage", device_class: "garage", open_duration: "18s", close_duration: "18s", open_endstop_binary_sensor: ha_open } }
