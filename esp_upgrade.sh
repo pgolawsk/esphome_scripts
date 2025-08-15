@@ -45,7 +45,7 @@ pip install -U esphome
 # pip install -U platformio
 
 # clean unnecessary packages
-# pio system prune --dry-run
+pio system prune --dry-run
 pio system prune
 
 # check current version (after upgrade)
@@ -103,6 +103,7 @@ esphome -s devicename esp32-36 -s updates 30s -s room Garage -s mqtt_location ou
 esphome -s devicename esp32-39 -s updates 1min -s room Attic -s mqtt_location home -s mqtt_room attic run 2_PROD/esp32-39_Attic.yaml
 
 #* Future devices via OTA (with "compile" instead of "run")
+esphome -s devicename esp32-37 -s updates 1min -s room Garden -s mqtt_location outside -s mqtt_room garden -s room2 Gateway -s mqtt_location2 outside -s mqtt_room2 gateway compile 1_UAT/esp32-37_Garden_Gateway.yaml
 
 #* New exploring devices
 esphome -s devicename esp12f-29 -s updates 30s -s room Test -s mqtt_location measures -s mqtt_room test run 0_DEV/esp12f_dev.yaml
