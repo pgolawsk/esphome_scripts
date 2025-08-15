@@ -187,12 +187,12 @@ Author: Pawel Golawski, <pawel.golawski@2com.pl>
 
 - 5x `A` - **APDS9660** - Illuminance, Color(s), Gesture and Motion
 - 9x `B` - **BH1750** - Illuminance
-- `C` - **SCD40** - CO2, Temperature, Humidity
+- 0x `C` - **SCD40** - CO2, Temperature, Humidity
 - 6x 1m `D` - **DS18B20** (Dallas) - Temperature
 - 1x 2m `D` - **DS18B20** (Dallas) - Temperature
 - 2x `E` - **INA226** - DC Current, Power, Voltage (max. 30V DC)
 - 2x `F` - **INA3221** - 3-channel DC Current, Power, Voltage (max. 26V DC)
-- 3x (-1) `G` - **BME680** - Temperature, Humidity, Pressure, Gas Resistance
+- 3x `G` - **BME680** - Temperature, Humidity, Pressure, Gas Resistance
 - 0x `H` - **AHTx21** - Temperature and Humidity
 - 1x `I` - **IR Receiver 38KHz** (Open-Smart, 1pin with signal)
 - 1x `J` - **KY-023** - Direction, Steps from small joystick
@@ -203,7 +203,7 @@ Author: Pawel Golawski, <pawel.golawski@2com.pl>
 - 9x `M` - **INMP441** - I2S microphone
 - 2x `N` - **ENS160** - TVOC and eCO2
 - 6x `O` - **SGP30** - TVOC and eCO2
-- 1x `P` - **BME280** - Temperature, Humidity, Pressure
+- 1x (-1) `P` - **BME280** - Temperature, Humidity, Pressure
 - 2x `R` - **RC522** - RFID tag sensor
 - 11x `S` - **SHTx30** - Temperature and Humidity
 - 2x 1m `S` - **SHTx30** - Temperature and Humidity as waterproof probe
@@ -265,11 +265,11 @@ Author: Pawel Golawski, <pawel.golawski@2com.pl>
 - 1x AC 230V to DC 3.3V board (with Hi-Link module)
 - 7x AC 230V to DC 3.3V Hi-Link module
 - 9x AC 230V to DC 5V Hi-Link module
-- 3x DC 30V to DC 3.3V board
+- 3x (-1) DC 30V to DC 3.3V board
 - 8x DC 30V to DC 5V board
-- 1x (+2) AC 230V to DC 5V (1A) board
+- 3x AC 230V to DC 5V (1A) board
 - 14x single relay SRD-05DC-SL-C (5V)
-- 4x single relay HFD4-3V-S (3.3V)
+- 4x (-1) single relay HFD4-3V-S (3.3V)
 - 7x AVT5785 board (to put 230C to (5V or 3.3V) Hi-Link module)
 - 2x AC 110-240V to DC 12V 1A module in white indoor case
 - 1x AC 110-240V to DC 12V 1.5A module in white indoor case
@@ -293,8 +293,6 @@ Author: Pawel Golawski, <pawel.golawski@2com.pl>
 - 6x  5x5 pins, 20x15 mm (multicolor)
 
 ## Device configurations
-
-To be added
 
 ### Rooms
 
@@ -354,7 +352,7 @@ Components:
 
 ### Outside
 
-#### Shades
+#### Shades, WinterGardenUpp
 
 - PRODUCTION since: June 2024
 - Script `file://./2_PROD/esp32-05_Shades_WinterGardenUpp.yaml`
@@ -375,10 +373,28 @@ Components:
 - 2x Transparent IP44 case (gray)
 - 1x WeAct Studio 2.90 inch ePaper module, 296 x 128 px (91.8 x 37.5 mm)
 
+#### Garden, Gateway
+
+- PRODUCTION since: TBD 2025
+- Script `file://./1_UAT/esp32-39_Garden_Gateway.yaml`
+
+ESP32 board with Temperature, Humidity, Pressure sensors. Powered from TBD.
+
+Components:
+
+- 1x ESP32-WROOM-32, with antenna connector
+- 1x ESP32-WROOM-32 expansion board (to solder)
+- 1x `P` - BME280 - Temperature, Humidity, Pressure
+- 1x single relay HFD4-3V-S (3.3V)
+- 2x reed sensor on GPIO
+- 1x `b/r` - 9032 - Passive Buzzer 9mm diameter x 3.2mm height
+- 1x DC 30V to DC 3.3V board
+- TBD 1x AC 230V to DC 3.3V board (with Hi-Link module)
+
 #### Attic
 
 - PRODUCTION since: Feb 2025
-- Script `file://./1_UAT/esp32-39_Attic.yaml`
+- Script `file://./2_PROD/esp32-39_Attic.yaml`
 
 ESP32 board with Temperature, Humidity, Pressure and Illuminance sensors. Powered from 230V.
 
@@ -429,7 +445,7 @@ Components:
 - 1x `G` - BME680 - Temperature, Humidity, Pressure, Gas Resistance
 - 1x `B` - BH1750 - Illuminance
 - 0x `b/r` - 9032 - Passive Buzzer 9mm diameter x 3.2mm height
-- 0x single relay HFD4-3V-S (3.3V)
+- 1x single relay HFD4-3V-S (3.3V)
 - 1x AC 230V to DC 5V (1A) board
 - 1x white plastic box 90mm x 40mm x 15mm (used inside the transformer case)
 
