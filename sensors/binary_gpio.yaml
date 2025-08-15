@@ -1,0 +1,22 @@
+---
+#* Generic sensor on GPIO
+# Pawelo, 20250815, created based on binary_button.yaml
+
+platform: gpio
+pin:
+  number: ${gpio}
+  mode:
+    input: true
+    pullup: true
+  inverted: ${inverted}
+name: "$room ${sensor} ${ix}"
+id: gpio_${sensor}${ix}
+entity_category: ""
+icon: mdi:${mdi_icon}
+state_topic: $devicename/gpio_${sensor}${ix}
+# on_press:
+#   then:
+#     # - display.page.show_next: ${display_id}
+#     # - display.page.show_previous: ${display_id}
+#     # - component.update: ${display_id}
+#     - button.press: button${ix}
