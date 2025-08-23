@@ -18,6 +18,7 @@
 # Pawelo, 20250220, added venv creation for python3
 # Pawelo, 20250221, added "esphome --version" prior testing cycles
 # Pawelo, 20250615, moved esp12f-10 script to 2_PROD
+# Pawelo, 20250823, added example of downgrade of esphome
 
 #*###########################
 #* Check Python VENV
@@ -43,6 +44,7 @@ pip install --upgrade pip
 pip install -U esphome
 # platformio is updated by esphome to minimum version required anyway
 # pip install -U platformio
+# pip install esphome==2025.7.5
 
 # clean unnecessary packages
 pio system prune --dry-run
