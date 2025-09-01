@@ -45,6 +45,9 @@ esp8266:
   board: ${board} # like: esp12e, esp01_1m, full list here https://registry.platformio.org/platforms/platformio/espressif8266/boards
   restore_from_flash: ${restore_from_flash}
   early_pin_init: false
+  framework:
+    # type: ${framework_type} # arduino only for ESP8266
+    version: recommended # like: dev, latest, recommended, 4.4, ...
 
 preferences:
   flash_write_interval: ${flash_write_interval}
