@@ -14,6 +14,8 @@
 # Pawelo, 20250413, added web_server_basic.yaml to avoid sorting groups (not supported in 2.x)
 # Pawelo, 20250715, added custom_components/prometheus to external_components
 # Pawelo, 20250720, added set of build_flags to avoid issues with cache and heap size (for /metrics prometheus)
+# Pawelo, 20250901, added framework version specification for ESP8266 configuration
+# Pawelo, 20250901, removed bme680 from external_components as PR was included in main branch of ESPHome since ver. 2025.8.0
 
 esphome:
   name: $devicename
@@ -39,7 +41,7 @@ external_components:
   - source:
       type: local
       path: ../custom_components
-    components: [prometheus, bme680]
+    components: [prometheus]
 
 esp8266:
   board: ${board} # like: esp12e, esp01_1m, full list here https://registry.platformio.org/platforms/platformio/espressif8266/boards
