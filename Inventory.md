@@ -262,8 +262,8 @@ Author: Pawel Golawski, <pawel.golawski@2com.pl>
 
 #### Power modules/boards and relays
 
-- 1x AC 230V to DC 3.3V board (with Hi-Link module)
-- 7x AC 230V to DC 3.3V Hi-Link module
+- 1x AC 230V to DC x.xV board (with Hi-Link module to solder)
+- 6x AC 230V to DC 3.3V Hi-Link module
 - 9x AC 230V to DC 5V Hi-Link module
 - 3x (-1) DC 30V to DC 3.3V board
 - 8x DC 30V to DC 5V board
