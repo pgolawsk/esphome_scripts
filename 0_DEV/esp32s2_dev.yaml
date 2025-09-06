@@ -29,6 +29,7 @@
 # Pawelo, 20250208, added BSEC2 i2c_id selection
 # Pawelo, 20250221, added uptime_boot text sensor
 # Pawelo, 20250720, set rmt_symbols to 64 for RGB LED, as it works with 48 block size symbols only
+# Pawelo, 20250906, switched from Arduino to ESP-IDF framework
 
 #! run with this command to override substitutions
 # esphome -s devicename espXX -s updates 1min -s room <Room name> -s mqtt_room <room> run esp32_MMmm_SSss__PP.yaml --device 192.168.x.x
@@ -38,11 +39,11 @@ substitutions:
 #  devices: "Temperature and Humidity via SHTx30 and Illuminance via BH1750"
   devices: "DEV Kit"
   project_name: "pgolawsk.esp_home"
-  version: "20250221"
+  version: "20250906"
 
   # required by ../includes/board_esp32.yaml script
-  framework_type: arduino # "arduino" or "esp-idf"
-  # framework_type: esp-idf # "arduino" or "esp-idf"
+  # framework_type: arduino # "arduino" or "esp-idf"
+  framework_type: esp-idf # "arduino" or "esp-idf"
   framework_version: recommended # or specific version like "latest", "recommended", "4.4.4"
   # framework_version: latest # or specific version like "latest", "recommended", "4.4.4"
   board_variant: "s2" # empty for ESP32, other values to display like c3, c6, s2, s3
