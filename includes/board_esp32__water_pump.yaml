@@ -85,7 +85,7 @@ esp32:
   flash_size: ${flash_size} # One of 2MB, 4MB, 8MB, 16MB or 32MB
 #  restore_from_flash: true
   framework:
-    #! FRAM works only with Arduino framework
+    #! FRAM works with Arduino framework with no deprecation warnings, while ESP-IDF shows deprecation warning till 2026.3.0
     type: ${framework_type} # arduino or esp-idf
     version: ${framework_version} # like: latest, recommended, 4.4, ...
 
