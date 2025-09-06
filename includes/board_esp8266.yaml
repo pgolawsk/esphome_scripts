@@ -16,6 +16,7 @@
 # Pawelo, 20250720, added set of build_flags to avoid issues with cache and heap size (for /metrics prometheus)
 # Pawelo, 20250901, added framework version specification for ESP8266 configuration
 # Pawelo, 20250901, removed bme680 from external_components as PR was included in main branch of ESPHome since ver. 2025.8.0
+# Pawelo, 20250906, build_flags indented properly
 
 esphome:
   name: $devicename
@@ -29,10 +30,10 @@ esphome:
   platformio_options:
     build_flags:
       # for details see https://docs.platformio.org/en/latest/platforms/espressif8266.html
-        - -DVTABLES_IN_FLASH # default PIO config value
+      - -DVTABLES_IN_FLASH # default PIO config value
       # - -DPIO_FRAMEWORK_ARDUINO_MMU_CACHE16_IRAM48
       # - -DPIO_FRAMEWORK_ARDUINO_MMU_CACHE16_IRAM48_SECHEAP_SHARED
-        - -DPIO_FRAMEWORK_ARDUINO_MMU_CACHE16_IRAM32_SECHEAP_NOTSHARED # 16kB for cache, 32kB instructions, 16kB for heap/data
+      - -DPIO_FRAMEWORK_ARDUINO_MMU_CACHE16_IRAM32_SECHEAP_NOTSHARED # 16kB for cache, 32kB instructions, 16kB for heap/data
   # includes:
   #   - ../src/esphome/components/prometheus/prometheus_handler.h
   #   - ../src/esphome/components/prometheus/prometheus_handler.cpp
