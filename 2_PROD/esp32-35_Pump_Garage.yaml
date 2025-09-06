@@ -47,6 +47,7 @@
 # Pawelo, 20250626, adjusted water_flow_min_delta to 0.01 to minimize mqtt messages on every pulse
 # Pawelo, 20250504, adjusted pulses per liter for _garage water sensor from 451 to 443
 # Pawelo, 20250720, adjusted pulses per liter for _garage water sensor from 443 to 450 based on experience
+# Pawelo, 20250906, switched from Arduino to ESP-IDF framework
 
 #! run with this command to override substitutions
 # esphome -s devicename espXX -s updates 1min -s room <Room name> -s mqtt_room <room> run esp32_MMmm_SSss__PP.yaml --device 192.168.x.x
@@ -55,12 +56,13 @@
 substitutions:
   devices: "ePaper Temperature and Humidity via SHTx30, Illuminance via BH1750, Water via YF-B10 G1"
   project_name: "pgolawsk.esp_home"
-  version: "20250720"
+  version: "20250906"
   esphome_min_version: 2025.6.3 # worked on previous versions as well
+  esphome_max_version: 2026.2 #! last version where FRAM component works
 
   # required by ../includes/board_esp32.yaml script
-  framework_type: arduino # "arduino" or "esp-idf"
-  # framework_type: esp-idf # "arduino" or "esp-idf"
+  # framework_type: arduino # "arduino" or "esp-idf"
+  framework_type: esp-idf # "arduino" or "esp-idf"
   framework_version: recommended # or specific version like "latest", "recommended", "4.4.4"
   # framework_version: latest # or specific version like "latest", "recommended", "4.4.4"
   board_variant: "" # empty for ESP32, other values to display like c3, c6, s2, s3

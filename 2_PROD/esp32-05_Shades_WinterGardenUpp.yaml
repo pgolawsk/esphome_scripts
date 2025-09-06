@@ -33,6 +33,7 @@
 # Pawelo, 20250322, lowered lux_dark_treshold from 3.9 to 0.9
 # Pawelo, 20250413, set sensor_south_azimuth & sensor_elevation_direction variables to set LTR390 sensor orientation
 # Pawelo, 20250413, disabled adjustment of UV values based on sun azimuth and declination
+# Pawelo, 20250906, switched from Arduino to ESP-IDF framework
 
 #! run with this command to override substitutions
 # esphome -s devicename espXX -s updates 1min -s room <Room name> -s mqtt_room <room> run esp32_MMmm_SSss__PP.yaml --device 192.168.x.x
@@ -41,11 +42,11 @@
 substitutions:
   devices: "Temperature, Humidity, Pressure, Gas Resistance via BME680/SHT41 and UV, Illuminance via LTR390/BH1750"
   project_name: "pgolawsk.esp_home"
-  version: "20250413"
+  version: "20250906"
 
   # required by includes/board_esp32.yaml script
-  framework_type: arduino # "arduino" or "esp-idf"
-  # framework_type: esp-idf # "arduino" or "esp-idf"
+  # framework_type: arduino # "arduino" or "esp-idf"
+  framework_type: esp-idf # "arduino" or "esp-idf"
   framework_version: recommended # or specific version like "latest", "recommended", "4.4.4"
   # framework_version: latest # or specific version like "latest", "recommended", "4.4.4"
   board_variant: "" # empty for ESP32, other values to display like c3, c6, s2, s3

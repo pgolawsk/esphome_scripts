@@ -14,6 +14,7 @@
 # Pawelo, 20241122, simplified - added regular mqtt (no RTTL support), as it can be override PRIOR this file include
 # Pawelo, 20250130, added framework_version variable
 # Pawelo, 20250413, added web_server_basic.yaml to avoid sorting groups (not supported in 2.x)
+# Pawelo, 20250906, sdkconfig options - added increased max sockets to avoid httpd accept errors
 
 globals:
   - id: global_watertotal_all
@@ -50,6 +51,13 @@ esphome:
   project:
     name: $project_name
     version: $version
+
+  # platformio_options:
+  #   build_flags:
+  #     # increase max sockets to avoid httpd accept errors
+  #     - -DCONFIG_HTTPD_MAX_OPEN_SOCKETS=8
+  #     - -DCONFIG_LWIP_MAX_SOCKETS=16
+
   on_boot:
     then:
       - pulse_meter.set_total_pulses:
@@ -77,9 +85,29 @@ esp32:
   flash_size: ${flash_size} # One of 2MB, 4MB, 8MB, 16MB or 32MB
 #  restore_from_flash: true
   framework:
+    #! FRAM works only with Arduino framework
     type: ${framework_type} # arduino or esp-idf
     version: ${framework_version} # like: latest, recommended, 4.4, ...
 
+    # only for ESP-IDF
+    sdkconfig_options:
+      # CONFIG_ESP32S3_DEFAULT_CPU_FREQ_240: "y"
+      CONFIG_ESP32S3_DATA_CACHE_64KB: "y"
+      CONFIG_ESP32S3_DATA_CACHE_LINE_64B: "y"
+      CONFIG_AUDIO_BOARD_CUSTOM: "y"
+      # some of LWIP options removed those 2 info/errors messages from logs:
+      # [I][esp-idf:000][httpd]: E (39736) httpd: httpd_accept_conn: error in accept (23)
+      # [I][esp-idf:000][httpd]: W (39742) httpd: httpd_server: error accepting new connection
+      CONFIG_LWIP_SO_LINGER: "y"
+      CONFIG_LWIP_MAX_SOCKETS: "16"
+      CONFIG_LWIP_MAX_ACTIVE_TCP: "16"
+      CONFIG_LWIP_TCP_MAXRTX: "12"
+      CONFIG_LWIP_TCP_SYNMAXRTX: "6"
+      CONFIG_LWIP_TCP_RECVMBOX_SIZE: "12"
+      # LWIP_STATS eliminated 104 error
+      # [I][esp-idf:000][httpd]: W (605634) httpd_txrx: httpd_sock_err: error in recv : 104
+      CONFIG_LWIP_TCPIP_RECVMBOX_SIZE: "48"
+      CONFIG_LWIP_STATS: "y"
 
 # preferences:
 #   flash_write_interval: 2min
