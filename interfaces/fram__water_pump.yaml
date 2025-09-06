@@ -14,7 +14,7 @@ fram:
     # address: 0x50
     address: ${address}
     type: FRAM # for MB85RC256V
-    # size: 32KB # for MB85RC256V # no value mewas auto-detect
+    size: 32KB # for MB85RC256V # no value means auto-detect (note: auto-detect do not work since 2025.7.2)
 
 fram_pref:
   id: fram_pref_a
