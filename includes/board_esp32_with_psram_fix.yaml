@@ -34,7 +34,7 @@ esphome:
   # FIX for PSRAM on N16Rx board variants - arduino options are not set by default in ESPHome(?)
   platformio_options:
     board_build.arduino.memory_type: qio_opi
-    board_upload.maximum_ram_size: 524288
+    # board_upload.maximum_ram_size: 524288
     board_build.flash_mode: dio
     # build_flags:
     #   - -DBOARD_HAS_PSRAM
@@ -76,6 +76,9 @@ esp32:
     #     CONFIG_TCP_WND_DEFAULT: "512000"
     #     CONFIG_TCP_RECVMBOX_SIZE: "512"
       # CONFIG_RMT_RECV_FUNC_IN_IRAM: "y" # to avoid "RMT receiver is not in IRAM" warning
+      # copy code for execution to PSRAM - since 2025.8.0
+      CONFIG_SPIRAM_FETCH_INSTRUCTIONS: y
+      CONFIG_SPIRAM_RODATA: y
 
 preferences:
   flash_write_interval: ${flash_write_interval}

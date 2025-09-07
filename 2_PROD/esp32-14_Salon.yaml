@@ -32,6 +32,7 @@
 # Pawelo, 20250619, fixed IR transmitter not enabled in ESP-IDF - by forcing no PSRAM for RMT led strip component
 # Pawelo, 20250619, disabled BSEC2 for BME680, as CO2 and VOC readings are definitely not true
 # Pawelo, 20250720, set rmt_symbols to 48 for RGB LED, as it works with 48 block size symbols only
+# Pawelo, 20250907, set sdkconfig options to copy code to PSRAM to speed up execution
 
 #! run with this command to override substitutions
 # esphome -s devicename espXX -s updates 1min -s room <Room name> -s mqtt_room <room> run esp32_MMmm_SSss__PP.yaml --device 192.168.x.x
@@ -40,8 +41,8 @@
 substitutions:
   devices: "Env monitoring via BME680, Illuminance via BH1750, IR Receiver/Transmitter, RTTTL Buzzer, mic via INMP441, speaker via MAX98357A"
   project_name: "pgolawsk.esp_home"
-  version: "20250720"
-  esphome_min_version: 2025.6.0
+  version: "20250907"
+  esphome_min_version: 2025.8.0 # required to execute from PSRAM instead of RAM
 
   # required by ../includes/board_esp32.yaml script
   # framework_type: arduino # "arduino" or "esp-idf"
