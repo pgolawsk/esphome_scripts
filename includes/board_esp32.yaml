@@ -15,6 +15,7 @@
 # Pawelo, 20250130, added framework_version variable
 # Pawelo, 20250413, added web_server_basic.yaml to avoid sorting groups (not supported in 2.x)
 # Pawelo, 20250906, sdkconfig options - added increased max sockets to avoid httpd accept errors
+# Pawelo, 20250906, moved sdkconfig options to sdkconfig.defaults file
 
 esphome:
   name: $devicename
@@ -41,24 +42,25 @@ esp32:
     version: ${framework_version} # like: latest, recommended, 4.4, ...
 
     # only for ESP-IDF
-    sdkconfig_options:
-      # CONFIG_ESP32S3_DEFAULT_CPU_FREQ_240: "y"
-      CONFIG_ESP32S3_DATA_CACHE_64KB: "y"
-      CONFIG_ESP32S3_DATA_CACHE_LINE_64B: "y"
-      CONFIG_AUDIO_BOARD_CUSTOM: "y"
-      # some of LWIP options removed those 2 info/errors messages from logs:
-      # [I][esp-idf:000][httpd]: E (39736) httpd: httpd_accept_conn: error in accept (23)
-      # [I][esp-idf:000][httpd]: W (39742) httpd: httpd_server: error accepting new connection
-      CONFIG_LWIP_SO_LINGER: "y"
-      CONFIG_LWIP_MAX_SOCKETS: "16"
-      CONFIG_LWIP_MAX_ACTIVE_TCP: "16"
-      CONFIG_LWIP_TCP_MAXRTX: "12"
-      CONFIG_LWIP_TCP_SYNMAXRTX: "6"
-      CONFIG_LWIP_TCP_RECVMBOX_SIZE: "12"
-      # LWIP_STATS eliminated 104 error
-      # [I][esp-idf:000][httpd]: W (605634) httpd_txrx: httpd_sock_err: error in recv : 104
-      CONFIG_LWIP_TCPIP_RECVMBOX_SIZE: "48"
-      CONFIG_LWIP_STATS: "y"
+    #warn: moved to sdkconfig.defaults file
+    # sdkconfig_options:
+    #   # CONFIG_ESP32S3_DEFAULT_CPU_FREQ_240: "y"
+    #   CONFIG_ESP32S3_DATA_CACHE_64KB: "y"
+    #   CONFIG_ESP32S3_DATA_CACHE_LINE_64B: "y"
+    #   CONFIG_AUDIO_BOARD_CUSTOM: "y"
+    #   # some of LWIP options removed those 2 info/errors messages from logs:
+    #   # [I][esp-idf:000][httpd]: E (39736) httpd: httpd_accept_conn: error in accept (23)
+    #   # [I][esp-idf:000][httpd]: W (39742) httpd: httpd_server: error accepting new connection
+    #   CONFIG_LWIP_SO_LINGER: "y"
+    #   CONFIG_LWIP_MAX_SOCKETS: "16"
+    #   CONFIG_LWIP_MAX_ACTIVE_TCP: "16"
+    #   CONFIG_LWIP_TCP_MAXRTX: "12"
+    #   CONFIG_LWIP_TCP_SYNMAXRTX: "6"
+    #   CONFIG_LWIP_TCP_RECVMBOX_SIZE: "12"
+    #   # LWIP_STATS eliminated 104 error
+    #   # [I][esp-idf:000][httpd]: W (605634) httpd_txrx: httpd_sock_err: error in recv : 104
+    #   CONFIG_LWIP_TCPIP_RECVMBOX_SIZE: "48"
+    #   CONFIG_LWIP_STATS: "y"
 
 preferences:
   flash_write_interval: ${flash_write_interval}

@@ -1,0 +1,22 @@
+#* SDKCONFIG ESP-IDF defaults for ESP32
+;! this file is not included automatically - need to point it out platformio_options: >>> board_build.sdkconfig_defaults: sdkconfig.defaults
+
+# Pawelo 20250911, created as extract from of includes/board_esp32.yaml
+
+# CONFIG_ESP32S3_DEFAULT_CPU_FREQ_240: "y"
+CONFIG_ESP32S3_DATA_CACHE_64KB: "y"
+CONFIG_ESP32S3_DATA_CACHE_LINE_64B: "y"
+CONFIG_AUDIO_BOARD_CUSTOM: "y"
+# some of LWIP options removed those 2 info/errors messages from logs:
+# [I][esp-idf:000][httpd]: E (39736) httpd: httpd_accept_conn: error in accept (23)
+# [I][esp-idf:000][httpd]: W (39742) httpd: httpd_server: error accepting new connection
+CONFIG_LWIP_SO_LINGER: "y"
+CONFIG_LWIP_MAX_SOCKETS: "16"
+CONFIG_LWIP_MAX_ACTIVE_TCP: "16"
+CONFIG_LWIP_TCP_MAXRTX: "12"
+CONFIG_LWIP_TCP_SYNMAXRTX: "6"
+CONFIG_LWIP_TCP_RECVMBOX_SIZE: "12"
+# LWIP_STATS eliminated 104 error
+# [I][esp-idf:000][httpd]: W (605634) httpd_txrx: httpd_sock_err: error in recv : 104
+CONFIG_LWIP_TCPIP_RECVMBOX_SIZE: "48"
+CONFIG_LWIP_STATS: "y"
