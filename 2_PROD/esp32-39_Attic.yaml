@@ -37,8 +37,8 @@ substitutions:
   version: "20250911"
 
   # required by ../includes/board_esp32.yaml script
-  # framework_type: arduino # "arduino" or "esp-idf"
-  framework_type: esp-idf # "arduino" or "esp-idf"
+  framework_type: arduino # "arduino" or "esp-idf"
+  # framework_type: esp-idf # "arduino" or "esp-idf"
   framework_version: recommended # or specific version like "latest", "recommended", "4.4.4"
   # framework_version: latest # or specific version like "latest", "recommended", "4.4.4"
   board_variant: "" # empty for ESP32, other values to display like c3, c6, s2, s3
