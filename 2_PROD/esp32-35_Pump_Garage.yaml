@@ -49,6 +49,7 @@
 # Pawelo, 20250720, adjusted pulses per liter for _garage water sensor from 443 to 450 based on experience
 # Pawelo, 20250906, switched from Arduino to ESP-IDF framework
 # Pawelo, 20250911, switched back to Arduino as ESP-IDF was not activated somehow
+# Pawelo, 20250911, add API services to set total water usage for 2 water meters and scan_wifi
 
 #! run with this command to override substitutions
 # esphome -s devicename espXX -s updates 1min -s room <Room name> -s mqtt_room <room> run esp32_MMmm_SSss__PP.yaml --device 192.168.x.x
@@ -57,7 +58,7 @@
 substitutions:
   devices: "ePaper Temperature and Humidity via SHTx30, Illuminance via BH1750, Water via YF-B10 G1"
   project_name: "pgolawsk.esp_home"
-  version: "20250911"
+  version: "20250913"
   esphome_min_version: 2025.6.3 # worked on previous versions as well
   esphome_max_version: 2026.2 #! last version where FRAM component works
 
@@ -107,6 +108,7 @@ substitutions:
 <<: !include { file: ../includes/wifi_extended.yaml, vars: { } } #WARN: override wifi to connect to extended network instead of default
 # <<: !include { file: ../includes/wifi_extended2.yaml, vars: { } } #WARN: override wifi to connect to extended network instead of default
 # <<: !include ../includes/api_services.yaml #WARN: this is to expose services like scan_wifi (results in scan_results sensor)
+<<: !include ../includes/api_services__water.yaml # add services to set total water usage for 2 water meters and scan_wifi
 
 # Include basics of a board
 <<: !include ../includes/board_esp32__water_pump.yaml
