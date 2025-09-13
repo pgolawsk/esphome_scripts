@@ -1,0 +1,10 @@
+---
+#* Scan WiFi networks by native ESPHome API
+# Pawelo, 20250913, crated
+
+service: scan_wifi
+then:
+  - lambda: |-
+      ESP_LOGI("scan_wifi", "HA: Starting WiFi scan... please expect ${devicename} will be disconnected from current WiFi.");
+      ESP_LOGI("scan_wifi", "You will be able to review WiFi scan results after connection to current WiFi is back (please refresh).");
+      wifi::global_wifi_component->start_scanning();
