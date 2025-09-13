@@ -19,7 +19,7 @@ api:
     #         ESP_LOGI("scan_wifi", "HA: Starting WiFi scan... please expect ${devicename} will be disconnected from current WiFi.");
     #         ESP_LOGI("scan_wifi", "You will be able to review WiFi scan results after connection to current WiFi is back (please refresh).");
     #         wifi::global_wifi_component->start_scanning();
-    - !include { file: api_services/scan_wifi.yaml, vars: {} }
+    - !include { file: api_services/scan_wifi.yaml, vars: { } }
     # Services to set total water usage for all and garden meters
     - !include { file: api_services/set_total_water.yaml, vars: { ix: "_all", pulses_per_liter: $pulses_per_liter } }
     - !include { file: api_services/set_total_water.yaml, vars: { ix: "_garden", pulses_per_liter: $pulses_per_liter_garden } }
