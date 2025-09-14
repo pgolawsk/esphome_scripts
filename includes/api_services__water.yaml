@@ -6,6 +6,7 @@
 # Pawelo, 20250126, changed to API key
 # Pawelo, 20250913, added log message when running WiFi scan
 # Pawelo, 20250913, added set_total_water service for 2 water meter
+# Pawelo, 20250914, added add_total_water service for 2 water meter
 
 api:
   reboot_timeout: 0s # 0s will disable reboot if no HA connected
@@ -23,3 +24,5 @@ api:
     # Services to set total water usage for all and garden meters
     - !include { file: api_services/set_total_water.yaml, vars: { ix: "_all", pulses_per_liter: $pulses_per_liter } }
     - !include { file: api_services/set_total_water.yaml, vars: { ix: "_garden", pulses_per_liter: $pulses_per_liter_garden } }
+    - !include { file: api_services/add_total_water.yaml, vars: { ix: "_all", pulses_per_liter: $pulses_per_liter } }
+    - !include { file: api_services/add_total_water.yaml, vars: { ix: "_garden", pulses_per_liter: $pulses_per_liter_garden } }
