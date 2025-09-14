@@ -3,14 +3,14 @@
 # Pawelo, 20230916, created based on https://github.com/esphome/feature-requests/issues/461
 # Pawelo, 20250913, add log message when setting total water usage
 # Pawelo, 20250913, tested in real use
+# Pawelo, 20250913, adjusted log message and variable name
 
 service: set_total_water${ix}
 variables:
-  water_meter_reading: float
+  liters_new_total: float
 then:
   - lambda: |-
-      ESP_LOGI("set_total", "HA: Setting total for \"%s\" to %.1f Liters (with %d pulses, it will be: %d)", "${ix}", water_meter_reading, ${pulses_per_liter}, static_cast<int>(water_meter_reading * ${pulses_per_liter}));
-      wifi::global_wifi_component->start_scanning();
+      ESP_LOGI("set_total", "HA: Setting new total for \"water_total%s\" as %.2f Liters (with %d pulses per L, it will be %d pulses)", "${ix}", liters_new_total, ${pulses_per_liter}, static_cast<int>(liters_new_total * ${pulses_per_liter}));
   - pulse_meter.set_total_pulses:
       id: water_flow${ix}
-      value: !lambda 'return static_cast<int>(water_meter_reading * ${pulses_per_liter});'
+      value: !lambda 'return static_cast<int>(liters_new_total * ${pulses_per_liter});'
