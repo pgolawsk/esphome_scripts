@@ -49,7 +49,9 @@
 # Pawelo, 20250720, adjusted pulses per liter for _garage water sensor from 443 to 450 based on experience
 # Pawelo, 20250906, switched from Arduino to ESP-IDF framework
 # Pawelo, 20250911, switched back to Arduino as ESP-IDF was not activated somehow
-# Pawelo, 20250911, add API services to set total water usage for 2 water meters and scan_wifi
+# Pawelo, 20250913, add API services to set total water usage for 2 water meters and scan_wifi
+# Pawelo, 20250914, add API services to add total water usage for 2 water meters
+# Pawelo, 20250914, in case FRAM is not working, try to read water total values from HA at boot if available and if current total(s) is less than 1000L then add it to current total(s)
 
 #! run with this command to override substitutions
 # esphome -s devicename espXX -s updates 1min -s room <Room name> -s mqtt_room <room> run esp32_MMmm_SSss__PP.yaml --device 192.168.x.x
@@ -58,7 +60,7 @@
 substitutions:
   devices: "ePaper Temperature and Humidity via SHTx30, Illuminance via BH1750, Water via YF-B10 G1"
   project_name: "pgolawsk.esp_home"
-  version: "20250913"
+  version: "20250914"
   esphome_min_version: 2025.6.3 # worked on previous versions as well
   esphome_max_version: 2026.2 #! last version where FRAM component works
 
@@ -202,6 +204,10 @@ sensor:
   # Sun component
   - !include ../sensors/sun_elevation.yaml
   - !include ../sensors/sun_azimuth.yaml
+
+  # Home Assistant sensors
+  - !include { file: ../sensors/HA_sensor.yaml, vars: { sensor_name: "water_total_all", ha_entity_id: "pump_water_total_all" } }
+  - !include { file: ../sensors/HA_sensor.yaml, vars: { sensor_name: "water_total_garden", ha_entity_id: "pump_water_total_garden" } }
 
   # Temperature Dallas sensor
   - !include { file: ../sensors/temp_DS18B20.yaml, vars: { ix: "Floor", wire_id: "ow_a", address: "0x450417c411e3ff28", min_temp: -10, max_temp: 50 } }

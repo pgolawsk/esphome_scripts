@@ -16,6 +16,7 @@
 # Pawelo, 20250413, added web_server_basic.yaml to avoid sorting groups (not supported in 2.x)
 # Pawelo, 20250906, sdkconfig options - added increased max sockets to avoid httpd accept errors
 # Pawelo, 20250906, moved sdkconfig options to sdkconfig.defaults file
+# Pawelo, 20250913, added reading water total values from HA at boot if available and if current total(s) is less than 1000L then add it to current total(s)
 
 globals:
   - id: global_watertotal_all
@@ -60,17 +61,39 @@ esphome:
   #     - -DCONFIG_LWIP_MAX_SOCKETS=16
 
   on_boot:
-    then:
-      - pulse_meter.set_total_pulses:
-          id: water_flow_all
-          value: !lambda 'return (id(global_watertotal_all) * ${pulses_per_liter});'
-      - lambda: id(water_total_all).publish_state(id(global_watertotal_all) * ${pulses_per_liter});
-      - pulse_meter.set_total_pulses:
-          id: water_flow_garden
-          value: !lambda 'return (id(global_watertotal_garden) * ${pulses_per_liter_garden});'
-      - lambda: id(water_total_garden).publish_state(id(global_watertotal_garden) * ${pulses_per_liter_garden});
-      - lambda: id(water_total_home).publish_state(id(global_watertotal_all) * ${pulses_per_liter}  - id(global_watertotal_garden) * ${pulses_per_liter_garden});
-      - lambda: id(water_used_home).publish_state((id(global_watertotal_all) * ${pulses_per_liter}  - id(global_watertotal_garden) * ${pulses_per_liter_garden})/1000);
+    - priority: 600 # This is where most sensors are set up.
+      then:
+        # read totals from globals and push to sensors
+        - pulse_meter.set_total_pulses:
+            id: water_flow_all
+            value: !lambda 'return (id(global_watertotal_all) * ${pulses_per_liter});'
+        - lambda: id(water_total_all).publish_state(id(global_watertotal_all) * ${pulses_per_liter});
+        - pulse_meter.set_total_pulses:
+            id: water_flow_garden
+            value: !lambda 'return (id(global_watertotal_garden) * ${pulses_per_liter_garden});'
+        - lambda: id(water_total_garden).publish_state(id(global_watertotal_garden) * ${pulses_per_liter_garden});
+        - lambda: id(water_total_home).publish_state(id(global_watertotal_all) * ${pulses_per_liter}  - id(global_watertotal_garden) * ${pulses_per_liter_garden});
+        - lambda: id(water_used_home).publish_state((id(global_watertotal_all) * ${pulses_per_liter}  - id(global_watertotal_garden) * ${pulses_per_liter_garden})/1000);
+    - priority: -100 # At this priority, pretty much everything should already be initialized.
+      #! this is in case ESPHome device was reset and lost totals in globals - to avoid losing total water usage
+      then:
+        - lambda: |-
+            if (!isnan(id(ha_water_total_all).state)) {
+              if (id(water_total_all).state < 1000) { // sanity check - only update if total is less than 1000 liters
+                int new_total = (id(water_total_all).state * ${pulses_per_liter}) + (id(ha_water_total_all).state * ${pulses_per_liter});
+                id(water_total_all).publish_state(new_total);
+                ESP_LOGI("main", "on_boot: updated water_total_all from HA: %.2f L + current use: %.2f L", id(ha_water_total_all).state, id(water_total_all).state);
+              }
+            }
+            if (!isnan(id(ha_water_total_garden).state)) {
+              if (id(water_total_garden).state < 1000) { // sanity check - only update if total is less than 1000 liters
+                int new_total = (id(water_total_garden).state * ${pulses_per_liter_garden}) + (id(ha_water_total_garden).state * ${pulses_per_liter_garden});
+                id(water_total_garden).publish_state(new_total);
+                ESP_LOGI("main", "on_boot: updated water_total_garden from HA: %.2f L + current use: %.2f L", id(ha_water_total_garden).state, id(water_total_all).state);
+              }
+            }
+        # - lambda: id(water_total_home).publish_state(id(global_watertotal_all) * ${pulses_per_liter}  - id(global_watertotal_garden) * ${pulses_per_liter_garden});
+        # - lambda: id(water_used_home).publish_state((id(global_watertotal_all) * ${pulses_per_liter}  - id(global_watertotal_garden) * ${pulses_per_liter_garden})/1000);
   # on_shutdown:
   #   then:
   #     - globals.set:
