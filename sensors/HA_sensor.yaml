@@ -1,0 +1,7 @@
+---
+#* Home Assistant sensor
+# Pawelo, 20250913, created
+
+platform: homeassistant
+id: ha_${sensor_name}
+entity_id: sensor.${ha_entity_id}
