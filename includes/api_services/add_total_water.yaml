@@ -1,0 +1,14 @@
+---
+#* Add total Water Usage by native ESPHome API
+#! NOT TESTED YET (awaiting for a moment when I need to set total water usage)
+# Pawelo, 20230914, created
+
+service: add_total_water${ix}
+variables:
+  liters_to_add: float
+then:
+  - lambda: |-
+      ESP_LOGI("add_total", "HA: Adding %.2f Liters to \"water_total%s\" (with %d pulses per L, it will increase by %d pulses)", liters_to_add, "${ix}", ${pulses_per_liter}, static_cast<int>(liters_to_add * ${pulses_per_liter}));
+  - pulse_meter.set_total_pulses:
+      id: water_flow${ix}
+      value: !lambda 'return static_cast<int>(id(water_total${ix}).state * ${pulses_per_liter}) + static_cast<int>(liters_to_add * ${pulses_per_liter});'
