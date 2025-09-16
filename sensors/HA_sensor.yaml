@@ -1,7 +1,10 @@
 ---
 #* Home Assistant sensor
 # Pawelo, 20250913, created
+# Pawelo, 20250915, make it internal
 
 platform: homeassistant
 id: ha_${sensor_name}
+name: "HA: ${sensor_name}"
 entity_id: sensor.${ha_entity_id}
+internal: true
