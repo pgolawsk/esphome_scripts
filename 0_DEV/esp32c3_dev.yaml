@@ -38,6 +38,7 @@
 # Pawelo, 20250506, testing GPIO extender PCF8574
 # Pawelo, 20250720, set rmt_symbols to 48 for RGB LED, as it works with 48 block size symbols only
 # Pawelo, 20250823, switched to ESP-IDF framework as default
+# Pawelo, 20250927, switched back to Arduino framework as ESP-IDF throws multiple info httpd messages
 
 #! run with this command to override substitutions
 # esphome -s devicename espXX -s updates 1min -s room <Room name> -s mqtt_room <room> run esp32_MMmm_SSss__PP.yaml --device 192.168.x.x
@@ -47,11 +48,11 @@ substitutions:
 #  devices: "Temperature and Humidity via SHTx30 and Illuminance via BH1750"
   devices: "DEV Kit"
   project_name: "pgolawsk.esp_home"
-  version: "20250823"
+  version: "20250927"
 
   # required by ../includes/board_esp32.yaml script
-  # framework_type: arduino # "arduino" or "esp-idf"
-  framework_type: esp-idf # "arduino" or "esp-idf"
+  framework_type: arduino # "arduino" or "esp-idf"
+  # framework_type: esp-idf # "arduino" or "esp-idf"
   framework_version: recommended # or specific version like "latest", "recommended", "4.4.4"
   # framework_version: latest # or specific version like "latest", "recommended", "4.4.4"
   board_variant: "c3" # empty for ESP32, other values to display like c3, c6, s2, s3
