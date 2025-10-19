@@ -16,6 +16,7 @@
 # Pawelo, 20250413, added web_server_basic.yaml to avoid sorting groups (not supported in 2.x)
 # Pawelo, 20250906, sdkconfig options - added increased max sockets to avoid httpd accept errors
 # Pawelo, 20250906, moved sdkconfig options to sdkconfig.defaults file
+# Pawelo, 20251019, added commented code for ESP-IDF specific configuration
 
 esphome:
   name: $devicename
@@ -28,6 +29,7 @@ esphome:
     version: $version
 
   # platformio_options:
+  #   board_build.sdkconfig_defaults: sdkconfig.defaults
   #   build_flags:
   #     # increase max sockets to avoid httpd accept errors
   #     - -DCONFIG_HTTPD_MAX_OPEN_SOCKETS=8
@@ -61,6 +63,12 @@ esp32:
     #   # [I][esp-idf:000][httpd]: W (605634) httpd_txrx: httpd_sock_err: error in recv : 104
     #   CONFIG_LWIP_TCPIP_RECVMBOX_SIZE: "48"
     #   CONFIG_LWIP_STATS: "y"
+      # # Let HTTP server evict oldest connections when hitting limits
+      # CONFIG_HTTPD_PURGE_BUF_LEN: "32"
+      # CONFIG_HTTPD_MAX_OPEN_SOCKETS: "7"
+      # # Make closed sockets free resources immediately (so_linger)
+      # CONFIG_HTTPD_SOCK_LISTENER_LINGER: "y"
+      # CONFIG_HTTPD_SOCK_CLIENT_LINGER: "y"
 
 preferences:
   flash_write_interval: ${flash_write_interval}
