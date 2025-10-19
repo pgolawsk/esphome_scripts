@@ -1,0 +1,85 @@
+---
+#* Base configuration for ESP-32-WROOM board
+#! in case different setup needed please include components PRIOR the board itself
+
+# Pawelo 20230101, created as copy of board_esp12f.yaml
+# Pawelo 20230305, added time_sntp amd sun by default
+# Pawelo 20230924, increased flash_write_interval to 15min
+# Pawelo, 20241115, added area and friendly name
+# Pawelo, 20241119, simplified - added regular mqtt (no RTTTL support), as it can be override PRIOR this file include
+# Pawelo, 20241122, removed flash_write_interval to no saves into flash
+# Pawelo, 20241222, make "board" and "board variant" as variables
+# Pawelo, 20241222, added flash_size as variable
+# Pawelo, 20250101, small typo fixes in comments
+# Pawelo, 20250109, added framework_type variable recognition
+# Pawelo, 20250130, added framework_version variable
+# Pawelo, 20250413, added web_server_basic.yaml to avoid sorting groups (not supported in 2.x)
+# Pawelo, 20250906, sdkconfig options - added increased max sockets to avoid httpd accept errors
+# Pawelo, 20250906, moved sdkconfig options to sdkconfig.defaults file
+# Pawelo, 20251019, forked from board_esp32.yaml to have ESP-IDF specific configuration
+
+esphome:
+  name: $devicename
+  friendly_name: $room
+  area: $room
+  comment: $room ESP32${board_variant} with $devices
+#  platform: ESP8266   # OLD notation
+  project:
+    name: $project_name
+    version: $version
+
+  # platformio_options:
+  #   board_build.sdkconfig_defaults: sdkconfig.defaults
+  #   build_flags:
+  #     # increase max sockets to avoid httpd accept errors
+  #     - -DCONFIG_HTTPD_MAX_OPEN_SOCKETS=8
+  #     - -DCONFIG_LWIP_MAX_SOCKETS=16
+
+esp32:
+  board: ${board} # like: esp32dev, esp32cam, esp32-c3-devkitm-1, esp32-c6-devkitm-1, esp32-s3-devkitc-1, esp32-s2-saola-1, full list here https://registry.platformio.org/platforms/platformio/espressif32/boards?version=5.3.0
+  flash_size: ${flash_size} # One of 2MB, 4MB, 8MB, 16MB or 32MB
+#  restore_from_flash: true
+  framework:
+    type: ${framework_type} # arduino or esp-idf
+    version: ${framework_version} # like: latest, recommended, 4.4, ...
+
+    # only for ESP-IDF
+    #warn: moved to sdkconfig.defaults file
+    sdkconfig_options:
+      # CONFIG_ESP32S3_DEFAULT_CPU_FREQ_240: "y"
+      CONFIG_ESP32S3_DATA_CACHE_64KB: "y"
+      CONFIG_ESP32S3_DATA_CACHE_LINE_64B: "y"
+      CONFIG_AUDIO_BOARD_CUSTOM: "y"
+      # some of LWIP options removed those 2 info/errors messages from logs:
+      # [I][esp-idf:000][httpd]: E (39736) httpd: httpd_accept_conn: error in accept (23)
+      # [I][esp-idf:000][httpd]: W (39742) httpd: httpd_server: error accepting new connection
+      CONFIG_LWIP_SO_LINGER: "y"
+      CONFIG_LWIP_MAX_SOCKETS: "16"
+      CONFIG_LWIP_MAX_ACTIVE_TCP: "16"
+      CONFIG_LWIP_TCP_MAXRTX: "12"
+      CONFIG_LWIP_TCP_SYNMAXRTX: "6"
+      CONFIG_LWIP_TCP_RECVMBOX_SIZE: "12"
+      # LWIP_STATS eliminated 104 error
+      # [I][esp-idf:000][httpd]: W (605634) httpd_txrx: httpd_sock_err: error in recv : 104
+      CONFIG_LWIP_TCPIP_RECVMBOX_SIZE: "48"
+      CONFIG_LWIP_STATS: "y"
+      # Let HTTP server evict oldest connections when hitting limits
+      CONFIG_HTTPD_PURGE_BUF_LEN: "32"
+      CONFIG_HTTPD_MAX_OPEN_SOCKETS: "7"
+      # Make closed sockets free resources immediately (so_linger)
+      CONFIG_HTTPD_SOCK_LISTENER_LINGER: "y"
+      CONFIG_HTTPD_SOCK_CLIENT_LINGER: "y"
+
+preferences:
+  flash_write_interval: ${flash_write_interval}
+
+<<: !include wifi.yaml
+<<: !include api.yaml
+<<: !include ota.yaml
+<<: !include logger.yaml
+# <<: !include { file: web_server_basic.yaml, vars: { ota_enabled: false, web_server_version: 1 } } # ver 1 or 2 only
+<<: !include { file: web_server.yaml, vars: { ota_enabled: false, web_server_version: 3 } } # ver 3 only
+<<: !include time_sntp.yaml
+<<: !include sun.yaml
+<<: !include prometheus.yaml
+<<: !include mqtt.yaml
