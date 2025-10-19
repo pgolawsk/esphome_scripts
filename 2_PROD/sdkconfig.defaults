@@ -2,6 +2,7 @@
 ;! this file is not included automatically - need to point it out platformio_options: >>> board_build.sdkconfig_defaults: sdkconfig.defaults
 
 # Pawelo 20250911, created as extract from of includes/board_esp32.yaml
+# Pawelo 20251019, added some HTTPD options to reduce http err 23
 
 # CONFIG_ESP32S3_DEFAULT_CPU_FREQ_240: "y"
 CONFIG_ESP32S3_DATA_CACHE_64KB: "y"
@@ -20,3 +21,9 @@ CONFIG_LWIP_TCP_RECVMBOX_SIZE: "12"
 # [I][esp-idf:000][httpd]: W (605634) httpd_txrx: httpd_sock_err: error in recv : 104
 CONFIG_LWIP_TCPIP_RECVMBOX_SIZE: "48"
 CONFIG_LWIP_STATS: "y"
+# Let HTTP server evict oldest connections when hitting limits
+CONFIG_HTTPD_PURGE_BUF_LEN: "32"
+CONFIG_HTTPD_MAX_OPEN_SOCKETS: "7"
+# Make closed sockets free resources immediately (so_linger)
+CONFIG_HTTPD_SOCK_LISTENER_LINGER: "y"
+CONFIG_HTTPD_SOCK_CLIENT_LINGER: "y"
