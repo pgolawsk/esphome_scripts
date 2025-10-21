@@ -52,6 +52,7 @@
 # Pawelo, 20250913, add API services to set total water usage for 2 water meters and scan_wifi
 # Pawelo, 20250914, add API services to add total water usage for 2 water meters
 # Pawelo, 20250914, in case FRAM is not working, try to read water total values from HA at boot if available and if current total(s) is less than 1000L then add it to current total(s)
+# Pawelo, 20251019, adjusted epaper display external_component to use pgolawsk/esphome@pr-6226-tweaks to have proper 2.9in3c support
 
 #! run with this command to override substitutions
 # esphome -s devicename espXX -s updates 1min -s room <Room name> -s mqtt_room <room> run esp32_MMmm_SSss__PP.yaml --device 192.168.x.x
@@ -60,7 +61,7 @@
 substitutions:
   devices: "ePaper Temperature and Humidity via SHTx30, Illuminance via BH1750, Water via YF-B10 G1"
   project_name: "pgolawsk.esp_home"
-  version: "20250914"
+  version: "20251019"
   esphome_min_version: 2025.6.3 # worked on previous versions as well
   esphome_max_version: 2026.2 #! last version where FRAM component works
 
@@ -335,11 +336,13 @@ external_components:
   - source: github://pr#4880
     components: [ fram, fram_pref ]
   - source: github://nrandell/dallasng
-#  - source: github://pr#4579
-#    components: [waveshare_epaper]
-  - source: github://pr#6226
+  # - source: github://pr#4579
+  #   components: [waveshare_epaper]
+  # - source: github://pr#6226
+  #   components: [waveshare_epaper]
+  - source: github://pgolawsk/esphome@pr-6226-tweaks
     components: [waveshare_epaper]
-
+    refresh: 5min
 spi:
   id: spi_v
   clk_pin: GPIO18 # SCL
