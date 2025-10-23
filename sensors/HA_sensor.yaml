@@ -3,10 +3,12 @@
 # Pawelo, 20250913, created
 # Pawelo, 20250915, make it internal add name
 # Pawelo, 20250916, add icon
+# Pawelo, 20251023, add accuracy_decimals
 
 platform: homeassistant
 id: ha_${sensor_name}
 name: "HA: ${sensor_name}"
 icon: mdi:home-assistant
+accuracy_decimals: ${accuracy_decimals}
 entity_id: sensor.${ha_entity_id}
 internal: true
