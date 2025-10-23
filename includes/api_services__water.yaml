@@ -7,6 +7,7 @@
 # Pawelo, 20250913, added log message when running WiFi scan
 # Pawelo, 20250913, added set_total_water service for 2 water meter
 # Pawelo, 20250914, added add_total_water service for 2 water meter
+# Pawelo, 20251023, added on_client_connected to update totals on HA connect
 
 api:
   reboot_timeout: 0s # 0s will disable reboot if no HA connected
@@ -26,3 +27,22 @@ api:
     - !include { file: api_services/set_total_water.yaml, vars: { ix: "_garden", pulses_per_liter: $pulses_per_liter_garden } }
     - !include { file: api_services/add_total_water.yaml, vars: { ix: "_all", pulses_per_liter: $pulses_per_liter } }
     - !include { file: api_services/add_total_water.yaml, vars: { ix: "_garden", pulses_per_liter: $pulses_per_liter_garden } }
+  on_client_connected:
+    - lambda: |-
+        // Read water total values from HA and if current total(s) is less than 1000L then add it to current total(s)
+        if (!isnan(id(ha_water_total_all).state)) {
+          if (id(water_total_all).state < 1000) { // sanity check - only update if total is less than 1000 liters
+            int new_total = (id(water_total_all).state * ${pulses_per_liter}) + (id(ha_water_total_all).state * ${pulses_per_liter});
+            id(water_total_all).publish_state(new_total);
+            ESP_LOGI("api", "on_client_connected: updated water_total_all from HA: %.2f L + current use: %.2f L", id(ha_water_total_all).state, id(water_total_all).state);
+          }
+        }
+        if (!isnan(id(ha_water_total_garden).state)) {
+          if (id(water_total_garden).state < 1000) { // sanity check - only update if total is less than 1000 liters
+            int new_total = (id(water_total_garden).state * ${pulses_per_liter_garden}) + (id(ha_water_total_garden).state * ${pulses_per_liter_garden});
+            id(water_total_garden).publish_state(new_total);
+            ESP_LOGI("api", "on_client_connected: updated water_total_garden from HA: %.2f L + current use: %.2f L", id(ha_water_total_garden).state, id(water_total_all).state);
+          }
+        }
+    # - lambda: id(water_total_home).publish_state(id(global_watertotal_all) * ${pulses_per_liter}  - id(global_watertotal_garden) * ${pulses_per_liter_garden});
+    # - lambda: id(water_used_home).publish_state((id(global_watertotal_all) * ${pulses_per_liter}  - id(global_watertotal_garden) * ${pulses_per_liter_garden})/1000);
