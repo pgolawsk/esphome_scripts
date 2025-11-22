@@ -215,7 +215,7 @@ Author: Pawel Golawski, <pawel.golawski@2com.pl>
 
 ### Switches/Actuators inventory
 
-- 2x `a` - **AVT5713** - Double Light Switch Board (mounted)
+- 1x `a` - **AVT5713** - Double Light Switch Board (mounted)
 - 7x `a` - **AVT5713** - Double Light Switch Board (not mounted - bare board)
 - 5x `x` - ***ESP01S Single Relay** Board (generic from Aliexpress)
 - 0x `b` - **9032A/9025A** - Active Buzzer 9mm diameter x 3.2/2.5mm height
@@ -327,7 +327,19 @@ Components:
 
 #### Office
 
-TBD
+- PRODUCTION since: 2025 June
+- Script `file:/.//2_PROD/esp12f-10_Office.yaml`
+
+ESP12F board with Temperature, Humidity, CO2 via SCD40, TVOC via SGP30, Illuminance via BH1750 and Light Switch via AVT5713. Powered from AVT5713 itself.
+
+Components:
+
+- 1x ESP12F
+- 1x `C` - **SCD40** - CO2, Temperature, Humidity
+- 1x `B` - **BH1750** - Illuminance
+- 1x `O` - **SGP30** - TVOC and eCO2
+- 1x `a` - **AVT5713** - Double Light Switch Board (mounted)
+- 1x `r` - **9032/9025** - Passive Buzzer 9mm diameter x 3.2/2.5mm height
 
 #### Salon
 
@@ -389,7 +401,6 @@ Components:
 - 2x reed sensor on GPIO
 - 1x `b/r` - 9032 - Passive Buzzer 9mm diameter x 3.2mm height
 - 1x DC 30V to DC 3.3V board
-- TBD 1x AC 230V to DC 3.3V board (with Hi-Link module)
 
 #### Attic
 
