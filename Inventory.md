@@ -74,7 +74,7 @@ Author: Pawel Golawski, <pawel.golawski@2com.pl>
   > - GPIO15 is connected to blue LED.
   > - GPIO8 is connected to RGB LED.
   > - Green LED (BAT) is not connected to any of GPIO, it shows when battery is charging. Fast blinks where battery is disconnected.
-
+  >
   > WARNING: This board work only with esp-idf framework (no arduino) and throws some frequent warnings, like:
   > - `[W][web_server_idf:070][httpd]: Only application/x-www-form-urlencoded supported for POST request`
   > - `[I][esp-idf:000][httpd]: W (59638) httpd_txrx: httpd_sock_err: error in recv : 104`
@@ -203,7 +203,7 @@ Author: Pawel Golawski, <pawel.golawski@2com.pl>
 - 9x `M` - **INMP441** - I2S microphone
 - 2x `N` - **ENS160** - TVOC and eCO2
 - 6x `O` - **SGP30** - TVOC and eCO2
-- 1x (-1) `P` - **BME280** - Temperature, Humidity, Pressure
+- 0x `P` - **BME280** - Temperature, Humidity, Pressure
 - 2x `R` - **RC522** - RFID tag sensor
 - 11x `S` - **SHTx30** - Temperature and Humidity
 - 2x 1m `S` - **SHTx30** - Temperature and Humidity as waterproof probe
@@ -212,6 +212,7 @@ Author: Pawel Golawski, <pawel.golawski@2com.pl>
 - 2x `V` - **VL53L0x** - Distance (laser)
 - 4x `W` - **HC-SR04** - Distance (acoustic)
 - 1x `Y` - **YF-B10 G1** - Water Pulse sensor
+- 0x `Z` - reed sensor on GPIO
 
 ### Switches/Actuators inventory
 
@@ -274,7 +275,7 @@ Author: Pawel Golawski, <pawel.golawski@2com.pl>
 - 2x AC 110-240V to DC 12V 1A module in white indoor case
 - 1x AC 110-240V to DC 12V 1.5A module in white indoor case
 - 1x AC 110-240V to DC 12V 2A module in black outdoor case
-- 4x XL74610 ideal diode (1.5-30V, 15-30A max) - to protect against reversed polarity
+- 3x XL74610 ideal diode (1.5-30V, 15-30A max) - to protect against reversed polarity
 
 #### Cases (width x hight x thickness)
 
@@ -397,10 +398,11 @@ Components:
 - 1x ESP32-WROOM-32, with antenna connector
 - 1x ESP32-WROOM-32 expansion board (to solder)
 - 1x `P` - BME280 - Temperature, Humidity, Pressure
+- 2x `Z` - reed sensor on GPIO
 - 1x single relay HFD4-3V-S (3.3V)
-- 2x reed sensor on GPIO
 - 1x `b/r` - 9032 - Passive Buzzer 9mm diameter x 3.2mm height
 - 1x DC 30V to DC 3.3V board
+- 1x XL74610 ideal diode (1.5-30V, 15-30A max) - to protect against reversed polarity
 
 #### Attic
 
