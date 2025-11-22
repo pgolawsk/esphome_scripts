@@ -1,8 +1,10 @@
 ---
 #* Enable WiFi Main network, including fallback hotspot
 # Pawelo, 20230903, created as a copy of wifi.yaml
+# Pawelo, 20251122, added min_auth_mode: WPA2 to avoid connecting to insecure networks
 
 wifi:
+  min_auth_mode: WPA2
   networks:
     - ssid: !secret wifi_main_ssid
       password: !secret wifi_main_password
