@@ -28,6 +28,7 @@
 # Pawelo, 20250808, set temp offset for SCD40 to -6.5C and humidity offset to 7.0% as compare between Office and Entrance sensors
 # Pawelo, 20251122, enabled Factory Reset button, to clean up NVS if needed
 # Pawelo, 20251122, enabled debug component and sensors, as prometheus /metrics endpoint is working fine now
+# Pawelo, 20251122, enabled eCO2 and TVOC sensor back as prometheus /metrics endpoint is working fine now
 
 #! run with this command to override substitutions
 # esphome -s devicename espXX -s updates 1min -s room <Room name> -s mqtt_room <room> run esp12f_MMmm_SSss__PP.yaml --device 192.168.x.x
@@ -115,7 +116,7 @@ sensor:
 
   # TVOC and eCO2 sensor
   # - !include { file: ../sensors/tvoc_SGP30.yaml, vars: { ix: "", bus_id: "bus_a", address: "0x58" } }
-  # - !include { file: ../sensors/tvoc_eco2_SGP30.yaml, vars: { ix: "", bus_id: "bus_a", address: "0x58" } }
+  - !include { file: ../sensors/tvoc_eco2_SGP30.yaml, vars: { ix: "", bus_id: "bus_a", address: "0x58" } }
 
 output:
   # LED
