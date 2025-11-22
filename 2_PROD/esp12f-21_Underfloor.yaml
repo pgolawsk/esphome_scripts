@@ -32,6 +32,8 @@
 # Pawelo, 20250713, switch LED from light to switch type to shorten /metrics output and avoid prometheus /metrics issue
 # Pawelo, 20250720, switch LED back to light type (resolved by custom components/prometheus)
 # Pawelo, 20250720, disable UART logs as not needed to save DRAM
+# Pawelo, 20251122, enabled Factory Reset button, to clean up NVS if needed
+# Pawelo, 20251122, enabled debug component and sensors, as prometheus /metrics endpoint is working fine now
 
 #! run with this command to override substitutions
 # esphome -s devicename espXX -s updates 1min -s room <Room name> -s mqtt_room <room> run esp12f_SSss_MMmm__PP.yaml --device 192.168.x.x
@@ -39,7 +41,7 @@
 substitutions:
   devices: "Temperatures via DS18B20, Temperature and Humidity via SHTx30"
   project_name: "pgolawsk.esp_home"
-  version: "20250720"
+  version: "20251122"
 
   # required by ../includes/board_esp8266.yaml script
   board_variant: "12F" # determine variant like 12F, 07s, 01m, ...
@@ -76,7 +78,7 @@ substitutions:
 # <<: !include ../includes/board_esp12f_with_sun.yaml
 
 # Include interfaces needed
-# <<: !include { file: ../interfaces/debug.yaml, vars: { update_interval: "15s" } }
+<<: !include { file: ../interfaces/debug.yaml, vars: { update_interval: "15s" } }
 <<: !include { file: ../interfaces/rtttl.yaml, vars: { ix: "" } }
 <<: !include { file: ../interfaces/i2c.yaml, vars: { bus_id: "bus_a", sda: "GPIO4", scl: "GPIO5" } }
 <<: !include { file: ../interfaces/one_wire.yaml, vars: { wire_id: "ow_a", gpio: "GPIO14" } }
@@ -97,7 +99,7 @@ text_sensor:
   # - !include ../sensors/text_firmware.yaml
 
   # DEBUG component
-  # - !include ../sensors/text_debug.yaml
+  - !include ../sensors/text_debug.yaml
 
 binary_sensor:
   # HA Connected
@@ -110,7 +112,7 @@ sensor:
   # - !include ../sensors/wifi_strength.yaml
 
   # DEBUG component
-  # - !include ../sensors/debug.yaml
+  - !include ../sensors/debug.yaml
 
   # Temperature Dallas sensor
   - !include { file: ../sensors/temp_DS18B20.yaml, vars: { ix: "Dwall", wire_id: "ow_a", address: "0xc00000000c511a28", min_temp: -10, max_temp: 50 } } # 1m cable
@@ -150,7 +152,7 @@ button:
   # Restart, reset and shutdown buttons
   - !include { file: ../buttons/restart_button.yaml }
   - !include { file: ../buttons/safe_mode_restart_button.yaml }
-  # - !include { file: ../buttons/factory_reset_button.yaml }
+  - !include { file: ../buttons/factory_reset_button.yaml }
   # - !include { file: ../buttons/shutdown_button.yaml }
 
   # Scan Wifi button (require wifi_info text sensor to be present to display results)
