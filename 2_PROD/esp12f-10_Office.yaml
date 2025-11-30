@@ -113,7 +113,7 @@ sensor:
   - !include { file: ../sensors/lux_BH1750.yaml, vars: { ix: "", bus_id: "bus_a", address: "0x23" } }
 
   # CO2, Temperature and Humidity sensor
-  - !include { file: ../sensors/temp_hum_co2_SCD40.yaml, vars: { ix: "", bus_id: "bus_a", address: "0x62", temp_offset: -6.5, hum_offset: 7.0 } }
+  - !include { file: ../sensors/temp_hum_co2_SCD40.yaml, vars: { ix: "", bus_id: "bus_a", address: "0x62", temp_offset: -11.5, hum_offset: 17.0 } }
 
   # TVOC and eCO2 sensor
   # - !include { file: ../sensors/tvoc_SGP30.yaml, vars: { ix: "", bus_id: "bus_a", address: "0x58" } }
