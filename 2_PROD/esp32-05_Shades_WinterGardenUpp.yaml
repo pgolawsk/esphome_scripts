@@ -247,6 +247,7 @@ external_components:
 #     components: [waveshare_epaper]
   # - source: github://pr#6226
   #   components: [waveshare_epaper]
+  # - source: github://666djb/WeAct-Studio_ePaper
   - source: github://pgolawsk/esphome@pr-6226-tweaks
     components: [waveshare_epaper]
     refresh: 5min
@@ -269,6 +270,9 @@ display:
     # model: 2.90inV2 #! pr#4579, not working properly
     model: 2.90in3c # pr#6226, working but slow refresh (or from custom_components, https://github.com/RaceNJason/WeAct-Studio_ePaper.git)
     # model: 2.90ina #! pr#6226, not working
+
+    # model: wa2.90in
+    # model: wa2.90in3c
     id: weact_display
     cs_pin: GPIO25
     busy_pin: GPIO27
