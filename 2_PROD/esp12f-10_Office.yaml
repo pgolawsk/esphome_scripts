@@ -29,6 +29,7 @@
 # Pawelo, 20251122, enabled Factory Reset button, to clean up NVS if needed
 # Pawelo, 20251122, enabled debug component and sensors, as prometheus /metrics endpoint is working fine now
 # Pawelo, 20251122, enabled eCO2 and TVOC sensor back as prometheus /metrics endpoint is working fine now
+# Pawelo, 20251130, disabled TVOC sensor as it increases temp by ~ 5 Celsius degrees
 
 #! run with this command to override substitutions
 # esphome -s devicename espXX -s updates 1min -s room <Room name> -s mqtt_room <room> run esp12f_MMmm_SSss__PP.yaml --device 192.168.x.x
@@ -36,7 +37,7 @@
 substitutions:
   devices: "Temperature, Humidity, CO2 via SCD40, TVOC via SGP30, Illuminance via BH1750 and Light Switch via AVT5713"
   project_name: "pgolawsk.esp_home"
-  version: "20251122"
+  version: "20251130"
 
   # required by ../includes/board_esp8266.yaml script
   board_variant: "12F" # determine variant like 12F, 07s, 01m, ...
@@ -116,7 +117,7 @@ sensor:
 
   # TVOC and eCO2 sensor
   # - !include { file: ../sensors/tvoc_SGP30.yaml, vars: { ix: "", bus_id: "bus_a", address: "0x58" } }
-  - !include { file: ../sensors/tvoc_eco2_SGP30.yaml, vars: { ix: "", bus_id: "bus_a", address: "0x58" } }
+  # - !include { file: ../sensors/tvoc_eco2_SGP30.yaml, vars: { ix: "", bus_id: "bus_a", address: "0x58" } }
 
 output:
   # LED
