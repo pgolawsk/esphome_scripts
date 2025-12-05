@@ -1,7 +1,7 @@
 ---
 #* Select for Display Refresh Interval
 # Pawelo, 20231010, created based on https://esphome.io/components/select/index.html
-# Pawelo, 20231012, added seting global variable and refresh display on select change
+# Pawelo, 20231012, added setting global variable and refresh display on select change
 # Pawelo, 20240628, eliminated 5s and 15s as too short - due to display refresh min should be >30sec
 # Pawelo, 20240907, set entity_category and icon for sensor values
 
