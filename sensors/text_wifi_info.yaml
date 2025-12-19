@@ -2,7 +2,8 @@
 #* WiFi information virtual sensor configuration
 # Pawelo, 20221119, created based on https://github.com/AlexMekkering/esphome-config/blob/master/common/text_sensors.yaml
 # Pawelo, 20221222, added $devicename to friendly names of those sensors
-# Pawelo, 20241116, added mac_adress and scan_results, dns_address
+# Pawelo, 20241116, added mac_address and scan_results, dns_address
+# Pawelo, 20251218, added power_save_mode - new in ESPHome 2025.12.0
 
 platform: wifi_info
 ip_address:
@@ -28,4 +29,8 @@ scan_results:
 dns_address:
   name: $room $devicename DNS Servers
   icon: mdi:dns-outline
+  internal: true
+power_save_mode:
+  name: $room $devicename WiFi Power Save Mode
+  icon: mdi:eye-outline
   internal: true
