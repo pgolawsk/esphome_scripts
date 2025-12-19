@@ -17,6 +17,7 @@
 # Pawelo, 20250901, added framework version specification for ESP8266 configuration
 # Pawelo, 20250901, removed bme680 from external_components as PR was included in main branch of ESPHome since ver. 2025.8.0
 # Pawelo, 20250906, build_flags indented properly
+# Pawelo, 20251216, PR #9530 merged, removed local custom_components prometheus
 
 esphome:
   name: $devicename
@@ -43,10 +44,10 @@ esphome:
 #       type: local
 #       path: ../custom_components
 #     components: [prometheus]
-external_components:
-  - source: github://pr#9530
-    components: [prometheus]
-    refresh: 1h
+# external_components:
+#   - source: github://pr#9530
+#     components: [prometheus]
+#     refresh: 1h
 
 esp8266:
   board: ${board} # like: esp12e, esp01_1m, full list here https://registry.platformio.org/platforms/platformio/espressif8266/boards
