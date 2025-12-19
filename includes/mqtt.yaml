@@ -6,6 +6,7 @@
 # Pawelo, 20230130, moved on_message topics to separate include files
 #! Pawelo, 20230410, prometheus randomly not working while client_id is set
 # Pawelo, 20250126, set discovery to false to avoid duplicated entries on HA
+# Pawelo, 20251218, added keepalive to 60s to avoid disconnections on some brokers
 
 mqtt:
   id: mqtt_client
@@ -13,6 +14,8 @@ mqtt:
   port: !secret mqtt_port
   username: !secret mqtt_user
   password: !secret mqtt_password
+  keepalive: 60s
+  reboot_timeout: 0s
   # skip_cert_cn_check: true
   # client_id: $devicename
   discovery: false
