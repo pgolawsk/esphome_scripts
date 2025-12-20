@@ -3,9 +3,10 @@
 # Pawelo, 20221119, created based on https://github.com/AlexMekkering/esphome-config/blob/master/common/text_sensors.yaml
 # Pawelo, 20221222, added $devicename to friendly names of those sensors
 # Pawelo, 20240907, changed icon for sensor
+# Pawelo, 20251220, changed to not internal to show in HA/Prometheus
 
 platform: version
 name: $room $devicename ESPHome Version
 icon: mdi:information-outline
-internal: true
+internal: false
 
