@@ -30,6 +30,7 @@
 # Pawelo, 20250720, switch LED back to light type (resolved by custom components/prometheus)
 # Pawelo, 20251122, enabled Factory Reset button, to clean up NVS if needed
 # Pawelo, 20251122, enabled debug component and sensors, as prometheus /metrics endpoint is working fine now
+# Pawelo, 20251123, adjusted pressure offset to 9.5 hPa to align with reference station
 
 #! run with this command to override substitutions
 # esphome -s devicename espXX -s updates 1min -s room <Room name> -s mqtt_room <room> run esp12f_MMmm_SSss__PP.yaml --device 192.168.x.x
@@ -37,7 +38,7 @@
 substitutions:
   devices: "Temperature, Humidity, Pressure, Gas Resistance via BME680, Illuminance via BH1750 and Gate/Doorbell via GPIO"
   project_name: "pgolawsk.esp_home"
-  version: "20251122"
+  version: "20251223"
 
   # required by ../includes/board_esp8266.yaml script
   board_variant: "12F" # determine variant like 12F, 07s, 01m, ...
@@ -126,7 +127,7 @@ sensor:
   # - !include ../sensors/sun_azimuth.yaml
 
   # Temperature and Humidity and Pressure sensor
-  - !include { file: ../sensors/temp_hum_press_gas_BME680.yaml, vars: { ix: "", bus_id: "bus_a", address: "0x77", temp_offset: -2.4, hum_offset: 4.4, pressure_offset: 7.0 } }
+  - !include { file: ../sensors/temp_hum_press_gas_BME680.yaml, vars: { ix: "", bus_id: "bus_a", address: "0x77", temp_offset: -2.4, hum_offset: 4.4, pressure_offset: 9.5 } }
   # - !include { file: ../sensors/temp_hum_press_gas_aqi_co2_voc_bme680.yaml, vars: { ix: "", bus_id: "bus_a", address: "0x77", temp_offset: -2.4, hum_offset: 4.4, pressure_offset: 7.0 } }  #!not working (bricked device)
   # Illuminance sensor
   - !include { file: ../sensors/lux_BH1750.yaml, vars: { ix: "", bus_id: "bus_a", address: "0x23" } }

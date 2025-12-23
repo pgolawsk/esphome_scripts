@@ -35,6 +35,7 @@
 # Pawelo, 20250907, set sdkconfig options to copy code to PSRAM to speed up execution
 # Pawelo, 20251206, connecting to specific BSSID via wifi__bssid
 # Pawelo, 20251220, removed fixed BSSID
+# Pawelo, 20251123, adjusted pressure offset to 9.5 hPa to align with reference station
 
 #! run with this command to override substitutions
 # esphome -s devicename espXX -s updates 1min -s room <Room name> -s mqtt_room <room> run esp32_MMmm_SSss__PP.yaml --device 192.168.x.x
@@ -43,7 +44,7 @@
 substitutions:
   devices: "Env monitoring via BME680, Illuminance via BH1750, IR Receiver/Transmitter, RTTTL Buzzer, mic via INMP441, speaker via MAX98357A"
   project_name: "pgolawsk.esp_home"
-  version: "20251220"
+  version: "20251223"
   esphome_min_version: 2025.8.0 # required to execute from PSRAM instead of RAM
 
   # required by ../includes/board_esp32.yaml script
@@ -186,7 +187,7 @@ sensor:
   # - !include { file: ../sensors/temp_hum_AHT2x.yaml, vars: { ix: "", bus_id: "bus_a", address: "0x38" } }
 
   # Temperature, Humidity, Pressure and Gas Resistance sensor
-  - !include { file: ../sensors/temp_hum_press_gas_BME680.yaml, vars: { ix: "", bus_id: "bus_a", address: "0x77", temp_offset: 0.0, hum_offset: 0.0, pressure_offset: 0.0 } }
+  - !include { file: ../sensors/temp_hum_press_gas_BME680.yaml, vars: { ix: "", bus_id: "bus_a", address: "0x77", temp_offset: 0.0, hum_offset: 0.0, pressure_offset: 9.5 } }
   # - !include { file: ../sensors/temp_hum_press_gas_aqi_co2_voc_bme680.yaml, vars: { platform: "bme68x_bsec2", ix: "", bus_id: "bus_a", address: "0x77", temp_offset: 0, hum_offset: 0, pressure_offset: 0 } }
 
   # Illuminance sensor
