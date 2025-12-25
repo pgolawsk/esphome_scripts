@@ -19,6 +19,7 @@
 # Pawelo, 20250221, added "esphome --version" prior testing cycles
 # Pawelo, 20250615, moved esp12f-10 script to 2_PROD
 # Pawelo, 20250823, added example of downgrade of esphome
+# Pawelo, 20251225, reference to aliases for PROD devices from .dir_aliases file
 
 #*###########################
 #* Check Python VENV
@@ -93,6 +94,7 @@ pip install --upgrade "ltchiptool>=3.0.1,<4.0"
 
 #*###########################
 #* Upgrade PROD ESP devices via OTA
+#! use aliases instead of below PROD, example esp10, esp05, ...
 esphome -s devicename esp32-05 -s updates 1min -s room Shades -s mqtt_location outside -s mqtt_room shades -s room2 WinterGardenUpp -s mqtt_location2 home -s mqtt_room2 winter_garden_upp run 2_PROD/esp32-05_Shades_WinterGardenUpp.yaml
 esphome -s devicename esp12f-10 -s updates 30s -s room Office -s mqtt_room office run 2_PROD/esp12f-10_Office.yaml
 esphome -s devicename esp12f-11 -s updates 30s -s room Entrance -s mqtt_room entrance -s room2 Entry -s mqtt_location2 outside -s mqtt_room2 entry run 2_PROD/esp12f-11_Entrance_Entry.yaml
