@@ -1,0 +1,13 @@
+# ESPHome project aliases - loaded automatically by zsh (.zshrc.local)
+# Pawelo, 20251225, created for directory-scoped aliases for ESPHome projects
+
+alias esp05='esphome -s devicename esp32-05 -s updates 1min -s room Shades -s mqtt_location outside -s mqtt_room shades -s room2 WinterGardenUpp -s mqtt_location2 home -s mqtt_room2 winter_garden_upp run 2_PROD/esp32-05_Shades_WinterGardenUpp.yaml --device esp32-05.lan'
+alias esp10='esphome -s devicename esp12f-10 -s updates 30s -s room Office -s mqtt_room office run 2_PROD/esp12f-10_Office.yaml --device esp12f-10.lan'
+alias esp11='esphome -s devicename esp12f-11 -s updates 30s -s room Entrance -s mqtt_room entrance -s room2 Entry -s mqtt_location2 outside -s mqtt_room2 entry run 2_PROD/esp12f-11_Entrance_Entry.yaml --device esp12f-11.lan'
+alias esp14='esphome -s devicename esp32-14 -s updates 30s -s room Salon -s mqtt_room salon run 2_PROD/esp32-14_Salon.yaml --device esp32-14.lan'
+alias esp15='esphome -s devicename esp12f-15 -s updates 30s -s room Upstairs -s mqtt_room upstairs run 2_PROD/esp12f-15_Upstairs.yaml --device esp12f-15.lan'
+alias esp21='esphome -s devicename esp12f-21 -s updates 30s -s room Underfloor -s mqtt_location measures -s mqtt_room underfloor run 2_PROD/esp12f-21_Underfloor.yaml --device esp12f-21.lan'
+alias esp25='esphome -s devicename esp12f-25 -s updates 30s -s room AquariumW -s mqtt_location measures -s mqtt_room aquarium_window run 2_PROD/esp12f-25_AquariumWindow.yaml --device esp12f-25.lan'
+alias esp35='esphome -s devicename esp32-35 -s updates 1min -s room Pump -s mqtt_location measures -s mqtt_room pump -s room2 Garage -s mqtt_location2 outside -s mqtt_room2 garage run 2_PROD/esp32-35_Pump_Garage.yaml --device esp32-35.lan'
+alias esp36='esphome -s devicename esp32-36 -s updates 30s -s room Garage -s mqtt_location outside -s mqtt_room garage -s room2 Gate -s mqtt_location2 outside -s mqtt_room2 gate run 2_PROD/esp32-36_Garage_Gate.yaml --device esp32-36.lan'
+alias esp39='esphome -s devicename esp32-39 -s updates 1min -s room Attic -s mqtt_location home -s mqtt_room attic run 2_PROD/esp32-39_Attic.yaml --device esp32-39.lan'
