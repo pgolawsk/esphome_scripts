@@ -20,6 +20,7 @@
 # Pawelo, 20250615, moved esp12f-10 script to 2_PROD
 # Pawelo, 20250823, added example of downgrade of esphome
 # Pawelo, 20251225, reference to aliases for PROD devices from .dir_aliases file
+# Pawelo, 20251230, use check_esphome_version.sh to verify if there is new ESPHome version
 
 #*###########################
 #* Check Python VENV
@@ -43,6 +44,8 @@ esphome version
 
 pip install --upgrade pip
 pip install -U esphome
+./check_esphome_version.sh
+
 # platformio is updated by esphome to minimum version required anyway
 # pip install -U platformio
 # pip install esphome==2025.7.5
