@@ -27,6 +27,7 @@
 # Pawelo, 20250906, switched from Arduino to ESP-IDF framework
 # Pawelo, 20250911, switched back to Arduino as /metrics endpoint stopped working with ESP-IDF
 # Pawelo, 20251019, switched to ESP-IDF to see if http err 23 is addressed
+# Pawelo, 20251231, set pressure_offset to 8.5 hPa to align with reference station
 
 #! run with this command to override substitutions
 # esphome -s devicename espXX -s updates 1min -s room <Room name> -s mqtt_room <room> run esp32_MMmm_SSss__PP.yaml --device 192.168.x.x
@@ -35,7 +36,7 @@ substitutions:
 #  devices: "Temperature and Humidity via SHTx30 and Illuminance via BH1750"
   devices: "DEV Kit"
   project_name: "pgolawsk.esp_home"
-  version: "20250911"
+  version: "20251231"
 
   # required by ../includes/board_esp32.yaml script
   # framework_type: arduino # "arduino" or "esp-idf"
@@ -150,7 +151,7 @@ sensor:
   # - !include { file: ../sensors/temp_hum_AHT2x.yaml, vars: { ix: "", bus_id: "bus_a", address: "0x38", temp_offset: 0.0, hum_offset: 0.0 } }
 
   # Temperature, Humidity and Pressure sensor
-  - !include { file: ../sensors/temp_hum_press_BME280.yaml, vars: { ix: "Box", bus_id: "bus_a", address: "0x76", temp_offset: 0.0, hum_offset: 0.0, pressure_offset: 0.0 } }
+  - !include { file: ../sensors/temp_hum_press_BME280.yaml, vars: { ix: "Box", bus_id: "bus_a", address: "0x76", temp_offset: 0.0, hum_offset: 0.0, pressure_offset: 8.5 } }
 
   # Temperature, Humidity, Pressure and Gas Resistance sensor
   # - !include { file: ../sensors/temp_hum_press_gas_BME680.yaml, vars: { ix: "", bus_id: "bus_a", address: "0x77", temp_offset: 0.0, hum_offset: 0.0, pressure_offset: 0.0 } }
