@@ -11,6 +11,7 @@
 
 # Pawelo, 20251230, created
 # Pawelo, 20251230, Supports DEBUG via ESP_DEBUG=1
+# Pawelo, 20260108, Fix for interactive install on mas/zsh
 
 ########################################
 # Flags
@@ -119,7 +120,8 @@ fi
 ########################################
 # Interactive
 ########################################
-read -r "?Do you want to upgrade ESPHome now? [y/N]: " ANSWER
+echo -n "Do you want to upgrade ESPHome now? [y/N]: "
+read -r ANSWER
 case "$ANSWER" in
     y|Y|yes|YES)
         echo "Upgrading ESPHome..."
