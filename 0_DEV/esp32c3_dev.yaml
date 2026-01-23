@@ -40,6 +40,7 @@
 # Pawelo, 20250823, switched to ESP-IDF framework as default
 # Pawelo, 20250927, switched back to Arduino framework as ESP-IDF throws multiple info httpd messages
 # Pawelo, 20251019, added external_components section for my own fixes and changes testing
+# Pawelo, 20260123, switched to ESP-IDF framework as default again, removed external_components with PR testing
 
 #! run with this command to override substitutions
 # esphome -s devicename espXX -s updates 1min -s room <Room name> -s mqtt_room <room> run esp32_MMmm_SSss__PP.yaml --device 192.168.x.x
@@ -49,11 +50,11 @@ substitutions:
 #  devices: "Temperature and Humidity via SHTx30 and Illuminance via BH1750"
   devices: "DEV Kit"
   project_name: "pgolawsk.esp_home"
-  version: "20250927"
+  version: "20260123"
 
   # required by ../includes/board_esp32.yaml script
-  framework_type: arduino # "arduino" or "esp-idf"
-  # framework_type: esp-idf # "arduino" or "esp-idf"
+  # framework_type: arduino # "arduino" or "esp-idf"
+  framework_type: esp-idf # "arduino" or "esp-idf"
   framework_version: recommended # or specific version like "latest", "recommended", "4.4.4"
   # framework_version: latest # or specific version like "latest", "recommended", "4.4.4"
   board_variant: "c3" # empty for ESP32, other values to display like c3, c6, s2, s3
@@ -73,10 +74,10 @@ substitutions:
   accuracy_decimals: "2"
 
 # Testing any my fixes
-external_components:
-  - source: github://pr#9530  # my prometheus PR from 2025.7.0
-    components: [prometheus]
-    refresh: 1h
+# external_components:
+#   - source: github://pr#9530  # my prometheus PR from 2025.7.0
+#     components: [prometheus]
+#     refresh: 1h
 
 # Override some settings included below in _board_ setup
 <<: !include ../includes/time_sntp_with_sun.yaml #WARN: this is to make sunrise and sunset sensor to be updated on every time sync event
