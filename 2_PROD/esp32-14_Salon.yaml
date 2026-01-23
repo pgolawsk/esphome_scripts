@@ -36,6 +36,7 @@
 # Pawelo, 20251206, connecting to specific BSSID via wifi__bssid
 # Pawelo, 20251220, removed fixed BSSID
 # Pawelo, 20251123, adjusted pressure offset to 9.5 hPa to align with reference station
+# Pawelo, 20260123, removed smart TV IR remote control buttons as the TV device was replaced with different one
 
 #! run with this command to override substitutions
 # esphome -s devicename espXX -s updates 1min -s room <Room name> -s mqtt_room <room> run esp32_MMmm_SSss__PP.yaml --device 192.168.x.x
@@ -44,7 +45,7 @@
 substitutions:
   devices: "Env monitoring via BME680, Illuminance via BH1750, IR Receiver/Transmitter, RTTTL Buzzer, mic via INMP441, speaker via MAX98357A"
   project_name: "pgolawsk.esp_home"
-  version: "20251223"
+  version: "20260123"
   esphome_min_version: 2025.8.0 # required to execute from PSRAM instead of RAM
 
   # required by ../includes/board_esp32.yaml script
@@ -129,7 +130,7 @@ packages:
 
   # IR Remote control buttons added from packages
   apple_tv: !include { file: ../buttons/set_apple_tv_ir_remote.yaml, vars: { receiver: "ATV" } }
-  smart_tv: !include { file: ../buttons/set_smart_tv_ir_remote.yaml, vars: { receiver: "STV" } }
+  # smart_tv: !include { file: ../buttons/set_smart_tv_ir_remote.yaml, vars: { receiver: "STV" } }
   # smart_tv_x: !include { file: ../buttons/set_smart_tv_ir_remote_rest.yaml, vars: { receiver: "STVx" } }
   # nano_pc: !include { file: ../buttons/set_nano_pc_ir_remote.yaml, vars: { receiver: "NPC" } }
   # nano_pc_x: !include { file: ../buttons/set_nano_pc_ir_remote_rest.yaml, vars: { receiver: "NPCx" } }
