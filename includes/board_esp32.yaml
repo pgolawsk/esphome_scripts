@@ -17,6 +17,17 @@
 # Pawelo, 20250906, sdkconfig options - added increased max sockets to avoid httpd accept errors
 # Pawelo, 20250906, moved sdkconfig options to sdkconfig.defaults file
 # Pawelo, 20251019, added commented code for ESP-IDF specific configuration
+# Pawelo, 20260124, added advanced minimum_chip_revision variable
+
+#! those values are examples, not used in this file, need to be declared outside of this file
+# substitutions:
+#   minimum_chip_revision: "1"
+#   framework_type: esp-idf # "arduino" or "esp-idf"
+#   framework_version: recommended # or specific version like "latest", "recommended", "4.4.4"
+#   board_variant: "" # empty for ESP32, other values to display like c3, c6, s2, s3
+#   board: "esp32dev" # like: esp32dev, esp32cam, esp32-c3-devkitm-1, esp32-c6-devkitm-1, esp32-s3-devkitc-1, esp32-s2-saola-1, full list here https://registry.platformio.org/platforms/platformio/espressif32/boards?version=5.3.0
+#   flash_size: 4MB # One of 2MB, 4MB, 8MB, 16MB or 32MB
+#   flash_write_interval: "5min"
 
 esphome:
   name: $devicename
@@ -42,6 +53,8 @@ esp32:
   framework:
     type: ${framework_type} # arduino or esp-idf
     version: ${framework_version} # like: latest, recommended, 4.4, ...
+    advanced:
+      minimum_chip_revision: ${minimum_chip_revision}
 
     # only for ESP-IDF
     #warn: moved to sdkconfig.defaults file
