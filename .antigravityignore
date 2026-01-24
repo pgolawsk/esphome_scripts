@@ -1,0 +1,41 @@
+# Antigravity Ignore File for ESPHome Scripts Repo
+
+# General
+.DS_Store
+.git/
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# ESPHome
+.esphome/
+*.bin
+secrets.yaml
+!secrets_example.yaml
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+.venv/
+venv/
+.tox/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+
+# Environment and Tooling
+.env
+.env.local
+.python-version
+.tool-versions
+
+# Temporary and local files
+temp/
+*.log
+*.tmp
+*.bak
+dist/
+build/
+node_modules/
