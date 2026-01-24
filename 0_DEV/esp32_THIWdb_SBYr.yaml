@@ -23,6 +23,7 @@
 # Pawelo, 20250202, moved to 0_DEV folder
 # Pawelo, 20250208, replaced deprecated dallas by one_wire
 # Pawelo, 20250221, added uptime_boot text sensor
+# Pawelo, 20260124, added minimum_chip_revision variable to board_esp32.yaml to eliminate warnings
 
 #! run with this command to override substitutions
 # esphome -s devicename espXX -s updates 1min -s room <Room name> -s mqtt_room <room> run esp32_MMmm_SSss__PP.yaml --device 192.168.x.x
@@ -42,6 +43,7 @@ substitutions:
   board: "esp32dev" # like: esp32dev, esp32cam, esp32-c3-devkitm-1, esp32-s3-devkitc-1, esp32-s2-saola-1, full list here https://registry.platformio.org/platforms/platformio/espressif32/boards?version=5.3.0
   flash_size: 4MB # One of 2MB, 4MB, 8MB, 16MB or 32MB
   flash_write_interval: "5min"
+  minimum_chip_revision: "1.0"
 
   devicename: esp32-xx
   updates: "30s"

@@ -4,6 +4,7 @@
 #* For pinout see: file://..//pinouts//ESP32_T-display_dev_board_pinout.jpg
 ###
 # Pawelo, 20250201, created based on esp32_dev_display.yaml
+# Pawelo, 20260124, added minimum_chip_revision variable to board_esp32.yaml to eliminate warnings
 #! NOT FINISHED/NOT TESTED
 
 #! run with this command to override substitutions
@@ -25,6 +26,7 @@ substitutions:
   board: "esp32dev" # like: esp32dev, esp32cam, esp32-c3-devkitm-1, esp32-s3-devkitc-1, esp32-s2-saola-1, full list here https://registry.platformio.org/platforms/platformio/espressif32/boards?version=5.3.0
   flash_size: 4MB # One of 2MB, 4MB, 8MB, 16MB or 32MB
   flash_write_interval: "5min"
+  minimum_chip_revision: "1.0"
 
   devicename: esp32-xx
   updates: "30s"
