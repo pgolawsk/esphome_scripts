@@ -37,6 +37,7 @@
 # Pawelo, 20251019, adjusted epaper display external_component to use pgolawsk/esphome@pr-6226-tweaks to have proper 2.9in3c support
 # Pawelo, 20251123, adjusted pressure offset to 9.5 hPa to align with reference station
 # Pawelo, 20260124, moved display to original waveshare_epaper component as pgolawsk/esphome@pr-6226-tweaks is not working with 2026.1.1 version
+# Pawelo, 20260124, restored pgolawsk/esphome@pr-6226-tweaks to have proper 2.9in3c support
 
 #! run with this command to override substitutions
 # esphome -s devicename espXX -s updates 1min -s room <Room name> -s mqtt_room <room> run esp32_MMmm_SSss__PP.yaml --device 192.168.x.x
@@ -245,8 +246,8 @@ select:
   - !include { file: ../selects/display_cycle_interval.yaml, vars: { global_variable: "global_display_cycle_page", display_id: "weact_display" } }
 
 external_components:
-#   - source: github://pr#4579
-#     components: [waveshare_epaper]
+  # - source: github://pr#4579
+  #   components: [waveshare_epaper]
   # - source: github://pr#6226
   #   components: [waveshare_epaper]
   # - source: github://666djb/WeAct-Studio_ePaper
@@ -254,6 +255,7 @@ external_components:
     components: [waveshare_epaper]
     refresh: 1min
   # - source: ../custom_components/waveshare_epaper
+  #   components: [waveshare_epaper]
 
 spi:
   id: spi_v
@@ -262,14 +264,14 @@ spi:
 
 display:
   - platform: waveshare_epaper
-    model: 2.90in #? working but black and white are swapped...
+    # model: 2.90in #? working but black and white are swapped...
     # model: 2.90inv2 #! not working properly
     # model: 2.90inv2-r2 #! not working properly (red whole screen)
     # model: 2.90in-b #! not working
     # model: 2.90in-bv3 #! not working
     # model: 2.90in #! pr#4579, not working
     # model: 2.90inV2 #! pr#4579, not working properly
-    #model: 2.90in3c # pr#6226, working but slow refresh (or from custom_components, https://github.com/RaceNJason/WeAct-Studio_ePaper.git)
+    model: 2.90in3c # pr#6226, working but slow refresh (or from custom_components, https://github.com/RaceNJason/WeAct-Studio_ePaper.git)
     # model: 2.90ina #! pr#6226, not working
     # model: 2.90in-d #! not working
     # model: 2.90in-dke #! not working
@@ -289,7 +291,7 @@ display:
     reset_duration: 50ms # for weact 2.9 working on original waveshare_epaper component
     dc_pin: GPIO26
     rotation: ${display_rotation}
-    full_update_every: 5 # for weact 2.9  working on original waveshare_epaper component (comment this for 2.9in3c)
+    # full_update_every: 5 # for weact 2.9  working on original waveshare_epaper component (comment this for 2.9in3c)
     update_interval: never
 
     pages:
@@ -299,8 +301,10 @@ display:
           int x, y;
           #define xRes ${display_xRes}
           #define yRes ${display_yRes}
+
           //draw clear background
-          it.filled_rectangle(0, 0, xRes, yRes, COLOR_OFF);
+          // it.filled_rectangle(0, 0, xRes, yRes, COLOR_OFF);
+          it.fill(COLOR_OFF);
           //it.print(xRes/2, yRes/2, id(size_14_font), COLOR_ON, TextAlign::CENTER, "Refreshing...");
 
       # - id: page_time
@@ -419,19 +423,21 @@ display:
         lambda: |-
           // Date & Time Page
           int x, y, y_m;
-          esphome::Color fi;
-          fi = id(color_black);
+          auto fi =id(color_black);
           #define xRes ${display_xRes}
           #define yRes ${display_yRes}
 
+          //draw clear background
+          it.fill(COLOR_OFF);
+
           x = 0, y = 0;
           //Time
-          it.strftime(x, y, id(size_50_font), "%H:%M", id(sntp_time).now());
+          it.strftime(x, y, id(size_50_font), COLOR_ON, "%H:%M", id(sntp_time).now());
           /* it.strftime(225, 68, id(size_60_font), "%S", id(sntp_time).now()); */
 
           x = 0, y = y + 50 + 5;
           //line
-          it.line(x, y, xRes, y);
+          it.line(x, y, xRes -1, y, COLOR_ON);
 
           x = 0, y = y + 50;
           //Weekday
@@ -446,14 +452,14 @@ display:
 
           x = 0, y = y + 40;
           //date
-          it.strftime(x + 53, y, id(size_40_font), TextAlign::BASELINE_RIGHT, "%d", id(sntp_time).now());
-          it.printf(x + 53, y, id(size_14_font), TextAlign::BASELINE_LEFT, "D");
-          it.strftime(x + 113, y, id(size_40_font), TextAlign::BASELINE_RIGHT, "%m", id(sntp_time).now());
-          it.printf(x + 113, y, id(size_14_font), TextAlign::BASELINE_LEFT, "M");
+          it.strftime(x + 53, y, id(size_40_font), COLOR_ON, TextAlign::BASELINE_RIGHT, "%d", id(sntp_time).now());
+          it.printf(x + 53, y, id(size_14_font), COLOR_ON, TextAlign::BASELINE_LEFT, "D");
+          it.strftime(x + 113, y, id(size_40_font), COLOR_ON, TextAlign::BASELINE_RIGHT, "%m", id(sntp_time).now());
+          it.printf(x + 113, y, id(size_14_font), COLOR_ON, TextAlign::BASELINE_LEFT, "M");
 
           x = 0, y = y + 5;
           //line
-          it.line(x, y, xRes, y);
+          it.line(x, y, xRes -1, y, COLOR_ON);
 
           // x = 0, y = y + 25 + 3;
           // //sun set-rise
@@ -499,7 +505,7 @@ display:
           // ALIGN Y TO BOTTOM
           x = 0, y = yRes - 25 - 5 - 3;
           //line
-          it.line(x, y, xRes, y);
+          it.line(x, y, xRes -1, y, COLOR_ON);
 
           //wifi
           if (id(wifi_rssi).has_state()) {
@@ -520,12 +526,12 @@ display:
 
           //* Display Cycle
           x = 0; y = yRes - 5;
-          if (id(select_display_cycle_interval).state != "Never") {
-            it.printf(x, y, id(cycle_icon_font), TextAlign::BASELINE_LEFT, "\U000F04E6");
+          if (id(select_display_cycle_interval).current_option() != "Never") {
+            it.printf(x, y, id(cycle_icon_font), COLOR_ON, TextAlign::BASELINE_LEFT, "\U000F04E6");
             x = x + 24;
-            it.printf(x, y, id(size_25_font), TextAlign::BASELINE_LEFT, "%s", id(select_display_cycle_interval).state.c_str());
+            it.printf(x, y, id(size_25_font), COLOR_ON, TextAlign::BASELINE_LEFT, "%s", id(select_display_cycle_interval).current_option().c_str());
           } else {
-            it.printf(x, y, id(cycle_icon_font), TextAlign::BASELINE_LEFT, "\U000F04E8");
+            it.printf(x, y, id(cycle_icon_font), COLOR_ON, TextAlign::BASELINE_LEFT, "\U000F04E8");
           }
 
       # - id: page_measures
@@ -677,8 +683,12 @@ display:
           #define xCenter (xRes/2 + 40) // X position center
           int x, y;
 
+
+          //draw clear background
+          it.fill(COLOR_OFF);
+
           //id(t5_display).clear();
-          it.print(10, 20, id(size_14_font), TextAlign::BASELINE_LEFT, "Join Guest WIFI");
+          it.print(10, 20, id(size_14_font), COLOR_ON, TextAlign::BASELINE_LEFT, "Join Guest WIFI");
           // it.print(xRes - 40, yRes - 40, id(font_small), TextAlign::BASELINE_LEFT, "5");
           // guest wifi
           // WIFI:S:<WIFI NAME HERE>;T:WPA;P:<WIFI PASSWOD HERE>;H:false;;
@@ -688,32 +698,31 @@ display:
           // ALIGN Y TO BOTTOM
           x = 0, y = yRes - 25 - 5 - 3;
           //line
-          it.line(x, y, xRes, y);
+          it.line(x, y, xRes -1, y, COLOR_ON);
 
           //wifi
           if (id(wifi_rssi).has_state()) {
             x = xRes - 5, y = yRes - 5;
             // x = 265, y = 120;
             if (id(wifi_rssi).state >= -50) {
-              it.printf(x, y, id(wlan_icon_font), TextAlign::BASELINE_RIGHT , "\U000F0928");
+              it.printf(x, y, id(wlan_icon_font), COLOR_ON, TextAlign::BASELINE_RIGHT , "\U000F0928");
             } else if (id(wifi_rssi).state >= -60) {
-              it.printf(x, y, id(wlan_icon_font), TextAlign::BASELINE_RIGHT , "\U000F0925");
+              it.printf(x, y, id(wlan_icon_font), COLOR_ON, TextAlign::BASELINE_RIGHT , "\U000F0925");
             } else if (id(wifi_rssi).state >= -70) {
-              it.printf(x, y, id(wlan_icon_font), TextAlign::BASELINE_RIGHT , "\U000F0922");
+              it.printf(x, y, id(wlan_icon_font), COLOR_ON, TextAlign::BASELINE_RIGHT , "\U000F0922");
             } else if (id(wifi_rssi).state >= -80) {
-              it.printf(x, y, id(wlan_icon_font), TextAlign::BASELINE_RIGHT , "\U000F0920");
+              it.printf(x, y, id(wlan_icon_font), COLOR_ON, TextAlign::BASELINE_RIGHT , "\U000F0920");
             } else {
               it.printf(x, y, id(wlan_icon_font), id(color_red), TextAlign::BASELINE_RIGHT , "\U000F092E");
             }
           }
 
-
           //* Display Cycle
           x = 0; y = yRes - 5;
-          if (id(select_display_cycle_interval).state != "Never") {
-            it.printf(x, y, id(cycle_icon_font), TextAlign::BASELINE_LEFT, "\U000F04E6");
+          if (id(select_display_cycle_interval).current_option() != "Never") {
+            it.printf(x, y, id(cycle_icon_font), COLOR_ON, TextAlign::BASELINE_LEFT, "\U000F04E6");
             x = x + 24;
-            it.printf(x, y, id(size_25_font), TextAlign::BASELINE_LEFT, "%s", id(select_display_cycle_interval).state.c_str());
+            it.printf(x, y, id(size_25_font), COLOR_ON, TextAlign::BASELINE_LEFT, "%s", id(select_display_cycle_interval).current_option().c_str());
           } else {
-            it.printf(x, y, id(cycle_icon_font), TextAlign::BASELINE_LEFT, "\U000F04E8");
+            it.printf(x, y, id(cycle_icon_font), COLOR_ON, TextAlign::BASELINE_LEFT, "\U000F04E8");
           }
