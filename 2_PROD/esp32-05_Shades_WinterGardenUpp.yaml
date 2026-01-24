@@ -36,6 +36,7 @@
 # Pawelo, 20250906, switched from Arduino to ESP-IDF framework
 # Pawelo, 20251019, adjusted epaper display external_component to use pgolawsk/esphome@pr-6226-tweaks to have proper 2.9in3c support
 # Pawelo, 20251123, adjusted pressure offset to 9.5 hPa to align with reference station
+# Pawelo, 20260124, moved display to original waveshare_epaper component as pgolawsk/esphome@pr-6226-tweaks is not working with 2026.1.1 version
 
 #! run with this command to override substitutions
 # esphome -s devicename espXX -s updates 1min -s room <Room name> -s mqtt_room <room> run esp32_MMmm_SSss__PP.yaml --device 192.168.x.x
@@ -44,7 +45,7 @@
 substitutions:
   devices: "Temperature, Humidity, Pressure, Gas Resistance via BME680/SHT41 and UV, Illuminance via LTR390/BH1750"
   project_name: "pgolawsk.esp_home"
-  version: "20251223"
+  version: "20260124"
 
   # required by includes/board_esp32.yaml script
   # framework_type: arduino # "arduino" or "esp-idf"
@@ -251,7 +252,7 @@ external_components:
   # - source: github://666djb/WeAct-Studio_ePaper
   - source: github://pgolawsk/esphome@pr-6226-tweaks
     components: [waveshare_epaper]
-    refresh: 5min
+    refresh: 1min
   # - source: ../custom_components/waveshare_epaper
 
 spi:
@@ -261,27 +262,34 @@ spi:
 
 display:
   - platform: waveshare_epaper
-    # model: 2.90in #! not working properly
-    # model: 2.90in-dke #! not working
+    model: 2.90in #? working but black and white are swapped...
     # model: 2.90inv2 #! not working properly
     # model: 2.90inv2-r2 #! not working properly (red whole screen)
     # model: 2.90in-b #! not working
     # model: 2.90in-bv3 #! not working
     # model: 2.90in #! pr#4579, not working
     # model: 2.90inV2 #! pr#4579, not working properly
-    model: 2.90in3c # pr#6226, working but slow refresh (or from custom_components, https://github.com/RaceNJason/WeAct-Studio_ePaper.git)
+    #model: 2.90in3c # pr#6226, working but slow refresh (or from custom_components, https://github.com/RaceNJason/WeAct-Studio_ePaper.git)
     # model: 2.90ina #! pr#6226, not working
+    # model: 2.90in-d #! not working
+    # model: 2.90in-dke #! not working
+    # model: gdew029t5 #! not working
+    # model: gdey029t94
 
     # model: wa2.90in
     # model: wa2.90in3c
     id: weact_display
     cs_pin: GPIO25
-    busy_pin: GPIO27
+    busy_pin:
+      number: GPIO27
+      inverted: false
+      # inverted: true
     reset_pin: GPIO14
-    reset_duration: 20ms
+    # reset_duration: 20ms
+    reset_duration: 50ms # for weact 2.9 working on original waveshare_epaper component
     dc_pin: GPIO26
     rotation: ${display_rotation}
-    # full_update_every: 10
+    full_update_every: 5 # for weact 2.9  working on original waveshare_epaper component (comment this for 2.9in3c)
     update_interval: never
 
     pages:
