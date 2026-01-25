@@ -36,8 +36,10 @@
 # Pawelo, 20250906, switched from Arduino to ESP-IDF framework
 # Pawelo, 20251019, adjusted epaper display external_component to use pgolawsk/esphome@pr-6226-tweaks to have proper 2.9in3c support
 # Pawelo, 20251123, adjusted pressure offset to 9.5 hPa to align with reference station
-# Pawelo, 20260124, force COLOR_ON and COLOR_OFF for EPAPER display colors to have consistent colors regardless of component changes
+# Pawelo, 20260124, moved display to original waveshare_epaper component as pgolawsk/esphome@pr-6226-tweaks is not working with 2026.1.1 version
+# Pawelo, 20260124, restored pgolawsk/esphome@pr-6226-tweaks to have proper 2.9in3c support
 # Pawelo, 20260124, added minimum_chip_revision variable to board_esp32.yaml to eliminate warnings
+# Pawelo, 20260125, testing pgolawsk/esphome@weact_epaper_3c instead of pgolawsk/esphome@pr-6226-tweaks
 
 #! run with this command to override substitutions
 # esphome -s devicename espXX -s updates 1min -s room <Room name> -s mqtt_room <room> run esp32_MMmm_SSss__PP.yaml --device 192.168.x.x
@@ -46,7 +48,7 @@
 substitutions:
   devices: "Temperature, Humidity, Pressure, Gas Resistance via BME680/SHT41 and UV, Illuminance via LTR390/BH1750"
   project_name: "pgolawsk.esp_home"
-  version: "20260124"
+  version: "20260125"
 
   # required by includes/board_esp32.yaml script
   # framework_type: arduino # "arduino" or "esp-idf"
@@ -57,7 +59,7 @@ substitutions:
   board: "esp32dev" # like: esp32dev, esp32cam, esp32-c3-devkitm-1, esp32-s3-devkitc-1, esp32-s2-saola-1, full list here https://registry.platformio.org/platforms/platformio/espressif32/boards?version=5.3.0
   flash_size: 4MB # One of 2MB, 4MB, 8MB, 16MB or 32MB
   flash_write_interval: "5min"
-  minimum_chip_revision: "1.0"
+  minimum_chip_revision: "3.0"
 
   devicename: esp32-xx
   updates: "30s"
@@ -80,15 +82,6 @@ substitutions:
   display_rotation: "0"
   display_updates_interval: 5s # need to be small for display manageable interval cycle
   display_updates_manual_cycle_delay: 5min
-
-  # Colors for ePaper display WeeAct 2.9in BWR working on original waveshare_epaper component as BW only
-  EP_BG: "esphome::display::COLOR_OFF"
-  EP_FG: "esphome::display::COLOR_ON"
-  EP_RED: "esphome::display::COLOR_ON"   # red == black on BW
-  # Colors for ePaper display WeeAct 2.9in BWR working on 2.9in3c model as BWR
-  # EP_BG: "esphome::display::COLOR_OFF"
-  # EP_FG: "esphome::display::COLOR_ON"
-  # EP_RED: "esphome::display::COLOR_RED"
 
 # Override some settings included below in _board_ setup
 <<: !include ../includes/time_sntp_with_sun.yaml #WARN: this is to make sunrise and sunset sensor to be updated on every time sync event
@@ -256,15 +249,17 @@ select:
   - !include { file: ../selects/display_cycle_interval.yaml, vars: { global_variable: "global_display_cycle_page", display_id: "weact_display" } }
 
 external_components:
-#   - source: github://pr#4579
-#     components: [waveshare_epaper]
+  # - source: github://pr#4579
+  #   components: [waveshare_epaper]
   # - source: github://pr#6226
   #   components: [waveshare_epaper]
   # - source: github://666djb/WeAct-Studio_ePaper
-  - source: github://pgolawsk/esphome@pr-6226-tweaks
+  # - source: github://pgolawsk/esphome@pr-6226-tweaks
+  - source: github://pgolawsk/esphome@weact_epaper_3c
     components: [waveshare_epaper]
     refresh: 1min
   # - source: ../custom_components/waveshare_epaper
+  #   components: [waveshare_epaper]
 
 spi:
   id: spi_v
@@ -273,14 +268,15 @@ spi:
 
 display:
   - platform: waveshare_epaper
-    model: 2.90in #? working but black and white are swapped...
+    # model: 2.90in #? working but black and white are swapped...
     # model: 2.90inv2 #! not working properly
     # model: 2.90inv2-r2 #! not working properly (red whole screen)
     # model: 2.90in-b #! not working
     # model: 2.90in-bv3 #! not working
     # model: 2.90in #! pr#4579, not working
     # model: 2.90inV2 #! pr#4579, not working properly
-    #model: 2.90in3c # pr#6226, working but slow refresh (or from custom_components, https://github.com/RaceNJason/WeAct-Studio_ePaper.git)
+    # model: 2.90in3c # pr#6226, working but slow refresh (or from custom_components, https://github.com/RaceNJason/WeAct-Studio_ePaper.git)
+    model: 2.90in3c-weact # weact_epaper_3c
     # model: 2.90ina #! pr#6226, not working
     # model: 2.90in-d #! not working
     # model: 2.90in-dke #! not working
@@ -294,33 +290,27 @@ display:
     busy_pin:
       number: GPIO27
       inverted: false
-      # inverted: true # for weact 2.9 working on original waveshare_epaper component
+      # inverted: true
     reset_pin: GPIO14
     # reset_duration: 20ms
     reset_duration: 50ms # for weact 2.9 working on original waveshare_epaper component
     dc_pin: GPIO26
     rotation: ${display_rotation}
-    full_update_every: 5 # for weact 2.9  working on original waveshare_epaper component (comment this for 2.9in3c)
+    # full_update_every: 5 # for weact 2.9  working on original waveshare_epaper component (comment this for 2.9in3c)
     update_interval: never
 
     pages:
       - id: page_blank
         lambda: |-
           // Blank Page
-          const auto FG  = ${EP_FG};
-          const auto BG  = ${EP_BG};
-          const auto RED = ${EP_RED};
-
+          int x, y;
           #define xRes ${display_xRes}
           #define yRes ${display_yRes}
-          #define xCenter (xRes/2 + 40) // X position center
-          int x, y, y_m;
-          esphome::Color fi = FG;
 
           //draw clear background
-          // it.filled_rectangle(0, 0, xRes, yRes, BG);
-          it.fill(BG);
-          //it.print(xRes/2, yRes/2, id(size_14_font), FG, TextAlign::CENTER, "Refreshing...");
+          // it.filled_rectangle(0, 0, xRes, yRes, COLOR_OFF);
+          it.fill(COLOR_OFF);
+          //it.print(xRes/2, yRes/2, id(size_14_font), COLOR_ON, TextAlign::CENTER, "Refreshing...");
 
       # - id: page_time
       #   lambda: |-
@@ -437,36 +427,29 @@ display:
       - id: page_time_key_measures
         lambda: |-
           // Date & Time Page
-
-          const auto FG  = ${EP_FG};
-          const auto BG  = ${EP_BG};
-          const auto RED = ${EP_RED};
-
+          int x, y, y_m;
+          auto fi =id(color_black);
           #define xRes ${display_xRes}
           #define yRes ${display_yRes}
-          #define xCenter (xRes/2 + 40) // X position center
-          int x, y, y_m;
-          esphome::Color fi = FG;
 
           //draw clear background
-          // it.filled_rectangle(0, 0, xRes, yRes, BG);
-          it.fill(BG);
+          it.fill(COLOR_OFF);
 
           x = 0, y = 0;
           //Time
-          it.strftime(x, y, id(size_50_font), FG, "%H:%M", id(sntp_time).now());
-          /* it.strftime(225, 68, id(size_60_font), FG, "%S", id(sntp_time).now()); */
+          it.strftime(x, y, id(size_50_font), COLOR_ON, "%H:%M", id(sntp_time).now());
+          /* it.strftime(225, 68, id(size_60_font), "%S", id(sntp_time).now()); */
 
           x = 0, y = y + 50 + 5;
           //line
-          it.line(x, y, xRes - 1, y, FG);
+          it.line(x, y, xRes -1, y, COLOR_ON);
 
           x = 0, y = y + 50;
           //Weekday
           if (id(sntp_time).now().day_of_week == 1) {
-            fi = RED; // Sunday show in red font
+            fi = id(color_red); // Sunday show in red font
           } else {
-            fi = FG;
+            fi = id(color_black);
           }
           // it.strftime(xRes / 2, y, id(size_25_font), fi, TextAlign::BASELINE_CENTER ,"%A", id(sntp_time).now());
           it.strftime(xRes / 2, y, id(size_50_font), fi, TextAlign::BASELINE_CENTER ,"%a", id(sntp_time).now());
@@ -474,14 +457,14 @@ display:
 
           x = 0, y = y + 40;
           //date
-          it.strftime(x + 53, y, id(size_40_font), FG, TextAlign::BASELINE_RIGHT, "%d", id(sntp_time).now());
-          it.printf(x + 53, y, id(size_14_font), FG, TextAlign::BASELINE_LEFT, "D");
-          it.strftime(x + 113, y, id(size_40_font), FG, TextAlign::BASELINE_RIGHT, "%m", id(sntp_time).now());
-          it.printf(x + 113, y, id(size_14_font), FG, TextAlign::BASELINE_LEFT, "M");
+          it.strftime(x + 53, y, id(size_40_font), COLOR_ON, TextAlign::BASELINE_RIGHT, "%d", id(sntp_time).now());
+          it.printf(x + 53, y, id(size_14_font), COLOR_ON, TextAlign::BASELINE_LEFT, "D");
+          it.strftime(x + 113, y, id(size_40_font), COLOR_ON, TextAlign::BASELINE_RIGHT, "%m", id(sntp_time).now());
+          it.printf(x + 113, y, id(size_14_font), COLOR_ON, TextAlign::BASELINE_LEFT, "M");
 
           x = 0, y = y + 5;
           //line
-          it.line(x, y, xRes - 1, y, FG);
+          it.line(x, y, xRes -1, y, COLOR_ON);
 
           // x = 0, y = y + 25 + 3;
           // //sun set-rise
@@ -501,12 +484,12 @@ display:
           // it.printf(x+8, y_m, id(measures_30_font), TextAlign::BASELINE_CENTER , "\U000F050F");
           if (id(temp).has_state() and not isnan(id(temp).state)) {
             if (id(temp).state <= 0.0 or id(temp).state >= 30.0) {
-              fi = RED;
+              fi = id(color_red);
             } else {
-              fi = FG;
+              fi = id(color_black);
             }
             it.printf(x+100, y, id(size_50_font), fi, TextAlign::BASELINE_RIGHT , "%.1f", id(temp).state);
-            it.printf(x+100, y, id(units_30_font), FG, TextAlign::BASELINE_LEFT , "\U000F0504");
+            it.printf(x+100, y, id(units_30_font), TextAlign::BASELINE_LEFT , "\U000F0504");
           }
 
           x = 0, y = y + 50;
@@ -514,12 +497,12 @@ display:
           // it.printf(x+10, y, id(measures_30_font), TextAlign::BASELINE_CENTER , "\U000F050F");
           if (id(tempU).has_state() and not isnan(id(tempU).state)) {
             if (id(tempU).state <= 0.0 or id(tempU).state >= 30.0) {
-              fi = RED;
+              fi = id(color_red);
             } else {
-              fi = FG;
+              fi = id(color_black);
             }
             it.printf(x+100, y, id(size_50_font), fi, TextAlign::BASELINE_RIGHT , "%.1f", id(tempU).state);
-            it.printf(x+100, y, id(units_30_font), FG, TextAlign::BASELINE_LEFT , "\U000F0504");
+            it.printf(x+100, y, id(units_30_font), TextAlign::BASELINE_LEFT , "\U000F0504");
           }
 
 
@@ -527,33 +510,33 @@ display:
           // ALIGN Y TO BOTTOM
           x = 0, y = yRes - 25 - 5 - 3;
           //line
-          it.line(x, y, xRes - 1, y, FG);
+          it.line(x, y, xRes -1, y, COLOR_ON);
 
           //wifi
           if (id(wifi_rssi).has_state()) {
             x = xRes - 5, y = yRes - 5;
             // x = 265, y = 120;
             if (id(wifi_rssi).state >= -50) {
-              it.printf(x, y, id(wlan_icon_font), FG, TextAlign::BASELINE_RIGHT , "\U000F0928");
+              it.printf(x, y, id(wlan_icon_font), TextAlign::BASELINE_RIGHT , "\U000F0928");
             } else if (id(wifi_rssi).state >= -60) {
-              it.printf(x, y, id(wlan_icon_font), FG, TextAlign::BASELINE_RIGHT , "\U000F0925");
+              it.printf(x, y, id(wlan_icon_font), TextAlign::BASELINE_RIGHT , "\U000F0925");
             } else if (id(wifi_rssi).state >= -70) {
-              it.printf(x, y, id(wlan_icon_font), FG, TextAlign::BASELINE_RIGHT , "\U000F0922");
+              it.printf(x, y, id(wlan_icon_font), TextAlign::BASELINE_RIGHT , "\U000F0922");
             } else if (id(wifi_rssi).state >= -80) {
-              it.printf(x, y, id(wlan_icon_font), FG, TextAlign::BASELINE_RIGHT , "\U000F0920");
+              it.printf(x, y, id(wlan_icon_font), TextAlign::BASELINE_RIGHT , "\U000F0920");
             } else {
-              it.printf(x, y, id(wlan_icon_font), RED, TextAlign::BASELINE_RIGHT , "\U000F092E");
+              it.printf(x, y, id(wlan_icon_font), id(color_red), TextAlign::BASELINE_RIGHT , "\U000F092E");
             }
           }
 
           //* Display Cycle
           x = 0; y = yRes - 5;
-          if (id(select_display_cycle_interval).state != "Never") {
-            it.printf(x, y, id(cycle_icon_font), FG, TextAlign::BASELINE_LEFT, "\U000F04E6");
+          if (id(select_display_cycle_interval).current_option() != "Never") {
+            it.printf(x, y, id(cycle_icon_font), COLOR_ON, TextAlign::BASELINE_LEFT, "\U000F04E6");
             x = x + 24;
-            it.printf(x, y, id(size_25_font), FG, TextAlign::BASELINE_LEFT, "%s", id(select_display_cycle_interval).state.c_str());
+            it.printf(x, y, id(size_25_font), COLOR_ON, TextAlign::BASELINE_LEFT, "%s", id(select_display_cycle_interval).current_option().c_str());
           } else {
-            it.printf(x, y, id(cycle_icon_font), FG, TextAlign::BASELINE_LEFT, "\U000F04E8");
+            it.printf(x, y, id(cycle_icon_font), COLOR_ON, TextAlign::BASELINE_LEFT, "\U000F04E8");
           }
 
       # - id: page_measures
@@ -700,57 +683,51 @@ display:
       - id: page_wifi_qr
         lambda: |-
           // QR Code for Guest WiFi
-
-          const auto FG  = ${EP_FG};
-          const auto BG  = ${EP_BG};
-          const auto RED = ${EP_RED};
-
           #define xRes ${display_xRes}
           #define yRes ${display_yRes}
           #define xCenter (xRes/2 + 40) // X position center
-          int x, y, y_m;
-          esphome::Color fi = FG;
+          int x, y;
+
 
           //draw clear background
-          // it.filled_rectangle(0, 0, xRes, yRes, BG);
-          it.fill(BG);
+          it.fill(COLOR_OFF);
 
           //id(t5_display).clear();
-          it.print(10, 20, id(size_14_font), FG, TextAlign::BASELINE_LEFT, "Join Guest WIFI");
+          it.print(10, 20, id(size_14_font), COLOR_ON, TextAlign::BASELINE_LEFT, "Join Guest WIFI");
           // it.print(xRes - 40, yRes - 40, id(font_small), TextAlign::BASELINE_LEFT, "5");
           // guest wifi
           // WIFI:S:<WIFI NAME HERE>;T:WPA;P:<WIFI PASSWOD HERE>;H:false;;
           // Draw the QR-code at position [x=120,y=5] with white color and a 4x scale
-          it.qr_code(5, 35, id(guestwifi_qr), FG, 4);
+          it.qr_code(5, 35, id(guestwifi_qr), COLOR_ON, 4);
 
           // ALIGN Y TO BOTTOM
           x = 0, y = yRes - 25 - 5 - 3;
           //line
-          it.line(x, y, xRes, y);
+          it.line(x, y, xRes -1, y, COLOR_ON);
 
           //wifi
           if (id(wifi_rssi).has_state()) {
             x = xRes - 5, y = yRes - 5;
             // x = 265, y = 120;
             if (id(wifi_rssi).state >= -50) {
-              it.printf(x, y, id(wlan_icon_font), FG, TextAlign::BASELINE_RIGHT , "\U000F0928");
+              it.printf(x, y, id(wlan_icon_font), COLOR_ON, TextAlign::BASELINE_RIGHT , "\U000F0928");
             } else if (id(wifi_rssi).state >= -60) {
-              it.printf(x, y, id(wlan_icon_font), FG, TextAlign::BASELINE_RIGHT , "\U000F0925");
+              it.printf(x, y, id(wlan_icon_font), COLOR_ON, TextAlign::BASELINE_RIGHT , "\U000F0925");
             } else if (id(wifi_rssi).state >= -70) {
-              it.printf(x, y, id(wlan_icon_font), FG, TextAlign::BASELINE_RIGHT , "\U000F0922");
+              it.printf(x, y, id(wlan_icon_font), COLOR_ON, TextAlign::BASELINE_RIGHT , "\U000F0922");
             } else if (id(wifi_rssi).state >= -80) {
-              it.printf(x, y, id(wlan_icon_font), FG, TextAlign::BASELINE_RIGHT , "\U000F0920");
+              it.printf(x, y, id(wlan_icon_font), COLOR_ON, TextAlign::BASELINE_RIGHT , "\U000F0920");
             } else {
-              it.printf(x, y, id(wlan_icon_font), RED, TextAlign::BASELINE_RIGHT , "\U000F092E");
+              it.printf(x, y, id(wlan_icon_font), id(color_red), TextAlign::BASELINE_RIGHT , "\U000F092E");
             }
           }
 
           //* Display Cycle
           x = 0; y = yRes - 5;
-          if (id(select_display_cycle_interval).state != "Never") {
-            it.printf(x, y, id(cycle_icon_font), FG, TextAlign::BASELINE_LEFT, "\U000F04E6");
+          if (id(select_display_cycle_interval).current_option() != "Never") {
+            it.printf(x, y, id(cycle_icon_font), COLOR_ON, TextAlign::BASELINE_LEFT, "\U000F04E6");
             x = x + 24;
-            it.printf(x, y, id(size_25_font), FG, TextAlign::BASELINE_LEFT, "%s", id(select_display_cycle_interval).state.c_str());
+            it.printf(x, y, id(size_25_font), COLOR_ON, TextAlign::BASELINE_LEFT, "%s", id(select_display_cycle_interval).current_option().c_str());
           } else {
-            it.printf(x, y, id(cycle_icon_font), FG, TextAlign::BASELINE_LEFT, "\U000F04E8");
+            it.printf(x, y, id(cycle_icon_font), COLOR_ON, TextAlign::BASELINE_LEFT, "\U000F04E8");
           }
