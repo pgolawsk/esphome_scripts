@@ -255,9 +255,12 @@ external_components:
   #   components: [waveshare_epaper]
   # - source: github://666djb/WeAct-Studio_ePaper
   # - source: github://pgolawsk/esphome@pr-6226-tweaks
-  - source: github://pgolawsk/esphome@weact_epaper_3c
+  # - source: github://pgolawsk/esphome@weact_epaper_3c
+  #   components: [waveshare_epaper]
+  #   refresh: 1min
+  - source: github://pr#13528
     components: [waveshare_epaper]
-    refresh: 1min
+    refresh: 1h
   # - source: ../custom_components/waveshare_epaper
   #   components: [waveshare_epaper]
 
