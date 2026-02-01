@@ -87,6 +87,7 @@ substitutions:
 <<: !include ../includes/time_sntp_with_sun.yaml #WARN: this is to make sunrise and sunset sensor to be updated on every time sync event
 # <<: !include ../includes/mqtt_with_rtttl.yaml #WARN: override mqtt with RTTTL support if needed (buzzer and status led)
 # <<: !include { file: ../includes/logger_level.yaml, vars: { level: DEBUG, baud_rate: 115200 } } #WARN: override default log level to specific one
+# <<: !include { file: ../includes/logger_level.yaml, vars: { level: VERBOSE, baud_rate: 115200 } } #WARN: override default log level to specific one
 # <<: !include { file: ../includes/logger_level.yaml, vars: { level: VERY_VERBOSE, baud_rate: 115200 } } #WARN: override default log level to specific one
 # <<: !include ../includes/wifi_outside.yaml #WARN: override wifi to connect to outside network instead of default
 # <<: !include { file: ../includes/wifi_main.yaml, vars: { } } #WARN: override wifi to connect to extended network instead of default
@@ -265,7 +266,8 @@ external_components:
   #   components: [waveshare_epaper]
   # Use local esphome repo with the new epaper_spi component
   - source: ../../esphome/esphome/components  # Adjust path to your local repo
-    components: [epaper_spi]
+    # components: [epaper_spi]
+    components: [waveshare_epaper]
     refresh: 0s  # Always refresh from local source
 
 spi:
@@ -292,8 +294,10 @@ display:
 
   #   # model: wa2.90in
   #   # model: wa2.90in3c
-  - platform: epaper_spi  # Changed from waveshare_epaper
-    model: weact-2.90in-3c  # New model name format
+  - platform: waveshare_epaper
+    model: 2.90in3c-weact # weact_epaper_3c
+  # - platform: epaper_spi  # Changed from waveshare_epaper
+  #   model: weact-2.90in-3c  # New model name format
     id: weact_display
     cs_pin: GPIO25
     busy_pin:
