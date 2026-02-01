@@ -258,11 +258,15 @@ external_components:
   # - source: github://pgolawsk/esphome@weact_epaper_3c
   #   components: [waveshare_epaper]
   #   refresh: 1min
-  - source: github://pr#13528
-    components: [waveshare_epaper]
-    refresh: 1h
+  # - source: github://pr#13528
+  #   components: [waveshare_epaper]
+  #   refresh: 1h
   # - source: ../custom_components/waveshare_epaper
   #   components: [waveshare_epaper]
+  # Use local esphome repo with the new epaper_spi component
+  - source: ../../esphome/esphome/components  # Adjust path to your local repo
+    components: [epaper_spi]
+    refresh: 0s  # Always refresh from local source
 
 spi:
   id: spi_v
@@ -270,24 +274,26 @@ spi:
   mosi_pin: GPIO19 # SDA
 
 display:
-  - platform: waveshare_epaper
-    # model: 2.90in #? working but black and white are swapped...
-    # model: 2.90inv2 #! not working properly
-    # model: 2.90inv2-r2 #! not working properly (red whole screen)
-    # model: 2.90in-b #! not working
-    # model: 2.90in-bv3 #! not working
-    # model: 2.90in #! pr#4579, not working
-    # model: 2.90inV2 #! pr#4579, not working properly
-    # model: 2.90in3c # pr#6226, working but slow refresh (or from custom_components, https://github.com/RaceNJason/WeAct-Studio_ePaper.git)
-    model: 2.90in3c-weact # weact_epaper_3c
-    # model: 2.90ina #! pr#6226, not working
-    # model: 2.90in-d #! not working
-    # model: 2.90in-dke #! not working
-    # model: gdew029t5 #! not working
-    # model: gdey029t94
+  # - platform: waveshare_epaper
+  #   # model: 2.90in #? working but black and white are swapped...
+  #   # model: 2.90inv2 #! not working properly
+  #   # model: 2.90inv2-r2 #! not working properly (red whole screen)
+  #   # model: 2.90in-b #! not working
+  #   # model: 2.90in-bv3 #! not working
+  #   # model: 2.90in #! pr#4579, not working
+  #   # model: 2.90inV2 #! pr#4579, not working properly
+  #   # model: 2.90in3c # pr#6226, working but slow refresh (or from custom_components, https://github.com/RaceNJason/WeAct-Studio_ePaper.git)
+  #   model: 2.90in3c-weact # weact_epaper_3c
+  #   # model: 2.90ina #! pr#6226, not working
+  #   # model: 2.90in-d #! not working
+  #   # model: 2.90in-dke #! not working
+  #   # model: gdew029t5 #! not working
+  #   # model: gdey029t94
 
-    # model: wa2.90in
-    # model: wa2.90in3c
+  #   # model: wa2.90in
+  #   # model: wa2.90in3c
+  - platform: epaper_spi  # Changed from waveshare_epaper
+    model: weact-2.90in-3c  # New model name format
     id: weact_display
     cs_pin: GPIO25
     busy_pin:
