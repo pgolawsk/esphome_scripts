@@ -259,16 +259,16 @@ external_components:
   # - source: github://pgolawsk/esphome@weact_epaper_3c
   #   components: [waveshare_epaper]
   #   refresh: 1min
-  # - source: github://pr#13528
-  #   components: [waveshare_epaper]
-  #   refresh: 1h
+  - source: github://pr#13528
+    components: [waveshare_epaper]
+    refresh: 1h
   # - source: ../custom_components/waveshare_epaper
   #   components: [waveshare_epaper]
   # Use local esphome repo with the new epaper_spi component
-  - source: ../../esphome/esphome/components  # Adjust path to your local repo
-    # components: [epaper_spi]
-    components: [waveshare_epaper]
-    refresh: 0s  # Always refresh from local source
+  # - source: ../../esphome/esphome/components  # Adjust path to your local repo
+  #   components: [epaper_spi]
+    # components: [waveshare_epaper]
+    # refresh: 0s  # Always refresh from local source
 
 spi:
   id: spi_v
@@ -297,7 +297,7 @@ display:
   - platform: waveshare_epaper
     model: 2.90in3c-weact # weact_epaper_3c
   # - platform: epaper_spi  # Changed from waveshare_epaper
-  #   model: weact-2.90in-3c  # New model name format
+  #   model: weact-2.9in-3c  # New model name format
     id: weact_display
     cs_pin: GPIO25
     busy_pin:
