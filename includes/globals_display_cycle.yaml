@@ -1,12 +1,13 @@
 ---
 #* Set global variables for display scripts and cycle through pages
 # Pawelo, 20250202, created based on board_esp32__water_pump.yaml
+# Pawelo, 20260202, changed initial value for display cycle page to 60 (to match 5min interval)
 
 globals:
   - id: global_display_cycle_page
     type: int
     # restore_value: true
-    initial_value: "3"
+    initial_value: "60"
   - id: global_display_current_cycle
     type: int
     # restore_value: true
