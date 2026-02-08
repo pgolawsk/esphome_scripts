@@ -30,7 +30,7 @@
 # Pawelo, 20250221, added uptime_boot text sensor
 # Pawelo, 20250221, disabled BSEC2 for BME680
 # Pawelo, 20250227, added correction for UV index based on sun azimuth and elevation - increase sensor sensitivity when sun is far outside of south/horizon
-# Pawelo, 20250322, lowered lux_dark_treshold from 3.9 to 0.9
+# Pawelo, 20250322, lowered lux_dark_threshold from 3.9 to 0.9
 # Pawelo, 20250413, set sensor_south_azimuth & sensor_elevation_direction variables to set LTR390 sensor orientation
 # Pawelo, 20250413, disabled adjustment of UV values based on sun azimuth and declination
 # Pawelo, 20250906, switched from Arduino to ESP-IDF framework
@@ -39,6 +39,8 @@
 # Pawelo, 20260124, moved display to original waveshare_epaper component as pgolawsk/esphome@pr-6226-tweaks is not working with 2026.1.1 version
 # Pawelo, 20260124, restored pgolawsk/esphome@pr-6226-tweaks to have proper 2.9in3c support
 # Pawelo, 20260124, added minimum_chip_revision variable to board_esp32.yaml to eliminate warnings
+# Pawelo, 20260208, making "Join Guest WIFI" as red
+# Pawelo, 20260208, switched to working PR#13528 for waveshare_epaper deprecated component
 
 #! run with this command to override substitutions
 # esphome -s devicename espXX -s updates 1min -s room <Room name> -s mqtt_room <room> run esp32_MMmm_SSss__PP.yaml --device 192.168.x.x
@@ -253,9 +255,12 @@ external_components:
   # - source: github://pr#6226
   #   components: [waveshare_epaper]
   # - source: github://666djb/WeAct-Studio_ePaper
-  - source: github://pgolawsk/esphome@pr-6226-tweaks
+  # - source: github://pgolawsk/esphome@pr-6226-tweaks
+  #   components: [waveshare_epaper]
+  #   refresh: 1min
+  - source: github://pr#13528
     components: [waveshare_epaper]
-    refresh: 1min
+    refresh: 1h
   # - source: ../custom_components/waveshare_epaper
   #   components: [waveshare_epaper]
 
@@ -273,15 +278,16 @@ display:
     # model: 2.90in-bv3 #! not working
     # model: 2.90in #! pr#4579, not working
     # model: 2.90inV2 #! pr#4579, not working properly
-    model: 2.90in3c # pr#6226, working but slow refresh (or from custom_components, https://github.com/RaceNJason/WeAct-Studio_ePaper.git)
+    # model: 2.90in3c # pr#6226, working but slow refresh (or from custom_components, https://github.com/RaceNJason/WeAct-Studio_ePaper.git)
     # model: 2.90ina #! pr#6226, not working
     # model: 2.90in-d #! not working
     # model: 2.90in-dke #! not working
     # model: gdew029t5 #! not working
     # model: gdey029t94
-
     # model: wa2.90in
     # model: wa2.90in3c
+    model: 2.90in3c-weact # weact_epaper_3c #! custom model based on 2.90in3c with tweaks for WeAct 2.9in display, working properly with original waveshare_epaper component, but slow refresh (or from custom_components,
+
     id: weact_display
     cs_pin: GPIO25
     busy_pin:
@@ -690,7 +696,7 @@ display:
           it.fill(COLOR_OFF);
 
           //id(t5_display).clear();
-          it.print(10, 20, id(size_14_font), COLOR_ON, TextAlign::BASELINE_LEFT, "Join Guest WIFI");
+          it.print(10, 20, id(size_14_font), id(color_red), TextAlign::BASELINE_LEFT, "Join Guest WIFI");
           // it.print(xRes - 40, yRes - 40, id(font_small), TextAlign::BASELINE_LEFT, "5");
           // guest wifi
           // WIFI:S:<WIFI NAME HERE>;T:WPA;P:<WIFI PASSWOD HERE>;H:false;;
