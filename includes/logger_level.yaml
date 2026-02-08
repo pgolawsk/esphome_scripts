@@ -3,6 +3,7 @@
 # Pawelo, 20241117, created based on logger.yaml, added manageable log level
 # Pawelo, 20241119, added baud rate as variable
 # Pawelo, 20250103, excluded WARN(ING) from tcs34725
+# Pawelo, 20260208, added epaper_spi DEBUG level
 
 logger:
   #  level: NONE, ERROR, WARN, INFO, DEBUG (default), VERBOSE, VERY_VERBOSE
@@ -26,5 +27,7 @@ logger:
     sgp30: WARN
     tcs34725: ERROR
     # debug of specific components
-    epaper_spi: VERBOSE
-    epaper_spi.weact_3c: VERBOSE
+    epaper_spi: DEBUG
+    epaper_spi.weact_3c: DEBUG
+    # epaper_spi: VERBOSE
+    # epaper_spi.weact_3c: VERBOSE
