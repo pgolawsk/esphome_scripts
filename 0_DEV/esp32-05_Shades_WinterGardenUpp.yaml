@@ -42,6 +42,7 @@
 # Pawelo, 20260125, testing pgolawsk/esphome@weact_epaper_3c instead of pgolawsk/esphome@pr-6226-tweaks
 # Pawelo, 20260207, making "Join Guest WIFI" as red
 # Pawelo, 20260208, testing further WeAct 2.9 BWR on epaper_spi componenet
+# Pawelo, 20260208, finalized epaper_spi componenet on PR #13894
 
 #! run with this command to override substitutions
 # esphome -s devicename espXX -s updates 1min -s room <Room name> -s mqtt_room <room> run esp32_MMmm_SSss__PP.yaml --device 192.168.x.x
@@ -50,7 +51,7 @@
 substitutions:
   devices: "Temperature, Humidity, Pressure, Gas Resistance via BME680/SHT41 and UV, Illuminance via LTR390/BH1750"
   project_name: "pgolawsk.esp_home"
-  version: "20260207"
+  version: "20260210"
 
   # required by includes/board_esp32.yaml script
   # framework_type: arduino # "arduino" or "esp-idf"
@@ -88,7 +89,7 @@ substitutions:
 # Override some settings included below in _board_ setup
 <<: !include ../includes/time_sntp_with_sun.yaml #WARN: this is to make sunrise and sunset sensor to be updated on every time sync event
 # <<: !include ../includes/mqtt_with_rtttl.yaml #WARN: override mqtt with RTTTL support if needed (buzzer and status led)
-<<: !include { file: ../includes/logger_level.yaml, vars: { level: DEBUG, baud_rate: 115200 } } #WARN: override default log level to specific one
+# <<: !include { file: ../includes/logger_level.yaml, vars: { level: DEBUG, baud_rate: 115200 } } #WARN: override default log level to specific one
 # <<: !include { file: ../includes/logger_level.yaml, vars: { level: VERBOSE, baud_rate: 115200 } } #WARN: override default log level to specific one
 # <<: !include { file: ../includes/logger_level.yaml, vars: { level: VERY_VERBOSE, baud_rate: 115200 } } #WARN: override default log level to specific one
 # <<: !include ../includes/wifi_outside.yaml #WARN: override wifi to connect to outside network instead of default
@@ -267,11 +268,12 @@ external_components:
   # - source: ../custom_components/waveshare_epaper
   #   components: [waveshare_epaper]
   # Use local esphome repo with the new epaper_spi component
-  - source: ../../esphome/esphome/components  # Adjust path to your local repo
+  # - source: ../../esphome/esphome/components  # Adjust path to your local repo
+  #   components: [epaper_spi]
+  #   refresh: 0s  # Always refresh from local source
+  - source: github://pr#13894
     components: [epaper_spi]
-    # components: [waveshare_epaper]
-    refresh: 0s  # Always refresh from local source
-
+    refresh: 1h
 spi:
   id: spi_v
   clk_pin: GPIO16 # SCL
