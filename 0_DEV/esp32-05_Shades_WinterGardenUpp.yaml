@@ -721,7 +721,7 @@ display:
           //line
           it.line(x, y, xRes -1, y, COLOR_ON);
 
-          x = 0, y = y + 50;
+          x = 0, y = y + 45;
           //Weekday
           if (id(sntp_time).now().day_of_week == 1) {
             fi = id(color_red); // Sunday show in red font
