@@ -43,6 +43,7 @@
 # Pawelo, 20260207, making "Join Guest WIFI" as red
 # Pawelo, 20260208, testing further WeAct 2.9 BWR on epaper_spi componenet
 # Pawelo, 20260208, finalized epaper_spi componenet on PR #13894
+# Pawelo, 20260214, added date & weekday to Guest WiFi page
 
 #! run with this command to override substitutions
 # esphome -s devicename espXX -s updates 1min -s room <Room name> -s mqtt_room <room> run esp32_MMmm_SSss__PP.yaml --device 192.168.x.x
@@ -51,7 +52,7 @@
 substitutions:
   devices: "Temperature, Humidity, Pressure, Gas Resistance via BME680/SHT41 and UV, Illuminance via LTR390/BH1750"
   project_name: "pgolawsk.esp_home"
-  version: "20260210"
+  version: "20260214"
 
   # required by includes/board_esp32.yaml script
   # framework_type: arduino # "arduino" or "esp-idf"
@@ -83,7 +84,7 @@ substitutions:
   display_xRes: "128"
   display_yRes: "296"
   display_rotation: "0"
-  display_updates_interval: 5s # need to be small for display manageable interval cycle
+  display_updates_interval: 1min # need to be small for display manageable interval cycle, but epaper needs 15-40s to refresh, so it is not possible to set it to something smaller than 15s, otherwise it will be refreshing all the time and not showing any content
   display_updates_manual_cycle_delay: 5min
 
 # Override some settings included below in _board_ setup
@@ -701,22 +702,60 @@ display:
       - id: page_wifi_qr
         lambda: |-
           // QR Code for Guest WiFi
+
+          // Date & Time Page
+          int x, y, y_m;
+          auto fi =id(color_black);
           #define xRes ${display_xRes}
           #define yRes ${display_yRes}
-          #define xCenter (xRes/2 + 40) // X position center
-          int x, y;
-
 
           //draw clear background
           it.fill(COLOR_OFF);
 
-          //id(t5_display).clear();
-          it.print(10, 20, id(size_14_font), id(color_red), TextAlign::BASELINE_LEFT, "Join Guest WIFI");
+          x = 0, y = 0;
+          //Time
+          it.strftime(x, y, id(size_50_font), COLOR_ON, "%H:%M", id(sntp_time).now());
+          /* it.strftime(225, 68, id(size_60_font), "%S", id(sntp_time).now()); */
+
+          x = 0, y = y + 50 + 5;
+          //line
+          it.line(x, y, xRes -1, y, COLOR_ON);
+
+          x = 0, y = y + 50;
+          //Weekday
+          if (id(sntp_time).now().day_of_week == 1) {
+            fi = id(color_red); // Sunday show in red font
+          } else {
+            fi = id(color_black);
+          }
+          // it.strftime(xRes / 2, y, id(size_25_font), fi, TextAlign::BASELINE_CENTER ,"%A", id(sntp_time).now());
+          it.strftime(xRes / 2, y, id(size_50_font), fi, TextAlign::BASELINE_CENTER ,"%a", id(sntp_time).now());
+          // it.strftime(250, 58, id(size_20_font), "%a", id(sntp_time).now());
+
+          // x = 0, y = y + 40;
+          // //date
+          // it.strftime(x + 53, y, id(size_40_font), COLOR_ON, TextAlign::BASELINE_RIGHT, "%d", id(sntp_time).now());
+          // it.printf(x + 53, y, id(size_14_font), COLOR_ON, TextAlign::BASELINE_LEFT, "D");
+          // it.strftime(x + 113, y, id(size_40_font), COLOR_ON, TextAlign::BASELINE_RIGHT, "%m", id(sntp_time).now());
+          // it.printf(x + 113, y, id(size_14_font), COLOR_ON, TextAlign::BASELINE_LEFT, "M");
+
+          x = 0, y = y + 5;
+          //line
+          it.line(x, y, xRes -1, y, COLOR_ON);
+
+          // QR Code for Guest WiFi
+
+          // x = 25, y = y + 20;
+          // it.print(x, y, id(size_25_font), id(color_red), TextAlign::BASELINE_LEFT, "Join");
+
+          x = 5, y = y + 30;
+          it.print(x, y, id(size_25_font), id(color_red), TextAlign::BASELINE_LEFT, "Guest WIFI");
           // it.print(xRes - 40, yRes - 40, id(font_small), TextAlign::BASELINE_LEFT, "5");
           // guest wifi
           // WIFI:S:<WIFI NAME HERE>;T:WPA;P:<WIFI PASSWOD HERE>;H:false;;
           // Draw the QR-code at position [x=120,y=5] with white color and a 4x scale
-          it.qr_code(5, 35, id(guestwifi_qr), COLOR_ON, 4);
+          x = 5, y = y + 10;
+          it.qr_code(x, y, id(guestwifi_qr), COLOR_ON, 4);
 
           // ALIGN Y TO BOTTOM
           x = 0, y = yRes - 25 - 5 - 3;
