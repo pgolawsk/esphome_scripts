@@ -102,7 +102,7 @@ substitutions:
   display_xRes: "296"
   display_yRes: "128"
   display_rotation: "90"
-  display_updates_interval: 5s # need to be small for display manageable interval cycle
+  display_updates_interval: 1min # need to be small for display manageable interval cycle
   display_updates_manual_cycle_delay: 5min
 
 # Override some settings included below in _board_ setup
