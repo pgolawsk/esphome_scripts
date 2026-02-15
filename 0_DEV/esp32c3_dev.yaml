@@ -42,6 +42,7 @@
 # Pawelo, 20251019, added external_components section for my own fixes and changes testing
 # Pawelo, 20260123, switched to ESP-IDF framework as default again, removed external_components with PR testing
 # Pawelo, 20260124, switched to board_esp32_variant.yaml as it has no minimum_chip_revision
+# Pawelo, 20260215, disabled SHT3x and enabled FRAM for testing
 
 #! run with this command to override substitutions
 # esphome -s devicename espXX -s updates 1min -s room <Room name> -s mqtt_room <room> run esp32_MMmm_SSss__PP.yaml --device 192.168.x.x
@@ -51,7 +52,7 @@ substitutions:
 #  devices: "Temperature and Humidity via SHTx30 and Illuminance via BH1750"
   devices: "DEV Kit"
   project_name: "pgolawsk.esp_home"
-  version: "20260123"
+  version: "20260215"
 
   # required by ../includes/board_esp32.yaml script
   # framework_type: arduino # "arduino" or "esp-idf"
@@ -79,12 +80,21 @@ substitutions:
 #   - source: github://pr#9530  # my prometheus PR from 2025.7.0
 #     components: [prometheus]
 #     refresh: 1h
+external_components:
+  - source: ../../esphome/esphome/components  # Adjust path to your local repo
+    components: [fram]
+    refresh: 0s  # Always refresh from local source
+  # - source: github://pr#13894
+  #   components: [fram, fram_pref]
+  #   refresh: 10min
+
 
 # Override some settings included below in _board_ setup
 <<: !include ../includes/time_sntp_with_sun.yaml #WARN: this is to make sunrise and sunset sensor to be updated on every time sync event
 # <<: !include ../includes/mqtt_with_rtttl.yaml #WARN: override mqtt with RTTTL support if needed (buzzer and status led)
-<<: !include { file: ../includes/logger_level.yaml, vars: { level: INFO, baud_rate: 115200 } } #WARN: override default log level to specific one
-# <<: !include { file: ../includes/logger_level.yaml, vars: { level: DEBUG, baud_rate: 115200 } } #WARN: override default log level to specific one
+# <<: !include { file: ../includes/logger_level.yaml, vars: { level: INFO, baud_rate: 115200 } } #WARN: override default log level to specific one
+<<: !include { file: ../includes/logger_level.yaml, vars: { level: DEBUG, baud_rate: 115200 } } #WARN: override default log level to specific one
+# <<: !include { file: ../includes/logger_level.yaml, vars: { level: VERBOSE, baud_rate: 115200 } } #WARN: override default log level to specific one
 # <<: !include { file: ../includes/logger_level.yaml, vars: { level: VERY_VERBOSE, baud_rate: 115200 } } #WARN: override default log level to specific one
 # <<: !include ../includes/wifi_outside.yaml #WARN: override wifi to connect to outside network instead of default
 # <<: !include { file: ../includes/wifi_main.yaml, vars: { } } #WARN: override wifi to connect to extended network instead of default
@@ -108,6 +118,18 @@ substitutions:
 # <<: !include { file: ../interfaces/ir_receiver.yaml, vars: { gpio: "GPIO3", dump: "nec", rmt_channel: 2 } } # for ESP32c3 can be 2-3, for ESP32 can be 0-7, for ESP32s2 0-3, for ESP32s3 4-7
 # <<: !include { file: ../interfaces/ir_transmitter.yaml, vars: { gpio: "GPIO4", rmt_channel: 0 } } # for ESP32c3 can be 0-1, for ESP32 can be 0-7, for ESP32s2 0-3, for ESP32s3 0-3
 # <<: !include { file: ../interfaces/i2c_pcf857x.yaml, vars: { ix: "", address: "0x20", pcf8575: false } }
+
+fram:
+  - id: fram_bus
+    model: MB85RC256
+    address: 0x50
+    preferences:
+      pool_size: 1kB
+
+globals:
+  - id: fram_test_value
+    type: int
+    restore_value: yes
 
 # I2S Audio (!cannot be used with "I2S Sound Level Meter" below)
 # i2s_audio:
@@ -164,6 +186,12 @@ text_sensor:
   # - !include ../sensors/text_air_quality_bme68x.yaml
   # - !include { file: ../sensors/text_IAQ_accuracy_bme68x.yaml, vars: { platform: "bme68x_bsec2" } }
 
+  - platform: template
+    name: "FRAM Test Read"
+    lambda: |-
+      return std::to_string(id(fram_test_value));
+    update_interval: 5s
+
 binary_sensor:
   # HA Connected
   - !include ../sensors/binary_ha_connected.yaml
@@ -193,7 +221,7 @@ sensor:
   - !include ../sensors/sun_azimuth.yaml
 
   # Temperature and Humidity sensor
-  - !include { file: ../sensors/temp_hum_SHT3x.yaml, vars: { ix: "", bus_id: "bus_a", address: "0x44" } }
+  # - !include { file: ../sensors/temp_hum_SHT3x.yaml, vars: { ix: "", bus_id: "bus_a", address: "0x44" } }
   # - !include { file: ../sensors/temp_hum_AHT2x.yaml, vars: { ix: "", bus_id: "bus_a", address: "0x38" } }
 
   # Temperature, Humidity, Pressure and Gas Resistance sensor
@@ -241,6 +269,15 @@ button:
   # # some LG TV buttons - via NEC
   # - !include { file: ../buttons/rc_nec_button.yaml, vars: { receiver: "LG_TV", action: "1", address: 0xFB04, command: 0xEE11 } }
   # - !include { file: ../buttons/rc_nec_button.yaml, vars: { receiver: "LG_TV", action: "HOME", address: 0xFB04, command: 0xBC43 } }
+
+  - platform: template
+    name: "FRAM Test Save"
+    on_press:
+      then:
+        - lambda: |-
+            int random_value = (int)(random_uint32() % 2000) - 1000;
+            id(fram_test_value) = random_value;
+            ESP_LOGD("main", "Saved %d to FRAM", random_value);
 
 output:
   # LED blue (C3 supermini)
