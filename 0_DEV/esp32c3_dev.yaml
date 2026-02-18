@@ -43,6 +43,7 @@
 # Pawelo, 20260123, switched to ESP-IDF framework as default again, removed external_components with PR testing
 # Pawelo, 20260124, switched to board_esp32_variant.yaml as it has no minimum_chip_revision
 # Pawelo, 20260215, disabled SHT3x and enabled FRAM for testing
+# Pawelo, 20260218, continue testing FRAM and NVM with FRAM I2C platform, added test packages for both of them
 
 #! run with this command to override substitutions
 # esphome -s devicename espXX -s updates 1min -s room <Room name> -s mqtt_room <room> run esp32_MMmm_SSss__PP.yaml --device 192.168.x.x
@@ -52,7 +53,7 @@ substitutions:
 #  devices: "Temperature and Humidity via SHTx30 and Illuminance via BH1750"
   devices: "DEV Kit"
   project_name: "pgolawsk.esp_home"
-  version: "20260215"
+  version: "20260218"
 
   # required by ../includes/board_esp32.yaml script
   # framework_type: arduino # "arduino" or "esp-idf"
@@ -75,26 +76,12 @@ substitutions:
   # default variable values for !include statements
   accuracy_decimals: "2"
 
-# Testing any my fixes
-# external_components:
-#   - source: github://pr#9530  # my prometheus PR from 2025.7.0
-#     components: [prometheus]
-#     refresh: 1h
-external_components:
-  - source: ../../esphome/esphome/components  # Adjust path to your local repo
-    components: [fram]
-    refresh: 0s  # Always refresh from local source
-  # - source: github://pr#13894
-  #   components: [fram, fram_pref]
-  #   refresh: 10min
-
-
 # Override some settings included below in _board_ setup
 <<: !include ../includes/time_sntp_with_sun.yaml #WARN: this is to make sunrise and sunset sensor to be updated on every time sync event
 # <<: !include ../includes/mqtt_with_rtttl.yaml #WARN: override mqtt with RTTTL support if needed (buzzer and status led)
 # <<: !include { file: ../includes/logger_level.yaml, vars: { level: INFO, baud_rate: 115200 } } #WARN: override default log level to specific one
-<<: !include { file: ../includes/logger_level.yaml, vars: { level: DEBUG, baud_rate: 115200 } } #WARN: override default log level to specific one
-# <<: !include { file: ../includes/logger_level.yaml, vars: { level: VERBOSE, baud_rate: 115200 } } #WARN: override default log level to specific one
+# <<: !include { file: ../includes/logger_level.yaml, vars: { level: DEBUG, baud_rate: 115200 } } #WARN: override default log level to specific one
+<<: !include { file: ../includes/logger_level.yaml, vars: { level: VERBOSE, baud_rate: 115200 } } #WARN: override default log level to specific one
 # <<: !include { file: ../includes/logger_level.yaml, vars: { level: VERY_VERBOSE, baud_rate: 115200 } } #WARN: override default log level to specific one
 # <<: !include ../includes/wifi_outside.yaml #WARN: override wifi to connect to outside network instead of default
 # <<: !include { file: ../includes/wifi_main.yaml, vars: { } } #WARN: override wifi to connect to extended network instead of default
@@ -119,18 +106,6 @@ external_components:
 # <<: !include { file: ../interfaces/ir_transmitter.yaml, vars: { gpio: "GPIO4", rmt_channel: 0 } } # for ESP32c3 can be 0-1, for ESP32 can be 0-7, for ESP32s2 0-3, for ESP32s3 0-3
 # <<: !include { file: ../interfaces/i2c_pcf857x.yaml, vars: { ix: "", address: "0x20", pcf8575: false } }
 
-fram:
-  - id: fram_bus
-    model: MB85RC256
-    address: 0x50
-    preferences:
-      pool_size: 1kB
-
-globals:
-  - id: fram_test_value
-    type: int
-    restore_value: yes
-
 # I2S Audio (!cannot be used with "I2S Sound Level Meter" below)
 # i2s_audio:
 #   - <<: !include { file: ../i2s/i2s_audio.yaml, vars: { i2s_id: "i2s_all", ws_pin: "GPIO6", sck_pin: "GPIO7" } }
@@ -146,25 +121,29 @@ globals:
 # # <<: !include { file: ../i2s/voice_assistant_mplayer.yaml, vars: { mic_id: "mic", mplayer_id: "mplayer" } }
 # <<: !include { file: ../i2s/voice_assistant_speaker.yaml, vars: { mic_id: "mic", speaker_id: "spk" } }
 
-# packages:
-#   # I2S Sound Level Meter (!cannot be used with "I2S Audio" above)
-#   slm: !include { file: ../i2s/set_i2s_sound_level_meter.yaml, vars: { i2s_id: "i2s_db", din_pin: "GPIO15", ws_pin: "GPIO37", bck_pin: "GPIO38", channel: "left" } }
+packages:
+  # FRAM test - this is to test the NVM component with FRAM I2C platform and all partition types, as well as to have a simple example of how to use it in practice
+  # test_fram: !include { file: ../tests/test_fram.yaml, vars: {} }
+  test_nvm: !include { file: ../tests/test_nvm_fram_i2c.yaml, vars: {} }
 
-#   # IR Remote control buttons added from packages
-#   # apple_tv: !include { file: ../buttons/set_apple_tv_ir_remote.yaml, vars: { receiver: "ATV" } }
-#   smart_tv: !include { file: ../buttons/set_smart_tv_ir_remote.yaml, vars: { receiver: "STV" } }
-#   # smart_tv_x: !include { file: ../buttons/set_smart_tv_ir_remote_rest.yaml, vars: { receiver: "STVx" } }
-#   # nano_pc: !include { file: ../buttons/set_nano_pc_ir_remote.yaml, vars: { receiver: "NPC" } }
-#   # nano_pc_x: !include { file: ../buttons/set_nano_pc_ir_remote_rest.yaml, vars: { receiver: "NPCx" } }
-#   lg_tv: !include { file: ../buttons/set_lg_tv_ir_remote.yaml, vars: { receiver: "TV" } }
-#   # lg_tv_x: !include { file: ../buttons/set_lg_tv_ir_remote_rest.yaml, vars: { receiver: "TVx" } }
-#   yamaha_av_main: !include { file: ../buttons/set_yamaha_av_main_ir_remote.yaml, vars: { receiver: "AV" } }
-#   # yamaha_av_main_x: !include { file: ../buttons/set_yamaha_av_main_ir_remote_rest.yaml, vars: { receiver: "AVx" } }
-#   yamaha_av_zone2: !include { file: ../buttons/set_yamaha_av_zone2_ir_remote.yaml, vars: { receiver: "AV2" } }
-#   # yamaha_av_zone2_x: !include { file: ../buttons/set_yamaha_av_zone2_ir_remote_rest.yaml, vars: { receiver: "AV2x" } }
-#   # yamaha_bd: !include { file: ../buttons/set_yamaha_bd_ir_remote.yaml, vars: { receiver: "BD" } }
-#   # yamaha_bd_x: !include { file: ../buttons/set_yamaha_bd_ir_remote_rest.yaml, vars: { receiver: "BDx" } }
-#   # creative: !include { file: ../buttons/set_creative_ir_remote.yaml, vars: { receiver: "CR" } }
+  # I2S Sound Level Meter (!cannot be used with "I2S Audio" above)
+  # slm: !include { file: ../i2s/set_i2s_sound_level_meter.yaml, vars: { i2s_id: "i2s_db", din_pin: "GPIO15", ws_pin: "GPIO37", bck_pin: "GPIO38", channel: "left" } }
+
+  # IR Remote control buttons added from packages
+  # apple_tv: !include { file: ../buttons/set_apple_tv_ir_remote.yaml, vars: { receiver: "ATV" } }
+  # smart_tv: !include { file: ../buttons/set_smart_tv_ir_remote.yaml, vars: { receiver: "STV" } }
+  # smart_tv_x: !include { file: ../buttons/set_smart_tv_ir_remote_rest.yaml, vars: { receiver: "STVx" } }
+  # nano_pc: !include { file: ../buttons/set_nano_pc_ir_remote.yaml, vars: { receiver: "NPC" } }
+  # nano_pc_x: !include { file: ../buttons/set_nano_pc_ir_remote_rest.yaml, vars: { receiver: "NPCx" } }
+  # lg_tv: !include { file: ../buttons/set_lg_tv_ir_remote.yaml, vars: { receiver: "TV" } }
+  # lg_tv_x: !include { file: ../buttons/set_lg_tv_ir_remote_rest.yaml, vars: { receiver: "TVx" } }
+  # yamaha_av_main: !include { file: ../buttons/set_yamaha_av_main_ir_remote.yaml, vars: { receiver: "AV" } }
+  # yamaha_av_main_x: !include { file: ../buttons/set_yamaha_av_main_ir_remote_rest.yaml, vars: { receiver: "AVx" } }
+  # yamaha_av_zone2: !include { file: ../buttons/set_yamaha_av_zone2_ir_remote.yaml, vars: { receiver: "AV2" } }
+  # yamaha_av_zone2_x: !include { file: ../buttons/set_yamaha_av_zone2_ir_remote_rest.yaml, vars: { receiver: "AV2x" } }
+  # yamaha_bd: !include { file: ../buttons/set_yamaha_bd_ir_remote.yaml, vars: { receiver: "BD" } }
+  # yamaha_bd_x: !include { file: ../buttons/set_yamaha_bd_ir_remote_rest.yaml, vars: { receiver: "BDx" } }
+  # creative: !include { file: ../buttons/set_creative_ir_remote.yaml, vars: { receiver: "CR" } }
 
 text_sensor:
   - !include ../sensors/text_uptime.yaml
@@ -185,12 +164,6 @@ text_sensor:
   # - !include { file: ../sensors/text_air_quality.yaml }
   # - !include ../sensors/text_air_quality_bme68x.yaml
   # - !include { file: ../sensors/text_IAQ_accuracy_bme68x.yaml, vars: { platform: "bme68x_bsec2" } }
-
-  - platform: template
-    name: "FRAM Test Read"
-    lambda: |-
-      return std::to_string(id(fram_test_value));
-    update_interval: 5s
 
 binary_sensor:
   # HA Connected
@@ -269,15 +242,6 @@ button:
   # # some LG TV buttons - via NEC
   # - !include { file: ../buttons/rc_nec_button.yaml, vars: { receiver: "LG_TV", action: "1", address: 0xFB04, command: 0xEE11 } }
   # - !include { file: ../buttons/rc_nec_button.yaml, vars: { receiver: "LG_TV", action: "HOME", address: 0xFB04, command: 0xBC43 } }
-
-  - platform: template
-    name: "FRAM Test Save"
-    on_press:
-      then:
-        - lambda: |-
-            int random_value = (int)(random_uint32() % 2000) - 1000;
-            id(fram_test_value) = random_value;
-            ESP_LOGD("main", "Saved %d to FRAM", random_value);
 
 output:
   # LED blue (C3 supermini)
