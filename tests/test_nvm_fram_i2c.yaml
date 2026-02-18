@@ -1,0 +1,43 @@
+# This is a test configuration for the NVM component using the FRAM I2C platform. It defines two partitions (preferences and raw) and includes a button to save random values to the FRAM, as well as a text sensor to read those values back.
+# Pawelo, 20260218, created
+
+external_components:
+  - source: ../../esphome/esphome/components  # Adjust path to your local repo
+  # - source: github://pr#13???
+    components: [ nvm, fram_i2c, safe_mode]
+    refresh: 0s  # Always refresh from local source
+
+nvm:
+  - platform: fram_i2c
+    id: my_fram
+    address: 0x50
+    model: MB85RC256
+    partitions:
+      - id: pref_store
+        type: preferences
+        size: 4kB
+      - id: sensor_cache
+        type: raw
+        size: 8kB
+
+globals:
+  - id: fram_test_value
+    type: int
+    restore_value: yes
+
+button:
+  - platform: template
+    name: "FRAM Test Save"
+    on_press:
+      then:
+        - lambda: |-
+            int random_value = (int)(random_uint32() % 2000) - 1000;
+            id(fram_test_value) = random_value;
+            ESP_LOGD("main", "Saved %d to FRAM", random_value);
+
+text_sensor:
+  - platform: template
+    name: "FRAM Test Read"
+    lambda: |-
+      return std::to_string(id(fram_test_value));
+    update_interval: 10s
