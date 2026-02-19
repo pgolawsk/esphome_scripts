@@ -23,6 +23,7 @@ rmt_symbols: ${rmt_symbols} # minimum 64
 num_leds: 1
 entity_category: ${entity_category} # "" or config or diagnostic
 restore_mode: ALWAYS_OFF
+# restore_mode: RESTORE_DEFAULT_OFF
 effects:
   - pulse:
       name: slow_pulse
