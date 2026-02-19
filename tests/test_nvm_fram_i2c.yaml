@@ -19,25 +19,188 @@ nvm:
       - id: sensor_cache
         type: raw
         size: 8kB
+        offset: 0x2000  # Explicit offset to preserve data if pref_store resizes
+      - id: keys_data
+        type: key_value
+        size: 2kB
+        offset: 0x4000  # Explicit offset
+  # - platform: fram_i2c
+  #   id: my_fram2
+  #   address: 0x51
+  #   model: MB85RC256
+  #   partitions:
+  #     - id: pref_store2
+  #       type: preferences
+  #       size: 2kB
 
 globals:
   - id: fram_test_value
     type: int
     restore_value: yes
+  - id: boot_count
+    type: int
+    restore_value: yes
+
+# ========== PREFERENCES PARTITION TESTS ==========
 
 button:
   - platform: template
-    name: "FRAM Test Save"
+    name: "Pref: Save Random"
     on_press:
       then:
         - lambda: |-
             int random_value = (int)(random_uint32() % 2000) - 1000;
             id(fram_test_value) = random_value;
-            ESP_LOGD("main", "Saved %d to FRAM", random_value);
+            ESP_LOGD("main", "Saved %d to FRAM preferences", random_value);
+
+  - platform: template
+    name: "Pref: Increment Boot Count"
+    on_press:
+      then:
+        - lambda: |-
+            id(boot_count) += 1;
+            ESP_LOGD("main", "Boot count now: %d", id(boot_count));
+
+  # ========== RAW PARTITION TESTS ==========
+
+  - platform: template
+    name: "Raw: Write Test Data"
+    on_press:
+      then:
+        - lambda: |-
+            // Write a test pattern to raw partition
+            uint8_t test_data[16];
+            for (int i = 0; i < 16; i++) {
+              test_data[i] = (uint8_t)(random_uint32() % 256);
+            }
+            id(sensor_cache)->write(0, test_data, 16);
+            ESP_LOGD("main", "Wrote 16 random bytes to raw partition at offset 0");
+
+  - platform: template
+    name: "Raw: Write Counter"
+    on_press:
+      then:
+        - lambda: |-
+            // Read current counter, increment, write back
+            uint32_t counter = 0;
+            id(sensor_cache)->read(100, reinterpret_cast<uint8_t*>(&counter), 4);
+            counter++;
+            id(sensor_cache)->write(100, reinterpret_cast<uint8_t*>(&counter), 4);
+            ESP_LOGD("main", "Raw counter at offset 100: %u", counter);
+
+  # ========== KEY_VALUE PARTITION TESTS ==========
+
+  - platform: template
+    name: "KV: Set Device Name"
+    on_press:
+      then:
+        - lambda: |-
+            id(keys_data)->set_string("device_name", "Test Device " + std::to_string(random_uint32() % 100));
+            ESP_LOGD("main", "Set device_name key");
+
+  - platform: template
+    name: "KV: Set Counter"
+    on_press:
+      then:
+        - lambda: |-
+            uint32_t counter = 0;
+            id(keys_data)->get("counter", reinterpret_cast<uint8_t*>(&counter), sizeof(counter));
+            counter++;
+            id(keys_data)->set("counter", reinterpret_cast<uint8_t*>(&counter), sizeof(counter));
+            ESP_LOGD("main", "KV counter: %u", counter);
+
+  - platform: template
+    name: "KV: Set Float Value"
+    on_press:
+      then:
+        - lambda: |-
+            float value = (float)(random_uint32() % 10000) / 100.0f;
+            id(keys_data)->set("float_val", reinterpret_cast<uint8_t*>(&value), sizeof(value));
+            ESP_LOGD("main", "Set float_val: %.2f", value);
+
+  - platform: template
+    name: "KV: Erase Counter"
+    on_press:
+      then:
+        - lambda: |-
+            if (id(keys_data)->erase("counter")) {
+              ESP_LOGD("main", "Erased counter key");
+            } else {
+              ESP_LOGD("main", "Counter key not found");
+            }
 
 text_sensor:
+  # ========== PREFERENCES PARTITION SENSORS ==========
+
   - platform: template
-    name: "FRAM Test Read"
+    name: "Pref: Test Value"
     lambda: |-
       return std::to_string(id(fram_test_value));
+    update_interval: 10s
+
+  - platform: template
+    name: "Pref: Boot Count"
+    lambda: |-
+      return std::to_string(id(boot_count));
+    update_interval: 10s
+
+  # ========== RAW PARTITION SENSORS ==========
+
+  - platform: template
+    name: "Raw: First 16 Bytes"
+    lambda: |-
+      uint8_t data[16];
+      id(sensor_cache)->read(0, data, 16);
+      char buf[64];
+      snprintf(buf, sizeof(buf), "%02X%02X%02X%02X %02X%02X%02X%02X %02X%02X%02X%02X %02X%02X%02X%02X",
+               data[0], data[1], data[2], data[3], data[4], data[5], data[6], data[7],
+               data[8], data[9], data[10], data[11], data[12], data[13], data[14], data[15]);
+      return std::string(buf);
+    update_interval: 10s
+
+  - platform: template
+    name: "Raw: Counter at 100"
+    lambda: |-
+      uint32_t counter = 0;
+      id(sensor_cache)->read(100, reinterpret_cast<uint8_t*>(&counter), 4);
+      return std::to_string(counter);
+    update_interval: 10s
+
+  # ========== KEY_VALUE PARTITION SENSORS ==========
+
+  - platform: template
+    name: "KV: Device Name"
+    lambda: |-
+      return id(keys_data)->get_string("device_name", "not set");
+    update_interval: 10s
+
+  - platform: template
+    name: "KV: Counter"
+    lambda: |-
+      uint32_t counter = 0;
+      if (id(keys_data)->get("counter", reinterpret_cast<uint8_t*>(&counter), sizeof(counter)) > 0) {
+        return std::to_string(counter);
+      }
+      return std::string("not set");
+    update_interval: 10s
+
+  - platform: template
+    name: "KV: Float Value"
+    lambda: |-
+      float value = 0;
+      if (id(keys_data)->get("float_val", reinterpret_cast<uint8_t*>(&value), sizeof(value)) > 0) {
+        char buf[32];
+        snprintf(buf, sizeof(buf), "%.2f", value);
+        return std::string(buf);
+      }
+      return std::string("not set");
+    update_interval: 10s
+
+sensor:
+  - platform: template
+    name: "KV: Counter (numeric)"
+    lambda: |-
+      uint32_t counter = 0;
+      id(keys_data)->get("counter", reinterpret_cast<uint8_t*>(&counter), sizeof(counter));
+      return (float)counter;
     update_interval: 10s
