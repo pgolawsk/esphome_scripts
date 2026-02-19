@@ -1,5 +1,6 @@
 # This is a test configuration for the NVM component using the FRAM I2C platform. It defines two partitions (preferences and raw) and includes a button to save random values to the FRAM, as well as a text sensor to read those values back.
 # Pawelo, 20260218, created
+# Pawelo, 20260218, added entity category and mdi icons to all entities
 
 external_components:
   - source: ../../esphome/esphome/components  # Adjust path to your local repo
@@ -23,6 +24,8 @@ globals:
 button:
   - platform: template
     name: "FRAM Test Save"
+    entity_category: diagnostic
+    icon: mdi:test-tube
     on_press:
       then:
         - lambda: |-
@@ -33,6 +36,8 @@ button:
 text_sensor:
   - platform: template
     name: "FRAM Test Read"
+    entity_category: diagnostic
+    icon: mdi:test-tube-empty
     lambda: |-
       return std::to_string(id(fram_test_value));
     update_interval: 10s
