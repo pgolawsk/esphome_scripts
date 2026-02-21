@@ -5,3 +5,36 @@
 *.bin
 /temp
 __pycache__
+
+# ===========================================
+# Kilo Code Checkpoint Exclusions
+# ===========================================
+
+# ESPHome nested repos and cache
+**/.esphome/
+**/external_components/
+**/managed_components/
+**/.piolibdeps/
+**/.pio/
+**/.espressif/
+
+# Build artifacts
+**/build/
+**/.cache/
+**/.uv_cache/
+
+# Python
+*.py[cod]
+*$py.class
+*.so
+
+# IDE
+.idea/
+.vscode/
+*.swp
+
+# OS
+.DS_Store
+
+# Logs
+*.log
