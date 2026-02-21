@@ -44,6 +44,9 @@
 # Pawelo, 20260124, switched to board_esp32_variant.yaml as it has no minimum_chip_revision
 # Pawelo, 20260215, disabled SHT3x and enabled FRAM for testing
 # Pawelo, 20260218, continue testing FRAM and NVM with FRAM I2C platform, added test packages for both of them
+# Pawelo, 20260220, finalized FRAM with NVM
+# Pawelo, 20260221, added restore_mode
+# Pawelo, 20260221, added WeAct 2.13 display for testing
 
 #! run with this command to override substitutions
 # esphome -s devicename espXX -s updates 1min -s room <Room name> -s mqtt_room <room> run esp32_MMmm_SSss__PP.yaml --device 192.168.x.x
@@ -53,7 +56,7 @@ substitutions:
 #  devices: "Temperature and Humidity via SHTx30 and Illuminance via BH1750"
   devices: "DEV Kit"
   project_name: "pgolawsk.esp_home"
-  version: "20260218"
+  version: "20260221"
 
   # required by ../includes/board_esp32.yaml script
   # framework_type: arduino # "arduino" or "esp-idf"
@@ -75,6 +78,15 @@ substitutions:
 
   # default variable values for !include statements
   accuracy_decimals: "2"
+  # restore_mode: ALWAYS_OFF
+  restore_mode: RESTORE_DEFAULT_OFF
+
+  # Display setup variables
+  display_xRes: "250"
+  display_yRes: "122"
+  display_rotation: "90"
+  display_updates_interval: 5min # need to be small for display manageable interval cycle
+  display_updates_manual_cycle_delay: 5min
 
 # Override some settings included below in _board_ setup
 <<: !include ../includes/time_sntp_with_sun.yaml #WARN: this is to make sunrise and sunset sensor to be updated on every time sync event
@@ -243,6 +255,12 @@ button:
   # - !include { file: ../buttons/rc_nec_button.yaml, vars: { receiver: "LG_TV", action: "1", address: 0xFB04, command: 0xEE11 } }
   # - !include { file: ../buttons/rc_nec_button.yaml, vars: { receiver: "LG_TV", action: "HOME", address: 0xFB04, command: 0xBC43 } }
 
+  # Display buttons
+  - !include { file: ../buttons/display_button.yaml, vars: { ix: "Refresh", display_id: "weact_display", command: "", mdi_icon: "refresh" } }
+  - !include { file: ../buttons/display_button.yaml, vars: { ix: "Next", display_id: "weact_display", command: "next", mdi_icon: "page-next" } }
+  - !include { file: ../buttons/display_button.yaml, vars: { ix: "Prev", display_id: "weact_display", command: "previous", mdi_icon: "page-previous" } }
+  - !include { file: ../buttons/display_page_button.yaml, vars: { page_ix: "blank", display_id: "weact_display" } }
+
 output:
   # LED blue (C3 supermini)
   # - !include { file: ../outputs/led.yaml, vars: { ix: "", gpio: "GPIO8", inverted: true } }
@@ -307,3 +325,102 @@ switch:
   # - !include { file: ../switches/relay.yaml, vars: { ix: "4", mdi_icon: "light-switch", gpio: GPIO4, inverted: true, off_delay: 10min } }
 
 #  - !include { file: ../switches/relay_on_pcf857x.yaml, vars: { hub_ix: "", ix: "1", mdi_icon: "light-switch", gpio: 0, inverted: true, off_delay: 10min } }
+
+# Include fonts for display
+<<: !include ../fonts/fonts_weeact_display.yaml
+
+<<: !include { file: ../scripts/interval_display_cycle_pages.yaml, vars: { display_id: weact_display, cycle_script: cycle_pages_in_day, page_to_skip: page_wifi_qr } }
+
+<<: !include ../includes/globals_display_cycle.yaml #! do not enable for board_esp32__water_pump.yaml
+
+select:
+  # Display Cycle Interval selection
+  # id: select_display_cycle_interval
+  - !include { file: ../selects/display_cycle_interval.yaml, vars: { global_variable: "global_display_cycle_page", display_id: "weact_display" } }
+
+spi:
+  id: spi_v
+  mosi_pin: GPIO5 # SDA
+  clk_pin: GPIO6 # SCL
+
+display:
+  - platform: waveshare_epaper
+    model: 2.13in-ttgo-b74
+    id: weact_display
+    cs_pin: GPIO7
+    dc_pin: GPIO4 # GPIO8 is RGB LED
+    reset_pin: GPIO9
+    busy_pin: GPIO10
+    reset_duration: 20ms
+    rotation: ${display_rotation}
+    # full_update_every: 10
+    update_interval: 1min
+
+    pages:
+      - id: page_blank
+        lambda: |-
+          // Blank Page
+          int x, y;
+          #define xRes ${display_xRes}
+          #define yRes ${display_yRes}
+
+          //draw clear background
+          // it.filled_rectangle(0, 0, xRes, yRes, COLOR_OFF);
+          it.fill(COLOR_OFF);
+
+      - id: page_time_key_measures
+        lambda: |-
+          // Date & Time Page
+          int x, y, y_m;
+          auto fi =id(color_black);
+          #define xRes ${display_xRes}
+          #define yRes ${display_yRes}
+
+          //draw clear background
+          it.fill(COLOR_OFF);
+
+          x = esp_random() % 131, y = esp_random() % 6;
+          //Time
+          it.strftime(x, y, id(size_50_font), COLOR_ON, "%H:%M", id(sntp_time).now());
+          /* it.strftime(225, 68, id(size_60_font), "%S", id(sntp_time).now()); */
+
+          x = 0, y = y + 50 + esp_random() % 6;
+          //line
+          it.line(x, y, xRes -1, y, COLOR_ON);
+
+          x = 0, y = y + 50 + esp_random() % 11;
+          //Weekday
+          fi = id(color_black);
+          // it.strftime(xRes / 2, y, id(size_25_font), fi, TextAlign::BASELINE_CENTER ,"%A", id(sntp_time).now());
+          it.strftime((xRes / 2) -5 + esp_random() % 11, y, id(size_50_font), fi, TextAlign::BASELINE_CENTER ,"%a %e.%b", id(sntp_time).now());
+          // it.strftime(250, 58, id(size_20_font), "%a", id(sntp_time).now());
+
+          // x = 0, y = y + 40;
+          // //date
+          // it.strftime(x + 53, y, id(size_40_font), COLOR_ON, TextAlign::BASELINE_RIGHT, "%d", id(sntp_time).now());
+          // it.printf(x + 53, y, id(size_14_font), COLOR_ON, TextAlign::BASELINE_LEFT, "D");
+          // it.strftime(x + 113, y, id(size_40_font), COLOR_ON, TextAlign::BASELINE_RIGHT, "%m", id(sntp_time).now());
+          // it.printf(x + 113, y, id(size_14_font), COLOR_ON, TextAlign::BASELINE_LEFT, "M");
+
+
+      - id: page_wifi_qr
+        lambda: |-
+          // QR Code for Guest WiFi
+
+          // Date & Time Page
+          int x, y, y_m;
+          auto fi =id(color_black);
+          #define xRes ${display_xRes}
+          #define yRes ${display_yRes}
+
+          //draw clear background
+          it.fill(COLOR_OFF);
+
+          x = 0, y = 0;
+          //Time
+          it.strftime(x, y, id(size_50_font), COLOR_ON, "%H:%M", id(sntp_time).now());
+          /* it.strftime(225, 68, id(size_60_font), "%S", id(sntp_time).now()); */
+
+          x = 0, y = y + 50 + 5;
+          //line
+          it.line(x, y, xRes -1, y, COLOR_ON);
