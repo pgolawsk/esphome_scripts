@@ -39,6 +39,7 @@
 # Pawelo, 20250223, moved to esp-idf and enabled speaker media player
 # Pawelo, 20250304, testing voice assistant with mic and speaker
 # Pawelo, 20250720, set rmt_symbols to 48 for RGB LED, as it works with 48 block size symbols only
+# Pawelo, 20260221, added restore_mode
 
 #! run with this command to override substitutions
 # esphome -s devicename espXX -s updates 1min -s room <Room name> -s mqtt_room <room> run esp32_MMmm_SSss__PP.yaml --device 192.168.x.x
@@ -71,6 +72,8 @@ substitutions:
 
   # default variable values for !include statements
   accuracy_decimals: "2"
+  restore_mode: ALWAYS_OFF
+  # restore_mode: RESTORE_DEFAULT_OFF
 
 # Override some settings included below in _board_ setup
 <<: !include ../includes/time_sntp_with_sun.yaml #WARN: this is to make sunrise and sunset sensor to be updated on every time sync event

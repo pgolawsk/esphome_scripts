@@ -33,6 +33,7 @@
 # Pawelo, 20250221, added uptime_boot text sensor, changed LED to GPIO2
 # Pawelo, 20250506, added mdi_icon to light_on_relay
 # Pawelo, 20250720, included debug regular sensors
+# Pawelo, 20260221, added restore_mode
 
 #! run with this command to override substitutions
 # esphome -s devicename espXX -s updates 1min -s room <Room name> -s mqtt_room <room> run esp12f_MMmm_SSss__PP.yaml --device 192.168.x.x
@@ -64,6 +65,8 @@ substitutions:
 
   # default variable values for !include statements
   accuracy_decimals: "2"
+  restore_mode: ALWAYS_OFF
+  # restore_mode: RESTORE_DEFAULT_OFF
 
 # Override some settings included below in _board_ setup
 # <<: !include ../includes/time_sntp_with_sun.yaml #WARN: this is to make sunrise and sunset sensor to be updated on every time sync event

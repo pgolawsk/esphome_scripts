@@ -37,6 +37,7 @@
 # Pawelo, 20251220, removed fixed BSSID
 # Pawelo, 20251123, adjusted pressure offset to 9.5 hPa to align with reference station
 # Pawelo, 20260123, removed smart TV IR remote control buttons as the TV device was replaced with different one
+# Pawelo, 20260221, added restore_mode
 
 #! run with this command to override substitutions
 # esphome -s devicename espXX -s updates 1min -s room <Room name> -s mqtt_room <room> run esp32_MMmm_SSss__PP.yaml --device 192.168.x.x
@@ -68,6 +69,8 @@ substitutions:
 
   # default variable values for !include statements
   accuracy_decimals: "2"
+  restore_mode: ALWAYS_OFF
+  # restore_mode: RESTORE_DEFAULT_OFF
 
 # Override some settings included below in _board_ setup
 <<: !include ../includes/time_sntp_with_sun.yaml #WARN: this is to make sunrise and sunset sensor to be updated on every time sync event
