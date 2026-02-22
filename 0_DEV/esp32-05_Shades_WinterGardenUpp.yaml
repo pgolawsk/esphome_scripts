@@ -44,6 +44,7 @@
 # Pawelo, 20260208, testing further WeAct 2.9 BWR on epaper_spi componenet
 # Pawelo, 20260208, finalized epaper_spi componenet on PR #13894
 # Pawelo, 20260214, added date & weekday to Guest WiFi page
+# Pawelo, 20260222, fix for swapping black and white colors on epaper_spi component
 
 #! run with this command to override substitutions
 # esphome -s devicename espXX -s updates 1min -s room <Room name> -s mqtt_room <room> run esp32_MMmm_SSss__PP.yaml --device 192.168.x.x
@@ -284,24 +285,7 @@ spi:
 display:
   # - platform: waveshare_epaper
   #   # model: 2.90in #? working but black and white are swapped...
-  #   # model: 2.90inv2 #! not working properly
-  #   # model: 2.90inv2-r2 #! not working properly (red whole screen)
-  #   # model: 2.90in-b #! not working
-  #   # model: 2.90in-bv3 #! not working
-  #   # model: 2.90in #! pr#4579, not working
-  #   # model: 2.90inV2 #! pr#4579, not working properly
-  #   # model: 2.90in3c # pr#6226, working but slow refresh (or from custom_components, https://github.com/RaceNJason/WeAct-Studio_ePaper.git)
-  #   model: 2.90in3c-weact # weact_epaper_3c
-  #   # model: 2.90ina #! pr#6226, not working
-  #   # model: 2.90in-d #! not working
-  #   # model: 2.90in-dke #! not working
-  #   # model: gdew029t5 #! not working
   #   # model: gdey029t94
-
-  #   # model: wa2.90in
-  #   # model: wa2.90in3c
-  # - platform: waveshare_epaper
-  #   model: 2.90in3c-weact # weact_epaper_3c
   - platform: epaper_spi  # Changed from waveshare_epaper
     model: weact-2.9in-3c  # New model name format
     id: weact_display
@@ -327,9 +311,9 @@ display:
           #define yRes ${display_yRes}
 
           //draw clear background
-          // it.filled_rectangle(0, 0, xRes, yRes, COLOR_OFF);
-          it.fill(COLOR_OFF);
-          //it.print(xRes/2, yRes/2, id(size_14_font), COLOR_ON, TextAlign::CENTER, "Refreshing...");
+          // it.filled_rectangle(0, 0, xRes, yRes, color_white);
+          it.fill(color_white);
+          //it.print(xRes/2, yRes/2, id(size_14_font), color_black, TextAlign::CENTER, "Refreshing...");
 
       # - id: page_time
       #   lambda: |-
@@ -452,16 +436,16 @@ display:
           #define yRes ${display_yRes}
 
           //draw clear background
-          it.fill(COLOR_OFF);
+          it.fill(color_white);
 
           x = 0, y = 0;
           //Time
-          it.strftime(x, y, id(size_50_font), COLOR_ON, "%H:%M", id(sntp_time).now());
+          it.strftime(x, y, id(size_50_font), color_black, "%H:%M", id(sntp_time).now());
           /* it.strftime(225, 68, id(size_60_font), "%S", id(sntp_time).now()); */
 
           x = 0, y = y + 50 + 5;
           //line
-          it.line(x, y, xRes -1, y, COLOR_ON);
+          it.line(x, y, xRes -1, y, color_black);
 
           x = 0, y = y + 50;
           //Weekday
@@ -476,14 +460,14 @@ display:
 
           x = 0, y = y + 40;
           //date
-          it.strftime(x + 53, y, id(size_40_font), COLOR_ON, TextAlign::BASELINE_RIGHT, "%d", id(sntp_time).now());
-          it.printf(x + 53, y, id(size_14_font), COLOR_ON, TextAlign::BASELINE_LEFT, "D");
-          it.strftime(x + 113, y, id(size_40_font), COLOR_ON, TextAlign::BASELINE_RIGHT, "%m", id(sntp_time).now());
-          it.printf(x + 113, y, id(size_14_font), COLOR_ON, TextAlign::BASELINE_LEFT, "M");
+          it.strftime(x + 53, y, id(size_40_font), color_black, TextAlign::BASELINE_RIGHT, "%d", id(sntp_time).now());
+          it.printf(x + 53, y, id(size_14_font), color_black, TextAlign::BASELINE_LEFT, "D");
+          it.strftime(x + 113, y, id(size_40_font), color_black, TextAlign::BASELINE_RIGHT, "%m", id(sntp_time).now());
+          it.printf(x + 113, y, id(size_14_font), color_black, TextAlign::BASELINE_LEFT, "M");
 
           x = 0, y = y + 5;
           //line
-          it.line(x, y, xRes -1, y, COLOR_ON);
+          it.line(x, y, xRes -1, y, color_black);
 
           // x = 0, y = y + 25 + 3;
           // //sun set-rise
@@ -529,7 +513,7 @@ display:
           // ALIGN Y TO BOTTOM
           x = 0, y = yRes - 25 - 5 - 3;
           //line
-          it.line(x, y, xRes -1, y, COLOR_ON);
+          it.line(x, y, xRes -1, y, color_black);
 
           //wifi
           if (id(wifi_rssi).has_state()) {
@@ -551,11 +535,11 @@ display:
           //* Display Cycle
           x = 0; y = yRes - 5;
           if (id(select_display_cycle_interval).current_option() != "Never") {
-            it.printf(x, y, id(cycle_icon_font), COLOR_ON, TextAlign::BASELINE_LEFT, "\U000F04E6");
+            it.printf(x, y, id(cycle_icon_font), color_black, TextAlign::BASELINE_LEFT, "\U000F04E6");
             x = x + 24;
-            it.printf(x, y, id(size_25_font), COLOR_ON, TextAlign::BASELINE_LEFT, "%s", id(select_display_cycle_interval).current_option().c_str());
+            it.printf(x, y, id(size_25_font), color_black, TextAlign::BASELINE_LEFT, "%s", id(select_display_cycle_interval).current_option().c_str());
           } else {
-            it.printf(x, y, id(cycle_icon_font), COLOR_ON, TextAlign::BASELINE_LEFT, "\U000F04E8");
+            it.printf(x, y, id(cycle_icon_font), color_black, TextAlign::BASELINE_LEFT, "\U000F04E8");
           }
 
       # - id: page_measures
@@ -710,16 +694,16 @@ display:
           #define yRes ${display_yRes}
 
           //draw clear background
-          it.fill(COLOR_OFF);
+          it.fill(color_white);
 
           x = 0, y = 0;
           //Time
-          it.strftime(x, y, id(size_50_font), COLOR_ON, "%H:%M", id(sntp_time).now());
+          it.strftime(x, y, id(size_50_font), color_black, "%H:%M", id(sntp_time).now());
           /* it.strftime(225, 68, id(size_60_font), "%S", id(sntp_time).now()); */
 
           x = 0, y = y + 50 + 5;
           //line
-          it.line(x, y, xRes -1, y, COLOR_ON);
+          it.line(x, y, xRes -1, y, color_black);
 
           x = 0, y = y + 45;
           //Weekday
@@ -734,14 +718,14 @@ display:
 
           // x = 0, y = y + 40;
           // //date
-          // it.strftime(x + 53, y, id(size_40_font), COLOR_ON, TextAlign::BASELINE_RIGHT, "%d", id(sntp_time).now());
-          // it.printf(x + 53, y, id(size_14_font), COLOR_ON, TextAlign::BASELINE_LEFT, "D");
-          // it.strftime(x + 113, y, id(size_40_font), COLOR_ON, TextAlign::BASELINE_RIGHT, "%m", id(sntp_time).now());
-          // it.printf(x + 113, y, id(size_14_font), COLOR_ON, TextAlign::BASELINE_LEFT, "M");
+          // it.strftime(x + 53, y, id(size_40_font), color_black, TextAlign::BASELINE_RIGHT, "%d", id(sntp_time).now());
+          // it.printf(x + 53, y, id(size_14_font), color_black, TextAlign::BASELINE_LEFT, "D");
+          // it.strftime(x + 113, y, id(size_40_font), color_black, TextAlign::BASELINE_RIGHT, "%m", id(sntp_time).now());
+          // it.printf(x + 113, y, id(size_14_font), color_black, TextAlign::BASELINE_LEFT, "M");
 
           x = 0, y = y + 5;
           //line
-          it.line(x, y, xRes -1, y, COLOR_ON);
+          it.line(x, y, xRes -1, y, color_black);
 
           // QR Code for Guest WiFi
 
@@ -755,25 +739,25 @@ display:
           // WIFI:S:<WIFI NAME HERE>;T:WPA;P:<WIFI PASSWOD HERE>;H:false;;
           // Draw the QR-code at position [x=120,y=5] with white color and a 4x scale
           x = 5, y = y + 10;
-          it.qr_code(x, y, id(guestwifi_qr), COLOR_ON, 4);
+          it.qr_code(x, y, id(guestwifi_qr), color_black, 4);
 
           // ALIGN Y TO BOTTOM
           x = 0, y = yRes - 25 - 5 - 3;
           //line
-          it.line(x, y, xRes -1, y, COLOR_ON);
+          it.line(x, y, xRes -1, y, color_black);
 
           //wifi
           if (id(wifi_rssi).has_state()) {
             x = xRes - 5, y = yRes - 5;
             // x = 265, y = 120;
             if (id(wifi_rssi).state >= -50) {
-              it.printf(x, y, id(wlan_icon_font), COLOR_ON, TextAlign::BASELINE_RIGHT , "\U000F0928");
+              it.printf(x, y, id(wlan_icon_font), color_black, TextAlign::BASELINE_RIGHT , "\U000F0928");
             } else if (id(wifi_rssi).state >= -60) {
-              it.printf(x, y, id(wlan_icon_font), COLOR_ON, TextAlign::BASELINE_RIGHT , "\U000F0925");
+              it.printf(x, y, id(wlan_icon_font), color_black, TextAlign::BASELINE_RIGHT , "\U000F0925");
             } else if (id(wifi_rssi).state >= -70) {
-              it.printf(x, y, id(wlan_icon_font), COLOR_ON, TextAlign::BASELINE_RIGHT , "\U000F0922");
+              it.printf(x, y, id(wlan_icon_font), color_black, TextAlign::BASELINE_RIGHT , "\U000F0922");
             } else if (id(wifi_rssi).state >= -80) {
-              it.printf(x, y, id(wlan_icon_font), COLOR_ON, TextAlign::BASELINE_RIGHT , "\U000F0920");
+              it.printf(x, y, id(wlan_icon_font), color_black, TextAlign::BASELINE_RIGHT , "\U000F0920");
             } else {
               it.printf(x, y, id(wlan_icon_font), id(color_red), TextAlign::BASELINE_RIGHT , "\U000F092E");
             }
@@ -782,9 +766,9 @@ display:
           //* Display Cycle
           x = 0; y = yRes - 5;
           if (id(select_display_cycle_interval).current_option() != "Never") {
-            it.printf(x, y, id(cycle_icon_font), COLOR_ON, TextAlign::BASELINE_LEFT, "\U000F04E6");
+            it.printf(x, y, id(cycle_icon_font), color_black, TextAlign::BASELINE_LEFT, "\U000F04E6");
             x = x + 24;
-            it.printf(x, y, id(size_25_font), COLOR_ON, TextAlign::BASELINE_LEFT, "%s", id(select_display_cycle_interval).current_option().c_str());
+            it.printf(x, y, id(size_25_font), color_black, TextAlign::BASELINE_LEFT, "%s", id(select_display_cycle_interval).current_option().c_str());
           } else {
-            it.printf(x, y, id(cycle_icon_font), COLOR_ON, TextAlign::BASELINE_LEFT, "\U000F04E8");
+            it.printf(x, y, id(cycle_icon_font), color_black, TextAlign::BASELINE_LEFT, "\U000F04E8");
           }
