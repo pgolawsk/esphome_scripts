@@ -30,7 +30,7 @@
 # Pawelo, 20250221, added uptime_boot text sensor
 # Pawelo, 20250221, disabled BSEC2 for BME680
 # Pawelo, 20250227, added correction for UV index based on sun azimuth and elevation - increase sensor sensitivity when sun is far outside of south/horizon
-# Pawelo, 20250322, lowered lux_dark_treshold from 3.9 to 0.9
+# Pawelo, 20250322, lowered lux_dark_threshold from 3.9 to 0.9
 # Pawelo, 20250413, set sensor_south_azimuth & sensor_elevation_direction variables to set LTR390 sensor orientation
 # Pawelo, 20250413, disabled adjustment of UV values based on sun azimuth and declination
 # Pawelo, 20250906, switched from Arduino to ESP-IDF framework
@@ -41,8 +41,8 @@
 # Pawelo, 20260124, added minimum_chip_revision variable to board_esp32.yaml to eliminate warnings
 # Pawelo, 20260125, testing pgolawsk/esphome@weact_epaper_3c instead of pgolawsk/esphome@pr-6226-tweaks
 # Pawelo, 20260207, making "Join Guest WIFI" as red
-# Pawelo, 20260208, testing further WeAct 2.9 BWR on epaper_spi componenet
-# Pawelo, 20260208, finalized epaper_spi componenet on PR #13894
+# Pawelo, 20260208, testing further WeAct 2.9 BWR on epaper_spi component
+# Pawelo, 20260208, finalized epaper_spi component on PR #13894
 # Pawelo, 20260214, added date & weekday to Guest WiFi page
 # Pawelo, 20260222, fix for swapping black and white colors on epaper_spi component
 
@@ -53,7 +53,7 @@
 substitutions:
   devices: "Temperature, Humidity, Pressure, Gas Resistance via BME680/SHT41 and UV, Illuminance via LTR390/BH1750"
   project_name: "pgolawsk.esp_home"
-  version: "20260214"
+  version: "20260222"
 
   # required by includes/board_esp32.yaml script
   # framework_type: arduino # "arduino" or "esp-idf"
