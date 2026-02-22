@@ -1,0 +1,697 @@
+---
+#* ESP32 - Pump & Garage device script
+#* Please read README.md for details
+#* For pinout see: file://../pinouts/ESP32_WROOM_32_pinout.jpg
+###
+# Pawelo 20230101, 1.1.5, created based on esp32_dev.yaml and esp12f_dev.yaml
+# Pawelo 20230916, 1.1.5, added difference between 2 pulse counters as new counter
+#! Pawelo 20230916, 1.1.5, (NOT DONE) fix to preserve total values between reboots, based on https://github.com/esphome/feature-requests/issues/461
+# Pawelo 20230917, 1.1.5, added temp & humid via SHT30
+# Pawelo 20230919, 1.1.5, added sunrise and sunset text sensors
+# Pawelo 20230923, 1.1.5, added HA Connected binary sensor
+# Pawelo 20230923, 1.1.5, added (and disabled after testing) support for LD2410, LD2420 and APDS-9960
+# Pawelo 20231007, 1.1.5, added FRAM to store preferences between reboots
+# Pawelo 20231007, 1.1.5, added display WeAct 2.9'
+# Pawelo 20231012, 1.1.5, added rtttl buzzer and led
+# Pawelo 20231012, 1.1.5, added physical buttons for Refresh and Next
+# Pawelo 20231012, 1.1.5, added Display Cycle Interval select
+# Pawelo 20231012, 1.1.5, added cycle print on ePaper
+# Pawelo 20231012, 1.1.5, added manageable cycle display pages interval
+# Pawelo 20231012, 1.1.5, adjusted lux_dark_threshold to 2.9 based on experience (lux=4 if light is on, lux=2.5->4.4 when lamp is on)
+# Pawelo 20231012, 1.1.5, adjusted pulses per liter for _garage water sensor from 476 to 440 (measured 431)
+# Pawelo 20231017, 1.1.5, added water_updates_interval variable for water sensors updates (much often than $updates)
+# Pawelo 20231017, 1.1.5, added water_flow_min_delta variable for water sensors updates (to have no publish on every pulse)
+# Pawelo 20231017, 1.1.5, added customizable address for FRAM
+# Pawelo 20231017, 1.1.5, removed buttons for log and reset to zero water total values
+# Pawelo 20240516, 1.1.5, adjusted pulses per liter for _garage water sensor from 431 to 442 (based on difference on 444L in total was the same as 456,4 in garage)
+# Pawelo 20240516, 1.1.5, moved display to use waveshare_epaper to pr#6226, as per https://github.com/esphome/feature-requests/issues/2191#issuecomment-2009352588
+# Pawelo 20240619, 1.1.5, added secondary room/mqtt
+# Pawelo 20240628, 1.1.5, move fonts to separate include file
+# Pawelo, 20240902, refactoring: "status_led" renamed to "led"
+# Pawelo, 20241122, include first OVERRIDEs and then BOARD itself, removed old/unused mqtt commented code
+# Pawelo, 20241124, added wifi strength sensor and wifi_scan button
+# Pawelo, 20241222, added debug component and sensors
+# Pawelo, 20241222, added factory_reset, safe_restart and shutdown buttons
+# Pawelo, 20241222, added PSRAM support (includes/ and debug_with_psram sensor)
+# Pawelo, 20241222, changed to use includes/board_esp32.yaml with variables
+# Pawelo, 20250103, added entity_category to LED
+# Pawelo, 20250109, added option to select desired framework_type (for board include)
+# Pawelo, 20250130, added framework_version variable
+# Pawelo, 20250202, renamed and moved to 2_PROD folder
+# Pawelo, 20250208, added min_temp and max_temp properties to Dallas temperature sensors
+# Pawelo, 20250208, added one_wire due to deprecated dallas interface
+# Pawelo, 20250221, added uptime_boot text sensor
+# Pawelo, 20250221, changed Dallas NG to regular Dallas (via onewire)
+# Pawelo, 20250322, adjusted pulses per liter for _total water sensor from 476 to 466 (based on difference on garage measure while use only garage)
+# Pawelo, 20250504, adjusted pulses per liter for _total water sensor from 466 to 476 and _garage from 443 to 451
+# Pawelo, 20250626, adjusted water_flow_min_delta to 0.01 to minimize mqtt messages on every pulse
+# Pawelo, 20250504, adjusted pulses per liter for _garage water sensor from 451 to 443
+# Pawelo, 20250720, adjusted pulses per liter for _garage water sensor from 443 to 450 based on experience
+# Pawelo, 20250906, switched from Arduino to ESP-IDF framework
+# Pawelo, 20250911, switched back to Arduino as ESP-IDF was not activated somehow
+# Pawelo, 20250913, add API services to set total water usage for 2 water meters and scan_wifi
+# Pawelo, 20250914, add API services to add total water usage for 2 water meters
+# Pawelo, 20250914, in case FRAM is not working, try to read water total values from HA at boot if available and if current total(s) is less than 1000L then add it to current total(s)
+# Pawelo, 20251019, adjusted epaper display external_component to use pgolawsk/esphome@pr-6226-tweaks to have proper 2.9in3c support
+# Pawelo, 20251205, switched to primary WIFI network instead of extended
+# Pawelo, 20251205, select.state replaced with select.current_option() to as per deprecation warning (2026.5)
+# Pawelo, 20260124, added minimum_chip_revision variable to board_esp32.yaml to eliminate warnings
+# Pawelo, 20260222, switch display to epaper_spi (my PR:)
+
+#! run with this command to override substitutions
+# esphome -s devicename espXX -s updates 1min -s room <Room name> -s mqtt_room <room> run esp32_MMmm_SSss__PP.yaml --device 192.168.x.x
+# here are default values if those are not given via command line
+
+substitutions:
+  devices: "ePaper Temperature and Humidity via SHTx30, Illuminance via BH1750, Water via YF-B10 G1"
+  project_name: "pgolawsk.esp_home"
+  version: "20260222"
+  esphome_min_version: 2025.6.3 # worked on previous versions as well
+  esphome_max_version: 2026.2 #! last version where FRAM component works
+
+  # required by ../includes/board_esp32.yaml script
+  framework_type: arduino # "arduino" or "esp-idf"
+  # framework_type: esp-idf # "arduino" or "esp-idf"
+  framework_version: recommended # or specific version like "latest", "recommended", "4.4.4"
+  # framework_version: latest # or specific version like "latest", "recommended", "4.4.4"
+  board_variant: "" # empty for ESP32, other values to display like c3, c6, s2, s3
+  board: "esp32dev" # like: esp32dev, esp32cam, esp32-c3-devkitm-1, esp32-s3-devkitc-1, esp32-s2-saola-1, full list here https://registry.platformio.org/platforms/platformio/espressif32/boards?version=5.3.0
+  flash_size: 4MB # One of 2MB, 4MB, 8MB, 16MB or 32MB
+  flash_write_interval: "5min"
+  minimum_chip_revision: "1.0"
+
+  devicename: esp32-xx
+  updates: "30s"
+  room: Room # friendly name of room to display in HA/Web
+  # this is ADDITIONAL topic and sub-topic for MQTT - it publishes under <topic>/<sub-topic>/<sensor>
+  # by default it's also published under <devicename>/<id_sensor>
+  mqtt_location: home
+  mqtt_room: room
+  # (optional) secondary room/mqtt
+  room2: none
+  mqtt_location2: none
+  mqtt_room2: none
+
+  # default variable values for !include statements
+  accuracy_decimals: "2"
+  pulses_per_liter: "476"
+  pulses_per_liter_garden: "450" # from experience it should be set as 42,9
+  water_updates_interval: 5s
+  water_flow_min_delta: "0.01"
+
+  # Display setup variables
+  display_xRes: "296"
+  display_yRes: "128"
+  display_rotation: "90"
+  display_updates_interval: 1min # need to be small for display manageable interval cycle
+  display_updates_manual_cycle_delay: 5min
+
+# Override some settings included below in _board_ setup
+<<: !include ../includes/time_sntp_with_sun.yaml #WARN: this is to make sunrise and sunset sensor to be updated on every time sync event
+<<: !include ../includes/mqtt_with_rtttl.yaml #WARN: override mqtt with RTTTL support if needed (buzzer and status led)
+# <<: !include { file: ../includes/logger_level.yaml, vars: { level: DEBUG, baud_rate: 115200 } } #WARN: override default log level to specific one
+# <<: !include { file: ../includes/logger_level.yaml, vars: { level: VERY_VERBOSE, baud_rate: 115200 } } #WARN: override default log level to specific one
+# <<: !include ../includes/wifi_outside.yaml #WARN: override wifi to connect to outside network instead of default
+# <<: !include { file: ../includes/wifi_main.yaml, vars: { } } #WARN: override wifi to connect to extended network instead of default
+# <<: !include { file: ../includes/wifi_extended.yaml, vars: { } } #WARN: override wifi to connect to extended network instead of default
+# <<: !include { file: ../includes/wifi_extended2.yaml, vars: { } } #WARN: override wifi to connect to extended network instead of default
+# <<: !include ../includes/api_services.yaml #WARN: this is to expose services like scan_wifi (results in scan_results sensor)
+<<: !include ../includes/api_services__water.yaml # add services to set total water usage for 2 water meters and scan_wifi
+
+# Include basics of a board
+<<: !include ../includes/board_esp32__water_pump.yaml
+# <<: !include { file: ../includes/board_esp32.yaml, vars: { board_variant: "${board_variant}", board: "${board}", flash_size: "${flash_size}", flash_write_interval: "${flash_write_interval}" } }
+# <<: !include { file: ../includes/psram.yaml, vars: { mode: "quad" } } # "quad' for 2MB, "octal" for 4-8MB PSRAM
+<<: !include ../includes/qr_guestwifi.yaml
+
+# Include interfaces needed
+<<: !include { file: ../interfaces/debug.yaml, vars: { update_interval: "5s" } }
+<<: !include { file: ../interfaces/i2c.yaml, vars: { bus_id: "bus_a", sda: "GPIO21", scl: "GPIO22" } }
+<<: !include { file: ../interfaces/rtttl.yaml, vars: { ix: "" } }
+<<: !include { file: ../interfaces/one_wire.yaml, vars: { wire_id: "ow_a", gpio: "GPIO27" } }
+# OR
+# <<: !include { file: ../interfaces/dallasng.yaml, vars: { gpio: "GPIO27" } }
+# <<: !include { file: ../interfaces/uart_ld2410.yaml, vars: { ix: "ld", tx_pin: "TX", rx_pin: "RX", baud_rate: 256000, sensor_name: "LD2420" } }
+# <<: !include { file: ../interfaces/uart_ld2420.yaml, vars: { ix: "ld", tx_pin: "TX", rx_pin: "RX", baud_rate: 256000 } }
+# <<: !include { file: ../interfaces/i2c_apds9960.yaml, vars: { address: "0x39" } }
+<<: !include { file: ../interfaces/fram__water_pump.yaml, vars: { bus_id: "bus_a", address: "0x50" } }
+
+text_sensor:
+  - !include ../sensors/text_uptime.yaml
+  - !include ../sensors/text_uptime_boot.yaml
+  - !include ../sensors/text_version.yaml
+  - !include ../sensors/text_wifi_info.yaml
+
+  # DEBUG component
+  - !include ../sensors/text_debug.yaml
+
+  # Sun component
+  - !include ../sensors/text_sun_sunrise.yaml
+  - !include ../sensors/text_sun_sunset.yaml
+  - !include ../sensors/text_sun_time_of_day.yaml
+  - !include ../sensors/text_sun_direction.yaml
+
+  # # Gesture sensor
+  # - !include { file: ../sensors/text_gesture_apds9960.yaml }
+
+  # Distance sensor
+  # - !include { file: ../sensors/text_version_ld2410.yaml, vars: { sensor_name: "LD2410" } }
+
+  # #! for test purpose only
+  # - platform: template
+  #   name: Test RAW of global_watertotal_all
+  #   lambda: return to_string("global_watertotal_all");
+  # - platform: template
+  #   name: Test ID of global_watertotal_all
+  #   lambda: return to_string(id(global_watertotal_all));
+  # - platform: template
+  #   name: Test HASH of global_watertotal_all
+  #   lambda: return to_string(fnv1_hash("global_watertotal_all"));
+  # - platform: template
+  #   name: Test HASH of ID of global_watertotal_all
+  #   lambda: return to_string(fnv1_hash(to_string(id(global_watertotal_all))));
+  # - platform: template
+  #   name: TEST global_display_cycle_page
+  #   lambda: return id(global_display_cycle_page);
+  # - platform: template
+  #   name: TEST global_display_current_cycle
+  #   lambda: return id(global_display_current_cycle);
+
+binary_sensor:
+  # HA Connected
+  - !include ../sensors/binary_ha_connected.yaml
+
+  # Distance sensor
+  # - !include { file: ../sensors/binary_presence_ld2410.yaml, vars: { ix: "" } }
+  # - !include { file: ../sensors/binary_presence_ld2420.yaml, vars: { ix: "" } }
+
+  # # Gesture sensor
+  # - !include { file: ../sensors/binary_gesture_apds9960.yaml, vars: { direction: "UP", mdi_icon: 'gesture-swipe-up' } }
+  # - !include { file: ../sensors/binary_gesture_apds9960.yaml, vars: { direction: "DOWN", mdi_icon: 'gesture-swipe-down' } }
+  # - !include { file: ../sensors/binary_gesture_apds9960.yaml, vars: { direction: "LEFT", mdi_icon: 'gesture-swipe-left' } }
+  # - !include { file: ../sensors/binary_gesture_apds9960.yaml, vars: { direction: "RIGHT", mdi_icon: 'gesture-swipe-right' } }
+
+  # Physical buttons
+  # - !include { file: ../sensors/binary_display_button__pullup.yaml, vars: { ix: "Refresh", gpio: "GPIO33" } }
+  - !include { file: ../sensors/binary_select_cycle__pullup.yaml, vars: { ix: "Next", gpio: "GPIO33", select_id: "select_display_cycle_interval", command: "next" } }
+  - !include { file: ../sensors/binary_display_button__pullup.yaml, vars: { ix: "Next", gpio: "GPIO32" } }
+
+sensor:
+  - !include ../sensors/temp_internal.yaml
+  - !include ../sensors/uptime.yaml
+  - !include ../sensors/uptime_boot.yaml
+  - !include ../sensors/wifi_signal.yaml
+  - !include ../sensors/wifi_strength.yaml
+
+  # DEBUG component
+  - !include ../sensors/debug.yaml
+  # - !include sensors/debug_with_psram.yaml
+
+  # Sun component
+  - !include ../sensors/sun_elevation.yaml
+  - !include ../sensors/sun_azimuth.yaml
+
+  # Home Assistant sensors
+  - !include { file: ../sensors/HA_sensor.yaml, vars: { sensor_name: "water_total_all", ha_entity_id: "pump_water_total_all" } }
+  - !include { file: ../sensors/HA_sensor.yaml, vars: { sensor_name: "water_total_garden", ha_entity_id: "pump_water_total_garden" } }
+
+  # Temperature Dallas sensor
+  - !include { file: ../sensors/temp_DS18B20.yaml, vars: { ix: "Floor", wire_id: "ow_a", address: "0x450417c411e3ff28", min_temp: -10, max_temp: 50 } }
+  # - !include { file: ../sensors/temp_DS18B20_on_dallasng.yaml, vars: { ix: "Floor", address: "0x450417c411e3ff28", min_temp: -10, max_temp: 50 } }
+
+  # Temperature and Humidity sensor
+  - !include { file: ../sensors/temp_hum_SHT3x.yaml, vars: { ix: "", bus_id: "bus_a", address: "0x44" } }
+  # Illuminance sensor
+  # - !include { file: ../sensors/lux_BH1750.yaml, vars: { ix: "", bus_id: "bus_a", address: "0x23" } }
+  # - !include { file: ../sensors/lux_BH1750.yaml, vars: { ix: "", bus_id: "bus_a", address: "0x23", room: "Garage", mqtt_room: "garage" } }
+  - !include { file: ../sensors/lux_BH1750.yaml, vars: { ix: "", bus_id: "bus_a", address: "0x23", room: "${room2}", mqtt_location: "${mqtt_location2}", mqtt_room: "${mqtt_room2}", updates: "${display_updates_interval}" } }
+
+  # Water usage YF-B10 sensor
+  - !include { file: ../sensors/water_YF-B10.yaml, vars: { ix: "_all", gpio: "GPIO16" } }
+  - !include { file: ../sensors/water_used_YF-B10.yaml, vars: { ix: "_all" } }
+
+  - !include { file: ../sensors/water_YF-B10.yaml, vars: { ix: "_garden", gpio: "GPIO17", pulses_per_liter: "${pulses_per_liter_garden}" } }
+  - !include { file: ../sensors/water_used_YF-B10.yaml, vars: { ix: "_garden" } }
+
+  - !include { file: ../sensors/water_flow_diff_YF-B10.yaml, vars: { ix: "_home",  ix_A: "_all", ix_B: "_garden", operator: "-"} }
+  - !include { file: ../sensors/water_total_diff_YF-B10.yaml, vars: { ix: "_home",  ix_A: "_all", ix_B: "_garden", operator: "-"} }
+  - !include { file: ../sensors/water_used_diff_YF-B10.yaml, vars: { ix: "_home",  ix_A: "_all", ix_B: "_garden", operator: "-"} }
+
+  # Distance sensor
+  # - !include { file: ../sensors/distance_ld2410.yaml, vars: { ix: "", sensor_name: "LD2410" } }
+  # - !include { file: ../sensors/distance_ld2420.yaml, vars: { ix: "" } }
+
+  # Various MQTT sensors
+  - !include { file: ../sensors/value_mqtt_subscribe.yaml, vars: { topic: "home/entrance/temperature", id: "temp_entrance", name: "Temperature Entrance", unit: "°C", mdi_icon: "thermometer" } }
+  - !include { file: ../sensors/value_mqtt_subscribe.yaml, vars: { topic: "home/upstairs/temperature", id: "temp_upstairs", name: "Temperature Upstairs", unit: "°C", mdi_icon: "thermometer" } }
+
+  - !include { file: ../sensors/value_mqtt_subscribe.yaml, vars: { topic: "measures/underfloor/temperature", id: "temp_underfloor", name: "Temperature Underfloor", unit: "°C", mdi_icon: "thermometer" } }
+  - !include { file: ../sensors/value_mqtt_subscribe.yaml, vars: { topic: "measures/underfloor/temperature_Dwall", id: "temp_underfloorW", name: "Temperature Underfloor Wall", unit: "°C", mdi_icon: "thermometer" } }
+  - !include { file: ../sensors/value_mqtt_subscribe.yaml, vars: { topic: "measures/underfloor/temperature_Dboiler", id: "temp_underfloorB", name: "Temperature Underfloor Boiler", unit: "°C", mdi_icon: "thermometer" } }
+  - !include { file: ../sensors/value_mqtt_subscribe.yaml, vars: { topic: "measures/aquarium_window/temperature", id: "temp_aquariumW", name: "Temperature Aquarium Window", unit: "°C", mdi_icon: "thermometer" } }
+
+  - !include { file: ../sensors/value_mqtt_subscribe.yaml, vars: { topic: "home/entrance/humidity", id: "hum_entrance", name: "Humidity Entrance", unit: "%", mdi_icon: "water-percent" } }
+  - !include { file: ../sensors/value_mqtt_subscribe.yaml, vars: { topic: "home/upstairs/humidity", id: "hum_upstairs", name: "Humidity Upstairs", unit: "%", mdi_icon: "water-percent" } }
+  - !include { file: ../sensors/value_mqtt_subscribe.yaml, vars: { topic: "measures/underfloor/humidity", id: "hum_underfloor", name: "Humidity Underfloor", unit: "%", mdi_icon: "water-percent" } }
+  - !include { file: ../sensors/value_mqtt_subscribe.yaml, vars: { topic: "measures/aquarium_window/humidity", id: "hum_aquariumW", name: "Humidity Aquarium Window", unit: "%", mdi_icon: "water-percent" } }
+
+  #! for test purpose only
+  # - platform: template
+  #   name: Test global_watertotal_all
+  #   lambda: return id(global_watertotal_all);
+  #   accuracy_decimals: 5
+  # - platform: template
+  #   name: Test global_watertotal_garden
+  #   lambda: return id(global_watertotal_garden);
+  #   accuracy_decimals: 5
+
+# switch:
+#     # Distance sensor setup
+#     - !include { file: ../switches/setup_ld2410.yaml, vars: { sensor_name: "LD2410" } }
+
+button:
+  # Restart, reset and shutdown buttons
+  - !include { file: ../buttons/restart_button.yaml }
+  # for _dev.yaml scripts include additional buttons
+  - !include { file: ../buttons/safe_mode_restart_button.yaml }
+  - !include { file: ../buttons/factory_reset_button.yaml }
+  - !include { file: ../buttons/shutdown_button.yaml }
+
+  # Scan Wifi button (require wifi_info text sensor to be present to display results)
+  # WARN: Performing the scan will disconnect device from current WiFi
+  - !include { file: ../buttons/scan_wifi_button.yaml }
+
+  # Display buttons
+  - !include { file: ../buttons/display_button.yaml, vars: { ix: "Refresh", display_id: "weact_display", command: "", mdi_icon: "refresh" } }
+  - !include { file: ../buttons/display_button.yaml, vars: { ix: "Next", display_id: "weact_display", command: "next", mdi_icon: "page-next" } }
+  - !include { file: ../buttons/display_button.yaml, vars: { ix: "Prev", display_id: "weact_display", command: "previous", mdi_icon: "page-previous" } }
+  - !include { file: ../buttons/display_page_button.yaml, vars: { page_ix: "blank", display_id: "weact_display" } }
+
+  # Water Save buttons
+  # - !include { file: ../buttons/save_watertotal_button.yaml, vars: { ix: "_all" } }
+  # - !include { file: ../buttons/save_watertotal_button.yaml, vars: { ix: "_garden", pulses_per_liter: "${pulses_per_liter_garden}" } }
+
+  # Water Reset (zero) buttons
+  # - !include { file: ../buttons/reset_watertotal_button.yaml, vars: { ix: "_all" } }
+  # - !include { file: ../buttons/reset_watertotal_button.yaml, vars: { ix: "_garden" } }
+
+  # Log water sensor values buttons (for DEBUGing)
+  # - !include { file: ../buttons/log_sensor_value_button.yaml, vars: { id: "water_flow_all" } }
+  # - !include { file: ../buttons/log_sensor_value_button.yaml, vars: { id: "water_total_all" } }
+  # - !include { file: ../buttons/log_sensor_value_button.yaml, vars: { id: "water_flow_garden" } }
+  # - !include { file: ../buttons/log_sensor_value_button.yaml, vars: { id: "water_total_garden" } }
+
+
+output:
+  # LED
+  - !include { file: ../outputs/led.yaml, vars: { ix: "", gpio: "GPIO0", inverted: false } }
+
+  # RTTTL Buzzer (passive_buzzer)
+  - !include { file: ../outputs/passive_buzzer_ledc.yaml, vars: { ix: "", gpio: "GPIO4" } }
+
+light:
+  # LED
+  - !include { file: ../lights/led.yaml, vars: { ix: "", platform: "binary", off_delay: "5s", entity_category: "" } }
+
+switch:
+  # LED cycle
+  - !include { file: ../switches/led_cycle.yaml, vars: { ID: "led", cycles: 5, on_delay: "1s", off_delay: "500ms" } }
+
+  # RTTTL Play (passive_buzzer)
+  - !include { file: ../switches/rtttl_play.yaml, vars: { ix: "" } }
+
+# # override section from includes - temp fix
+# external_components:
+#   - source: github://pr#4847
+#     components: [ ld2420 ]
+#     refresh: 0s
+#   - source: github://nrandell/dallasng
+
+# Include fonts for display
+<<: !include ../fonts/fonts_weeact_display.yaml
+
+<<: !include { file: ../scripts/interval_display_cycle_pages_with_lux.yaml, vars: { display_id: weact_display, cycle_script: cycle_pages_in_lux_on_select, lux_sensor: lux, lux_dark_threshold: 2.9, lux_dark_threshold_elevation_multiplier: 0.1, page_to_skip: page_wifi_qr } }
+
+select:
+  # Display Cycle Interval selection
+  # id: select_display_cycle_interval
+  - !include { file: ../selects/display_cycle_interval.yaml, vars: { global_variable: "global_display_cycle_page", display_id: "weact_display" } }
+
+external_components:
+  - source: github://pr#4880
+    components: [ fram, fram_pref ]
+  - source: github://nrandell/dallasng
+  # - source: github://pr#4579
+  #   components: [waveshare_epaper]
+  # - source: github://pr#6226
+  #   components: [waveshare_epaper]
+  - source: github://pgolawsk/esphome@pr-6226-tweaks
+    components: [waveshare_epaper]
+    refresh: 5min
+spi:
+  id: spi_v
+  clk_pin: GPIO18 # SCL
+  mosi_pin: GPIO23 # SDA
+
+display:
+  - platform: waveshare_epaper
+    # model: 2.90inbs
+    model: 2.90in3c
+    id: weact_display
+    cs_pin: GPIO25
+    busy_pin: GPIO5
+    reset_pin: GPIO14
+    dc_pin: GPIO19
+    rotation: ${display_rotation}
+    # full_update_every: 10
+    update_interval: never
+
+    pages:
+      - id: page_blank
+        lambda: |-
+          // Blanl Page
+          int x, y;
+          #define xRes ${display_xRes}
+          #define yRes ${display_yRes}
+          //draw clear background
+          it.filled_rectangle(0, 0, xRes, yRes, COLOR_OFF);
+          //it.print(xRes/2, yRes/2, id(size_14_font), COLOR_ON, TextAlign::CENTER, "Refreshing...");
+
+      - id: page_time
+        lambda: |-
+          // Date & Time Page
+          int x, y;
+          #define xRes ${display_xRes}
+          #define yRes ${display_yRes}
+
+          //sun set-rise
+          it.printf(45, 22, id(sun_icon_font), TextAlign::BASELINE_RIGHT, "\U000F059C");
+          it.printf(135, 22, id(size_20_font), TextAlign::BASELINE_RIGHT, "%s", id(sunrise).state.c_str());
+          it.printf(45, 44, id(sun_icon_font), TextAlign::BASELINE_RIGHT, "\U000F059A");
+          it.printf(135, 44, id(size_20_font), TextAlign::BASELINE_RIGHT, "%s", id(sunset).state.c_str());
+          //date
+
+          it.strftime(210, 43, id(size_50_font), TextAlign::BASELINE_RIGHT, "%d", id(sntp_time).now());
+          it.printf(213, 43, id(size_14_font), TextAlign::BASELINE_LEFT, "D");
+          it.strftime(280, 43, id(size_50_font), TextAlign::BASELINE_RIGHT, "%m", id(sntp_time).now());
+          it.printf(283, 43, id(size_14_font), TextAlign::BASELINE_LEFT, "M");
+
+          //line
+          it.line(0, 54, 296, 54);
+
+          //Time
+          it.strftime(70, 45, id(size_85_font), "%H:%M", id(sntp_time).now());
+          /* it.strftime(225, 68, id(size_60_font), "%S", id(sntp_time).now()); */
+
+          //Weekday
+          it.strftime(15, 58, id(size_20_font), "%a", id(sntp_time).now());
+          // it.strftime(250, 58, id(size_20_font), "%a", id(sntp_time).now());
+
+          //wifi
+          if (id(wifi_rssi).has_state()) {
+            x = 35, y = 105;
+            // x = 265, y = 120;
+            if (id(wifi_rssi).state >= -50) {
+              it.printf(x, y, id(wlan_icon_font), TextAlign::BASELINE_CENTER , "\U000F0928");
+            } else if (id(wifi_rssi).state >= -60) {
+              it.printf(x, y, id(wlan_icon_font), TextAlign::BASELINE_CENTER , "\U000F0925");
+            } else if (id(wifi_rssi).state >= -70) {
+              it.printf(x, y, id(wlan_icon_font), TextAlign::BASELINE_CENTER , "\U000F0922");
+            } else if (id(wifi_rssi).state >= -80) {
+              it.printf(x, y, id(wlan_icon_font), TextAlign::BASELINE_CENTER , "\U000F0920");
+            } else {
+              it.printf(x, y, id(wlan_icon_font), TextAlign::BASELINE_CENTER , "\U000F092E");
+            }
+          }
+          //* Display Cycle
+          x = 0; y = 126;
+          if (id(select_display_cycle_interval).current_option() != "Never") {
+            it.printf(x, y, id(cycle_icon_font), TextAlign::BASELINE_LEFT, "\U000F04E6");
+            x = 16; y = 126;
+            it.printf(x, y, id(size_12_font), TextAlign::BASELINE_LEFT, "%s", id(select_display_cycle_interval).current_option());
+          } else {
+            it.printf(x, y, id(cycle_icon_font), TextAlign::BASELINE_LEFT, "\U000F04E8");
+          }
+
+      - id: page_home_temps
+        lambda: |-
+          // Main Home Temperatures and Humidity Page
+          #define xRes ${display_xRes}
+          #define yRes ${display_yRes}
+          int x, y;
+
+          //* Temperature
+          x = 24; y = 64;
+          it.printf(x, y-12, id(measures_50_font), TextAlign::BASELINE_CENTER , "\U000F0F55");
+
+          // Entrance
+          x = 70; y = 30;
+          it.printf(x, y, id(home_icon_font), TextAlign::BASELINE_CENTER , "\U000F081A");
+          if (id(temp_entrance).has_state()) {
+            it.printf(x+70, y, id(size_30_font), TextAlign::BASELINE_RIGHT , "%.1f", id(temp_entrance).state);
+            // it.printf(x+74, y, id(size_20_font), TextAlign::BASELINE_LEFT , "°");
+            // it.printf(x+80, y, id(size_20_font), TextAlign::BASELINE_LEFT , "C");
+            it.printf(x+70, y, id(units_22_font), TextAlign::BASELINE_LEFT , "\U000F0504");
+          }
+
+          // Upstairs
+          x = 200; y = 30;
+          it.printf(x, y, id(home_icon_font), TextAlign::BASELINE_CENTER , "\U000F12BD");
+          if (id(temp_upstairs).has_state()) {
+            it.printf(x+70, y, id(size_30_font), TextAlign::BASELINE_RIGHT , "%.1f", id(temp_upstairs).state);
+            it.printf(x+70, y, id(units_22_font), TextAlign::BASELINE_LEFT , "\U000F0504");
+          }
+
+          // Underfloor
+          x = 70; y = 60;
+          it.printf(x, y, id(home_icon_font), TextAlign::BASELINE_CENTER , "\U000F0DD3");
+          if (id(temp_underfloor).has_state()) {
+            it.printf(x+70, y, id(size_30_font), TextAlign::BASELINE_RIGHT , "%.1f", id(temp_underfloor).state);
+            it.printf(x+70, y, id(units_22_font), TextAlign::BASELINE_LEFT , "\U000F0504");
+          }
+
+          // Aquarium Window
+          x = 200; y = 60;
+          it.printf(x, y, id(home_icon_font), TextAlign::BASELINE_CENTER , "\U000F112B");
+          if (id(temp_aquariumW).has_state()) {
+            it.printf(x+70, y, id(size_30_font), TextAlign::BASELINE_RIGHT , "%.1f", id(temp_aquariumW).state);
+            it.printf(x+70, y, id(units_22_font), TextAlign::BASELINE_LEFT , "\U000F0504");
+          }
+
+          //line
+          it.line(0, 64, 296, 64);
+
+          //* Humidity
+          x = 24; y = 128;
+          it.printf(x, y-12, id(measures_50_font), TextAlign::BASELINE_CENTER , "\U000F058E");
+
+          // Entrance
+          x = 70; y = 94;
+          it.printf(x, y, id(home_icon_font), TextAlign::BASELINE_CENTER , "\U000F081A");
+          if (id(hum_entrance).has_state()) {
+            it.printf(x+70, y, id(size_30_font), TextAlign::BASELINE_RIGHT , "%.1f", id(hum_entrance).state);
+            // it.printf(x+74, y, id(size_20_font), TextAlign::BASELINE_LEFT , "°");
+            // it.printf(x+80, y, id(size_20_font), TextAlign::BASELINE_LEFT , "C");
+            it.printf(x+70, y, id(units_22_font), TextAlign::BASELINE_LEFT , "\U000F03F0");
+          }
+
+          // Upstairs
+          x = 200; y = 94;
+          it.printf(x, y, id(home_icon_font), TextAlign::BASELINE_CENTER , "\U000F12BD");
+          if (id(hum_upstairs).has_state()) {
+            it.printf(x+70, y, id(size_30_font), TextAlign::BASELINE_RIGHT , "%.1f", id(hum_upstairs).state);
+            it.printf(x+70, y, id(units_22_font), TextAlign::BASELINE_LEFT , "\U000F03F0");
+          }
+
+          // Underfloor
+          x = 70; y = 124;
+          it.printf(x, y, id(home_icon_font), TextAlign::BASELINE_CENTER , "\U000F0DD3");
+          if (id(hum_underfloor).has_state()) {
+            it.printf(x+70, y, id(size_30_font), TextAlign::BASELINE_RIGHT , "%.1f", id(hum_underfloor).state);
+            it.printf(x+70, y, id(units_22_font), TextAlign::BASELINE_LEFT , "\U000F03F0");
+          }
+
+          // Aquarium Window
+          x = 200; y = 124;
+          it.printf(x, y, id(home_icon_font), TextAlign::BASELINE_CENTER , "\U000F112B");
+          if (id(hum_aquariumW).has_state()) {
+            it.printf(x+70, y, id(size_30_font), TextAlign::BASELINE_RIGHT , "%.1f", id(hum_aquariumW).state);
+            it.printf(x+70, y, id(units_22_font), TextAlign::BASELINE_LEFT , "\U000F03F0");
+          }
+
+          //* Display Cycle
+          x = 0; y = 126;
+          if (id(select_display_cycle_interval).current_option() != "Never") {
+            it.printf(x, y, id(cycle_icon_font), TextAlign::BASELINE_LEFT, "\U000F04E6");
+            x = 16; y = 126;
+            it.printf(x, y, id(size_12_font), TextAlign::BASELINE_LEFT, "%s", id(select_display_cycle_interval).current_option());
+          } else {
+            it.printf(x, y, id(cycle_icon_font), TextAlign::BASELINE_LEFT, "\U000F04E8");
+          }
+
+      - id: page_pump_temps
+        lambda: |-
+          // Pump Temperatures and Humidity Page
+          #define xRes ${display_xRes}
+          #define yRes ${display_yRes}
+          int x, y;
+
+          //* Pump Temperatures
+          x = 148; y = 18;
+          it.printf(x, y, id(size_15_font), TextAlign::BASELINE_CENTER , "PUMP Temperatures");
+
+          //* Temperature
+          x = 20; y = 64;
+          it.printf(x, y-12, id(measures_50_font), TextAlign::BASELINE_CENTER , "\U000F050F");
+
+          // Pump
+          x = 70; y = 60;
+          // it.printf(x, y, id(home_icon_font), TextAlign::BASELINE_CENTER , "\U000F06D9");
+          if (id(temp).has_state()) {
+            it.printf(x+70, y, id(size_50_font), TextAlign::BASELINE_RIGHT , "%.1f", id(temp).state);
+            it.printf(x+70, y, id(units_22_font), TextAlign::BASELINE_LEFT , "\U000F0504");
+          }
+
+          // Pump Floor
+          x = 200; y = 60;
+          // it.printf(x, y, id(home_icon_font), TextAlign::BASELINE_CENTER , "\U000F058F");
+          if (id(tempFloor).has_state()) {
+            it.printf(x+70, y, id(size_50_font), TextAlign::BASELINE_RIGHT , "%.1f", id(tempFloor).state);
+            it.printf(x+70, y, id(units_22_font), TextAlign::BASELINE_LEFT , "\U000F0504");
+          }
+
+          //line
+          it.line(0, 63, 296, 63);
+
+          //* Pump Humidity and Illuminance
+          x = 148; y = 64+18;
+          it.printf(x, y, id(size_15_font), TextAlign::BASELINE_CENTER , "PUMP Humidity and Illuminance");
+
+          //* Humidity
+          x = 20; y = 128;
+          it.printf(x, y-12, id(measures_50_font), TextAlign::BASELINE_CENTER , "\U000F058E");
+
+          x = 70; y = 124;
+          // it.printf(x, y, id(home_icon_font), TextAlign::BASELINE_CENTER , "\U000F058F");
+          if (id(hum).has_state() and not isnan(id(hum).state)) {
+            it.printf(x+70, y, id(size_50_font), TextAlign::BASELINE_RIGHT , "%.1f", id(hum).state);
+            // it.printf(x+74, y, id(size_20_font), TextAlign::BASELINE_LEFT , "°");
+            // it.printf(x+80, y, id(size_20_font), TextAlign::BASELINE_LEFT , "C");
+            it.printf(x+70, y, id(units_22_font), TextAlign::BASELINE_LEFT , "\U000F03F0");
+          }
+
+          //* Illuminance
+          // x = 148+24; y = 128;
+          // it.printf(x, y-12, id(measures_50_font), TextAlign::BASELINE_CENTER , "\U000F17FE");
+
+          x = 200; y = 124;
+          // it.printf(x, y, id(home_icon_font), TextAlign::BASELINE_CENTER , "\U000F058F");
+          if (id(lux).has_state() and not isnan(id(lux).state)) {
+            if(int(id(lux).state) < 99) {
+              it.printf(x+70, y, id(size_50_font), TextAlign::BASELINE_RIGHT , "%.1f", id(lux).state);
+            } else {
+              if(int(id(lux).state) > 9999) {
+                it.printf(x+70, y, id(size_50_font), TextAlign::BASELINE_RIGHT , "%.0fK", id(lux).state / 1000);
+              } else {
+                it.printf(x+70, y, id(size_50_font), TextAlign::BASELINE_RIGHT , "%.0f", id(lux).state);
+              }
+            }
+            // it.printf(x+70, y, id(size_50_font), TextAlign::BASELINE_RIGHT , "%.1f", id(lux_garage).state);
+            it.printf(x+74, y, id(size_20_font), TextAlign::BASELINE_LEFT , "LX");
+            // it.printf(x+80, y, id(size_20_font), TextAlign::BASELINE_LEFT , "C");
+          }
+
+          //* Display Cycle
+          x = 0; y = 126;
+          if (id(select_display_cycle_interval).current_option() != "Never") {
+            it.printf(x, y, id(cycle_icon_font), TextAlign::BASELINE_LEFT, "\U000F04E6");
+            x = 16; y = 126;
+            it.printf(x, y, id(size_12_font), TextAlign::BASELINE_LEFT, "%s", id(select_display_cycle_interval).current_option());
+          } else {
+            it.printf(x, y, id(cycle_icon_font), TextAlign::BASELINE_LEFT, "\U000F04E8");
+          }
+
+      - id: page_water
+        lambda: |-
+          // Water
+          #define xRes ${display_xRes}
+          #define yRes ${display_yRes}
+          int x, y;
+
+          //* Pump Water
+          x = 148; y = 18;
+          it.printf(x, y, id(size_15_font), TextAlign::BASELINE_CENTER , "WATER Used");
+
+          //* Water
+          x = 20; y = 64;
+          it.printf(x, y-12, id(measures_50_font), TextAlign::BASELINE_CENTER , "\U000F058F");
+
+          // All Used
+          x = 170; y = 60;
+          // it.printf(x, y, id(home_icon_font), TextAlign::BASELINE_CENTER , "\U000F06D9");
+          if (id(water_used_all).has_state()) {
+            it.printf(x+70, y, id(size_40_font), TextAlign::BASELINE_RIGHT , "%.3f", id(water_used_all).state);
+            it.printf(x+74, y-4, id(size_20_font), TextAlign::BASELINE_LEFT , "M");
+            it.printf(x+94, y-12, id(size_12_font), TextAlign::BASELINE_LEFT , "3");
+          }
+
+          //line
+          it.line(70, 64, 296, 64);
+
+          // Home Used
+          x = 284; y = 94;
+          it.printf(x, y-2, id(home_icon_font), TextAlign::BASELINE_CENTER , "\U000F06A1");
+
+          x = 170; y = 94;
+          if (id(water_used_home).has_state()) {
+            it.printf(x+70, y, id(size_30_font), TextAlign::BASELINE_RIGHT , "%.3f", id(water_used_home).state);
+            it.printf(x+74, y-4, id(size_20_font), TextAlign::BASELINE_LEFT , "M");
+            it.printf(x+94, y-12, id(size_12_font), TextAlign::BASELINE_LEFT , "3");
+          }
+
+          // Garden Used
+          x = 284; y = 128;
+          it.printf(x, y-2, id(home_icon_font), TextAlign::BASELINE_CENTER , "\U000F09F2");
+
+          x = 170; y = 128;
+          if (id(water_used_garden).has_state()) {
+            it.printf(x+70, y, id(size_30_font), TextAlign::BASELINE_RIGHT , "%.3f", id(water_used_garden).state);
+            it.printf(x+74, y-4, id(size_20_font), TextAlign::BASELINE_LEFT , "M");
+            it.printf(x+94, y-12, id(size_12_font), TextAlign::BASELINE_LEFT , "3");
+          }
+
+          //* Display Cycle
+          x = 0; y = 126;
+          if (id(select_display_cycle_interval).current_option() != "Never") {
+            it.printf(x, y, id(cycle_icon_font), TextAlign::BASELINE_LEFT, "\U000F04E6");
+            x = 16; y = 126;
+            it.printf(x, y, id(size_12_font), TextAlign::BASELINE_LEFT, "%s", id(select_display_cycle_interval).current_option());
+          } else {
+            it.printf(x, y, id(cycle_icon_font), TextAlign::BASELINE_LEFT, "\U000F04E8");
+          }
+
+      - id: page_wifi_qr
+        lambda: |-
+          // QR Code for Guest WiFi
+          #define xRes ${display_xRes}
+          #define yRes ${display_yRes}
+          #define xCenter (xRes/2 + 40) // X position center
+          int x, y;
+
+          //id(t5_display).clear();
+          it.print(10, 20, id(size_14_font), TextAlign::BASELINE_LEFT, "Join Guest WIFI");
+          // it.print(xRes - 40, yRes - 40, id(font_small), TextAlign::BASELINE_LEFT, "5");
+          // guest wifi
+          // WIFI:S:<WIFI NAME HERE>;T:WPA;P:<WIFI PASSWOD HERE>;H:false;;
+          // Draw the QR-code at position [x=120,y=5] with white color and a 4x scale
+          it.qr_code(120, 5, id(guestwifi_qr), COLOR_ON, 4);
+
+          //* Display Cycle
+          x = 0; y = 126;
+          if (id(select_display_cycle_interval).current_option() != "Never") {
+            it.printf(x, y, id(cycle_icon_font), TextAlign::BASELINE_LEFT, "\U000F04E6");
+            x = 16; y = 126;
+            it.printf(x, y, id(size_12_font), TextAlign::BASELINE_LEFT, "%s", id(select_display_cycle_interval).current_option());
+          } else {
+            it.printf(x, y, id(cycle_icon_font), TextAlign::BASELINE_LEFT, "\U000F04E8");
+          }
