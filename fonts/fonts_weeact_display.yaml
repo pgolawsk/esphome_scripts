@@ -1,6 +1,7 @@
 ---
 #* Fonts and colors include for WeeAct displays
 # Pawelo, 20240628, created
+# Pawelo, 20250222, fix - swapped black and white colors to properly display white text on black background
 
 font:
   - file: '../fonts/Roboto-Medium.ttf'
@@ -195,6 +196,6 @@ color:
   - id: color_red
     hex: "FF0000"
   - id: color_black
-    hex: "FFFFFF"
-  - id: color_white
     hex: "000000"
+  - id: color_white
+    hex: "FFFFFF"
