@@ -46,7 +46,7 @@
 # Pawelo, 20260218, continue testing FRAM and NVM with FRAM I2C platform, added test packages for both of them
 # Pawelo, 20260220, finalized FRAM with NVM
 # Pawelo, 20260221, added restore_mode
-# Pawelo, 20260221, added WeAct 2.13 display for testing
+# Pawelo, 20260221, added WeAct 2.13 display for testing - it works on epaper_spi, model waveshare-2.13in-v3
 
 #! run with this command to override substitutions
 # esphome -s devicename espXX -s updates 1min -s room <Room name> -s mqtt_room <room> run esp32_MMmm_SSss__PP.yaml --device 192.168.x.x
@@ -344,8 +344,10 @@ spi:
   clk_pin: GPIO6 # SCL
 
 display:
-  - platform: waveshare_epaper
-    model: 2.13in-ttgo-b74
+  # - platform: waveshare_epaper
+  #   model: 2.13in-ttgo-b74 # it works as well, but black and white are swapped
+  - platform: epaper_spi
+    model: waveshare-2.13in-v3
     id: weact_display
     cs_pin: GPIO7
     dc_pin: GPIO4 # GPIO8 is RGB LED
@@ -354,7 +356,7 @@ display:
     reset_duration: 20ms
     rotation: ${display_rotation}
     # full_update_every: 10
-    update_interval: 1min
+    update_interval: never
 
     pages:
       - id: page_blank
@@ -365,8 +367,7 @@ display:
           #define yRes ${display_yRes}
 
           //draw clear background
-          // it.filled_rectangle(0, 0, xRes, yRes, COLOR_OFF);
-          it.fill(COLOR_OFF);
+          it.fill(color_white);
 
       - id: page_time_key_measures
         lambda: |-
@@ -377,16 +378,16 @@ display:
           #define yRes ${display_yRes}
 
           //draw clear background
-          it.fill(COLOR_OFF);
+          it.fill(color_white);
 
           x = esp_random() % 131, y = esp_random() % 6;
           //Time
-          it.strftime(x, y, id(size_50_font), COLOR_ON, "%H:%M", id(sntp_time).now());
+          it.strftime(x, y, id(size_50_font), color_black, "%H:%M", id(sntp_time).now());
           /* it.strftime(225, 68, id(size_60_font), "%S", id(sntp_time).now()); */
 
           x = 0, y = y + 50 + esp_random() % 6;
           //line
-          it.line(x, y, xRes -1, y, COLOR_ON);
+          it.line(x, y, xRes -1, y, color_black);
 
           x = 0, y = y + 50 + esp_random() % 11;
           //Weekday
@@ -397,10 +398,10 @@ display:
 
           // x = 0, y = y + 40;
           // //date
-          // it.strftime(x + 53, y, id(size_40_font), COLOR_ON, TextAlign::BASELINE_RIGHT, "%d", id(sntp_time).now());
-          // it.printf(x + 53, y, id(size_14_font), COLOR_ON, TextAlign::BASELINE_LEFT, "D");
-          // it.strftime(x + 113, y, id(size_40_font), COLOR_ON, TextAlign::BASELINE_RIGHT, "%m", id(sntp_time).now());
-          // it.printf(x + 113, y, id(size_14_font), COLOR_ON, TextAlign::BASELINE_LEFT, "M");
+          // it.strftime(x + 53, y, id(size_40_font), color_black, TextAlign::BASELINE_RIGHT, "%d", id(sntp_time).now());
+          // it.printf(x + 53, y, id(size_14_font), color_black, TextAlign::BASELINE_LEFT, "D");
+          // it.strftime(x + 113, y, id(size_40_font), color_black, TextAlign::BASELINE_RIGHT, "%m", id(sntp_time).now());
+          // it.printf(x + 113, y, id(size_14_font), color_black, TextAlign::BASELINE_LEFT, "M");
 
 
       - id: page_wifi_qr
@@ -414,13 +415,13 @@ display:
           #define yRes ${display_yRes}
 
           //draw clear background
-          it.fill(COLOR_OFF);
+          it.fill(color_white);
 
           x = 0, y = 0;
           //Time
-          it.strftime(x, y, id(size_50_font), COLOR_ON, "%H:%M", id(sntp_time).now());
+          it.strftime(x, y, id(size_50_font), color_black, "%H:%M", id(sntp_time).now());
           /* it.strftime(225, 68, id(size_60_font), "%S", id(sntp_time).now()); */
 
           x = 0, y = y + 50 + 5;
           //line
-          it.line(x, y, xRes -1, y, COLOR_ON);
+          it.line(x, y, xRes -1, y, color_black);
