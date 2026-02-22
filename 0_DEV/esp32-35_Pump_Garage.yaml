@@ -345,18 +345,24 @@ external_components:
   #   components: [waveshare_epaper]
   # - source: github://pr#6226
   #   components: [waveshare_epaper]
-  - source: github://pgolawsk/esphome@pr-6226-tweaks
-    components: [waveshare_epaper]
-    refresh: 5min
+  # - source: github://pgolawsk/esphome@pr-6226-tweaks
+  #   components: [waveshare_epaper]
+  #   refresh: 5min
+  - source: ../../esphome/esphome/components  # Adjust path to your local repo
+    components: [epaper_spi]
+    refresh: 0s  # Always refresh from local source
+
 spi:
   id: spi_v
   clk_pin: GPIO18 # SCL
   mosi_pin: GPIO23 # SDA
 
 display:
-  - platform: waveshare_epaper
-    # model: 2.90inbs
-    model: 2.90in3c
+  # - platform: waveshare_epaper
+  #   # model: 2.90inbs
+  #   model: 2.90in3c
+  - platform: epaper_spi  # Changed from waveshare_epaper
+    model: weact-2.9in-3c  # New model name format
     id: weact_display
     cs_pin: GPIO25
     busy_pin: GPIO5
@@ -369,13 +375,13 @@ display:
     pages:
       - id: page_blank
         lambda: |-
-          // Blanl Page
+          // Blank Page
           int x, y;
           #define xRes ${display_xRes}
           #define yRes ${display_yRes}
+
           //draw clear background
-          it.filled_rectangle(0, 0, xRes, yRes, COLOR_OFF);
-          //it.print(xRes/2, yRes/2, id(size_14_font), COLOR_ON, TextAlign::CENTER, "Refreshing...");
+          it.fill(color_white);
 
       - id: page_time
         lambda: |-
@@ -384,27 +390,30 @@ display:
           #define xRes ${display_xRes}
           #define yRes ${display_yRes}
 
+          //draw clear background
+          it.fill(color_white);
+
           //sun set-rise
-          it.printf(45, 22, id(sun_icon_font), TextAlign::BASELINE_RIGHT, "\U000F059C");
-          it.printf(135, 22, id(size_20_font), TextAlign::BASELINE_RIGHT, "%s", id(sunrise).state.c_str());
-          it.printf(45, 44, id(sun_icon_font), TextAlign::BASELINE_RIGHT, "\U000F059A");
-          it.printf(135, 44, id(size_20_font), TextAlign::BASELINE_RIGHT, "%s", id(sunset).state.c_str());
+          it.printf(45, 22, id(sun_icon_font), color_black, TextAlign::BASELINE_RIGHT, "\U000F059C");
+          it.printf(135, 22, id(size_20_font), color_black, TextAlign::BASELINE_RIGHT, "%s", id(sunrise).state.c_str());
+          it.printf(45, 44, id(sun_icon_font), color_black, TextAlign::BASELINE_RIGHT, "\U000F059A");
+          it.printf(135, 44, id(size_20_font), color_black, TextAlign::BASELINE_RIGHT, "%s", id(sunset).state.c_str());
           //date
 
-          it.strftime(210, 43, id(size_50_font), TextAlign::BASELINE_RIGHT, "%d", id(sntp_time).now());
-          it.printf(213, 43, id(size_14_font), TextAlign::BASELINE_LEFT, "D");
-          it.strftime(280, 43, id(size_50_font), TextAlign::BASELINE_RIGHT, "%m", id(sntp_time).now());
-          it.printf(283, 43, id(size_14_font), TextAlign::BASELINE_LEFT, "M");
+          it.strftime(210, 43, id(size_50_font), color_black, TextAlign::BASELINE_RIGHT, "%d", id(sntp_time).now());
+          it.printf(213, 43, id(size_14_font), color_black, TextAlign::BASELINE_LEFT, "D");
+          it.strftime(280, 43, id(size_50_font), color_black, TextAlign::BASELINE_RIGHT, "%m", id(sntp_time).now());
+          it.printf(283, 43, id(size_14_font), color_black, TextAlign::BASELINE_LEFT, "M");
 
           //line
           it.line(0, 54, 296, 54);
 
           //Time
-          it.strftime(70, 45, id(size_85_font), "%H:%M", id(sntp_time).now());
+          it.strftime(70, 45, id(size_85_font), color_black, "%H:%M", id(sntp_time).now());
           /* it.strftime(225, 68, id(size_60_font), "%S", id(sntp_time).now()); */
 
           //Weekday
-          it.strftime(15, 58, id(size_20_font), "%a", id(sntp_time).now());
+          it.strftime(15, 58, id(size_20_font), color_black, "%a", id(sntp_time).now());
           // it.strftime(250, 58, id(size_20_font), "%a", id(sntp_time).now());
 
           //wifi
@@ -412,25 +421,25 @@ display:
             x = 35, y = 105;
             // x = 265, y = 120;
             if (id(wifi_rssi).state >= -50) {
-              it.printf(x, y, id(wlan_icon_font), TextAlign::BASELINE_CENTER , "\U000F0928");
+              it.printf(x, y, id(wlan_icon_font), color_black, TextAlign::BASELINE_CENTER , "\U000F0928");
             } else if (id(wifi_rssi).state >= -60) {
-              it.printf(x, y, id(wlan_icon_font), TextAlign::BASELINE_CENTER , "\U000F0925");
+              it.printf(x, y, id(wlan_icon_font), color_black, TextAlign::BASELINE_CENTER , "\U000F0925");
             } else if (id(wifi_rssi).state >= -70) {
-              it.printf(x, y, id(wlan_icon_font), TextAlign::BASELINE_CENTER , "\U000F0922");
+              it.printf(x, y, id(wlan_icon_font), color_black, TextAlign::BASELINE_CENTER , "\U000F0922");
             } else if (id(wifi_rssi).state >= -80) {
-              it.printf(x, y, id(wlan_icon_font), TextAlign::BASELINE_CENTER , "\U000F0920");
+              it.printf(x, y, id(wlan_icon_font), color_black, TextAlign::BASELINE_CENTER , "\U000F0920");
             } else {
-              it.printf(x, y, id(wlan_icon_font), TextAlign::BASELINE_CENTER , "\U000F092E");
+              it.printf(x, y, id(wlan_icon_font), color_red, TextAlign::BASELINE_CENTER , "\U000F092E");
             }
           }
           //* Display Cycle
           x = 0; y = 126;
           if (id(select_display_cycle_interval).current_option() != "Never") {
-            it.printf(x, y, id(cycle_icon_font), TextAlign::BASELINE_LEFT, "\U000F04E6");
+            it.printf(x, y, id(cycle_icon_font), color_black, TextAlign::BASELINE_LEFT, "\U000F04E6");
             x = 16; y = 126;
-            it.printf(x, y, id(size_12_font), TextAlign::BASELINE_LEFT, "%s", id(select_display_cycle_interval).current_option());
+            it.printf(x, y, id(size_12_font), color_black, TextAlign::BASELINE_LEFT, "%s", id(select_display_cycle_interval).current_option());
           } else {
-            it.printf(x, y, id(cycle_icon_font), TextAlign::BASELINE_LEFT, "\U000F04E8");
+            it.printf(x, y, id(cycle_icon_font), color_black, TextAlign::BASELINE_LEFT, "\U000F04E8");
           }
 
       - id: page_home_temps
@@ -440,42 +449,45 @@ display:
           #define yRes ${display_yRes}
           int x, y;
 
+          //draw clear background
+          it.fill(color_white);
+
           //* Temperature
           x = 24; y = 64;
-          it.printf(x, y-12, id(measures_50_font), TextAlign::BASELINE_CENTER , "\U000F0F55");
+          it.printf(x, y-12, id(measures_50_font), color_black, TextAlign::BASELINE_CENTER , "\U000F0F55");
 
           // Entrance
           x = 70; y = 30;
-          it.printf(x, y, id(home_icon_font), TextAlign::BASELINE_CENTER , "\U000F081A");
+          it.printf(x, y, id(home_icon_font), color_black, TextAlign::BASELINE_CENTER , "\U000F081A");
           if (id(temp_entrance).has_state()) {
-            it.printf(x+70, y, id(size_30_font), TextAlign::BASELINE_RIGHT , "%.1f", id(temp_entrance).state);
+            it.printf(x+70, y, id(size_30_font), color_black, TextAlign::BASELINE_RIGHT , "%.1f", id(temp_entrance).state);
             // it.printf(x+74, y, id(size_20_font), TextAlign::BASELINE_LEFT , "°");
             // it.printf(x+80, y, id(size_20_font), TextAlign::BASELINE_LEFT , "C");
-            it.printf(x+70, y, id(units_22_font), TextAlign::BASELINE_LEFT , "\U000F0504");
+            it.printf(x+70, y, id(units_22_font), color_black, TextAlign::BASELINE_LEFT , "\U000F0504");
           }
 
           // Upstairs
           x = 200; y = 30;
-          it.printf(x, y, id(home_icon_font), TextAlign::BASELINE_CENTER , "\U000F12BD");
+          it.printf(x, y, id(home_icon_font), color_black, TextAlign::BASELINE_CENTER , "\U000F12BD");
           if (id(temp_upstairs).has_state()) {
-            it.printf(x+70, y, id(size_30_font), TextAlign::BASELINE_RIGHT , "%.1f", id(temp_upstairs).state);
-            it.printf(x+70, y, id(units_22_font), TextAlign::BASELINE_LEFT , "\U000F0504");
+            it.printf(x+70, y, id(size_30_font), color_black, TextAlign::BASELINE_RIGHT , "%.1f", id(temp_upstairs).state);
+            it.printf(x+70, y, id(units_22_font), color_black, TextAlign::BASELINE_LEFT , "\U000F0504");
           }
 
           // Underfloor
           x = 70; y = 60;
-          it.printf(x, y, id(home_icon_font), TextAlign::BASELINE_CENTER , "\U000F0DD3");
+          it.printf(x, y, id(home_icon_font), color_black, TextAlign::BASELINE_CENTER , "\U000F0DD3");
           if (id(temp_underfloor).has_state()) {
-            it.printf(x+70, y, id(size_30_font), TextAlign::BASELINE_RIGHT , "%.1f", id(temp_underfloor).state);
-            it.printf(x+70, y, id(units_22_font), TextAlign::BASELINE_LEFT , "\U000F0504");
+            it.printf(x+70, y, id(size_30_font), color_black, TextAlign::BASELINE_RIGHT , "%.1f", id(temp_underfloor).state);
+            it.printf(x+70, y, id(units_22_font), color_black, TextAlign::BASELINE_LEFT , "\U000F0504");
           }
 
           // Aquarium Window
           x = 200; y = 60;
-          it.printf(x, y, id(home_icon_font), TextAlign::BASELINE_CENTER , "\U000F112B");
+          it.printf(x, y, id(home_icon_font), color_black, TextAlign::BASELINE_CENTER , "\U000F112B");
           if (id(temp_aquariumW).has_state()) {
-            it.printf(x+70, y, id(size_30_font), TextAlign::BASELINE_RIGHT , "%.1f", id(temp_aquariumW).state);
-            it.printf(x+70, y, id(units_22_font), TextAlign::BASELINE_LEFT , "\U000F0504");
+            it.printf(x+70, y, id(size_30_font), color_black, TextAlign::BASELINE_RIGHT , "%.1f", id(temp_aquariumW).state);
+            it.printf(x+70, y, id(units_22_font), color_black, TextAlign::BASELINE_LEFT , "\U000F0504");
           }
 
           //line
@@ -483,50 +495,50 @@ display:
 
           //* Humidity
           x = 24; y = 128;
-          it.printf(x, y-12, id(measures_50_font), TextAlign::BASELINE_CENTER , "\U000F058E");
+          it.printf(x, y-12, id(measures_50_font), color_black, TextAlign::BASELINE_CENTER , "\U000F058E");
 
           // Entrance
           x = 70; y = 94;
-          it.printf(x, y, id(home_icon_font), TextAlign::BASELINE_CENTER , "\U000F081A");
+          it.printf(x, y, id(home_icon_font), color_black, TextAlign::BASELINE_CENTER , "\U000F081A");
           if (id(hum_entrance).has_state()) {
-            it.printf(x+70, y, id(size_30_font), TextAlign::BASELINE_RIGHT , "%.1f", id(hum_entrance).state);
+            it.printf(x+70, y, id(size_30_font), color_black, TextAlign::BASELINE_RIGHT , "%.1f", id(hum_entrance).state);
             // it.printf(x+74, y, id(size_20_font), TextAlign::BASELINE_LEFT , "°");
             // it.printf(x+80, y, id(size_20_font), TextAlign::BASELINE_LEFT , "C");
-            it.printf(x+70, y, id(units_22_font), TextAlign::BASELINE_LEFT , "\U000F03F0");
+            it.printf(x+70, y, id(units_22_font), color_black, TextAlign::BASELINE_LEFT , "\U000F03F0");
           }
 
           // Upstairs
           x = 200; y = 94;
-          it.printf(x, y, id(home_icon_font), TextAlign::BASELINE_CENTER , "\U000F12BD");
+          it.printf(x, y, id(home_icon_font), color_black, TextAlign::BASELINE_CENTER , "\U000F12BD");
           if (id(hum_upstairs).has_state()) {
-            it.printf(x+70, y, id(size_30_font), TextAlign::BASELINE_RIGHT , "%.1f", id(hum_upstairs).state);
-            it.printf(x+70, y, id(units_22_font), TextAlign::BASELINE_LEFT , "\U000F03F0");
+            it.printf(x+70, y, id(size_30_font), color_black, TextAlign::BASELINE_RIGHT , "%.1f", id(hum_upstairs).state);
+            it.printf(x+70, y, id(units_22_font), color_black, TextAlign::BASELINE_LEFT , "\U000F03F0");
           }
 
           // Underfloor
           x = 70; y = 124;
-          it.printf(x, y, id(home_icon_font), TextAlign::BASELINE_CENTER , "\U000F0DD3");
+          it.printf(x, y, id(home_icon_font), color_black, TextAlign::BASELINE_CENTER , "\U000F0DD3");
           if (id(hum_underfloor).has_state()) {
-            it.printf(x+70, y, id(size_30_font), TextAlign::BASELINE_RIGHT , "%.1f", id(hum_underfloor).state);
-            it.printf(x+70, y, id(units_22_font), TextAlign::BASELINE_LEFT , "\U000F03F0");
+            it.printf(x+70, y, id(size_30_font), color_black, TextAlign::BASELINE_RIGHT , "%.1f", id(hum_underfloor).state);
+            it.printf(x+70, y, id(units_22_font), color_black, TextAlign::BASELINE_LEFT , "\U000F03F0");
           }
 
           // Aquarium Window
           x = 200; y = 124;
-          it.printf(x, y, id(home_icon_font), TextAlign::BASELINE_CENTER , "\U000F112B");
+          it.printf(x, y, id(home_icon_font), color_black, TextAlign::BASELINE_CENTER , "\U000F112B");
           if (id(hum_aquariumW).has_state()) {
-            it.printf(x+70, y, id(size_30_font), TextAlign::BASELINE_RIGHT , "%.1f", id(hum_aquariumW).state);
-            it.printf(x+70, y, id(units_22_font), TextAlign::BASELINE_LEFT , "\U000F03F0");
+            it.printf(x+70, y, id(size_30_font), color_black, TextAlign::BASELINE_RIGHT , "%.1f", id(hum_aquariumW).state);
+            it.printf(x+70, y, id(units_22_font), color_black, TextAlign::BASELINE_LEFT , "\U000F03F0");
           }
 
           //* Display Cycle
           x = 0; y = 126;
           if (id(select_display_cycle_interval).current_option() != "Never") {
-            it.printf(x, y, id(cycle_icon_font), TextAlign::BASELINE_LEFT, "\U000F04E6");
+            it.printf(x, y, id(cycle_icon_font), color_black, TextAlign::BASELINE_LEFT, "\U000F04E6");
             x = 16; y = 126;
-            it.printf(x, y, id(size_12_font), TextAlign::BASELINE_LEFT, "%s", id(select_display_cycle_interval).current_option());
+            it.printf(x, y, id(size_12_font), color_black, TextAlign::BASELINE_LEFT, "%s", id(select_display_cycle_interval).current_option());
           } else {
-            it.printf(x, y, id(cycle_icon_font), TextAlign::BASELINE_LEFT, "\U000F04E8");
+            it.printf(x, y, id(cycle_icon_font), color_black, TextAlign::BASELINE_LEFT, "\U000F04E8");
           }
 
       - id: page_pump_temps
@@ -536,28 +548,31 @@ display:
           #define yRes ${display_yRes}
           int x, y;
 
+          //draw clear background
+          it.fill(color_white);
+
           //* Pump Temperatures
           x = 148; y = 18;
-          it.printf(x, y, id(size_15_font), TextAlign::BASELINE_CENTER , "PUMP Temperatures");
+          it.printf(x, y, id(size_15_font), color_black, TextAlign::BASELINE_CENTER , "PUMP Temperatures");
 
           //* Temperature
           x = 20; y = 64;
-          it.printf(x, y-12, id(measures_50_font), TextAlign::BASELINE_CENTER , "\U000F050F");
+          it.printf(x, y-12, id(measures_50_font), color_black, TextAlign::BASELINE_CENTER , "\U000F050F");
 
           // Pump
           x = 70; y = 60;
-          // it.printf(x, y, id(home_icon_font), TextAlign::BASELINE_CENTER , "\U000F06D9");
+          // it.printf(x, y, id(home_icon_font), color_black, TextAlign::BASELINE_CENTER , "\U000F06D9");
           if (id(temp).has_state()) {
-            it.printf(x+70, y, id(size_50_font), TextAlign::BASELINE_RIGHT , "%.1f", id(temp).state);
-            it.printf(x+70, y, id(units_22_font), TextAlign::BASELINE_LEFT , "\U000F0504");
+            it.printf(x+70, y, id(size_50_font), color_black, TextAlign::BASELINE_RIGHT , "%.1f", id(temp).state);
+            it.printf(x+70, y, id(units_22_font), color_black, TextAlign::BASELINE_LEFT , "\U000F0504");
           }
 
           // Pump Floor
           x = 200; y = 60;
-          // it.printf(x, y, id(home_icon_font), TextAlign::BASELINE_CENTER , "\U000F058F");
+          // it.printf(x, y, id(home_icon_font), color_black, TextAlign::BASELINE_CENTER , "\U000F058F");
           if (id(tempFloor).has_state()) {
-            it.printf(x+70, y, id(size_50_font), TextAlign::BASELINE_RIGHT , "%.1f", id(tempFloor).state);
-            it.printf(x+70, y, id(units_22_font), TextAlign::BASELINE_LEFT , "\U000F0504");
+            it.printf(x+70, y, id(size_50_font), color_black, TextAlign::BASELINE_RIGHT , "%.1f", id(tempFloor).state);
+            it.printf(x+70, y, id(units_22_font), color_black, TextAlign::BASELINE_LEFT , "\U000F0504");
           }
 
           //line
@@ -565,35 +580,35 @@ display:
 
           //* Pump Humidity and Illuminance
           x = 148; y = 64+18;
-          it.printf(x, y, id(size_15_font), TextAlign::BASELINE_CENTER , "PUMP Humidity and Illuminance");
+          it.printf(x, y, id(size_15_font), color_black, TextAlign::BASELINE_CENTER , "PUMP Humidity and Illuminance");
 
           //* Humidity
           x = 20; y = 128;
-          it.printf(x, y-12, id(measures_50_font), TextAlign::BASELINE_CENTER , "\U000F058E");
+          it.printf(x, y-12, id(measures_50_font), color_black, TextAlign::BASELINE_CENTER , "\U000F058E");
 
           x = 70; y = 124;
-          // it.printf(x, y, id(home_icon_font), TextAlign::BASELINE_CENTER , "\U000F058F");
+          // it.printf(x, y, id(home_icon_font), color_black, TextAlign::BASELINE_CENTER , "\U000F058F");
           if (id(hum).has_state() and not isnan(id(hum).state)) {
-            it.printf(x+70, y, id(size_50_font), TextAlign::BASELINE_RIGHT , "%.1f", id(hum).state);
-            // it.printf(x+74, y, id(size_20_font), TextAlign::BASELINE_LEFT , "°");
-            // it.printf(x+80, y, id(size_20_font), TextAlign::BASELINE_LEFT , "C");
-            it.printf(x+70, y, id(units_22_font), TextAlign::BASELINE_LEFT , "\U000F03F0");
+            it.printf(x+70, y, id(size_50_font), color_black, TextAlign::BASELINE_RIGHT , "%.1f", id(hum).state);
+            // it.printf(x+74, y, id(size_20_font), color_black, TextAlign::BASELINE_LEFT , "°");
+            // it.printf(x+80, y, id(size_20_font), color_black, TextAlign::BASELINE_LEFT , "C");
+            it.printf(x+70, y, id(units_22_font), color_black, TextAlign::BASELINE_LEFT , "\U000F03F0");
           }
 
           //* Illuminance
           // x = 148+24; y = 128;
-          // it.printf(x, y-12, id(measures_50_font), TextAlign::BASELINE_CENTER , "\U000F17FE");
+          // it.printf(x, y-12, id(measures_50_font), color_black, TextAlign::BASELINE_CENTER , "\U000F17FE");
 
           x = 200; y = 124;
-          // it.printf(x, y, id(home_icon_font), TextAlign::BASELINE_CENTER , "\U000F058F");
+          // it.printf(x, y, id(home_icon_font), color_black, TextAlign::BASELINE_CENTER , "\U000F058F");
           if (id(lux).has_state() and not isnan(id(lux).state)) {
             if(int(id(lux).state) < 99) {
-              it.printf(x+70, y, id(size_50_font), TextAlign::BASELINE_RIGHT , "%.1f", id(lux).state);
+              it.printf(x+70, y, id(size_50_font), color_black, TextAlign::BASELINE_RIGHT , "%.1f", id(lux).state);
             } else {
               if(int(id(lux).state) > 9999) {
-                it.printf(x+70, y, id(size_50_font), TextAlign::BASELINE_RIGHT , "%.0fK", id(lux).state / 1000);
+                it.printf(x+70, y, id(size_50_font), color_black, TextAlign::BASELINE_RIGHT , "%.0fK", id(lux).state / 1000);
               } else {
-                it.printf(x+70, y, id(size_50_font), TextAlign::BASELINE_RIGHT , "%.0f", id(lux).state);
+                it.printf(x+70, y, id(size_50_font), color_black, TextAlign::BASELINE_RIGHT , "%.0f", id(lux).state);
               }
             }
             // it.printf(x+70, y, id(size_50_font), TextAlign::BASELINE_RIGHT , "%.1f", id(lux_garage).state);
@@ -604,11 +619,11 @@ display:
           //* Display Cycle
           x = 0; y = 126;
           if (id(select_display_cycle_interval).current_option() != "Never") {
-            it.printf(x, y, id(cycle_icon_font), TextAlign::BASELINE_LEFT, "\U000F04E6");
+            it.printf(x, y, id(cycle_icon_font), color_black, TextAlign::BASELINE_LEFT, "\U000F04E6");
             x = 16; y = 126;
-            it.printf(x, y, id(size_12_font), TextAlign::BASELINE_LEFT, "%s", id(select_display_cycle_interval).current_option());
+            it.printf(x, y, id(size_12_font), color_black, TextAlign::BASELINE_LEFT, "%s", id(select_display_cycle_interval).current_option());
           } else {
-            it.printf(x, y, id(cycle_icon_font), TextAlign::BASELINE_LEFT, "\U000F04E8");
+            it.printf(x, y, id(cycle_icon_font), color_black, TextAlign::BASELINE_LEFT, "\U000F04E8");
           }
 
       - id: page_water
@@ -618,21 +633,24 @@ display:
           #define yRes ${display_yRes}
           int x, y;
 
+          //draw clear background
+          it.fill(color_white);
+
           //* Pump Water
           x = 148; y = 18;
-          it.printf(x, y, id(size_15_font), TextAlign::BASELINE_CENTER , "WATER Used");
+          it.printf(x, y, id(size_15_font), color_black, TextAlign::BASELINE_CENTER , "WATER Used");
 
           //* Water
           x = 20; y = 64;
-          it.printf(x, y-12, id(measures_50_font), TextAlign::BASELINE_CENTER , "\U000F058F");
+          it.printf(x, y-12, id(measures_50_font), color_black, TextAlign::BASELINE_CENTER , "\U000F058F");
 
           // All Used
           x = 170; y = 60;
-          // it.printf(x, y, id(home_icon_font), TextAlign::BASELINE_CENTER , "\U000F06D9");
+          // it.printf(x, y, id(home_icon_font), color_black, TextAlign::BASELINE_CENTER , "\U000F06D9");
           if (id(water_used_all).has_state()) {
-            it.printf(x+70, y, id(size_40_font), TextAlign::BASELINE_RIGHT , "%.3f", id(water_used_all).state);
-            it.printf(x+74, y-4, id(size_20_font), TextAlign::BASELINE_LEFT , "M");
-            it.printf(x+94, y-12, id(size_12_font), TextAlign::BASELINE_LEFT , "3");
+            it.printf(x+70, y, id(size_40_font), color_black, TextAlign::BASELINE_RIGHT , "%.3f", id(water_used_all).state);
+            it.printf(x+74, y-4, id(size_20_font), color_black, TextAlign::BASELINE_LEFT , "M");
+            it.printf(x+94, y-12, id(size_12_font), color_black, TextAlign::BASELINE_LEFT , "3");
           }
 
           //line
@@ -640,34 +658,34 @@ display:
 
           // Home Used
           x = 284; y = 94;
-          it.printf(x, y-2, id(home_icon_font), TextAlign::BASELINE_CENTER , "\U000F06A1");
+          it.printf(x, y-2, id(home_icon_font), color_black, TextAlign::BASELINE_CENTER , "\U000F06A1");
 
           x = 170; y = 94;
           if (id(water_used_home).has_state()) {
-            it.printf(x+70, y, id(size_30_font), TextAlign::BASELINE_RIGHT , "%.3f", id(water_used_home).state);
-            it.printf(x+74, y-4, id(size_20_font), TextAlign::BASELINE_LEFT , "M");
-            it.printf(x+94, y-12, id(size_12_font), TextAlign::BASELINE_LEFT , "3");
+            it.printf(x+70, y, id(size_30_font), color_black, TextAlign::BASELINE_RIGHT , "%.3f", id(water_used_home).state);
+            it.printf(x+74, y-4, id(size_20_font), color_black, TextAlign::BASELINE_LEFT , "M");
+            it.printf(x+94, y-12, id(size_12_font), color_black, TextAlign::BASELINE_LEFT , "3");
           }
 
           // Garden Used
           x = 284; y = 128;
-          it.printf(x, y-2, id(home_icon_font), TextAlign::BASELINE_CENTER , "\U000F09F2");
+          it.printf(x, y-2, id(home_icon_font), color_black, TextAlign::BASELINE_CENTER , "\U000F09F2");
 
           x = 170; y = 128;
           if (id(water_used_garden).has_state()) {
-            it.printf(x+70, y, id(size_30_font), TextAlign::BASELINE_RIGHT , "%.3f", id(water_used_garden).state);
-            it.printf(x+74, y-4, id(size_20_font), TextAlign::BASELINE_LEFT , "M");
-            it.printf(x+94, y-12, id(size_12_font), TextAlign::BASELINE_LEFT , "3");
+            it.printf(x+70, y, id(size_30_font), color_black, TextAlign::BASELINE_RIGHT , "%.3f", id(water_used_garden).state);
+            it.printf(x+74, y-4, id(size_20_font), color_black, TextAlign::BASELINE_LEFT , "M");
+            it.printf(x+94, y-12, id(size_12_font), color_black, TextAlign::BASELINE_LEFT , "3");
           }
 
           //* Display Cycle
           x = 0; y = 126;
           if (id(select_display_cycle_interval).current_option() != "Never") {
-            it.printf(x, y, id(cycle_icon_font), TextAlign::BASELINE_LEFT, "\U000F04E6");
+            it.printf(x, y, id(cycle_icon_font), color_black, TextAlign::BASELINE_LEFT, "\U000F04E6");
             x = 16; y = 126;
-            it.printf(x, y, id(size_12_font), TextAlign::BASELINE_LEFT, "%s", id(select_display_cycle_interval).current_option());
+            it.printf(x, y, id(size_12_font), color_black, TextAlign::BASELINE_LEFT, "%s", id(select_display_cycle_interval).current_option());
           } else {
-            it.printf(x, y, id(cycle_icon_font), TextAlign::BASELINE_LEFT, "\U000F04E8");
+            it.printf(x, y, id(cycle_icon_font), color_black, TextAlign::BASELINE_LEFT, "\U000F04E8");
           }
 
       - id: page_wifi_qr
@@ -678,20 +696,23 @@ display:
           #define xCenter (xRes/2 + 40) // X position center
           int x, y;
 
+          //draw clear background
+          it.fill(color_white);
+
           //id(t5_display).clear();
-          it.print(10, 20, id(size_14_font), TextAlign::BASELINE_LEFT, "Join Guest WIFI");
+          it.print(10, 20, id(size_14_font), color_black, TextAlign::BASELINE_LEFT, "Join Guest WIFI");
           // it.print(xRes - 40, yRes - 40, id(font_small), TextAlign::BASELINE_LEFT, "5");
           // guest wifi
           // WIFI:S:<WIFI NAME HERE>;T:WPA;P:<WIFI PASSWOD HERE>;H:false;;
           // Draw the QR-code at position [x=120,y=5] with white color and a 4x scale
-          it.qr_code(120, 5, id(guestwifi_qr), COLOR_ON, 4);
+          it.qr_code(120, 5, id(guestwifi_qr), color_black, 4);
 
           //* Display Cycle
           x = 0; y = 126;
           if (id(select_display_cycle_interval).current_option() != "Never") {
-            it.printf(x, y, id(cycle_icon_font), TextAlign::BASELINE_LEFT, "\U000F04E6");
+            it.printf(x, y, id(cycle_icon_font), color_black, TextAlign::BASELINE_LEFT, "\U000F04E6");
             x = 16; y = 126;
-            it.printf(x, y, id(size_12_font), TextAlign::BASELINE_LEFT, "%s", id(select_display_cycle_interval).current_option());
+            it.printf(x, y, id(size_12_font), color_black, TextAlign::BASELINE_LEFT, "%s", id(select_display_cycle_interval).current_option());
           } else {
-            it.printf(x, y, id(cycle_icon_font), TextAlign::BASELINE_LEFT, "\U000F04E8");
+            it.printf(x, y, id(cycle_icon_font), color_black, TextAlign::BASELINE_LEFT, "\U000F04E8");
           }
