@@ -6,6 +6,7 @@
 # Pawelo, 20250815, created based on esp32_dev.yaml
 # Pawelo, 20250906, switched from Arduino to ESP-IDF framework
 # Pawelo, 20260124, added minimum_chip_revision variable to board_esp32.yaml to eliminate warnings
+# Pawelo, 20260221, changed GPIO based on testing
 
 #! run with this command to override substitutions
 # esphome -s devicename espXX -s updates 1min -s room <Room name> -s mqtt_room <room> run esp32_MMmm_SSss__PP.yaml --device 192.168.x.x
@@ -97,8 +98,9 @@ binary_sensor:
   # - !include { file: ../sensors/binary_from_HA_sensor.yaml, vars: { ix: "", sensor: "open", mdi_icon: "garage-variant", device_class: garage_door, entity_id: binary_sensor.garage_main_door } }
 
   # Reed sensors for gateway
-  - !include { file: ../sensors/binary_gpio.yaml, vars: { ix: "", sensor: "Open", gpio: "GPIO13", inverted: false, mdi_icon: "gate-open", room: "$room2" } }
-  - !include { file: ../sensors/binary_gpio.yaml, vars: { ix: "", sensor: "Closed", gpio: "GPIO14", inverted: false, mdi_icon: "gate", room: "$room2" } }
+  #! during testing GPIO13 and GPIO25 were not working as expected - probably some hardware issue, need to check further, for now using GPIO14 and GPIO27 which are working fine
+  - !include { file: ../sensors/binary_gpio.yaml, vars: { ix: "", sensor: "Open", gpio: "GPIO14", inverted: true, mdi_icon: "gate-open", room: "$room2" } }
+  - !include { file: ../sensors/binary_gpio.yaml, vars: { ix: "", sensor: "Closed", gpio: "GPIO27", inverted: true, mdi_icon: "gate", room: "$room2" } }
 
 sensor:
   - !include ../sensors/temp_internal.yaml
@@ -167,7 +169,7 @@ output:
   - !include { file: ../outputs/passive_buzzer_ledc.yaml, vars: { ix: "", gpio: "GPIO4" } }
 
   # Garage door relay
-  - !include { file: ../outputs/door.yaml, vars: { ix: "", gpio: "GPIO3", inverted: false } }
+  - !include { file: ../outputs/door.yaml, vars: { ix: "", gpio: "GPIO12", inverted: false } }
 
 light:
   # LED green (S3)
