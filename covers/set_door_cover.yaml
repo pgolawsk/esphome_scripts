@@ -1,0 +1,30 @@
+#* Room Door cover SET for package:
+# Pawelo, 20260228, created based on door_cover.yaml, without endstop sensors as those can be added by !extend if needed
+
+#! open_endstop and/or close_endstop can be added by !extend if needed
+
+cover:
+  - platform: feedback
+    name: "$room Door${ix}"
+    id: door_cover${ix}
+    device_class: ${device_class}
+    icon: "mdi:${mdi_icon}"
+    position_state_topic: $devicename/door_cover${ix}
+    has_built_in_endstop: true
+    assumed_state: true
+    open_action:
+      - output.turn_on: o_door${ix}
+      - delay: 500ms
+      - output.turn_off: o_door${ix}
+    open_duration: ${open_duration}
+    close_action:
+      - output.turn_on: o_door${ix}
+      - delay: 500ms
+      - output.turn_off: o_door${ix}
+    close_duration: ${close_duration}
+    stop_action:
+      - output.turn_on: o_door${ix}
+      - delay: 500ms
+      - output.turn_off: o_door${ix}
+    #   - switch.turn_off: open_cover_switch
+    #   - switch.turn_off: close_cover_switch
