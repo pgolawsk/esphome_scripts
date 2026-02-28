@@ -8,6 +8,8 @@
 # Pawelo, 20260124, added minimum_chip_revision variable to board_esp32.yaml to eliminate warnings
 # Pawelo, 20260221, changed GPIO based on testing
 # Pawelo, 20260228, deployed on PROD
+# Pawelo, 20260228, added cover for gate with endstop sensors
+# Pawelo, 20260228, calibrate BME280 sensor based on reference station readings
 
 #! run with this command to override substitutions
 # esphome -s devicename espXX -s updates 1min -s room <Room name> -s mqtt_room <room> run esp32_MMmm_SSss__PP.yaml --device 192.168.x.x
@@ -69,6 +71,10 @@ substitutions:
 # <<: !include { file: ../interfaces/ir_receiver.yaml, vars: { gpio: "GPIO3", dump: "nec", rmt_channel: 2 } } # for ESP32c3 can be 2-3, for ESP32 can be 0-7, for ESP32s2 0-3, for ESP32s3 4-7
 # <<: !include { file: ../interfaces/ir_transmitter.yaml, vars: { gpio: "GPIO4", rmt_channel: 0 } } # for ESP32c3 can be 0-1, for ESP32 can be 0-7, for ESP32s2 0-3, for ESP32s3 0-3
 
+packages:
+# Load the base door cover template here
+  gateway_base: !include { file: ../covers/set_door_cover.yaml, vars: { ix: "", mdi_icon: "gate", device_class: "gate", open_duration: "21s", close_duration: "21s" } }
+
 text_sensor:
   - !include ../sensors/text_uptime.yaml
   - !include ../sensors/text_uptime_boot.yaml
@@ -122,7 +128,7 @@ sensor:
   # - !include { file: ../sensors/temp_hum_AHT2x.yaml, vars: { ix: "", bus_id: "bus_a", address: "0x38" } }
 
   # # Temperature, Humidity and Pressure sensor
-  - !include { file: ../sensors/temp_hum_press_BME280.yaml, vars: { ix: "", bus_id: "bus_a", address: "0x76", temp_offset: 0.0, hum_offset: 0.0, pressure_offset: 0.0 } }
+  - !include { file: ../sensors/temp_hum_press_BME280.yaml, vars: { ix: "", bus_id: "bus_a", address: "0x76", temp_offset: -4.5, hum_offset: 5.0, pressure_offset: 9.4 } }
 
   # Temperature, Humidity, Pressure and Gas Resistance sensor
   # - !include { file: ../sensors/temp_hum_press_gas_BME680.yaml, vars: { ix: "", bus_id: "bus_a", address: "0x77", temp_offset: 0.0, hum_offset: 0.0, pressure_offset: 0.0 } }
@@ -199,6 +205,9 @@ switch:
   # Gate switch
   # - !include { file: ../switches/gate.yaml, vars: { ix: "", gpio: "GPIO0", off_delay: "1s" } }
 
-# cover:
-#   # Garage door cover
-#   - !include { file: ../covers/door_cover.yaml, vars: { ix: "", mdi_icon: "garage", device_class: "garage", open_duration: "18s", close_duration: "18s", open_endstop_binary_sensor: ha_open } }
+cover:
+  # Gateway door cover
+  # - !include { file: ../covers/door_cover.yaml, vars: { ix: "", mdi_icon: "gate", device_class: "gate", open_duration: "25s", close_duration: "25s", open_endstop_prefix: "", open_endstop_binary_sensor: gpio_Open, close_endstop_prefix: "", close_endstop_binary_sensor: gpio_Closed } }
+  - id: !extend door_cover
+    open_endstop: gpio_Open
+    close_endstop: gpio_Closed
