@@ -143,7 +143,7 @@ button:
   # WARN: Performing the scan will disconnect device from current WiFi
   - !include { file: ../buttons/scan_wifi_button.yaml }
 
-  # Door button (Garage door, enable output as well)
+  # Door button (enable output as well)
   - !include { file: ../buttons/door_button.yaml, vars: { ix: "", mdi_icon: "gate-arrow-right", room: "$room2" } }
 
 output:
@@ -169,7 +169,7 @@ output:
   # Passive/RTTTL Buzzer
   - !include { file: ../outputs/passive_buzzer_ledc.yaml, vars: { ix: "", gpio: "GPIO4" } }
 
-  # Garage door relay
+  # Door relay
   - !include { file: ../outputs/door.yaml, vars: { ix: "", gpio: "GPIO12", inverted: false } }
 
 light:
