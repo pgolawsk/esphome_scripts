@@ -45,6 +45,7 @@
 # Pawelo, 20260208, finalized epaper_spi component on PR #13894
 # Pawelo, 20260214, added date & weekday to Guest WiFi page
 # Pawelo, 20260222, fix for swapping black and white colors on epaper_spi component
+# Pawelo, 20260301, another fix for swapping black and white colors on epaper_spi component
 
 #! run with this command to override substitutions
 # esphome -s devicename espXX -s updates 1min -s room <Room name> -s mqtt_room <room> run esp32_MMmm_SSss__PP.yaml --device 192.168.x.x
@@ -492,7 +493,7 @@ display:
               fi = id(color_black);
             }
             it.printf(x+100, y, id(size_50_font), fi, TextAlign::BASELINE_RIGHT , "%.1f", id(temp).state);
-            it.printf(x+100, y, id(units_30_font), TextAlign::BASELINE_LEFT , "\U000F0504");
+            it.printf(x+100, y, id(units_30_font), color_black, TextAlign::BASELINE_LEFT , "\U000F0504");
           }
 
           x = 0, y = y + 50;
@@ -505,7 +506,7 @@ display:
               fi = id(color_black);
             }
             it.printf(x+100, y, id(size_50_font), fi, TextAlign::BASELINE_RIGHT , "%.1f", id(tempU).state);
-            it.printf(x+100, y, id(units_30_font), TextAlign::BASELINE_LEFT , "\U000F0504");
+            it.printf(x+100, y, id(units_30_font), color_black, TextAlign::BASELINE_LEFT , "\U000F0504");
           }
 
 
@@ -520,13 +521,13 @@ display:
             x = xRes - 5, y = yRes - 5;
             // x = 265, y = 120;
             if (id(wifi_rssi).state >= -50) {
-              it.printf(x, y, id(wlan_icon_font), TextAlign::BASELINE_RIGHT , "\U000F0928");
+              it.printf(x, y, id(wlan_icon_font), color_black, TextAlign::BASELINE_RIGHT , "\U000F0928");
             } else if (id(wifi_rssi).state >= -60) {
-              it.printf(x, y, id(wlan_icon_font), TextAlign::BASELINE_RIGHT , "\U000F0925");
+              it.printf(x, y, id(wlan_icon_font), color_black, TextAlign::BASELINE_RIGHT , "\U000F0925");
             } else if (id(wifi_rssi).state >= -70) {
-              it.printf(x, y, id(wlan_icon_font), TextAlign::BASELINE_RIGHT , "\U000F0922");
+              it.printf(x, y, id(wlan_icon_font), color_black, TextAlign::BASELINE_RIGHT , "\U000F0922");
             } else if (id(wifi_rssi).state >= -80) {
-              it.printf(x, y, id(wlan_icon_font), TextAlign::BASELINE_RIGHT , "\U000F0920");
+              it.printf(x, y, id(wlan_icon_font), color_black, TextAlign::BASELINE_RIGHT , "\U000F0920");
             } else {
               it.printf(x, y, id(wlan_icon_font), id(color_red), TextAlign::BASELINE_RIGHT , "\U000F092E");
             }
