@@ -106,7 +106,8 @@ substitutions:
 <<: !include { file: ../includes/board_esp32.yaml, vars: {} }
 # <<: !include { file: ../includes/psram.yaml, vars: { mode: "quad" } } # "quad' for 2MB, "octal" for 4-8MB PSRAM
 <<: !include ../includes/qr_guestwifi.yaml
-<<: !include ../includes/globals_display_cycle.yaml #! do not enable for board_esp32__water_pump.yaml
+# <<: !include ../includes/globals_display_cycle.yaml #! do not enable for board_esp32__water_pump.yaml
+<<: !include { file: ../includes/globals_display_cycle.yaml, vars: { restore: false } }
 
 # Include interfaces needed
 <<: !include { file: ../interfaces/debug.yaml, vars: { update_interval: "5s" } }
