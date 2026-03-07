@@ -57,6 +57,7 @@
 # Pawelo, 20251205, select.state replaced with select.current_option() to as per deprecation warning (2026.5)
 # Pawelo, 20260124, added minimum_chip_revision variable to board_esp32.yaml to eliminate warnings
 # Pawelo, 20260222, switch display to epaper_spi (my PR:)
+# Pawelo, 20260307, switch display to nvm (my PR#14119)
 
 #! run with this command to override substitutions
 # esphome -s devicename espXX -s updates 1min -s room <Room name> -s mqtt_room <room> run esp32_MMmm_SSss__PP.yaml --device 192.168.x.x
@@ -119,10 +120,14 @@ substitutions:
 <<: !include ../includes/api_services__water.yaml # add services to set total water usage for 2 water meters and scan_wifi
 
 # Include basics of a board
-<<: !include ../includes/board_esp32__water_pump.yaml
+# <<: !include ../includes/board_esp32__water_pump.yaml
+<<: !include ../includes/board_esp32.yaml
 # <<: !include { file: ../includes/board_esp32.yaml, vars: { board_variant: "${board_variant}", board: "${board}", flash_size: "${flash_size}", flash_write_interval: "${flash_write_interval}" } }
 # <<: !include { file: ../includes/psram.yaml, vars: { mode: "quad" } } # "quad' for 2MB, "octal" for 4-8MB PSRAM
 <<: !include ../includes/qr_guestwifi.yaml
+<<: !include { file: ../includes/globals_display_cycle.yaml, vars: { restore: true } }
+packages:
+  fram: !include { file: ../includes/globals_water_totals_restore.yaml, vars: { restore: true } }
 
 # Include interfaces needed
 <<: !include { file: ../interfaces/debug.yaml, vars: { update_interval: "5s" } }
@@ -134,7 +139,8 @@ substitutions:
 # <<: !include { file: ../interfaces/uart_ld2410.yaml, vars: { ix: "ld", tx_pin: "TX", rx_pin: "RX", baud_rate: 256000, sensor_name: "LD2420" } }
 # <<: !include { file: ../interfaces/uart_ld2420.yaml, vars: { ix: "ld", tx_pin: "TX", rx_pin: "RX", baud_rate: 256000 } }
 # <<: !include { file: ../interfaces/i2c_apds9960.yaml, vars: { address: "0x39" } }
-<<: !include { file: ../interfaces/fram__water_pump.yaml, vars: { bus_id: "bus_a", address: "0x50" } }
+# <<: !include { file: ../interfaces/fram__water_pump.yaml, vars: { bus_id: "bus_a", address: "0x50" } }
+<<: !include { file: ../interfaces/nvm_fram_i2c__water_pump.yaml, vars: { bus_id: "bus_a", address: "0x50", model: "MB85RC256" } }
 
 text_sensor:
   - !include ../sensors/text_uptime.yaml
@@ -338,9 +344,11 @@ select:
   - !include { file: ../selects/display_cycle_interval.yaml, vars: { global_variable: "global_display_cycle_page", display_id: "weact_display" } }
 
 external_components:
-  - source: github://pr#4880
-    components: [ fram, fram_pref ]
-  - source: github://nrandell/dallasng
+  # - source: github://pr#4880
+  #   components: [ fram, fram_pref ]
+  - source: github://pr#14119
+    components: [ nvm, fram_i2c ]
+  # - source: github://nrandell/dallasng
   # - source: github://pr#4579
   #   components: [waveshare_epaper]
   # - source: github://pr#6226
