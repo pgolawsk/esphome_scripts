@@ -10,6 +10,7 @@
 # Pawelo, 20260228, deployed on PROD
 # Pawelo, 20260228, added cover for gate with endstop sensors
 # Pawelo, 20260228, calibrate BME280 sensor based on reference station readings
+# Pawelo, 20260307, re-calibrate BME280 sensor based on reference station readings and using calibrate_linear filter instead of offset to have better accuracy on whole range
 
 #! run with this command to override substitutions
 # esphome -s devicename espXX -s updates 1min -s room <Room name> -s mqtt_room <room> run esp32_MMmm_SSss__PP.yaml --device 192.168.x.x
@@ -128,7 +129,8 @@ sensor:
   # - !include { file: ../sensors/temp_hum_AHT2x.yaml, vars: { ix: "", bus_id: "bus_a", address: "0x38" } }
 
   # # Temperature, Humidity and Pressure sensor
-  - !include { file: ../sensors/temp_hum_press_BME280.yaml, vars: { ix: "", bus_id: "bus_a", address: "0x76", temp_offset: -4.5, hum_offset: 5.0, pressure_offset: 9.4 } }
+  # - !include { file: ../sensors/temp_hum_press_BME280.yaml, vars: { ix: "", bus_id: "bus_a", address: "0x76", temp_offset: -4.5, hum_offset: 5.0, pressure_offset: 9.4 } }
+  - !include { file: ../sensors/temp_hum_press_BME280_calibrate_linear.yaml, vars: { ix: "", bus_id: "bus_a", address: "0x76", pressure_offset: 9.4 } }
 
   # Temperature, Humidity, Pressure and Gas Resistance sensor
   # - !include { file: ../sensors/temp_hum_press_gas_BME680.yaml, vars: { ix: "", bus_id: "bus_a", address: "0x77", temp_offset: 0.0, hum_offset: 0.0, pressure_offset: 0.0 } }
