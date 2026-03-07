@@ -388,8 +388,8 @@ Components:
 
 #### Garden, Gateway
 
-- PRODUCTION since: TBD 2025
-- Script `file://./1_UAT/esp32-06_Garden_Gateway.yaml`
+- PRODUCTION since: Feb 2026
+- Script `file://./2_PROD/esp32-06_Garden_Gateway.yaml`
 
 ESP32 board with Temperature, Humidity, Pressure sensors. Powered from TBD.
 
