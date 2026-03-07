@@ -1,0 +1,26 @@
+# NVM component using the FRAM I2C platform.
+# Pawelo, 20260307, created
+
+external_components:
+  # - source: ../../esphome/esphome/components  # Adjust path to your local repo
+  - source: github://pr#14119
+    components: [ nvm, fram_i2c]
+    refresh: 0s  # Always refresh from local source
+
+nvm:
+  - platform: fram_i2c
+    id: my_fram
+    address: 0x50
+    model: MB85RC256
+    partitions:
+      - id: pref_store
+        type: preferences
+        size: 4kB
+      # - id: sensor_cache
+      #   type: raw
+      #   size: 8kB
+      #   offset: 0x2000  # Explicit offset to preserve data if pref_store resizes
+      # - id: keys_data
+      #   type: key_value
+      #   size: 2kB
+      #   offset: 0x4000  # Explicit offset

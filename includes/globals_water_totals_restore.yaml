@@ -1,0 +1,30 @@
+---
+#* Package of water totals for storing total water usage in global variables
+# Pawelo, 20260307, created based on board_esp32__water_pump.yaml
+
+globals:
+  - id: global_watertotal_all
+    type: float
+    restore_value: ${restore}
+    initial_value: "0.0"
+  - id: global_watertotal_garden
+    type: float
+    restore_value: ${restore}
+    initial_value: "0.0"
+
+esphome:
+  on_boot:
+    - priority: 600 # This is where most sensors are set up.
+      then:
+        # read totals from globals and push to sensors
+        - pulse_meter.set_total_pulses:
+            id: water_flow_all
+            value: !lambda 'return (id(global_watertotal_all) * ${pulses_per_liter});'
+        - lambda: id(water_total_all).publish_state(id(global_watertotal_all) * ${pulses_per_liter});
+        - pulse_meter.set_total_pulses:
+            id: water_flow_garden
+            value: !lambda 'return (id(global_watertotal_garden) * ${pulses_per_liter_garden});'
+        - lambda: id(water_total_garden).publish_state(id(global_watertotal_garden) * ${pulses_per_liter_garden});
+        - lambda: id(water_total_home).publish_state(id(global_watertotal_all) * ${pulses_per_liter}  - id(global_watertotal_garden) * ${pulses_per_liter_garden});
+        - lambda: id(water_used_home).publish_state((id(global_watertotal_all) * ${pulses_per_liter}  - id(global_watertotal_garden) * ${pulses_per_liter_garden})/1000);
+
