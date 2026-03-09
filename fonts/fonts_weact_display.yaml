@@ -75,9 +75,9 @@ font:
     id: measures_50_font
     size: 45
     glyphs: [
-      "\U000F050F", # thermomether (temperature)
-      "\U000F0F54", # home-thermomether (temperature)
-      "\U000F0F55", # home-thermomether-outline (temperature)
+      "\U000F050F", # thermometer (temperature)
+      "\U000F0F54", # home-thermometer (temperature)
+      "\U000F0F55", # home-thermometer-outline (temperature)
       "\U000F058E", # water-percent (humidity)
       "\U000F0336", # lightbulb-outline (illuminance)
       "\U000F17FE", # sun-wireless (illuminance)
@@ -88,9 +88,9 @@ font:
     id: measures_40_font
     size: 37
     glyphs: [
-      "\U000F050F", # thermomether (temperature)
-      "\U000F0F54", # home-thermomether (temperature)
-      "\U000F0F55", # home-thermomether-outline (temperature)
+      "\U000F050F", # thermometer (temperature)
+      "\U000F0F54", # home-thermometer (temperature)
+      "\U000F0F55", # home-thermometer-outline (temperature)
       "\U000F058E", # water-percent (humidity)
       "\U000F0336", # lightbulb-outline (illuminance)
       "\U000F17FE", # sun-wireless (illuminance)
@@ -101,9 +101,9 @@ font:
     id: measures_30_font
     size: 28
     glyphs: [
-      "\U000F050F", # thermomether (temperature)
-      "\U000F0F54", # home-thermomether (temperature)
-      "\U000F0F55", # home-thermomether-outline (temperature)
+      "\U000F050F", # thermometer (temperature)
+      "\U000F0F54", # home-thermometer (temperature)
+      "\U000F0F55", # home-thermometer-outline (temperature)
       "\U000F058E", # water-percent (humidity)
       "\U000F0336", # lightbulb-outline (illuminance)
       "\U000F17FE", # sun-wireless (illuminance)
@@ -114,7 +114,7 @@ font:
     id: units_30_font
     size: 30
     glyphs: [
-      "\U000F0504", # temperature-celcius
+      "\U000F0504", # temperature-celsius
       "\U000F03F0", # percent (humidity)
       # "\U000", # illuminance
       # "\U000", # water
@@ -123,7 +123,7 @@ font:
     id: units_22_font
     size: 22
     glyphs: [
-      "\U000F0504", # temperature-celcius
+      "\U000F0504", # temperature-celsius
       "\U000F03F0", # percent (humidity)
       # "\U000", # illuminance
       # "\U000", # water
@@ -155,7 +155,7 @@ font:
     glyphs: [
       # Moon
       "\U000F0F64", # new_moon
-      "\U000F0F67", # waxing_crecent
+      "\U000F0F67", # waxing_crescent
       "\U000F0F61", # first_quarter
       "\U000F0F66", # waxing_gibbous
       "\U000F0F62", # full_moon
@@ -177,17 +177,17 @@ font:
     size: 25
     glyphs: [
       "\U000F0920", # wifi-strength-1-alert
-      "\U000F0922", # wifi-strenght-2
-      "\U000F0925", # wifi-strenght-3
-      "\U000F0928", # wifi-strenght-4
+      "\U000F0922", # wifi-strength-2
+      "\U000F0925", # wifi-strength-3
+      "\U000F0928", # wifi-strength-4
       "\U000F092E", # wifi-strength-off-outline
       ]
   - file: '../fonts/materialdesignicons-webfont.ttf'
     id: cycle_icon_font
     size: 24
     glyphs: [
-      "\U000F00E8", # autorenew
-      "\U000F19E7", # autorenew-off
+      "\U000F00E8", # auto-renew
+      "\U000F19E7", # auto-renew-off
       "\U000F04E6", # sync
       "\U000F04E8", # sync-off
       ]
