@@ -368,7 +368,7 @@ display:
     pages:
       - id: page_blank
         lambda: |-
-          // Blanl Page
+          // Blank Page
           int x, y;
           #define xRes ${display_xRes}
           #define yRes ${display_yRes}
