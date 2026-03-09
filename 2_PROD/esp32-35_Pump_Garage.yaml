@@ -158,17 +158,17 @@ text_sensor:
 
   # #! for test purpose only
   # - platform: template
-  #   name: Test RAW of global_watertotal_all
-  #   lambda: return to_string("global_watertotal_all");
+  #   name: Test RAW of global_water_total_all
+  #   lambda: return to_string("global_water_total_all");
   # - platform: template
-  #   name: Test ID of global_watertotal_all
-  #   lambda: return to_string(id(global_watertotal_all));
+  #   name: Test ID of global_water_total_all
+  #   lambda: return to_string(id(global_water_total_all));
   # - platform: template
-  #   name: Test HASH of global_watertotal_all
-  #   lambda: return to_string(fnv1_hash("global_watertotal_all"));
+  #   name: Test HASH of global_water_total_all
+  #   lambda: return to_string(fnv1_hash("global_water_total_all"));
   # - platform: template
-  #   name: Test HASH of ID of global_watertotal_all
-  #   lambda: return to_string(fnv1_hash(to_string(id(global_watertotal_all))));
+  #   name: Test HASH of ID of global_water_total_all
+  #   lambda: return to_string(fnv1_hash(to_string(id(global_water_total_all))));
   # - platform: template
   #   name: TEST global_display_cycle_page
   #   lambda: return id(global_display_cycle_page);
@@ -256,12 +256,12 @@ sensor:
 
   #! for test purpose only
   # - platform: template
-  #   name: Test global_watertotal_all
-  #   lambda: return id(global_watertotal_all);
+  #   name: Test global_water_total_all
+  #   lambda: return id(global_water_total_all);
   #   accuracy_decimals: 5
   # - platform: template
-  #   name: Test global_watertotal_garden
-  #   lambda: return id(global_watertotal_garden);
+  #   name: Test global_water_total_garden
+  #   lambda: return id(global_water_total_garden);
   #   accuracy_decimals: 5
 
 # switch:
@@ -287,12 +287,12 @@ button:
   - !include { file: ../buttons/display_page_button.yaml, vars: { page_ix: "blank", display_id: "weact_display" } }
 
   # Water Save buttons
-  # - !include { file: ../buttons/save_watertotal_button.yaml, vars: { ix: "_all" } }
-  # - !include { file: ../buttons/save_watertotal_button.yaml, vars: { ix: "_garden", pulses_per_liter: "${pulses_per_liter_garden}" } }
+  # - !include { file: ../buttons/save_water_total_button.yaml, vars: { ix: "_all" } }
+  # - !include { file: ../buttons/save_water_total_button.yaml, vars: { ix: "_garden", pulses_per_liter: "${pulses_per_liter_garden}" } }
 
   # Water Reset (zero) buttons
-  # - !include { file: ../buttons/reset_watertotal_button.yaml, vars: { ix: "_all" } }
-  # - !include { file: ../buttons/reset_watertotal_button.yaml, vars: { ix: "_garden" } }
+  # - !include { file: ../buttons/reset_water_total_button.yaml, vars: { ix: "_all" } }
+  # - !include { file: ../buttons/reset_water_total_button.yaml, vars: { ix: "_garden" } }
 
   # Log water sensor values buttons (for DEBUGing)
   # - !include { file: ../buttons/log_sensor_value_button.yaml, vars: { id: "water_flow_all" } }
@@ -327,7 +327,7 @@ switch:
 #   - source: github://nrandell/dallasng
 
 # Include fonts for display
-<<: !include ../fonts/fonts_weeact_display.yaml
+<<: !include ../fonts/fonts_weact_display.yaml
 
 <<: !include { file: ../scripts/interval_display_cycle_pages_with_lux.yaml, vars: { display_id: weact_display, cycle_script: cycle_pages_in_lux_on_select, lux_sensor: lux, lux_dark_threshold: 2.9, lux_dark_threshold_elevation_multiplier: 0.1, page_to_skip: page_wifi_qr } }
 
@@ -681,7 +681,7 @@ display:
           it.print(10, 20, id(size_14_font), TextAlign::BASELINE_LEFT, "Join Guest WIFI");
           // it.print(xRes - 40, yRes - 40, id(font_small), TextAlign::BASELINE_LEFT, "5");
           // guest wifi
-          // WIFI:S:<WIFI NAME HERE>;T:WPA;P:<WIFI PASSWOD HERE>;H:false;;
+          // WIFI:S:<WIFI NAME HERE>;T:WPA;P:<WIFI PASSWORD HERE>;H:false;;
           // Draw the QR-code at position [x=120,y=5] with white color and a 4x scale
           it.qr_code(120, 5, id(guestwifi_qr), COLOR_ON, 4);
 
