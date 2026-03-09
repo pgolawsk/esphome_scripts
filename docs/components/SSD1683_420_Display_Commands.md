@@ -367,7 +367,7 @@ _hibernating = true;       // Mark as hibernating
 
 The SSD1683 has separate RAM planes for the 3-color display:
 
-```
+```text
 ┌─────────────────────────────────────────────┐
 │              BLACK/WHITE RAM                 │
 │         (0x24 Command - 400×300 bits)       │
@@ -833,20 +833,20 @@ void fastPartialRefresh(int x, int y, int w, int h) {
 
 ### Common Issues
 
-1. **Display not updating**
+1. Display not updating
    - Check SPI connections
    - Verify busy pin is working
    - Ensure proper power supply (3.3V)
 
-2. **Ghosting artifacts**
+2. Ghosting artifacts
    - Perform periodic full refresh
    - Full refresh takes ~25 seconds - don't interrupt
 
-3. **Fast partial not working correctly**
+3. Fast partial not working correctly
    - Ensure coordinates are byte-aligned (x, w multiples of 8)
    - Use `refresh_bw()` method for fast partial updates
 
-4. **Deep sleep won't wake**
+4. Deep sleep won't wake
    - Hardware reset required to wake from deep sleep
    - Check RST pin connection (SSD1683 uses 0x11 for deep sleep)
 
@@ -855,9 +855,9 @@ void fastPartialRefresh(int x, int y, int w, int h) {
 ## References
 
 - **SSD1683 Datasheet**: [`SSD1683_Datasheet.PDF`](WeActStudio.EpaperModule/Doc/SSD1683_Datasheet.PDF)
-- **GxEPD2 Library**: https://github.com/ZinggJM/GxEPD2
-- **GDEY042Z98 Panel**: https://www.good-display.com/product/387.html
-- **WeAct Studio**: https://github.com/WeActStudio
+- **GxEPD2 Library**: <https://github.com/ZinggJM/GxEPD2>
+- **GDEY042Z98 Panel**: <https://www.good-display.com/product/387.html>
+- **WeAct Studio**: <https://github.com/WeActStudio>
 
 ---
 

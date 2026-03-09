@@ -14,6 +14,7 @@ Author: Pawel Golawski, <pawel.golawski@2com.pl>
   ![ESP-12E pinout image](pinouts/ESP_12E_pinout.png "ESP-12E pinout")
 
   > Notes:
+  >
   > - GPIO9 do not work (it hangs ESP)- reserved for flashing
   > - GPIO10 - use with caution, read [https://www.letscontrolit.com/forum/viewtopic.php?t=1462](https://www.letscontrolit.com/forum/viewtopic.php?t=1462)
 
@@ -71,6 +72,7 @@ Author: Pawel Golawski, <pawel.golawski@2com.pl>
   ![ESP32-C6 super-mini pinout image](pinouts/ESP32c6_supermini_pinout.jpeg "ESP32-C6 super-mini pinout")
 
   > Notes:
+  >
   > - GPIO15 is connected to blue LED.
   > - GPIO8 is connected to RGB LED.
   > - Green LED (BAT) is not connected to any of GPIO, it shows when battery is charging. Fast blinks where battery is disconnected.
@@ -83,10 +85,13 @@ Author: Pawel Golawski, <pawel.golawski@2com.pl>
 
   ![ESP32-S3 supermini pinout image](pinouts/ESP32s3_supermini.jpg "ESP32-S3 supermini pinout")
   > Notes:
+  >
   > - GPIO48 is connected to RGB LED and red LED.
   > - Blue LED (BAT) is not connected to any of GPIO, it shows when battery is charging. Fast blinks where battery is disconnected.
   > - PSRAM (may) require to include platformio_options as described in [https://community.home-assistant.io/t/esp32-s3-devkitc-1-n16r8-using-psram-howto](https://community.home-assistant.io/t/esp32-s3-devkitc-1-n16r8-using-psram-howto)
+  >
   > WARNING: To flash this board for the first time need to:
+  >
   > 1. Hold 0 (BOOT)
   > 2. Short press RST (RESET)
   > 3. Release 0 (BOOT) after a few seconds (to allow computer to recognize USB)
@@ -99,6 +104,7 @@ Author: Pawel Golawski, <pawel.golawski@2com.pl>
 
   ![ESP32-S3 N16R8 pinout image](pinouts/ESP32s3_N16R8_2xTypeC_dev_board_pinout.jpg "ESP32-S3 N16R8/N8R2 pinout")
   > Notes:
+  >
   > - Connect pads next to RGB let to have 5V output on 5V pin
   > - GPIO43 is connected to green LED.
   > - GPIO44 is connected to blue LED.
@@ -109,6 +115,7 @@ Author: Pawel Golawski, <pawel.golawski@2com.pl>
 
   > Pinout the same as N16R8 above.
   > Notes:
+  >
   > - Connect pads next to RGB let to have 5V output on 5V pin
   > - GPIO43 is connected to green LED.
   > - GPIO44 is connected to blue LED.
@@ -123,6 +130,7 @@ Author: Pawel Golawski, <pawel.golawski@2com.pl>
   > WARNING: GPIO19 and GPIO20 are connected to USB-C connector, do not use them for I2C or other purposes as board will have no web, but respond on ping
   >
   > WARNING: To flash this board for the first time need to:
+  >
   > 1. Hold 0 (BOOT)
   > 2. Short press RST (RESET)
   > 3. Release 0 (BOOT) after a few seconds (to allow computer to recognize USB)
@@ -132,6 +140,7 @@ Author: Pawel Golawski, <pawel.golawski@2com.pl>
   ![ESP32 T-Display pinout image](pinouts/ESP32_T-display_dev_board_pinout.jpg "ESP32 T-Display pinout")
 
   > NOTE: Board has USB-C, battery connector (JST GH 2pin 1.25mm)
+  >
   > NOTE: 1.14 ST87789 IPC LCD 135 x 240 px
   > Board Size: 51,49 x 25,09 mm
 
@@ -160,6 +169,7 @@ Author: Pawel Golawski, <pawel.golawski@2com.pl>
   > Full board description: [https://github.com/LilyGO/TTGO-LoRa32-V2.1](https://github.com/LilyGO/TTGO-LoRa32-V2.1)
   >
   > Other possible solutions:
+  >
   > - [OpenMQTTGateway](https://docs.openmqttgateway.com)
   > - [Zephyr OS](https://docs.zephyrproject.org/latest/introduction/index.html)
 

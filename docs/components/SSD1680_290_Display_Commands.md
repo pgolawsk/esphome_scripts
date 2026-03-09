@@ -361,7 +361,7 @@ _hibernating = true;       // Mark as hibernating
 
 The SSD1680 has separate RAM planes for the 3-color display:
 
-```
+```text
 ┌─────────────────────────────────────────────┐
 │              BLACK/WHITE RAM                 │
 │         (0x24 Command - 128×296 bits)       │
@@ -446,7 +446,7 @@ void _Update_Full() {
 
 **Flow Diagram:**
 
-```
+```text
 ┌─────────────┐
 │   Power On  │
 └──────┬──────┘
@@ -839,20 +839,20 @@ void writeFullScreen(uint8_t* blackData, uint8_t* redData) {
 
 ### Common Issues
 
-1. **Display not updating**
+1. Display not updating
    - Check SPI connections
    - Verify busy pin is working
    - Ensure proper power supply (3.3V)
 
-2. **Ghosting artifacts**
+2. Ghosting artifacts
    - Perform periodic full refresh
    - Full refresh takes ~27 seconds - don't interrupt
 
-3. **Partial update not working**
+3. Partial update not working
    - Ensure coordinates are byte-aligned (x, w multiples of 8)
    - Note: This controller doesn't support fast partial updates
 
-4. **Deep sleep won't wake**
+4. Deep sleep won't wake
    - Hardware reset required to wake from deep sleep
    - Check RST pin connection
 
@@ -861,8 +861,8 @@ void writeFullScreen(uint8_t* blackData, uint8_t* redData) {
 ## References
 
 - **SSD1680 Datasheet**: [`SSD1680_Datasheet.pdf`](WeActStudio.EpaperModule/Doc/SSD1680_Datasheet.pdf)
-- **GxEPD2 Library**: https://github.com/ZinggJM/GxEPD2
-- **WeAct Studio**: https://github.com/WeActStudio
+- **GxEPD2 Library**: <https://github.com/ZinggJM/GxEPD2>
+- **WeAct Studio**: <https://github.com/WeActStudio>
 
 ---
 
