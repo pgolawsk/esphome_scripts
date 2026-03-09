@@ -55,4 +55,4 @@ total:
         topic: "$mqtt_location/$mqtt_room/water_total${ix}"
         payload: !lambda |-
           return to_string(x);
-    - lambda: id(global_watertotal${ix}) = x;
+    - lambda: id(global_water_total${ix}) = x;

@@ -40,7 +40,7 @@ bus_voltage:
           return to_string(id(voltage${ix}).state);
 shunt_voltage:
   name: "$room Shunt Voltage${ix}"
-  id: svoltage${ix}
+  id: s_voltage${ix}
   icon: mdi:flash-outline
   accuracy_decimals: 2
   state_topic: $devicename/shunt_voltage${ix}
@@ -48,7 +48,7 @@ shunt_voltage:
     - mqtt.publish:
         topic: "$mqtt_location/$mqtt_room/shunt_voltage${ix}"
         payload: !lambda |-
-          return to_string(id(svoltage${ix}).state);
+          return to_string(id(s_voltage${ix}).state);
 i2c_id: ${bus_id}
 address: ${address}
 update_interval: $updates

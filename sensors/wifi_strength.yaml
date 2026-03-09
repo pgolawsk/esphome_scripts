@@ -1,5 +1,5 @@
 ---
-#* WiFi signal strenght in % sensor configuration
+#* WiFi signal strength in % sensor configuration
 # Pawelo, 20241124, created as per https://esphome.io/components/sensor/wifi_signal.html
 
 platform: copy

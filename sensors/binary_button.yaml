@@ -10,10 +10,10 @@ pin:
     pullup: true
   inverted: ${inverted}
 name: "$room Display Button ${ix}"
-id: gbutton${ix}
+id: g_button${ix}
 entity_category: ""
 icon: mdi:radiobox-blank
-state_topic: $devicename/gbutton${ix}
+state_topic: $devicename/g_button${ix}
 # on_press:
 #   then:
 #     # - display.page.show_next: ${display_id}

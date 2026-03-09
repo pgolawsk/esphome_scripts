@@ -12,10 +12,10 @@ pin:
     pullup: true
   inverted: true
 name: "$room Select Cycle ${ix}"
-id: cbutton${ix}
+id: c_button${ix}
 entity_category: config
 icon: mdi:timer-sync-outline
-state_topic: $devicename/cbutton${ix}
+state_topic: $devicename/c_button${ix}
 internal: true
 on_press:
   then:

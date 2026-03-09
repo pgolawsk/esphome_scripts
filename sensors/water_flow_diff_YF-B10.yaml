@@ -3,7 +3,7 @@
 # Pawelo, 20230916, created
 # Pawelo, 20230917, set accuracy_decimals to 2
 # Pawelo, 20230919, calculate values from range (0;80)
-# Pawelo, 20231017, added water_updates_interval for water sensors updates (much offten than $updates)
+# Pawelo, 20231017, added water_updates_interval for water sensors updates (much often than $updates)
 # Pawelo, 20231017, added delta filter to prevent very frequent mqtt messages on every pulse
 # Pawelo, 20231017, added water_flow_min_delta variable for water sensors updates (to have no publish on every pulse)
 

@@ -40,7 +40,7 @@ channel_1:
             return to_string(id(c1_voltage${ix}).state);
   shunt_voltage:
     name: "$room C1 Shunt Voltage${ix}"
-    id: c1_svoltage${ix}
+    id: c1_s_voltage${ix}
     icon: mdi:flash-outline
     accuracy_decimals: 2
     state_topic: $devicename/c1_shunt_voltage${ix}
@@ -48,7 +48,7 @@ channel_1:
       - mqtt.publish:
           topic: "$mqtt_location/$mqtt_room/c1_shunt_voltage${ix}"
           payload: !lambda |-
-            return to_string(id(c1_svoltage${ix}).state);
+            return to_string(id(c1_s_voltage${ix}).state);
 channel_2:
   shunt_resistance: 0.1 ohm
   current:
@@ -86,7 +86,7 @@ channel_2:
             return to_string(id(c2_voltage${ix}).state);
   shunt_voltage:
     name: "$room C2 Shunt Voltage${ix}"
-    id: c2_svoltage${ix}
+    id: c2_s_voltage${ix}
     icon: mdi:flash-outline
     accuracy_decimals: 2
     state_topic: $devicename/c2_shunt_voltage${ix}
@@ -94,7 +94,7 @@ channel_2:
       - mqtt.publish:
           topic: "$mqtt_location/$mqtt_room/c2_shunt_voltage${ix}"
           payload: !lambda |-
-            return to_string(id(c2_svoltage${ix}).state);
+            return to_string(id(c2_s_voltage${ix}).state);
 channel_3:
   shunt_resistance: 0.1 ohm
   current:
@@ -132,7 +132,7 @@ channel_3:
             return to_string(id(c3_voltage${ix}).state);
   shunt_voltage:
     name: "$room C3 Shunt Voltage${ix}"
-    id: c3_svoltage${ix}
+    id: c3_s_voltage${ix}
     icon: mdi:flash-outline
     accuracy_decimals: 2
     state_topic: $devicename/c3_shunt_voltage${ix}
@@ -140,7 +140,7 @@ channel_3:
       - mqtt.publish:
           topic: "$mqtt_location/$mqtt_room/c3_shunt_voltage${ix}"
           payload: !lambda |-
-            return to_string(id(c3_svoltage${ix}).state);
+            return to_string(id(c3_s_voltage${ix}).state);
 i2c_id: ${bus_id}
 address: ${address}
 update_interval: $updates

@@ -8,8 +8,8 @@
 # Pawelo, 20240907, set device_class and icon for sensor values
 
 platform: scd4x
-measurement_mode: low_power_periodic # available options: periodic (5s), low_power_periodic (30s), single_shot (5s) on update, single_shor_rht_only (50ms, only temp, hum)
-temperature_offset: 1 # default is 4 - as the sensor heats to measure CO2, thus the mode have infuence = needs different compensation
+measurement_mode: low_power_periodic # available options: periodic (5s), low_power_periodic (30s), single_shot (5s) on update, single_short_only (50ms, only temp, hum)
+temperature_offset: 1 # default is 4 - as the sensor heats to measure CO2, thus the mode have influence = needs different compensation
 temperature:
   name: "$room Temperature${ix}"
   id: temp${ix}

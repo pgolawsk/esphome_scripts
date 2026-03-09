@@ -1,7 +1,7 @@
 ---
 #* Sun elevation sensor configuration
 # Pawelo, 20230305, created based on https://esphome.io/components/sun.html
-# Pawelo, 20240907, set entity_category for sensor to have it separateluy on web
+# Pawelo, 20240907, set entity_category for sensor to have it separately on web
 
 platform: sun
 name: "Sun Elevation"

@@ -1,7 +1,7 @@
 ---
 #* MQTT subscribe sensor configuration
 # Pawelo, 20230312, created based on https://esphome.io/components/sensor/mqtt_subscribe.html
-# Pawelo, 20240907, set entity_category for sensor to have it separateluy on web
+# Pawelo, 20240907, set entity_category for sensor to have it separately on web
 
 platform: mqtt_subscribe
 # name: "Office Temperature"

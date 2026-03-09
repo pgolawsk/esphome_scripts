@@ -1,5 +1,5 @@
 ---
-#* WiFi signal strenght sensor configuration
+#* WiFi signal strength sensor configuration
 # Pawelo, 20221119, created as my framework based on !include statements
 # Pawelo, 20221222, added $devicename to friendly names of those sensors
 
