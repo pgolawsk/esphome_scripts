@@ -695,7 +695,7 @@ display(GxEPD2_213_Z98c(5, 17, 16, 4));
 
 void setup() {
     display.init(115200);
-    
+
     // Full screen refresh
     display.setFullWindow();
     display.fillScreen(GxEPD_WHITE);

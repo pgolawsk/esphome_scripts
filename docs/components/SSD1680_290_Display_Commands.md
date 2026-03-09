@@ -17,7 +17,7 @@ This document provides comprehensive documentation for the WeAct ePaper 2.9" BWR
 ## Display Specifications
 
 | Parameter | Value |
-|-----------|-------|
+| --------- | ----- |
 | **Display Model** | WeAct 2.9" BWR E-Paper Module |
 | **Controller** | SSD1680 |
 | **Resolution** | 128 × 296 pixels |

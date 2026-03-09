@@ -17,7 +17,7 @@ This document provides comprehensive documentation for the WeAct ePaper 4.2" BWR
 ## Display Specifications
 
 | Parameter | Value |
-|-----------|-------|
+| --------- | ----- |
 | **Display Model** | WeAct 4.2" BWR E-Paper Module |
 | **Controller** | SSD1683 |
 | **Resolution** | 400 × 300 pixels |
