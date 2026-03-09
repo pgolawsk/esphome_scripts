@@ -27,4 +27,3 @@ esphome:
         - lambda: id(water_total_garden).publish_state(id(global_water_total_garden) * ${pulses_per_liter_garden});
         - lambda: id(water_total_home).publish_state(id(global_water_total_all) * ${pulses_per_liter}  - id(global_water_total_garden) * ${pulses_per_liter_garden});
         - lambda: id(water_used_home).publish_state((id(global_water_total_all) * ${pulses_per_liter}  - id(global_water_total_garden) * ${pulses_per_liter_garden})/1000);
-

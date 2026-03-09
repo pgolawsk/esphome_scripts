@@ -134,4 +134,3 @@ switch:
     on_turn_off:
       - voice_assistant.stop
       - lambda: id(va${ix}).set_use_wake_word(false);
-

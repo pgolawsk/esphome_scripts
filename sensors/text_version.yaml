@@ -9,4 +9,3 @@ platform: version
 name: $room $devicename ESPHome Version
 icon: mdi:information-outline
 internal: false
-

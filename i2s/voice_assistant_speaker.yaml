@@ -8,4 +8,3 @@ voice_assistant:
   microphone: ${mic_id}
   speaker: ${speaker_id}
   # media_player: ${mplayer_id}
-

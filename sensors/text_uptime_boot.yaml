@@ -23,4 +23,3 @@ lambda: |-
   time_t ts_boot = id(boot).state;
   strftime(result, sizeof(result), "%Y-%m-%d %H:%M:%S", localtime(&ts_boot));
   return { result };
-

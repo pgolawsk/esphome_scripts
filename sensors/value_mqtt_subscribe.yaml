@@ -16,5 +16,3 @@ id: ${id}
 icon: "mdi:${mdi_icon}"
 topic: ${topic}
 internal: true
-
-

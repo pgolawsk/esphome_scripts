@@ -34,4 +34,3 @@ turn_off_action:
         id: backlight${ix}
         # state: OFF
         state: !lambda 'return false;'
-

@@ -88,4 +88,3 @@ media_player:
     announcement_pipeline:
         speaker: announcement_spk_resampling_input
         num_channels: 1
-

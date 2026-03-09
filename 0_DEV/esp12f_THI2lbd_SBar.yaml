@@ -133,4 +133,3 @@ button:
   # Scan Wifi button (require wifi_info text sensor to be present to display results)
   # WARN: Performing the scan will disconnect device from current WiFi
   - !include { file: ../buttons/scan_wifi_button.yaml }
-

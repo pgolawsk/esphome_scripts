@@ -19,4 +19,3 @@ media_player:
   # i2s_comm_fmt: lsb # msb or lsb
   # mute_pin: GPIOXX
   mode: ${mode} # mono or stereo
-

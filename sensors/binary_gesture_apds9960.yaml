@@ -18,5 +18,3 @@ on_state:
   - text_sensor.template.publish:
       id: gesture_state
       state: "${direction}"
-
-

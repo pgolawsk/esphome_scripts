@@ -16,4 +16,3 @@ speaker:
   dac_type: external
   # mute_pin: GPIOXX
   channel: ${channel} # left, right, mono or stereo
-

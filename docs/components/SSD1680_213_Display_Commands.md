@@ -411,30 +411,30 @@ void _InitDisplay() {
     // Step 1: Software Reset
     _writeCommand(0x12);  // SWRESET
     delay(10);
-  
+
     // Step 2: Driver Output Control (250 gates for 2.13")
     _writeCommand(0x01); // Driver output control
     _writeData(0xF9);    // 250 gates
     _writeData(0x00);    // GDR
     _writeData(0x00);    // SM
-  
+
     // Step 3: Data Entry Mode
     _writeCommand(0x11); // Data entry mode
     _writeData(0x03);    // X+, Y+
-  
+
     // Step 4: Border Waveform
     _writeCommand(0x3C); // Border waveform
     _writeData(0x05);    // Border LUT
-  
+
     // Step 5: Temperature Sensor
     _writeCommand(0x18); // Temperature sensor
     _writeData(0x80);   // Enable internal
-  
+
     // Step 6: Display Update Control
     _writeCommand(0x21); // Display update control
     _writeData(0x00);
     _writeData(0x80);
-  
+
     // Step 7: Set full RAM area
     _setPartialRamArea(0, 0, WIDTH, HEIGHT);
 }
@@ -443,13 +443,13 @@ void _Update_Full() {
     // Step 1: Set update control
     _writeCommand(0x22);
     _writeData(0xF7);    // Enable RAM, bypass mode
-  
+
     // Step 2: Activate
     _writeCommand(0x20);
-  
+
     // Step 3: Wait for completion (~15 seconds)
     _waitWhileBusy("_Update_Full", full_refresh_time);
-  
+
     _power_is_on = false;
 }
 ```
@@ -514,18 +514,18 @@ void _setPartialRamArea(uint16_t x, uint16_t y, uint16_t w, uint16_t h) {
     _writeCommand(0x44);
     _writeData(x / 8);
     _writeData((x + w - 1) / 8);
-  
+
     // Set Y boundaries
     _writeCommand(0x45);
     _writeData(y % 256);
     _writeData(y / 256);
     _writeData((y + h - 1) % 256);
     _writeData((y + h - 1) / 256);
-  
+
     // Set X counter
     _writeCommand(0x4E);
     _writeData(x / 8);
-  
+
     // Set Y counter
     _writeCommand(0x4F);
     _writeData(y % 256);
@@ -560,25 +560,25 @@ void updateTextField(const char* text, int x, int y, int w, int h) {
     // Ensure x and w are byte-aligned
     x -= x % 8;
     w = (w + 7) / 8 * 8;
-  
+
     // Initialize partial mode
     _Init_Part();
-  
+
     // Set the RAM window
     _setPartialRamArea(x, y, w, h);
-  
+
     // Write black data (text)
     _writeCommand(0x24);
     for (uint32_t i = 0; i < w * h / 8; i++) {
         _writeData(text_bitmap[i]);
     }
-  
+
     // Write red data (optional highlights)
     _writeCommand(0x26);
     for (uint32_t i = 0; i < w * h / 8; i++) {
         _writeData(~red_highlight[i]);
     }
-  
+
     // Trigger partial refresh
     _Update_Part();
 }
@@ -593,28 +593,28 @@ void updateProgressBar(int percentage, int x, int y, int w, int h) {
     // Byte-align coordinates
     x -= x % 8;
     w = (w + 7) / 8 * 8;
-  
+
     _Init_Part();
     _setPartialRamArea(x, y, w, h);
-  
+
     // Create progress bar bitmap
     uint8_t buffer[320]; // Example for 128x20 area
     memset(buffer, 0x00, sizeof(buffer));
-  
+
     int filledWidth = (w * percentage) / 100;
     for (int row = 0; row < h; row++) {
         for (int col = 0; col < filledWidth / 8; col++) {
             buffer[row * (w/8) + col] = 0xFF;
         }
     }
-  
+
     // Write black RAM
     _writeCommand(0x24);
     _writeData(buffer, sizeof(buffer));
-  
+
     // Write red RAM (optional)
     _writeCommand(0x26);
-  
+
     _Update_Part();
 }
 ```
@@ -630,24 +630,24 @@ void updateClock(int hours, int minutes) {
     int y = 80;
     int w = 64;
     int h = 32;
-  
+
     x -= x % 8;
     w = (w + 7) / 8 * 8;
-  
+
     _Init_Part();
     _setPartialRamArea(x, y, w, h);
-  
+
     // Generate clock bitmap (pseudocode)
     uint8_t clockBitmap[256]; // 64 * 32 / 8
     drawClockDigits(clockBitmap, hours, minutes);
-  
+
     // Write black (digits)
     _writeCommand(0x24);
     _writeData(clockBitmap, sizeof(clockBitmap));
-  
+
     // Write red (optional red elements)
     _writeCommand(0x26);
-  
+
     _Update_Part();
 }
 ```
@@ -736,7 +736,7 @@ void setup() {
     display.setCursor(10, 50);
     display.print("Hello World!");
     display.refresh();
-  
+
     // After display shows content, go to deep sleep
     display.hibernate();
 }
@@ -780,29 +780,29 @@ void initDisplay() {
     delay(10);
     digitalWrite(RST_PIN, HIGH);
     delay(10);
-  
+
     // Software reset
     sendCommand(0x12);
     delay(10);
-  
+
     // Driver output control (250 gates for 2.13")
     sendCommand(0x01);
     sendData(0xF9);
     sendData(0x00);
     sendData(0x00);
-  
+
     // Data entry mode
     sendCommand(0x11);
     sendData(0x03);
-  
+
     // Border waveform
     sendCommand(0x3C);
     sendData(0x05);
-  
+
     // Temperature sensor
     sendCommand(0x18);
     sendData(0x80);
-  
+
     // Display update control
     sendCommand(0x21);
     sendData(0x00);
@@ -815,30 +815,30 @@ void writeFullScreen(uint8_t* blackData, uint8_t* redData) {
     sendCommand(0x44);
     sendData(0x00);
     sendData(0x10); // (128/8) - 1 = 16
-  
+
     sendCommand(0x45);
     sendData(0x00);
     sendData(0x00);
     sendData(0xFA); // 250 - 1 = 249 = 0xFA
     sendData(0x00);
-  
+
     // Write black data (4000 bytes for 128x250)
     sendCommand(0x24);
     for (int i = 0; i < 4000; i++) {
         sendData(blackData[i]);
     }
-  
+
     // Write red data
     sendCommand(0x26);
     for (int i = 0; i < 4000; i++) {
         sendData(~redData[i]); // Inverted
     }
-  
+
     // Trigger refresh
     sendCommand(0x22);
     sendData(0xF7);
     sendCommand(0x20);
-  
+
     // Wait for busy to go low (~15 seconds)
     while (digitalRead(BUSY_PIN) == HIGH) {
         delay(10);

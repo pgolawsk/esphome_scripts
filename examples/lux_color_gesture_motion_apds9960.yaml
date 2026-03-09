@@ -19,11 +19,11 @@ sensor:
     type: BLUE
     name: "APDS9960 Blue Channel"
 
-  - platform: apds9960    
+  - platform: apds9960
     type: PROXIMITY
     name: "APDS9960 Proximity Channel"
 
-binary_sensor: 
+binary_sensor:
   - platform: apds9960
     direction: UP
     id: apds9960_up
@@ -58,12 +58,12 @@ binary_sensor:
       then:
         - text_sensor.template.publish:
             id: direction_state
-            state: "RIGHT"    
+            state: "RIGHT"
 
 text_sensor:
   - platform: template
     name: "direction_state"
-    id: direction_state   
+    id: direction_state
 
 
 

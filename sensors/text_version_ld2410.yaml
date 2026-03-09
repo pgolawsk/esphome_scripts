@@ -10,4 +10,3 @@ mac_address:
   name: "${sensor_name} MAC Address"
   internal: true
   icon: mdi:ip
-

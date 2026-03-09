@@ -430,4 +430,3 @@ display:
           // WIFI:S:<WIFI NAME HERE>;T:WPA;P:<WIFI PASSWORD HERE>;H:false;;
           // Draw the QR-code at position [x=50,y=100] with white color and a 14x scale
           it.qr_code(50, 100, id(guestwifi_qr), COLOR_ON, 14);
-
