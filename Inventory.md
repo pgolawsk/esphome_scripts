@@ -78,12 +78,14 @@ Author: Pawel Golawski, <pawel.golawski@2com.pl>
   > - Green LED (BAT) is not connected to any of GPIO, it shows when battery is charging. Fast blinks where battery is disconnected.
   >
   > WARNING: This board work only with esp-idf framework (no arduino) and throws some frequent warnings, like:
+  >
   > - `[W][web_server_idf:070][httpd]: Only application/x-www-form-urlencoded supported for POST request`
   > - `[I][esp-idf:000][httpd]: W (59638) httpd_txrx: httpd_sock_err: error in recv : 104`
 
 - 0x (+1) **ESP32-S3 supermini**
 
   ![ESP32-S3 supermini pinout image](pinouts/ESP32s3_supermini.jpg "ESP32-S3 supermini pinout")
+
   > Notes:
   >
   > - GPIO48 is connected to RGB LED and red LED.
@@ -93,8 +95,8 @@ Author: Pawel Golawski, <pawel.golawski@2com.pl>
   > WARNING: To flash this board for the first time need to:
   >
   > 1. Hold 0 (BOOT)
-  > 2. Short press RST (RESET)
-  > 3. Release 0 (BOOT) after a few seconds (to allow computer to recognize USB)
+  > 1. Short press RST (RESET)
+  > 1. Release 0 (BOOT) after a few seconds (to allow computer to recognize USB)
 
 - 1x **ESP32-S3 N16R8**
 
@@ -103,6 +105,7 @@ Author: Pawel Golawski, <pawel.golawski@2com.pl>
 - 1x **ESP32-S3 N16R8** (dev board with 2x usb-c)
 
   ![ESP32-S3 N16R8 pinout image](pinouts/ESP32s3_N16R8_2xTypeC_dev_board_pinout.jpg "ESP32-S3 N16R8/N8R2 pinout")
+
   > Notes:
   >
   > - Connect pads next to RGB let to have 5V output on 5V pin
@@ -132,8 +135,8 @@ Author: Pawel Golawski, <pawel.golawski@2com.pl>
   > WARNING: To flash this board for the first time need to:
   >
   > 1. Hold 0 (BOOT)
-  > 2. Short press RST (RESET)
-  > 3. Release 0 (BOOT) after a few seconds (to allow computer to recognize USB)
+  > 1. Short press RST (RESET)
+  > 1. Release 0 (BOOT) after a few seconds (to allow computer to recognize USB)
 
 - 1x **T-Display ESP32** (dev board with usb-c and 1.14 LCD color display)
 
@@ -228,14 +231,14 @@ Author: Pawel Golawski, <pawel.golawski@2com.pl>
 
 - 1x `a` - **AVT5713** - Double Light Switch Board (mounted)
 - 7x `a` - **AVT5713** - Double Light Switch Board (not mounted - bare board)
-- 5x `x` - ***ESP01S Single Relay** Board (generic from Aliexpress)
+- 5x `x` - \***ESP01S Single Relay** Board (generic from Aliexpress)
 - 0x `b` - **9032A/9025A** - Active Buzzer 9mm diameter x 3.2/2.5mm height
 - 1x `i` - **IR Transmitter 38KHz** (Open-Smart, 1pin with signal)
 - 6x `r` - **9032/9025** - Passive Buzzer 9mm diameter x 3.2/2.5mm height (soldered package)
 - 15x `r` - **9032/9025** - Passive Buzzer 9mm diameter x 3.2/2.5mm height
 - 1x `l8x8` - **5050 RGB matrix** WS2812 LED 5050 RGB 8x8
 - 1x `l1` - **5050 RGB strip** WS2812 LED 5050 RGB strip (1m - 60leds per 1m)
-- 11x (-1) `m` - **Max98357** -  I2S mono amplifier
+- 11x (-1) `m` - **Max98357** - I2S mono amplifier
   > Note: Amp use cases ![Max98357 use case image](pinouts/MAX98357_use_cases.jpg "Max98357 use case")
 - 4x `s4` - small speaker 4 Ohm (1 - 3 W)
 - 6x `s8` - small speaker 8 Ohm (0.5 - 1 W)
@@ -245,9 +248,9 @@ Author: Pawel Golawski, <pawel.golawski@2com.pl>
 #### Other
 
 - 1x **FRAM** 32KB
-- 5x 2ch DC level converter 5V <> 3.3V
-- 5x DC level converter 5V <> 3.3V (I2C, SPI, UART)
-- 10x 4ch DC level converter 5V <> 3.3V (I2C)
+- 5x 2ch DC level converter 5V \<> 3.3V
+- 5x DC level converter 5V \<> 3.3V (I2C, SPI, UART)
+- 10x 4ch DC level converter 5V \<> 3.3V (I2C)
 - 2x **RS485 to TTL** (3.3 - 5V)
 - 2x **D4184** MOSFET (max 40V, 50A)
 - 4x **LR7843** MOSFET (max 30V, 161A)
@@ -299,9 +302,9 @@ Author: Pawel Golawski, <pawel.golawski@2com.pl>
 
 #### Breadboards (X x Y pins)
 
-- 7x  17x10 pins, 47x35 mm (multicolor, black, white)
-- 7x  11x5 pins, 30x25 mm (multicolor)
-- 6x  5x5 pins, 20x15 mm (multicolor)
+- 7x 17x10 pins, 47x35 mm (multicolor, black, white)
+- 7x 11x5 pins, 30x25 mm (multicolor)
+- 6x 5x5 pins, 20x15 mm (multicolor)
 
 ## Device configurations
 
@@ -367,7 +370,7 @@ Components:
 - 1x `I` - IR Receiver 38KHz (Open-Smart, 1pin with signal)
 - 1x `M` - INMP441 - I2S microphone
 - 1x `i` - IR Transmitter 38KHz (Open-Smart, 1pin with signal)
-- 0x (+1) `m` - Max98357 -  I2S mono amplifier
+- 0x (+1) `m` - Max98357 - I2S mono amplifier
 - 0x (+1) `s4` - small speaker 4 Ohm
 - 1x `b/r` - 9032 - Passive Buzzer 9mm diameter x 3.2mm height
 - 1x `d` - status diode (red)

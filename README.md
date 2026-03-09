@@ -42,7 +42,7 @@ Script filenames reflect what sensors, switches and manipulators are included in
 - `ss` are the switches used, like buzzer, AVT5713 board, ...
 - `PP` is PURPOSE of the device, like fan or gate;
 
-> Info:  Scripts which ends `_dev` do contain many sensors/includes - if you need any other configuration you can see there how to build it with `!include <file>` statements.
+> Info: Scripts which ends `_dev` do contain many sensors/includes - if you need any other configuration you can see there how to build it with `!include <file>` statements.
 
 For example: `esp12f_THIb_STr.yaml` script is for:
 
@@ -130,7 +130,7 @@ All available switches boards
 - `b` - **9032A/9025A** - Active Buzzer 9mm diameter x 3.2/2.5mm height
 - `r` - **9032/9025** - Passive Buzzer 9mm diameter x 3.2/2.5mm height
 - `i` - IR Transmitter (Open-Smart)
-- `m` - **Max98357** -  I2S mono amplifier
+- `m` - **Max98357** - I2S mono amplifier
 
 ### Purpose (`PP`)
 
@@ -223,5 +223,3 @@ Remaining folder contain partial YAML configurations for single elements or sets
   - `text_senor:` section, those with filenames starting as `text_`
   - `sensor:` section, all remaining files
 - `switches` - list of switches intended to include them under `switch:` section
-
-[//]: # (None at the moment)

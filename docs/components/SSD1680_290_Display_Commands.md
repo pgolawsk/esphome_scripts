@@ -5,39 +5,39 @@ This document provides comprehensive documentation for the WeAct ePaper 2.9" BWR
 ## Table of Contents
 
 1. [Display Specifications](#display-specifications)
-2. [SSD1680 Command Reference](#ssd1680-command-reference)
-3. [Display Memory Structure](#display-memory-structure)
-4. [Display Refresh Sequences](#display-refresh-sequences)
-5. [Partial Update Scenarios](#partial-update-scenarios)
-6. [Power Management](#power-management)
-7. [Usage Examples](#usage-examples)
+1. [SSD1680 Command Reference](#ssd1680-command-reference)
+1. [Display Memory Structure](#display-memory-structure)
+1. [Display Refresh Sequences](#display-refresh-sequences)
+1. [Partial Update Scenarios](#partial-update-scenarios)
+1. [Power Management](#power-management)
+1. [Usage Examples](#usage-examples)
 
----
+______________________________________________________________________
 
 ## Display Specifications
 
-| Parameter | Value |
-| --------- | ----- |
-| **Display Model** | WeAct 2.9" BWR E-Paper Module |
-| **Controller** | SSD1680 |
-| **Resolution** | 128 × 296 pixels |
-| **Colors** | Black, White, Red (3-Color) |
-| **Display Type** | E-ink / E-Paper |
-| **Interface** | SPI (Serial Peripheral Interface) |
-| **Panel Code** | GDEM029C90 |
+| Parameter         | Value                             |
+| ----------------- | --------------------------------- |
+| **Display Model** | WeAct 2.9" BWR E-Paper Module     |
+| **Controller**    | SSD1680                           |
+| **Resolution**    | 128 × 296 pixels                  |
+| **Colors**        | Black, White, Red (3-Color)       |
+| **Display Type**  | E-ink / E-Paper                   |
+| **Interface**     | SPI (Serial Peripheral Interface) |
+| **Panel Code**    | GDEM029C90                        |
 
 ### Timing Specifications
 
-| Operation | Time |
-|-----------|------|
-| Power On | 100 ms |
-| Power Off | 150 ms |
-| Full Refresh | 27000 ms (~27 seconds) |
+| Operation       | Time                   |
+| --------------- | ---------------------- |
+| Power On        | 100 ms                 |
+| Power Off       | 150 ms                 |
+| Full Refresh    | 27000 ms (~27 seconds) |
 | Partial Refresh | 27000 ms (~27 seconds) |
 
 > **Note:** The SSD1680 does not support fast partial updates. Both full and partial refresh take approximately 27 seconds.
 
----
+______________________________________________________________________
 
 ## SSD1680 Command Reference
 
@@ -45,26 +45,26 @@ This section documents all commands used to control the SSD1680 e-paper display 
 
 ### Command Overview Table
 
-| Hex Code | Command Name | Description | Data Bytes |
-|----------|--------------|-------------|------------|
-| `0x01` | Driver Output Control | Sets display resolution and gate scanning direction | 3 |
-| `0x10` | Deep Sleep Mode | Enters/exits deep sleep power mode | 1 |
-| `0x11` | Data Entry Mode | Sets the way X/Y address increments | 1 |
-| `0x12` | SWRESET | Software reset command | 0 |
-| `0x18` | Read Built-in Temperature Sensor | Reads internal temperature sensor | 1 |
-| `0x1A` | Temperature Sensor Selection | Selects internal or external sensor | 1 |
-| `0x21` | Display Update Control | Controls display update sequence | 2 |
-| `0x22` | Display Update Control | Initiates display refresh | 1 |
-| `0x24` | Write Black RAM | Writes black/white pixel data | N |
-| `0x26` | Write Red RAM | Writes red color pixel data | N |
-| `0x3C` | Border Waveform Control | Sets border behavior | 1 |
-| `0x44` | Set RAM X Start/End | Sets RAM X address boundaries | 2 |
-| `0x45` | Set RAM Y Start/End | Sets RAM Y address boundaries | 4 |
-| `0x4E` | Set RAM X Counter | Sets RAM X address counter | 2 |
-| `0x4F` | Set RAM Y Counter | Sets RAM Y address counter | 2 |
-| `0x20` | Activate | Starts display update | 0 |
+| Hex Code | Command Name                     | Description                                         | Data Bytes |
+| -------- | -------------------------------- | --------------------------------------------------- | ---------- |
+| `0x01`   | Driver Output Control            | Sets display resolution and gate scanning direction | 3          |
+| `0x10`   | Deep Sleep Mode                  | Enters/exits deep sleep power mode                  | 1          |
+| `0x11`   | Data Entry Mode                  | Sets the way X/Y address increments                 | 1          |
+| `0x12`   | SWRESET                          | Software reset command                              | 0          |
+| `0x18`   | Read Built-in Temperature Sensor | Reads internal temperature sensor                   | 1          |
+| `0x1A`   | Temperature Sensor Selection     | Selects internal or external sensor                 | 1          |
+| `0x21`   | Display Update Control           | Controls display update sequence                    | 2          |
+| `0x22`   | Display Update Control           | Initiates display refresh                           | 1          |
+| `0x24`   | Write Black RAM                  | Writes black/white pixel data                       | N          |
+| `0x26`   | Write Red RAM                    | Writes red color pixel data                         | N          |
+| `0x3C`   | Border Waveform Control          | Sets border behavior                                | 1          |
+| `0x44`   | Set RAM X Start/End              | Sets RAM X address boundaries                       | 2          |
+| `0x45`   | Set RAM Y Start/End              | Sets RAM Y address boundaries                       | 4          |
+| `0x4E`   | Set RAM X Counter                | Sets RAM X address counter                          | 2          |
+| `0x4F`   | Set RAM Y Counter                | Sets RAM Y address counter                          | 2          |
+| `0x20`   | Activate                         | Starts display update                               | 0          |
 
----
+______________________________________________________________________
 
 ### Detailed Command Descriptions
 
@@ -79,13 +79,14 @@ _writeCommand(0x12);  // SWRESET
 delay(10);            // Wait 10ms as per specification
 ```
 
----
+______________________________________________________________________
 
 #### 0x01 - Driver Output Control
 
 Configures the display panel output parameters including resolution and scan direction.
 
 **Parameters:**
+
 - Byte 0 (0x27): MUX gates (296 gates = 0x27 + 1)
 - Byte 1 (0x01): GDR (0 = CSS, 1 = GDR)
 - Byte 2 (0x00): SM (Scan mode)
@@ -99,13 +100,14 @@ _writeData(0x01);    // Gate source direction
 _writeData(0x00);    // Scan direction
 ```
 
----
+______________________________________________________________________
 
 #### 0x11 - Data Entry Mode
 
 Sets the direction in which the RAM address pointer auto-increments when writing data.
 
 **Parameters:**
+
 - `0x03` = X increment, Y increment (default for this display)
 
 **Sequence:**
@@ -115,13 +117,14 @@ _writeCommand(0x11); // Data entry mode
 _writeData(0x03);    // X+1, Y+1 increment
 ```
 
----
+______________________________________________________________________
 
 #### 0x3C - Border Waveform Control
 
 Controls the border (waveform) behavior during display updates.
 
 **Parameters:**
+
 - `0x05` = Border follows LUT (Look-up table)
 
 **Sequence:**
@@ -131,13 +134,14 @@ _writeCommand(0x3C); // Border waveform
 _writeData(0x05);    // Border setting
 ```
 
----
+______________________________________________________________________
 
 #### 0x18 - Read Built-in Temperature Sensor
 
 Enables/disables the internal temperature sensor.
 
 **Parameters:**
+
 - `0x80` = Enable internal temperature sensor
 - `0x00` = Disable
 
@@ -148,13 +152,14 @@ _writeCommand(0x18); // Temperature sensor
 _writeData(0x80);    // Enable internal sensor
 ```
 
----
+______________________________________________________________________
 
 #### 0x21 - Display Update Control
 
 Controls various display update options.
 
 **Parameters:**
+
 - Byte 0: Display update option
 - Byte 1: Enable RAM content (0x80 = enable)
 
@@ -166,13 +171,14 @@ _writeData(0x00);    // Option
 _writeData(0x80);    // Enable RAM content
 ```
 
----
+______________________________________________________________________
 
 #### 0x44 - Set RAM X Start/End Address
 
 Defines the column (X) address range for RAM access. X coordinates must be byte-aligned (multiples of 8).
 
 **Parameters:**
+
 - Byte 0: X start address / 8
 - Byte 1: X end address / 8
 
@@ -184,13 +190,14 @@ _writeData(x_start / 8);     // Start byte address
 _writeData((x_end - 1) / 8); // End byte address
 ```
 
----
+______________________________________________________________________
 
 #### 0x45 - Set RAM Y Start/End Address
 
 Defines the row (Y) address range for RAM access.
 
 **Parameters:**
+
 - Byte 0: Y start (LSB)
 - Byte 1: Y start (MSB)
 - Byte 2: Y end - 1 (LSB)
@@ -206,13 +213,14 @@ _writeData((y_end - 1) & 0xFF);    // Y end LSB
 _writeData((y_end - 1) >> 8);      // Y end MSB
 ```
 
----
+______________________________________________________________________
 
 #### 0x4E - Set RAM X Counter
 
 Sets the current RAM X address counter (pointer).
 
 **Parameters:**
+
 - Byte 0: X address / 8
 
 **Sequence:**
@@ -222,13 +230,14 @@ _writeCommand(0x4E);       // Set RAM X counter
 _writeData(x / 8);         // Current X position
 ```
 
----
+______________________________________________________________________
 
 #### 0x4F - Set RAM Y Counter
 
 Sets the current RAM Y address counter (pointer).
 
 **Parameters:**
+
 - Byte 0: Y address (LSB)
 - Byte 1: Y address (MSB)
 
@@ -240,7 +249,7 @@ _writeData(y & 0xFF);      // Y position LSB
 _writeData(y >> 8);        // Y position MSB
 ```
 
----
+______________________________________________________________________
 
 #### 0x24 - Write Black/White RAM
 
@@ -258,7 +267,7 @@ for (uint32_t i = 0; i < WIDTH * HEIGHT / 8; i++) {
 }
 ```
 
----
+______________________________________________________________________
 
 #### 0x26 - Write Red RAM
 
@@ -268,6 +277,7 @@ Writes pixel data to the Red color RAM plane.
 - `0xFF` (all bits set) = Red pixel
 
 **Note:** The data is inverted in the GxEPD2 library (`~color_value`), so:
+
 - `0xFF` input becomes `0x00` = No red
 - `0x00` input becomes `0xFF` = Red
 
@@ -280,13 +290,14 @@ for (uint32_t i = 0; i < WIDTH * HEIGHT / 8; i++) {
 }
 ```
 
----
+______________________________________________________________________
 
 #### 0x22 - Display Update Control (Initiate Refresh)
 
 Initiates the display refresh sequence. Must be followed by command 0x20 to activate.
 
 **Parameters:**
+
 - `0xF7` = Full refresh: Enable RAM content, enable bypass mode
 - `0xF8` = Power on (used before refresh)
 - `0x83` = Power off (used after refresh)
@@ -318,7 +329,7 @@ _writeCommand(0x20);
 _waitWhileBusy("_PowerOff", power_off_time);
 ```
 
----
+______________________________________________________________________
 
 #### 0x20 - Activate
 
@@ -331,13 +342,14 @@ _writeCommand(0x20); // Activate display update
 _waitWhileBusy("_Update", full_refresh_time);
 ```
 
----
+______________________________________________________________________
 
 #### 0x10 - Deep Sleep Mode
 
 Enters deep sleep mode for minimum power consumption. Requires hardware reset to wake.
 
 **Parameters:**
+
 - `0x01` = Enter deep sleep mode
 - `0x00` = Exit deep sleep (wake)
 
@@ -355,7 +367,7 @@ _hibernating = true;       // Mark as hibernating
 // To wake: Hardware reset required (toggle RST pin)
 ```
 
----
+______________________________________________________________________
 
 ## Display Memory Structure
 
@@ -381,14 +393,14 @@ The SSD1680 has separate RAM planes for the 3-color display:
 
 When displaying content, the final pixel color is determined by combining both RAM planes:
 
-| Black RAM | Red RAM | Display Color |
-|-----------|---------|---------------|
-| 0 | 0 | White |
-| 1 | 0 | Black |
-| 0 | 1 | Red |
-| 1 | 1 | Black (Red overwrites) |
+| Black RAM | Red RAM | Display Color          |
+| --------- | ------- | ---------------------- |
+| 0         | 0       | White                  |
+| 1         | 0       | Black                  |
+| 0         | 1       | Red                    |
+| 1         | 1       | Black (Red overwrites) |
 
----
+______________________________________________________________________
 
 ## Display Refresh Sequences
 
@@ -492,7 +504,7 @@ void _Update_Full() {
 └─────────────┘
 ```
 
----
+______________________________________________________________________
 
 ### 2. Partial Update (Window Refresh)
 
@@ -533,12 +545,13 @@ void _Update_Part() {
 ```
 
 **Important Notes for Partial Updates:**
-1. Coordinates must be byte-aligned (x and w must be multiples of 8)
-2. For SSD1680, partial refresh takes ~27 seconds (same as full refresh)
-3. This display does NOT support fast partial update
-4. Periodic full refresh is recommended to prevent ghosting
 
----
+1. Coordinates must be byte-aligned (x and w must be multiples of 8)
+1. For SSD1680, partial refresh takes ~27 seconds (same as full refresh)
+1. This display does NOT support fast partial update
+1. Periodic full refresh is recommended to prevent ghosting
+
+______________________________________________________________________
 
 ## Partial Update Scenarios
 
@@ -573,7 +586,7 @@ void updateTextField(const char* text, int x, int y, int w, int h) {
 }
 ```
 
----
+______________________________________________________________________
 
 ### Scenario 2: Updating a Progress Bar
 
@@ -609,7 +622,7 @@ void updateProgressBar(int percentage, int x, int y, int w, int h) {
 }
 ```
 
----
+______________________________________________________________________
 
 ### Scenario 3: Clock Display Update
 
@@ -645,7 +658,7 @@ void updateClock(int hours, int minutes) {
 }
 ```
 
----
+______________________________________________________________________
 
 ## Power Management
 
@@ -665,7 +678,7 @@ void _PowerOff() {
 }
 ```
 
----
+______________________________________________________________________
 
 ### 2. Deep Sleep Mode
 
@@ -683,10 +696,11 @@ void hibernate() {
 ```
 
 **To Wake from Deep Sleep:**
+
 - Hardware reset is required (toggle RST pin low → high)
 - After reset, full re-initialization is needed
 
----
+______________________________________________________________________
 
 ### 3. Power On Sequence
 
@@ -702,7 +716,7 @@ void _PowerOn() {
 }
 ```
 
----
+______________________________________________________________________
 
 ## Usage Examples
 
@@ -738,7 +752,7 @@ void loop() {
 }
 ```
 
----
+______________________________________________________________________
 
 ### Using ESPHome Component
 
@@ -761,7 +775,7 @@ display:
       it.print(0, 0, id(font), "Hello World!");
 ```
 
----
+______________________________________________________________________
 
 ### Manual SPI Commands (Bare Metal)
 
@@ -833,30 +847,34 @@ void writeFullScreen(uint8_t* blackData, uint8_t* redData) {
 }
 ```
 
----
+______________________________________________________________________
 
 ## Troubleshooting
 
 ### Common Issues
 
 1. Display not updating
+
    - Check SPI connections
    - Verify busy pin is working
    - Ensure proper power supply (3.3V)
 
-2. Ghosting artifacts
+1. Ghosting artifacts
+
    - Perform periodic full refresh
    - Full refresh takes ~27 seconds - don't interrupt
 
-3. Partial update not working
+1. Partial update not working
+
    - Ensure coordinates are byte-aligned (x, w multiples of 8)
    - Note: This controller doesn't support fast partial updates
 
-4. Deep sleep won't wake
+1. Deep sleep won't wake
+
    - Hardware reset required to wake from deep sleep
    - Check RST pin connection
 
----
+______________________________________________________________________
 
 ## References
 
@@ -864,6 +882,6 @@ void writeFullScreen(uint8_t* blackData, uint8_t* redData) {
 - **GxEPD2 Library**: <https://github.com/ZinggJM/GxEPD2>
 - **WeAct Studio**: <https://github.com/WeActStudio>
 
----
+______________________________________________________________________
 
 *Document generated based on analysis of GxEPD2_290_C90c implementation and SSD1680 controller datasheet.*

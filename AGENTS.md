@@ -47,12 +47,12 @@ Example: `esp12f_THIb_STr.yaml` = ESP12F with Temperature/Humidity/Illuminance, 
 **Device scripts** follow this order:
 
 1. Header comments with `#*` prefix
-2. Version history comments with `Pawelo, YYYYMMDD,`
-3. Substitutions section with default values
-4. Override includes for base components (wifi, mqtt, logger, etc.)
-5. Board include (`!include { file: ../includes/board_*.yaml, vars: { ... } }`)
-6. Interface includes (I2C, UART, SPI, etc.)
-7. Component sections (text_sensor, binary_sensor, sensor, output, light, switch, button)
+1. Version history comments with `Pawelo, YYYYMMDD,`
+1. Substitutions section with default values
+1. Override includes for base components (wifi, mqtt, logger, etc.)
+1. Board include (`!include { file: ../includes/board_*.yaml, vars: { ... } }`)
+1. Interface includes (I2C, UART, SPI, etc.)
+1. Component sections (text_sensor, binary_sensor, sensor, output, light, switch, button)
 
 **Include files**:
 
@@ -74,7 +74,7 @@ Example: `esp12f_THIb_STr.yaml` = ESP12F with Temperature/Humidity/Illuminance, 
 - `project_name`, `version`: Project metadata
 - `devices`: List of components/devices in the device as a note to display
 
-**Board variables** (for board_esp*.yaml):
+**Board variables** (for board_esp\*.yaml):
 
 - `board`: PlatformIO board name (e.g., `esp12e`, `esp01_1m`)
 - `board_variant`: Board variant (e.g., `12F`, `07s`, `01m`)
