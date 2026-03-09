@@ -90,7 +90,7 @@ sensor:
   # DEBUG component
   # - !include ../sensors/debug.yaml
 
-  # Temperature and Humidity and Preasure sensor
+  # Temperature and Humidity and Pressure sensor
   - !include { file: ../sensors/temp_hum_press_BME280.yaml, vars: { ix: "", bus_id: "bus_a", address: "0x76", temp_offset: -2.1, hum_offset: +9.2, pressure_offset: +7.0 } }
     # Illuminance sensor
   - !include { file: ../sensors/lux_BH1750.yaml, vars: { ix: "", bus_id: "bus_a", address: "0x23" } }

@@ -119,10 +119,10 @@ sensor:
   # - !include { file: ../sensors/temp_hum_SHT4x.yaml, vars: { ix: "2", bus_id: "bus_b", address: "0x44", room: "${room2}", mqtt_location: "${mqtt_location2}", mqtt_room: "${mqtt_room2}" } }
   # - !include { file: ../sensors/temp_hum_AHT2x.yaml, vars: { ix: "", bus_id: "bus_a", address: "0x38" } }
 
-  # Temperature, Humidity and Pressure seensor
+  # Temperature, Humidity and Pressure sensor
   # - !include { file: ../sensors/temp_hum_press_BME280.yaml, vars: { ix: "", bus_id: "bus_a", address: "0x76" } }
 
-  # Temperature, Humidity, Pressure and Gas Resistance seensor
+  # Temperature, Humidity, Pressure and Gas Resistance sensor
   # - !include { file: ../sensors/temp_hum_press_gas_BME680.yaml, vars: { ix: "", bus_id: "bus_a", address: "0x77", temp_offset: 0.05, hum_offset: 5.32, pressure_offset: 5.7 } }
 
   # Illuminance sensor
@@ -275,7 +275,7 @@ display:
     pages:
       - id: page_blank
         lambda: |-
-          // Blanl Page
+          // Blank Page
           int x, y;
           #define xRes ${display_xRes}
           #define yRes ${display_yRes}
@@ -548,7 +548,7 @@ display:
           it.print(10, 20, id(size_14_font), TextAlign::BASELINE_LEFT, "Join Guest WIFI");
           // it.print(xRes - 40, yRes - 40, id(font_small), TextAlign::BASELINE_LEFT, "5");
           // guest wifi
-          // WIFI:S:<WIFI NAME HERE>;T:WPA;P:<WIFI PASSWOD HERE>;H:false;;
+          // WIFI:S:<WIFI NAME HERE>;T:WPA;P:<WIFI PASSWORD HERE>;H:false;;
           // Draw the QR-code at position [x=120,y=5] with white color and a 4x scale
           it.qr_code(5, 35, id(guestwifi_qr), COLOR_ON, 4);
 

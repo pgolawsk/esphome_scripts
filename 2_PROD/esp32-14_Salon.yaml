@@ -126,7 +126,7 @@ packages:
   mp: !include { file: ../i2s/set_i2s_media_player.yaml, vars: { dout_mode: mono, dout_pin: "GPIO16", out_ws_pin: "GPIO18", out_sck_pin: "GPIO17", din_channel: "left", din_pin: "GPIO15", in_ws_pin: "GPIO38", in_sck_pin: "GPIO39" } }
 
   # I2S Voice Assistant (!cannot be used with "I2S Sound Level Meter" below)
-  # vass: !include { file: ../i2s/set_i2s_voice_assistant_microWW.yaml, vars: { dout_mode: mono, dout_pin: "GPIO8", out_ws_pin: "GPIO2", out_sck_pin: "GPIO1", din_channel: "left", din_pin: "GPIO4", in_ws_pin: "GPIO5", in_sck_pin: "GPIO6", rgb_light_id: rgb_led } }
+  # v_ass: !include { file: ../i2s/set_i2s_voice_assistant_microWW.yaml, vars: { dout_mode: mono, dout_pin: "GPIO8", out_ws_pin: "GPIO2", out_sck_pin: "GPIO1", din_channel: "left", din_pin: "GPIO4", in_ws_pin: "GPIO5", in_sck_pin: "GPIO6", rgb_light_id: rgb_led } }
 
   # I2S Sound Level Meter (!cannot be used with "I2S Audio" above)
   # slm: !include { file: ../i2s/set_i2s_sound_level_meter.yaml, vars: { updates: "15s", i2s_id: "i2s_db", din_pin: "GPIO15", ws_pin: "GPIO38", bck_pin: "GPIO39", channel: "left" } }

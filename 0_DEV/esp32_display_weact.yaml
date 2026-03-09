@@ -243,7 +243,7 @@ display:
     pages:
       - id: page_blank
         lambda: |-
-          // Blanl Page
+          // Blank Page
           int x, y;
           #define xRes ${display_xRes}
           #define yRes ${display_yRes}
@@ -512,6 +512,6 @@ display:
           it.print(10, 20, id(size_14_font), TextAlign::BASELINE_LEFT, "Join Guest WIFI");
           // it.print(xRes - 40, yRes - 40, id(font_small), TextAlign::BASELINE_LEFT, "5");
           // guest wifi
-          // WIFI:S:<WIFI NAME HERE>;T:WPA;P:<WIFI PASSWOD HERE>;H:false;;
+          // WIFI:S:<WIFI NAME HERE>;T:WPA;P:<WIFI PASSWORD HERE>;H:false;;
           // Draw the QR-code at position [x=120,y=5] with white color and a 4x scale
           it.qr_code(120, 5, id(guestwifi_qr), COLOR_ON, 4);

@@ -114,7 +114,7 @@ text_sensor:
   - !include ../sensors/text_sun_direction.yaml
 
   # Powered From sensor
-  - !include { file: ../sensors/text_powered_from_lilygo_T5_47.yaml, vars: { ix: "", usb_threshold_voltage: 4.5 } } # below threshold voltage its is BATERY, above it's USB
+  - !include { file: ../sensors/text_powered_from_lilygo_T5_47.yaml, vars: { ix: "", usb_threshold_voltage: 4.5 } } # below threshold voltage its is BATTERY, above it's USB
 
 binary_sensor:
   # HA Connected
@@ -314,7 +314,7 @@ display:
     update_interval: ${display_updates_interval}
     full_update_every: 1 # optional (default:  1): 0 - never, 1 (default) - every, 2+ - throttled
     cycles_render: 20    # optional (default: 20): higher number -> less ghosting, crisper image, more time
-    cycles_invert: 40    # optional (default: 20): higher number -> more timef or full update, but mor burn-in protection
+    cycles_invert: 40    # optional (default: 20): higher number -> more time or full update, but mor burn-in protection
     # on_page_change:
     #   - then:
     #       lambda: |-
@@ -322,21 +322,17 @@ display:
     pages:
       # - id: blank
       #   lambda: |-
-      #     // #define xres 540
-      #     // #define yres 960
       #     #define xRes 960
       #     #define yRes 540
-      #     //draw clear background
+
       #     it.filled_rectangle(0, 0, xRes, yRes, COLOR_OFF);
       #     it.print(xRes/2, yRes/2, id(font_name), COLOR_ON, TextAlign::CENTER, "Refreshing...");
 
       # - id: black
       #   lambda: |-
-      #     // #define xres 540
-      #     // #define yres 960
       #     #define xRes 960
       #     #define yRes 540
-      #     //draw filled background
+
       #     it.filled_rectangle(0, 0, xRes, yRes, COLOR_ON);
       #     it.print(xRes/2, yRes/2, id(font_name), COLOR_OFF, TextAlign::CENTER, "Refreshing...");
 
@@ -404,7 +400,7 @@ display:
           int linecount = 1; //need number of lines to store the break positions in an array
           int breakpositions[10]; //store breakpositions [the '~']
           breakpositions[0] = -1; // start at -1 cause we need to truncate the replaced characters and without this will cut off 1st character of message
-          while ( pos != std::string::npos) //loop through  replacing the ~ with CR - though this doesnt matter here it will never be displayed, but need to change them to keep the loop from repeating at the start
+          while ( pos != std::string::npos) //loop through  replacing the ~ with CR - though this doesn't matter here it will never be displayed, but need to change them to keep the loop from repeating at the start
           {
             s.replace(pos,1, "\n");
             breakpositions[linecount] = pos; //store the position of the break in an array
@@ -431,7 +427,7 @@ display:
           it.print(60, 60, id(font_small), TextAlign::BASELINE_LEFT, "Join Guest WIFI");
           it.print(xRes - 40, yRes - 40, id(font_small), TextAlign::BASELINE_LEFT, "5");
           // guest wifi
-          // WIFI:S:<WIFI NAME HERE>;T:WPA;P:<WIFI PASSWOD HERE>;H:false;;
+          // WIFI:S:<WIFI NAME HERE>;T:WPA;P:<WIFI PASSWORD HERE>;H:false;;
           // Draw the QR-code at position [x=50,y=100] with white color and a 14x scale
           it.qr_code(50, 100, id(guestwifi_qr), COLOR_ON, 14);
 

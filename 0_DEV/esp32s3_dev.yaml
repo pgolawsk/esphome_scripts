@@ -128,7 +128,7 @@ packages:
   # mp: !include { file: ../i2s/set_i2s_media_player.yaml, vars: { dout_mode: mono, dout_pin: "GPIO8", out_ws_pin: "GPIO2", out_sck_pin: "GPIO1", din_channel: "left", din_pin: "GPIO4", in_ws_pin: "GPIO5", in_sck_pin: "GPIO6" } }
 
   # I2S Voice Assistant (!cannot be used with "I2S Sound Level Meter" below)
-  vass: !include { file: ../i2s/set_i2s_voice_assistant_microWW.yaml, vars: { dout_mode: mono, dout_pin: "GPIO8", out_ws_pin: "GPIO2", out_sck_pin: "GPIO1", din_channel: "left", din_pin: "GPIO4", in_ws_pin: "GPIO5", in_sck_pin: "GPIO6", rgb_light_id: rgb_led } }
+  v_ass: !include { file: ../i2s/set_i2s_voice_assistant_microWW.yaml, vars: { dout_mode: mono, dout_pin: "GPIO8", out_ws_pin: "GPIO2", out_sck_pin: "GPIO1", din_channel: "left", din_pin: "GPIO4", in_ws_pin: "GPIO5", in_sck_pin: "GPIO6", rgb_light_id: rgb_led } }
 
   # va: !include { file: ../i2s/set_i2s_voice_assistant.yaml, vars: { ix: "", i2s_id: "i2s_va", dout_pin: "GPIO15", ws_pin: "GPIO6", sck_pin: "GPIO7", din_pin: "GPIO5", dout_mode: mono, din_channel: "left", din_bits_per_sample: 24bit, din_use_apll: false, rgb_light_id: rgb_led } }
   # va: !include { file: ../i2s/set_i2s_voice_assistant_microWW.yaml, vars: { ix: "", i2s_id: "i2s_va", dout_pin: "GPIO3", ws_pin: "GPIO5", sck_pin: "GPIO6", din_pin: "GPIO4", dout_mode: mono, din_channel: "left", din_bits_per_sample: 24bit, din_use_apll: false, rgb_light_id: rgb_led } }

@@ -20,7 +20,7 @@
 # esphome -s devicename espXX -s updates 1min -s room <Room name> -s mqtt_room <room> run esp12f_MMmm_SSss__PP.yaml --device 192.168.x.x
 # here are default values if those are not given via command line
 substitutions:
-  devices: "Temperature and Humidity via SHTx30, Illuminance via BH1750 and Doulbe Light Switch via AVT5713"
+  devices: "Temperature and Humidity via SHTx30, Illuminance via BH1750 and Double Light Switch via AVT5713"
   project_name: "pgolawsk.esp_home"
   version: "20250221"
 

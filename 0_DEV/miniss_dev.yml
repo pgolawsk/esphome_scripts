@@ -22,7 +22,7 @@ substitutions:
   mqtt_room: room
 
   # how much time to wait till relay will bw switched off
-  dalay_off: 0s
+  delay_off: 0s
 
 # Include basics of a board
 <<: !include ../includes/board_miniss_bk7231n.yaml

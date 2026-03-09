@@ -285,7 +285,6 @@ spi:
 display:
   # - platform: waveshare_epaper
   #   # model: 2.90in #? working but black and white are swapped...
-  #   # model: gdey029t94
   - platform: epaper_spi  # Changed from waveshare_epaper
     model: weact-2.9in-3c  # New model name format
     id: weact_display
@@ -736,7 +735,7 @@ display:
           it.print(x, y, id(size_25_font), id(color_red), TextAlign::BASELINE_LEFT, "Guest WIFI");
           // it.print(xRes - 40, yRes - 40, id(font_small), TextAlign::BASELINE_LEFT, "5");
           // guest wifi
-          // WIFI:S:<WIFI NAME HERE>;T:WPA;P:<WIFI PASSWOD HERE>;H:false;;
+          // WIFI:S:<WIFI NAME HERE>;T:WPA;P:<WIFI PASSWORD HERE>;H:false;;
           // Draw the QR-code at position [x=120,y=5] with white color and a 4x scale
           x = 5, y = y + 10;
           it.qr_code(x, y, id(guestwifi_qr), color_black, 4);

@@ -7,12 +7,12 @@
 #* FIRST install software run those:
 # brew install sdl2 libsodium (install step)
 # brew link sdl2 libsodium (optional step)
-# sdl2-config --libs --cflags (chacking installation step)
+# sdl2-config --libs --cflags (checking installation step)
 
 #! run with this command
 # esphome run mac_host.yaml
 substitutions:
-#  devices: "Temperature, Humidity via SHTx30, Illuminance via BH1750,  and Doulbe Light Switch via AVT5713"
+#  devices: "Temperature, Humidity via SHTx30, Illuminance via BH1750,  and Double Light Switch via AVT5713"
   devices: "Mac Host"
   project_name: "pgolawsk.esp_home"
   version: "20250221"

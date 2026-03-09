@@ -2,7 +2,7 @@
 #* Save Water Total (global variable) button
 #! NOT TESTED
 # Pawelo, 20230917, created
-# Pawelo, 20231021, parametrarized vi ${ix}
+# Pawelo, 20231021, parametrized vi ${ix}
 
 platform: template
 name: "$room Button Save Total${ix}"
