@@ -74,6 +74,7 @@ This section documents all commands used to control the SSD1683 e-paper display 
 Performs a software reset of the controller. After this command, the display enters default state.
 
 **Sequence:**
+
 ```cpp
 _writeCommand(0x12);  // SWRESET
 delay(10);            // Wait 10ms as per specification
@@ -91,6 +92,7 @@ Configures the display panel output parameters including resolution and scan dir
 - Byte 2: 0x00
 
 **Sequence:**
+
 ```cpp
 _writeCommand(0x01); // Driver output control
 _writeData(0x2D);    // 300-1 = 0x12D = 0x2D (LSB)
@@ -108,6 +110,7 @@ Sets the direction in which the RAM address pointer auto-increments when writing
 - `0x03` = X increment, Y increment (normal mode)
 
 **Sequence:**
+
 ```cpp
 _writeCommand(0x11); // Data entry mode
 _writeData(0x03);    // x increase, y increase
@@ -123,6 +126,7 @@ Controls the border (waveform) behavior during display updates.
 - `0x05` = Border follows LUT (Look-up table)
 
 **Sequence:**
+
 ```cpp
 _writeCommand(0x3C); // Border waveform
 _writeData(0x05);    // Border setting
@@ -138,6 +142,7 @@ Enables/disables the internal temperature sensor.
 - `0x80` = Enable internal temperature sensor
 
 **Sequence:**
+
 ```cpp
 _writeCommand(0x18); // Temperature sensor
 _writeData(0x80);   // Enable internal sensor
@@ -154,6 +159,7 @@ Writes temperature value to register for fast refresh mode.
 - Byte 1: Reserved (0x00)
 
 **Sequence:**
+
 ```cpp
 _writeCommand(0x1A); // Write to temperature register
 _writeData(0x5A);    // Temperature = 90
@@ -171,6 +177,7 @@ Defines the column (X) address range for RAM access. X coordinates must be byte-
 - Byte 1: X end address / 8
 
 **Sequence:**
+
 ```cpp
 _writeCommand(0x44);         // Set RAM X
 _writeData(x_start / 8);     // Start byte address
@@ -190,6 +197,7 @@ Defines the row (Y) address range for RAM access.
 - Byte 3: Y end - 1 (MSB)
 
 **Sequence:**
+
 ```cpp
 _writeCommand(0x45);              // Set RAM Y
 _writeData(y_start & 0xFF);        // Y start LSB
@@ -208,6 +216,7 @@ Sets the current RAM X address counter (pointer).
 - Byte 0: X address / 8
 
 **Sequence:**
+
 ```cpp
 _writeCommand(0x4E);       // Set RAM X counter
 _writeData(x / 8);        // Current X position
@@ -224,6 +233,7 @@ Sets the current RAM Y address counter (pointer).
 - Byte 1: Y address (MSB)
 
 **Sequence:**
+
 ```cpp
 _writeCommand(0x4F);       // Set RAM Y counter
 _writeData(y & 0xFF);      // Y position LSB
@@ -234,12 +244,13 @@ _writeData(y >> 8);        // Y position MSB
 
 #### 0x24 - Write Black/White RAM
 
-Writes pixel data to the Black/White RAM plane. 
+Writes pixel data to the Black/White RAM plane.
 
 - `0x00` = White pixel
 - `0xFF` (all bits set) = Black pixel
 
 **Sequence:**
+
 ```cpp
 _writeCommand(0x24); // Write B/W RAM
 // Write pixel data...
@@ -255,6 +266,7 @@ Writes pixel data to the Red color RAM plane.
 - `0xFF` (all bits set) = Red pixel
 
 **Sequence:**
+
 ```cpp
 _writeCommand(0x26); // Write Red RAM
 // Write pixel data...
@@ -275,6 +287,7 @@ Initiates the display refresh sequence with various options. Must be followed by
 - `0xDC` = BW differential refresh (partial)
 
 **Normal Full Refresh Sequence:**
+
 ```cpp
 _writeCommand(0x22); // Display Update Sequence Options
 _writeData(0xF7);    // Normal refresh
@@ -283,6 +296,7 @@ _waitWhileBusy("_Update_Full", full_refresh_time);
 ```
 
 **Fast Full Refresh Sequence:**
+
 ```cpp
 // Step 1: Set temperature
 _writeCommand(0x1A); // Temperature register
@@ -303,6 +317,7 @@ _waitWhileBusy("_Update_Fast", full_refresh_time);
 ```
 
 **BW Differential Refresh (Fast Partial):**
+
 ```cpp
 _writeCommand(0x22); // Display Update Sequence Options
 _writeData(0xDC);    // BW differential
@@ -317,6 +332,7 @@ _waitWhileBusy("refresh_bw", partial_refresh_time); // ~1.5 seconds!
 Triggers the display update sequence. This command initiates the physical display refresh after the update control has been set.
 
 **Sequence:**
+
 ```cpp
 _writeCommand(0x20); // Master Activation
 _waitWhileBusy("_Update", full_refresh_time);
@@ -332,6 +348,7 @@ Enters deep sleep mode for minimum power consumption. Requires hardware reset to
 - `0x11` = Enter deep sleep mode (SSD1683 uses 0x11, not 0x01 like SSD1680!)
 
 **Sequence:**
+
 ```cpp
 // Before entering sleep:
 _PowerOff();               // Power off the display
@@ -390,24 +407,24 @@ void _InitDisplay() {
     // Step 1: Software Reset
     _writeCommand(0x12);  // SWRESET
     delay(10);
-    
+  
     // Step 2: Driver Output Control (300 gates)
     _writeCommand(0x01); // Driver output control
     _writeData(0x2D);    // 300-1 = 0x12D = 0x2D (LSB)
     _writeData(0x01);    // 300-1 = 0x12D = 0x01 (MSB)
     _writeData(0x00);    // Reserved
-    
+  
     // Step 3: Border Waveform
     _writeCommand(0x3C); // Border waveform
     _writeData(0x05);    // Border LUT
-    
+  
     // Step 4: Temperature Sensor
     _writeCommand(0x18); // Temperature sensor
     _writeData(0x80);   // Enable internal
-    
+  
     // Step 5: Set full RAM area
     _setPartialRamArea(0, 0, WIDTH, HEIGHT);
-    
+  
     _init_display_done = true;
 }
 
@@ -417,7 +434,7 @@ void _Update_Full() {
     _writeData(0xF7);    // Normal refresh
     _writeCommand(0x20);
     _waitWhileBusy("_Update_Full", full_refresh_time); // ~25 seconds
-    
+  
     _power_is_on = false;
 }
 ```
@@ -434,19 +451,19 @@ void _Update_Fast() {
     _writeCommand(0x1A); // Write to temperature register
     _writeData(0x5A);    // Temperature = 90
     _writeData(0x00);
-    
+  
     // Step 2: Load LUT
     _writeCommand(0x22); // Display Update Sequence Options
     _writeData(0x91);    // Load LUT for temperature value
     _writeCommand(0x20); // Master Activation
     delay(2);            // Small delay
-    
+  
     // Step 3: Fast refresh
     _writeCommand(0x22);
     _writeData(0xC7);    // Fast refresh
     _writeCommand(0x20);
     _waitWhileBusy("_Update_Fast", full_refresh_time);
-    
+  
     _power_is_on = false;
 }
 ```
@@ -462,21 +479,21 @@ void refresh_bw(int16_t x, int16_t y, int16_t w, int16_t h) {
     // Ensure byte alignment
     x -= x % 8;
     w -= w % 8;
-    
+  
     // Limit to screen bounds
     int16_t x1 = x < 0 ? 0 : x;
     int16_t y1 = y < 0 ? 0 : y;
     int16_t w1 = x + w < int16_t(WIDTH) ? w : int16_t(WIDTH) - x;
     int16_t h1 = y + h < int16_t(HEIGHT) ? h : int16_t(HEIGHT) - y;
-    
+  
     // Set RAM window
     _setPartialRamArea(x1, y1, w1, h1);
-    
+  
     // Trigger BW differential refresh
     _writeCommand(0x22);
     _writeData(0xDC);    // BW differential
     _writeCommand(0x20);
-    
+  
     _waitWhileBusy("refresh_bw", partial_refresh_time); // ~1.5 seconds!
 }
 ```
@@ -512,10 +529,10 @@ void updateTextFieldFast(const char* text, int x, int y, int w, int h) {
     // Ensure byte alignment
     x -= x % 8;
     w = (w + 7) / 8 * 8;
-    
+  
     // Write to black RAM
     writeImageToCurrent(text_bitmap, x, y, w, h);
-    
+  
     // Use fast partial refresh (~1.5 seconds!)
     refresh_bw(x, y, w, h);
 }
@@ -529,21 +546,21 @@ void updateTextFieldFast(const char* text, int x, int y, int w, int h) {
 void updateProgressBarFast(int percentage, int x, int y, int w, int h) {
     x -= x % 8;
     w = (w + 7) / 8 * 8;
-    
+  
     // Create progress bar bitmap
     uint8_t buffer[600]; // Example
     memset(buffer, 0x00, sizeof(buffer));
-    
+  
     int filledWidth = (w * percentage) / 100;
     for (int row = 0; row < h; row++) {
         for (int col = 0; col < filledWidth / 8; col++) {
             buffer[row * (w/8) + col] = 0xFF;
         }
     }
-    
+  
     // Write to current buffer
     writeImageToCurrent(buffer, x, y, w, h);
-    
+  
     // Fast partial refresh (~1.5 seconds!)
     refresh_bw(x, y, w, h);
 }
@@ -559,16 +576,16 @@ void updateClockDifferential(int hours, int minutes) {
     int y = 80;
     int w = 200;
     int h = 80;
-    
+  
     x -= x % 8;
     w = (w + 7) / 8 * 800;
-    
+  
     // Write to previous buffer first (background)
     writeImageToPrevious(backgroundBitmap, x, y, w, h);
-    
+  
     // Write to current buffer (new content)
     writeImageToCurrent(clockBitmap, x, y, w, h);
-    
+  
     // Use fast partial refresh
     refresh_bw(x, y, w, h);
 }
@@ -643,15 +660,15 @@ void _PowerOn() {
 #include <Fonts/FreeMonoBold12pt7b.h>
 
 // Pin connections for ESP32
-GxEPD2_3C<GxEPD2_420c_GDEY042Z98, GxEPD2_420c_GDEY042Z98::HEIGHT> 
+GxEPD2_3C<GxEPD2_420c_GDEY042Z98, GxEPD2_420c_GDEY042Z98::HEIGHT>
 display(GxEPD2_420c_GDEY042Z98(5, 17, 16, 4));
 
 void setup() {
     display.init(115200);
-    
+  
     // Enable fast full update (default)
     // Use display.selectFastFullUpdate(false) for extended temperature range
-    
+  
     // Full screen refresh
     display.setFullWindow();
     display.fillScreen(GxEPD_WHITE);
@@ -660,14 +677,14 @@ void setup() {
     display.setCursor(50, 100);
     display.print("Hello World!");
     display.refresh(); // Full refresh (~25s or ~10s fast)
-    
+  
     // Fast partial update example
     display.setPartialWindow(50, 100, 200, 50);
     display.fillRect(50, 100, 200, 50, GxEPD_WHITE);
     display.setCursor(50, 130);
     display.print("Updated!");
     display.refresh_bw(50, 100, 200, 50); // Fast partial (~1.5s)!
-    
+  
     // Deep sleep
     display.hibernate();
 }
@@ -710,21 +727,21 @@ void initDisplay() {
     delay(10);
     digitalWrite(RST_PIN, HIGH);
     delay(10);
-    
+  
     // Software reset
     sendCommand(0x12);
     delay(10);
-    
+  
     // Driver output control (300 gates)
     sendCommand(0x01);
     sendData(0x2D);  // (300-1) % 256
     sendData(0x01);  // (300-1) / 256
     sendData(0x00);
-    
+  
     // Border waveform
     sendCommand(0x3C);
     sendData(0x05);
-    
+  
     // Temperature sensor
     sendCommand(0x18);
     sendData(0x80);
@@ -735,30 +752,30 @@ void writeFullScreen(uint8_t* blackData, uint8_t* redData) {
     // Set RAM area (full screen)
     sendCommand(0x11);
     sendData(0x03);
-    
+  
     sendCommand(0x44);
     sendData(0x00);
     sendData(49); // (400/8) - 1 = 50-1 = 49
-    
+  
     sendCommand(0x45);
     sendData(0x00);
     sendData(0x00);
     sendData(0x2C); // 300-1 = 299 = 0x12B = 0x2B
     sendData(0x01);
-    
+  
     // Write black data (15000 bytes)
     sendCommand(0x24);
     // transfer data...
-    
+  
     // Write red data (15000 bytes)
     sendCommand(0x26);
     // transfer data...
-    
+  
     // Trigger normal refresh
     sendCommand(0x22);
     sendData(0xF7);
     sendCommand(0x20);
-    
+  
     // Wait (~25 seconds)
     while (digitalRead(BUSY_PIN) == HIGH) {
         delay(10);
@@ -769,7 +786,7 @@ void writeFullScreen(uint8_t* blackData, uint8_t* redData) {
 void fastPartialRefresh(int x, int y, int w, int h) {
     x -= x % 8;
     w -= w % 8;
-    
+  
     // Set RAM window
     sendCommand(0x11);
     sendData(0x03);
@@ -781,12 +798,12 @@ void fastPartialRefresh(int x, int y, int w, int h) {
     sendData(y >> 8);
     sendData((y + h - 1) & 0xFF);
     sendData((y + h - 1) >> 8);
-    
+  
     // Trigger BW differential refresh
     sendCommand(0x22);
     sendData(0xDC);
     sendCommand(0x20);
-    
+  
     // Wait (~1.5 seconds)
     while (digitalRead(BUSY_PIN) == HIGH) {
         delay(10);
