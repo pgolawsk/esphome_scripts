@@ -4,11 +4,11 @@
 
 # need passive buzzer 9032, diode 1N4001, transistor BC848 and resistor 220Ohm (?)
 platform: template
-id: pbuzzer${ix}_${cycles}_${freq}
+id: p_buzzer${ix}_${cycles}_${freq}
 icon: "mdi:volume-high"
 name: "$room Buzzer${ix} ${cycles}x${freq}"
 optimistic: true
-state_topic: $devicename/pbuzzer${ix}_${cycles}_${freq}
+state_topic: $devicename/p_buzzer${ix}_${cycles}_${freq}
 turn_on_action:
   - repeat:
       count: ${cycles}
@@ -23,7 +23,7 @@ turn_on_action:
             level: 80%
         - delay: ${off_delay} # 500ms
         - output.turn_off: "p_buz${ix}"
-  - switch.turn_off: "pbuzzer${ix}_${cycles}_${freq}"
+  - switch.turn_off: "p_buzzer${ix}_${cycles}_${freq}"
 turn_off_action:
   - output.turn_off: "p_buz${ix}"
-#  - switch.turn_off: "pbuzzer${ix}_${cycles}_${freq}"
+#  - switch.turn_off: "p_buzzer${ix}_${cycles}_${freq}"

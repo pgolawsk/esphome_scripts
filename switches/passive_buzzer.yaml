@@ -10,11 +10,11 @@
 # - resistor 220 Ohm (SMD0805 mark 221)
 
 platform: template
-id: pbuzzer${ix}
+id: p_buzzer${ix}
 icon: "mdi:volume-high"
 name: "$room Buzzer${ix}"
 optimistic: true
-state_topic: $devicename/pbuzzer${ix}
+state_topic: $devicename/p_buzzer${ix}
 turn_on_action:
   - output.turn_on: "p_buz${ix}"
   - output.ledc.set_frequency:
@@ -35,6 +35,6 @@ turn_on_action:
       level: 70%
   - delay: 120ms
   - output.turn_off: "p_buz${ix}"
-  - switch.turn_off: "pbuzzer${ix}"
+  - switch.turn_off: "p_buzzer${ix}"
 turn_off_action:
   - output.turn_off: "p_buz${ix}"

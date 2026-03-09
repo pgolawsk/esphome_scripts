@@ -1,5 +1,5 @@
 ---
-#* Enable WiFi, including falback hotspot
+#* Enable WiFi, including fallback hotspot
 # Pawelo, 20221119, created as my framework based on !include statements
 # Pawelo, 20221127, shortened WiFi SSID for fallback mode as it cannot be longer than 32 characters
 # Pawelo, 20230125, shortened further WiFi SSID for fallback mode by removing $room, as it cannot be longer than 32 characters

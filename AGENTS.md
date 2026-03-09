@@ -36,7 +36,7 @@ esphome clean 2_PROD/esp12f-10_Office.yaml
 - `PP`: Purpose (F=Fan, G=Gate, etc.)
 - `_dev`: Development scripts with many sensors (reference implementations)
 
-Example: `esp12f_THIddb_STr.yaml` = ESP12F with Temperature/Humidity/Illuminance, 2 diodes, buzzer, SHT3x, TCS3472, RTTTL
+Example: `esp12f_THIb_STr.yaml` = ESP12F with Temperature/Humidity/Illuminance, buzzer, SHT3x, TCS3472, RTTTL
 
 **Include files**: `category_specific_name.yaml` (e.g., `sensor_sht30.yaml`, `output_relay.yaml`)
 

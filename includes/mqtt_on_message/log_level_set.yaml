@@ -14,14 +14,14 @@
 #               return x == "NONE" || x == "ERROR" || x == "WARN" || x == "INFO" || x == "DEBUG" || x == "VERBOSE" || x == "VERY_VERBOSE";
 #         then:
 #           - logger.log:
-#               format: 'Set LOG LEVEL to value revieved via MQTT.'
+#               format: 'Set LOG LEVEL to value received via MQTT.'
 #               # args: []
 #               level: WARN
 #               tag: 'mqtt'
 #           - lambda: 'logger.level = x;'
 #         else:
 #           - logger.log:
-#               format: 'LOG LEVEL is unchanged. Cannot set to value recieved via MQTT.'
+#               format: 'LOG LEVEL is unchanged. Cannot set to value received via MQTT.'
 #               # args: []
 #               level: WARN
 #               tag: 'mqtt'

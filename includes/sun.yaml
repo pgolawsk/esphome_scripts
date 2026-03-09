@@ -1,5 +1,5 @@
 ---
-#* Sun interface enanble
+#* Sun interface enable
 # Pawelo, 20230305, created based on https://esphome.io/components/sun.html
 
 sun:

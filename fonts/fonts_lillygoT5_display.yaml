@@ -101,7 +101,7 @@ font:
       - "\U000F0922" # mdi-wifi-strength-2
       - "\U000F0925" # mdi-wifi-strength-3
       - "\U000F0928" # mdi-wifi-strength-4
-      - "\U000F050F" # mdi-themometer
+      - "\U000F050F" # mdi-thermometer
       - "\U000F08F0" # mdi-map-marker-distance
       - "\U000F06A5" # mdi-power-plug
       - "\U000F06A6" # mdi-power-plug-off

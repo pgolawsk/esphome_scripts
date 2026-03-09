@@ -1,5 +1,5 @@
 ---
-#* RTTTL (Ring Tone Text Transfer Language) enanble
+#* RTTTL (Ring Tone Text Transfer Language) enable
 # Pawelo, 20230128, created based on https://esphome.io/components/rtttl.html?highlight=rtttl
 
 rtttl:

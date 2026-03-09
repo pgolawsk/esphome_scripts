@@ -5,7 +5,7 @@
 # Pawelo 20221127, changed prometheus/mosquitto setups, after renaming all devices from espXX to esp12f-XX
 # Pawelo 20221201, added OPTIONAL section with how to reprogram soldered esp12f module
 # Pawelo 20221203, added ESP1 links in OPTIONAL section
-# Pawelo 20221230, added flashing for Entrance room ("THIPG" measures and "d" switch) on esp12f
+# Pawelo 20221230, added flashing for Entrance room on esp12f
 # Pawelo 20230101, added flashing for generic esp board with esp-32
 # Pawelo 20230101, added flashing for Upstairs room ("THP" measures) on esp12f
 # Pawelo 20230107, changed default update_interval to 30s (from 1min) to synchronize with prometheus
@@ -74,7 +74,7 @@ esphome run name.yml --device 192.168.x.x
 
 # 4. Configure MQTT acl on MQTT server
 sudo vi /etc/mosquitto/acl
-#------------------------- add following to entitle devide to log data under it's topic
+#------------------------- add following to entitle device to log data under it's topic
 topic readwrite esp12f-10/#
 #...
 #pattern readwrite %c/#

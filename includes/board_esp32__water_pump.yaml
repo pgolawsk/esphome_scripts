@@ -11,7 +11,7 @@
 # Pawelo 20231016, update water_total_home and water_used_home at boot
 # Pawelo 20231016, fix - use pulses_per_liter_garden for garden total
 # Pawelo, 20241115, added area and friendly name
-# Pawelo, 20241122, simplified - added regular mqtt (no RTTL support), as it can be override PRIOR this file include
+# Pawelo, 20241122, simplified - added regular mqtt (no RTTTL support), as it can be override PRIOR this file include
 # Pawelo, 20250130, added framework_version variable
 # Pawelo, 20250413, added web_server_basic.yaml to avoid sorting groups (not supported in 2.x)
 # Pawelo, 20250906, sdkconfig options - added increased max sockets to avoid httpd accept errors

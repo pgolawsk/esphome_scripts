@@ -18,7 +18,7 @@ icon: "mdi:led-outline"
 id: rgb_led${ix}
 state_topic: $devicename/rgb_led${ix}
 pin: ${gpio}
-use_psram: false # needs be here to do not interfere with ir_reciever and ir_transmitter
+use_psram: false # needs be here to do not interfere with ir_receiver and ir_transmitter
 # use_dma: true
 rmt_symbols: ${rmt_symbols} # minimum 64
 num_leds: 1

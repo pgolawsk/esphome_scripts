@@ -44,7 +44,7 @@ Script filenames reflect what sensors, switches and manipulators are included in
 
 > Info:  Scripts which ends `_dev` do contain many sensors/includes - if you need any other configuration you can see there how to build it with `!include <file>` statements.
 
-For example: `esp12f_THIddb_STr.yaml` script is for:
+For example: `esp12f_THIb_STr.yaml` script is for:
 
 - board:
   - `esp12f` - ESP12-F board
@@ -53,8 +53,6 @@ For example: `esp12f_THIddb_STr.yaml` script is for:
   - `H` - Humidity
   - `I` - Illuminance
 - manipulators:
-  - `d` - diode
-  - `d` - diode (2nd one)
   - `b` - buzzer
 - sensors:
   - `S` - SHT30 - temperature and humidity
@@ -109,7 +107,7 @@ All available sensors
 - `E` - **INA226** - DC Current, Power, Voltage
 - `F` - **INA3221** - 3-channel DC Current, Power, Voltage
 - `G` - **BME680** - Temperature, Humidity, Pressure, Gas Resistance
-- `H` - **AHTx21** - Temperature and Huźmidity
+- `H` - **AHTx21** - Temperature and Humidity
 - `I` - (generic) IR Receiver
 - `L` - **LD2410** - Radar sensor 24GHz
 - `M` - **INMP441** - I2S microphone

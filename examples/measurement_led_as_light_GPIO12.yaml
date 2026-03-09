@@ -14,7 +14,7 @@ light:
 #    icon: "mdi:led"
     id: measurement_led
     output: m_led
-    state_topic: $devicename/mled
+    state_topic: $devicename/m_led
 #     on_turn_on:
 #     - delay: 3s
 #     - light.turn_off: status_led

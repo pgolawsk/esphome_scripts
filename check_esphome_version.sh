@@ -6,7 +6,7 @@
 #  - safe handling of "set -e" (restore original state)
 #  - --check-only (no prompt, exit 10 if update exists)
 #  - --auto (upgrade without prompt)
-#  - virtualenv detection
+#  - virtualEnv detection
 #  - fallback if "pip index versions" is unavailable
 
 # Pawelo, 20251230, created
@@ -41,7 +41,7 @@ debug() {
 # Detect pip / venv
 ########################################
 PIP_CMD="pip"
-[ -n "${VIRTUAL_ENV:-}" ] && debug "Virtualenv detected: $VIRTUAL_ENV"
+[ -n "${VIRTUAL_ENV:-}" ] && debug "VirtualEnv detected: $VIRTUAL_ENV"
 
 ########################################
 # Get installed ESPHome version
