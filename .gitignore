@@ -30,7 +30,6 @@ __pycache__
 
 # IDE
 .idea/
-.vscode/
 *.swp
 
 # OS
