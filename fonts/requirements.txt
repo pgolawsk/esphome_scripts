@@ -1,0 +1,15 @@
+# Font requirements for ESPHome scripts
+# This file lists all TTF font files needed by the ESPHome configurations
+# Run: ./install_fonts.sh to download all fonts
+
+# Google Fonts - Roboto
+# License: Apache 2.0
+# Using jsdelivr CDN for direct TTF download
+Roboto-Medium.ttf=https://cdn.jsdelivr.net/gh/googlefonts/roboto/src/hinted/Roboto-Medium.ttf
+Roboto-Light.ttf=https://cdn.jsdelivr.net/gh/googlefonts/roboto/src/hinted/Roboto-Light.ttf
+
+# Material Design Icons
+# License: OFL-1.1 (SIL Open Font License)
+# https://github.com/Templarian/MaterialDesign-Fonts
+# Using jsdelivr CDN for direct TTF download
+materialdesignicons-webfont.ttf=https://cdn.jsdelivr.net/npm/@mdi/font@7.4.47/fonts/materialdesignicons-webfont.ttf

@@ -152,8 +152,9 @@ You need to have
 
 Short instruction:
 
-- To install please use following: `pip3 install esphome`
+ - To install please use following: `pip3 install esphome`
 - To install upgrade use following: `pip3 install -U esphome`
+- Font files (TTF) need to be downloaded separately (see below)
 
 To see full installation procedure please follow `esp_setup.sh` file and run specific commands. DO NOT RUN this script at once. The file includes:
 
@@ -161,6 +162,26 @@ To see full installation procedure please follow `esp_setup.sh` file and run spe
 - Prometheus configuration
   - Example Grafana dashboard to display data from Prometheus is in `Home Sensors-Grafana4Prometheus_dashboard.json` file
 - `esphome` commands to flash specific configurations
+
+### Font files
+
+TTF font files are not stored in the repository (excluded via `.gitignore` due to licensing). After cloning the repository, download them using:
+
+```bash
+./install_fonts.sh
+```
+
+This script reads `fonts/requirements.txt` and downloads all required fonts:
+
+- `Roboto-Medium.ttf` - Roboto Medium
+- `Roboto-Light.ttf` - Roboto Light
+- `materialdesignicons-webfont.ttf` - Material Design Icons
+
+To check which fonts are missing:
+
+```bash
+./install_fonts.sh --check
+```
 
 ### Example ESP device flashing command
 
