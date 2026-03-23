@@ -46,6 +46,7 @@
 # Pawelo, 20260214, added date & weekday to Guest WiFi page
 # Pawelo, 20260222, fix for swapping black and white colors on epaper_spi component
 # Pawelo, 20260301, another fix for swapping black and white colors on epaper_spi component
+# Pawelo, 20260323, commented new epaper_spi as it was integrated to ESPHome 2026.3.0
 
 #! run with this command to override substitutions
 # esphome -s devicename espXX -s updates 1min -s room <Room name> -s mqtt_room <room> run esp32_MMmm_SSss__PP.yaml --device 192.168.x.x
@@ -256,20 +257,20 @@ select:
   # id: select_display_cycle_interval
   - !include { file: ../selects/display_cycle_interval.yaml, vars: { global_variable: "global_display_cycle_page", display_id: "weact_display" } }
 
-external_components:
-  # - source: github://pr#13528
-  #   components: [waveshare_epaper]
-  #   refresh: 1h
-  # - source: ../custom_components
-  #   components: [waveshare_epaper]
-  #   refresh: 0s  # Always refresh from local source
-  # Use local esphome repo with the new epaper_spi component
-  - source: ../../esphome/esphome/components  # Adjust path to your local repo
-    components: [epaper_spi]
-    refresh: 0s  # Always refresh from local source
-  # - source: github://pr#13894
-  #   components: [epaper_spi]
-  #   refresh: 1h
+# external_components:
+#   # - source: github://pr#13528
+#   #   components: [waveshare_epaper]
+#   #   refresh: 1h
+#   # - source: ../custom_components
+#   #   components: [waveshare_epaper]
+#   #   refresh: 0s  # Always refresh from local source
+#   # Use local esphome repo with the new epaper_spi component
+#   - source: ../../esphome/esphome/components  # Adjust path to your local repo
+#     components: [epaper_spi]
+#     refresh: 0s  # Always refresh from local source
+#   # - source: github://pr#13894
+#   #   components: [epaper_spi]
+#   #   refresh: 1h
 spi:
   id: spi_v
   clk_pin: GPIO16 # SCL
