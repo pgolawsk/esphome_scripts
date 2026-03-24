@@ -47,6 +47,7 @@
 # Pawelo, 20260220, finalized FRAM with NVM
 # Pawelo, 20260221, added restore_mode
 # Pawelo, 20260221, added WeAct 2.13 display for testing - it works on epaper_spi, model waveshare-2.13in-v3
+# Pawelo, 20260324, typo fixes
 
 #! run with this command to override substitutions
 # esphome -s devicename espXX -s updates 1min -s room <Room name> -s mqtt_room <room> run esp32_MMmm_SSss__PP.yaml --device 192.168.x.x
@@ -80,6 +81,7 @@ substitutions:
   accuracy_decimals: "2"
   # restore_mode: ALWAYS_OFF
   restore_mode: RESTORE_DEFAULT_OFF
+  restore: "true"
 
   # Display setup variables
   display_xRes: "250"
@@ -327,7 +329,7 @@ switch:
 #  - !include { file: ../switches/relay_on_pcf857x.yaml, vars: { hub_ix: "", ix: "1", mdi_icon: "light-switch", gpio: 0, inverted: true, off_delay: 10min } }
 
 # Include fonts for display
-<<: !include ../fonts/fonts_weeact_display.yaml
+<<: !include ../fonts/fonts_weact_display.yaml
 
 <<: !include { file: ../scripts/interval_display_cycle_pages.yaml, vars: { display_id: weact_display, cycle_script: cycle_pages_in_day, page_to_skip: page_wifi_qr } }
 
