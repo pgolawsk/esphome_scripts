@@ -56,8 +56,9 @@
 # Pawelo, 20251205, switched to primary WIFI network instead of extended
 # Pawelo, 20251205, select.state replaced with select.current_option() to as per deprecation warning (2026.5)
 # Pawelo, 20260124, added minimum_chip_revision variable to board_esp32.yaml to eliminate warnings
-# Pawelo, 20260222, switch display to epaper_spi (my PR:)
-# Pawelo, 20260307, switch display to nvm (my PR#14119)
+# Pawelo, 20260222, switch display to epaper_spi (my PR#13894)
+# Pawelo, 20260307, switch FRAM to my nvm componenet (my PR#14119)
+# Pawelo, 20260324, removed reference to PR#13894 as it was merged to ESPHome 2026.3.0, so now it's just using epaper_spi component from ESPHome
 
 #! run with this command to override substitutions
 # esphome -s devicename espXX -s updates 1min -s room <Room name> -s mqtt_room <room> run esp32_MMmm_SSss__PP.yaml --device 192.168.x.x
@@ -66,9 +67,9 @@
 substitutions:
   devices: "ePaper Temperature and Humidity via SHTx30, Illuminance via BH1750, Water via YF-B10 G1"
   project_name: "pgolawsk.esp_home"
-  version: "20260222"
-  esphome_min_version: 2025.6.3 # worked on previous versions as well
-  esphome_max_version: 2026.2 #! last version where FRAM component works
+  version: "20260324"
+  esphome_min_version: 2026.3.0 # worked on previous versions as well
+  # esphome_max_version: 2026.2 #! last version where FRAM component works
 
   # required by ../includes/board_esp32.yaml script
   framework_type: arduino # "arduino" or "esp-idf"
@@ -328,10 +329,10 @@ switch:
 
 # # override section from includes - temp fix
 # external_components:
-#   - source: github://pr#4847
+# #  - source: github://pr#4847
 #     components: [ ld2420 ]
 #     refresh: 0s
-#   - source: github://nrandell/dallasng
+# #  - source: github://nrandell/dallasng
 
 # Include fonts for display
 <<: !include ../fonts/fonts_weact_display.yaml
@@ -346,8 +347,10 @@ select:
 external_components:
   # - source: github://pr#4880
   #   components: [ fram, fram_pref ]
-  - source: github://pr#14119
+  - source: ../../esphome/esphome/components
+#  - source: github://pr#14119
     components: [ nvm, fram_i2c ]
+    refresh: 0s  # Always refresh from local source
   # - source: github://nrandell/dallasng
   # - source: github://pr#4579
   #   components: [waveshare_epaper]
@@ -356,9 +359,9 @@ external_components:
   # - source: github://pgolawsk/esphome@pr-6226-tweaks
   #   components: [waveshare_epaper]
   #   refresh: 5min
-  - source: ../../esphome/esphome/components  # Adjust path to your local repo
-    components: [epaper_spi]
-    refresh: 0s  # Always refresh from local source
+  # - source: ../../esphome/esphome/components  # Adjust path to your local repo
+  #   components: [epaper_spi]
+  #   refresh: 0s  # Always refresh from local source
 
 spi:
   id: spi_v
