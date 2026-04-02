@@ -242,6 +242,7 @@ button:
   - !include { file: ../buttons/scan_wifi_button.yaml }
 
   # Wake-on-LAN buttons
+  # WARN: it works only in the same network, but forward of broadcasts can be configured on router (use udp=broadcast-relay or socat)
   - !include { file: ../buttons/wake-on-lan_button.yaml, vars: { wol_name: !secret computer1_wol_name, wol_mac: !secret computer1_wol_mac } }
 
   # IR Remote control buttons - include as a package
