@@ -152,7 +152,7 @@ You need to have
 
 Short instruction:
 
- - To install please use following: `pip3 install esphome`
+- To install please use following: `pip3 install esphome`
 - To install upgrade use following: `pip3 install -U esphome`
 - Font files (TTF) need to be downloaded separately (see below)
 
