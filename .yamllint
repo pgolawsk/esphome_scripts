@@ -4,3 +4,5 @@ rules:
   key-duplicates: disable
   truthy:
     check-keys: false
+  indentation:
+    indent-sequences: whatever
