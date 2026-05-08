@@ -8,6 +8,7 @@ pcf8574:
     # address: 0x21
     address: ${address}
     pcf8575: ${pcf8575}
+    # interrupt_pin: ${interrupt_pin}  #* ESPHome 2026.4+: INT pin wired from PCF8574 to ESP GPIO; eliminates I2C polling (~99.7% less bus traffic)
 
 # # Individual outputs
 # switch:
