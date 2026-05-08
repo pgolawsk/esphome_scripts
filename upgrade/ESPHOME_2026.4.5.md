@@ -85,13 +85,13 @@ Prioritized by risk of breaking change or benefit of new features.
 
 | Device | Priority | Reason |
 |--------|----------|--------|
-| `esp12f-11_Entrance_Entry.yaml` | High | ESP8266 LWIP fix + crash handler |
-| `esp12f-10_Office.yaml` | High | ESP8266 LWIP fix + PCF8574 interrupt opportunity |
-| `esp12f-15_Upstairs.yaml` | Medium | ESP8266 LWIP fix |
-| `esp12f-21_Underfloor.yaml` | Medium | ESP8266 LWIP fix |
-| `esp12f-25_AquariumWindow.yaml` | Medium | ESP8266 LWIP fix |
-| `esp32-14_Salon.yaml` | Medium | Verify PSRAM + BSEC2 still work; RGB LED gamma fix |
-| `esp32-05_Shades_WinterGardenUpp.yaml` | Medium | Check ePaper display if LVGL used |
+| `esp12f-11_Entrance_Entry.yaml` | Done | ESP8266 LWIP fix + crash handler |
+| `esp12f-10_Office.yaml` | Done | ESP8266 LWIP fix + PCF8574 interrupt opportunity |
+| `esp12f-15_Upstairs.yaml` | Done | ESP8266 LWIP fix |
+| `esp12f-21_Underfloor.yaml` | Done | ESP8266 LWIP fix |
+| `esp12f-25_AquariumWindow.yaml` | Done | ESP8266 LWIP fix |
+| `esp32-14_Salon.yaml` | Done | PSRAM OK (793KB free), BSEC2 disabled, RGB LED gamma fix automatic |
+| `esp32-05_Shades_WinterGardenUpp.yaml` | Done | Check ePaper display if LVGL used — OK. Bootloader too old warning: needs 1x USB flash to unlock OTA rollback + SRAM1 as IRAM (+40KB); board has no accessible USB, do when removing for other reason |
 | `esp32-06_Garden_Gateway.yaml` | Low | Socket polling benefit |
 | `esp32-35_Pump_Garage.yaml` | Low | ePaper + flow counter — stable config |
 | `esp32-36_Garage_Gate.yaml` | Low | Gate motor — verify relay behavior unchanged |
