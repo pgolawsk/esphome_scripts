@@ -22,6 +22,30 @@ esphome config 2_PROD/esp12f-10_Office.yaml
 esphome clean 2_PROD/esp12f-10_Office.yaml
 ```
 
+## Device Aliases
+
+Devices are flashed using shell aliases defined in `.dir_aliases` (loaded automatically by zsh).
+
+| Alias | Device | Location | YAML (PROD) |
+|-------|--------|----------|-------------|
+| `esp05` | esp32-05 | Shades / WinterGardenUpp | `2_PROD/esp32-05_Shades_WinterGardenUpp.yaml` |
+| `esp06` | esp32-06 | Garden / Gateway | `2_PROD/esp32-06_Garden_Gateway.yaml` |
+| `esp10` | esp12f-10 | Office | `2_PROD/esp12f-10_Office.yaml` |
+| `esp11` | esp12f-11 | Entrance / Entry | `2_PROD/esp12f-11_Entrance_Entry.yaml` |
+| `esp14` | esp32-14 | Salon | `2_PROD/esp32-14_Salon.yaml` |
+| `esp15` | esp12f-15 | Upstairs | `2_PROD/esp12f-15_Upstairs.yaml` |
+| `esp21` | esp12f-21 | Underfloor | `2_PROD/esp12f-21_Underfloor.yaml` |
+| `esp25` | esp12f-25 | AquariumWindow | `2_PROD/esp12f-25_AquariumWindow.yaml` |
+| `esp35` | esp32-35 | Pump / Garage | `2_PROD/esp32-35_Pump_Garage.yaml` |
+| `esp36` | esp32-36 | Garage / Gate | `2_PROD/esp32-36_Garage_Gate.yaml` |
+| `esp39` | esp32-39 | Attic | `2_PROD/esp32-39_Attic.yaml` |
+
+Each alias has a `dev` variant (e.g. `esp15dev`) that flashes the `0_DEV/` version of the same config to the same device. All aliases connect via `<devicename>.lan` hostname.
+
+## Language
+
+All YAML configuration files, comments (including `#*`, `#!`, `#?`, `# NOTE:`, `# WARN:`), variable names, entity names, IDs, and any other text within the configs must be written in **English only**. No Polish or other languages in the config files.
+
 ## Code Style Guidelines
 
 ### File Naming Conventions
