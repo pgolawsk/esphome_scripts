@@ -153,3 +153,12 @@ upgrade/
 - Keep only the last 2–3 version impact files; older ones can be archived or deleted.
 - `COMPONENTS.md` is a living document — update it whenever a new component is added to any device config.
 - The `check_esphome_version.sh` script can be run on cron or at shell startup to get notified of new versions.
+
+## Maintenance Policy
+
+All configs in the repo are kept up to date with every ESPHome upgrade — including include files and device configs for components or hardware not currently in active use. This ensures the whole setup compiles cleanly and nothing bitrotates.
+
+## Dev vs Prod Workflow
+
+- **Small changes / upgrades**: edit directly in `2_PROD/`, flash with the alias (e.g. `esp10`).
+- **Large changes / experiments**: copy the config to `0_DEV/`, make changes there, flash using the `dev` alias (e.g. `esp10dev`) to test on the physical device without touching the production config. Once validated, apply the changes to `2_PROD/` and remove the `0_DEV/` copy.

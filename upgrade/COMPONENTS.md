@@ -62,19 +62,22 @@ Version pins are defined via `esphome_min_version` substitution variable in sele
 
 ## Production Devices
 
-| Device | Platform | Board | Location | Function |
-|--------|----------|-------|----------|----------|
-| `esp12f-10_Office.yaml` | ESP8266 | esp12e | Office | Env + CO2 + light switch |
-| `esp12f-11_Entrance_Entry.yaml` | ESP8266 | esp12e | Entrance | Env + intercom gate |
-| `esp12f-15_Upstairs.yaml` | ESP8266 | esp12e | Upstairs | Env monitoring |
-| `esp12f-21_Underfloor.yaml` | ESP8266 | esp12e | Underfloor | Temp + heating |
-| `esp12f-25_AquariumWindow.yaml` | ESP8266 | esp12e | Aquarium | Env + color |
-| `esp32-05_Shades_WinterGardenUpp.yaml` | ESP32 | esp32dev | Winter garden | Shades + env + ePaper |
-| `esp32-06_Garden_Gateway.yaml` | ESP32 | esp32dev | Garden | Gateway + env + relays |
-| `esp32-14_Salon.yaml` | ESP32-S3 | esp32-s3-devkitc-1 | Salon | Hub + IR + mic + speaker |
-| `esp32-35_Pump_Garage.yaml` | ESP32 | esp32dev (D1) | Garage | Water pump + ePaper |
-| `esp32-36_Garage_Gate.yaml` | ESP32-C3 | c3 supermini | Garage | Gate control |
-| `esp32-39_Attic.yaml` | ESP32 | esp32dev | Attic | Env monitoring |
+These are the physically deployed devices — source of truth is `.dir_aliases` (one alias per device).
+Flash using the alias, e.g. `esp10`, `esp11`, etc.
+
+| Alias | Device | Platform | Board | Location | Function |
+|-------|--------|----------|-------|----------|----------|
+| `esp10` | `esp12f-10_Office.yaml` | ESP8266 | esp12e | Office | Env + CO2 + light switch |
+| `esp11` | `esp12f-11_Entrance_Entry.yaml` | ESP8266 | esp12e | Entrance | Env + intercom gate |
+| `esp15` | `esp12f-15_Upstairs.yaml` | ESP8266 | esp12e | Upstairs | Env monitoring |
+| `esp21` | `esp12f-21_Underfloor.yaml` | ESP8266 | esp12e | Underfloor | Temp + heating |
+| `esp25` | `esp12f-25_AquariumWindow.yaml` | ESP8266 | esp12e | Aquarium | Env + color |
+| `esp05` | `esp32-05_Shades_WinterGardenUpp.yaml` | ESP32 | esp32dev | Winter garden | Shades + env + ePaper |
+| `esp06` | `esp32-06_Garden_Gateway.yaml` | ESP32 | esp32dev | Garden | Gateway + env + relays |
+| `esp14` | `esp32-14_Salon.yaml` | ESP32-S3 | esp32-s3-devkitc-1 | Salon | Hub + IR + mic + speaker |
+| `esp35` | `esp32-35_Pump_Garage.yaml` | ESP32 | esp32dev (D1) | Garage | Water pump + ePaper |
+| `esp36` | `esp32-36_Garage_Gate.yaml` | ESP32-C3 | c3 supermini | Garage | Gate control |
+| `esp39` | `esp32-39_Attic.yaml` | ESP32 | esp32dev | Attic | Env monitoring |
 
 ---
 
