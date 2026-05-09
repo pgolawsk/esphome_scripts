@@ -93,9 +93,17 @@ Prioritized by risk of breaking change or benefit of new features.
 | `esp32-14_Salon.yaml` | Done | PSRAM OK (793KB free), BSEC2 disabled, RGB LED gamma fix automatic |
 | `esp32-05_Shades_WinterGardenUpp.yaml` | Done (⚠️ bootloader old) | ePaper migrated to native `epaper_spi`. Bootloader too old for OTA rollback + SRAM1 IRAM — needs 1x USB flash; no accessible USB port, do when removing for other reason |
 | `esp32-06_Garden_Gateway.yaml` | Done (⚠️ bootloader old) | Flashed OTA 2026-05-09. Bootloader too old for OTA rollback + SRAM1 IRAM — needs 1x USB flash; no USB port on board, needs CP2102 adapter. Do when removing for other reason |
-| `esp32-35_Pump_Garage.yaml` | **Next: migrate display first** | Still uses `waveshare_epaper + pgolawsk/esphome@pr-6226-tweaks` — migrate to native `epaper_spi` (same as esp05) before flashing |
+| `esp32-35_Pump_Garage.yaml` | Done (DEV; not yet copied to 2_PROD) | Flashed OTA from `0_DEV/` on 2026-05-09. Display migrated `waveshare_epaper@pr-6226-tweaks` → native `epaper_spi` (`weact-2.9in-3c`). FRAM migrated `fram + fram_pref` (PR#4880) → `nvm + fram_i2c` (PR#14119, branch `local/preferences-virtual` with NVS delegation for `safe_mode::RTC_KEY`). Required adding `esp32` override (`esphome-overrides/`, un-final + virtual `preferences.h` / `preference_backend.h`) to `external_components`. `safe_mode:091` reset confirmed at +60s, sensors stable, heap ~180 KB free. |
 | `esp32-36_Garage_Gate.yaml` | Low (⚠️ bootloader old) | Gate motor — verify relay behavior unchanged. Bootloader too old for OTA rollback + SRAM1 IRAM — needs 1x USB flash when removing for other reason |
 | `esp32-39_Attic.yaml` | Low (⚠️ bootloader old) | Env only — low risk. Bootloader too old for OTA rollback + SRAM1 IRAM — needs 1x USB flash when removing for other reason |
+
+---
+
+## Carryover to Next Upgrade Cycle
+
+Items started in this cycle that need follow-up at the next ESPHome upgrade. Preserve this section when copying this file as a template for `ESPHOME_<next>.md`; remove items as they are resolved.
+
+- **esp32-35 Pump_Garage — promote DEV → 2_PROD.** Flashed from `0_DEV/` on 2026-05-09 with display+FRAM migration. If the device has been stable for ≥1 week (water meter pulses, display cycle, no crashes, MQTT continuity), copy `0_DEV/esp32-35_Pump_Garage.yaml` over `2_PROD/esp32-35_Pump_Garage.yaml`, update the `esp35` alias if needed, and delete the `0_DEV/` copy. Verify the `external_components: [esp32]` override line is preserved when copying.
 
 ---
 
