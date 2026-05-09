@@ -91,11 +91,11 @@ Prioritized by risk of breaking change or benefit of new features.
 | `esp12f-21_Underfloor.yaml` | Done | ESP8266 LWIP fix |
 | `esp12f-25_AquariumWindow.yaml` | Done | ESP8266 LWIP fix |
 | `esp32-14_Salon.yaml` | Done | PSRAM OK (793KB free), BSEC2 disabled, RGB LED gamma fix automatic |
-| `esp32-05_Shades_WinterGardenUpp.yaml` | Done | Check ePaper display if LVGL used — OK. Bootloader too old warning: needs 1x USB flash to unlock OTA rollback + SRAM1 as IRAM (+40KB); board has no accessible USB, do when removing for other reason |
-| `esp32-06_Garden_Gateway.yaml` | Low | Socket polling benefit |
+| `esp32-05_Shades_WinterGardenUpp.yaml` | Done (⚠️ bootloader old) | ePaper migrated to native `epaper_spi`. Bootloader too old for OTA rollback + SRAM1 IRAM — needs 1x USB flash; no accessible USB port, do when removing for other reason |
+| `esp32-06_Garden_Gateway.yaml` | Done (⚠️ bootloader old) | Flashed OTA 2026-05-09. Bootloader too old for OTA rollback + SRAM1 IRAM — needs 1x USB flash; no USB port on board, needs CP2102 adapter. Do when removing for other reason |
 | `esp32-35_Pump_Garage.yaml` | **Next: migrate display first** | Still uses `waveshare_epaper + pgolawsk/esphome@pr-6226-tweaks` — migrate to native `epaper_spi` (same as esp05) before flashing |
-| `esp32-36_Garage_Gate.yaml` | Low | Gate motor — verify relay behavior unchanged |
-| `esp32-39_Attic.yaml` | Low | Env only — low risk |
+| `esp32-36_Garage_Gate.yaml` | Low (⚠️ bootloader old) | Gate motor — verify relay behavior unchanged. Bootloader too old for OTA rollback + SRAM1 IRAM — needs 1x USB flash when removing for other reason |
+| `esp32-39_Attic.yaml` | Low (⚠️ bootloader old) | Env only — low risk. Bootloader too old for OTA rollback + SRAM1 IRAM — needs 1x USB flash when removing for other reason |
 
 ---
 
