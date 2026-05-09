@@ -175,10 +175,27 @@ Verify in the OTA log:
 - All FRAM partitions still report values (Pref Test Value, Raw Counter, KV
   Device Name etc.)
 
-Note: the *vanilla* `pr/nvm-base` does NOT install `PreferencesPartition` as
-`global_preferences`. So `restore_value: yes` globals go to NVS, partitions
-are accessed only via `id(pref_store)->...`. That's expected behavior on this
-branch.
+**Design note — `pr/nvm-base` does NOT replace `global_preferences`.**
+
+This is intentional and keeps the PR vanilla-compatible (no patches to core
+`esp32/preferences.h`). Consequences when testing against this branch:
+
+- `restore_value: yes` on globals/numbers/sensors continues to use **NVS
+  (flash)**. It is *not* automatically redirected to NVM/FRAM.
+- To persist arbitrary state in NVM/FRAM, user code accesses the partition
+  explicitly — typically from a lambda:
+  ```yaml
+  - lambda: |-
+      auto pref = id(pref_store)->make_preference<float>(0xCAFEBABE);
+      pref.save(&value);
+  ```
+- The "auto-install as `global_preferences`" behavior lives only on
+  `local/preferences-virtual` (it requires un-`final`-ing `ESP32Preferences`
+  + adding virtuals via the override headers).
+
+When testing `0_DEV/esp32c3_dev.yaml` on `pr/nvm-base`, expect FRAM partitions
+to report values only when accessed via `id(...)`, not via the global
+preferences pool.
 
 ### 3c. Land clean commits on `pr/nvm-base`
 
