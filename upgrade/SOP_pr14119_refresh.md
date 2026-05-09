@@ -159,6 +159,23 @@ new ESPHome versions:
   consistent (the PR uses `NvmPreferenceObject` standalone — no inheritance —
   so it's resilient)
 
+#### Pre-flight clang-tidy mental check
+
+Local `esphome compile` does NOT run clang-tidy — but the upstream PR's CI
+does, with `-warnings-as-errors`. Two recurring offenders bite every refresh
+that touches the headers:
+
+1. **`modernize-concat-nested-namespaces`** — every `.h`/`.cpp` must use
+   `namespace esphome::nvm { ... }` (flat C++17 form), NOT
+   `namespace esphome { namespace nvm { ... } }`. Closing comment is
+   `}  // namespace esphome::nvm`.
+2. **`bugprone-crtp-constructor-accessibility`** — any
+   `template<typename Derived> class Mixin { ... };` must have a non-public
+   default ctor + `friend Derived;`.
+
+Eyeball any `.h` you touched against these two before committing. See
+`memory/reference_esphome_pr_conventions.md` for the full rules and rationale.
+
 Flash + boot verify:
 ```bash
 ping -c 2 esp32-32.lan
@@ -174,6 +191,25 @@ Verify in the OTA log:
   after boot — confirms safe_mode boot counter still works
 - All FRAM partitions still report values (Pref Test Value, Raw Counter, KV
   Device Name etc.)
+
+#### Verification realities — what the logs actually show
+
+- **`esphome logs` over MQTT misses early boot.** It connects to a running
+  device, so it typically does NOT capture the `safe_mode:091` reset marker.
+  If you don't see it, that alone is not a failure — see other signals below.
+- **Boot Count / Test Value do NOT change on their own.** Those text_sensors
+  reflect partition contents and only update when the user **clicks the
+  test rig button** to write a new value. If a value is stable across boots,
+  that's correct (FRAM persistence). If a value matches the last manual click
+  before reboot, partition reads are working.
+- **Fastest signal: the on-board RGB LED.**
+  - 🟢 **green** = preferences came up on **FRAM** (NVM partition active)
+  - 🟠 **orange** = preferences came up on **NVS** (flash fallback)
+  Glance at the LED right after the device joins WiFi to know which backend
+  is active without parsing logs.
+- **Stability proof if you can't see safe_mode:091:** 60s+ of continuous
+  sensor updates over MQTT after flash, with no `Guru Meditation`/`panic`/
+  `abort` in the captured log window, is strong evidence of a clean boot.
 
 **Design note — `pr/nvm-base` does NOT replace `global_preferences`.**
 
@@ -235,6 +271,39 @@ Delete work branch:
 git branch -D wip/pr-refresh-<YYYY-MM-DD>
 ```
 
+#### PR title format — `Validate PR title` workflow
+
+Upstream CI enforces a strict bracket-tag prefix. If `Validate PR title`
+shows up red on the rollup, the title (not the diff) is the issue.
+
+- **Format:** `[component][component2] Brief description` — separate
+  brackets per component, **all** modified components must appear, order
+  is irrelevant. NO `feat:`/`fix:`/`prefix:` style.
+- **Title-only fixes do NOT need a push:**
+  ```bash
+  gh pr edit 14119 --title "[nvm][fram_i2c] Add NVM component with FRAM I2C platform" \
+    --repo esphome/esphome
+  ```
+  GitHub fires a `pull_request: edited` event and the title check re-runs in
+  ~10s.
+- The failure log explicitly prints `Suggested: [a][b] <description>` —
+  copy that bracket set verbatim if unsure.
+
+See `memory/reference_esphome_pr_conventions.md` for the full convention.
+
+### 3d. Don't intend to merge upstream? → Convert PR to Draft
+
+If the goal of this refresh round is just keeping CI green (not actually
+landing the PR), flip it to Draft so review is no longer required:
+
+```bash
+gh pr ready 14119 --undo --repo esphome/esphome
+```
+
+The PR stays open and CI keeps running on every push, but `mergeStateStatus`
+no longer blocks on codeowner approval. Reverse with `gh pr ready 14119`
+when you're ready to ask for review.
+
 ---
 
 ## Phase 4 — Refresh `local/preferences-virtual`
@@ -248,13 +317,44 @@ git checkout local/preferences-virtual
 git rebase pr/nvm-base
 ```
 
-Conflicts on rebase usually mean upstream ESPHome changed something in
-`nvm.h`/`nvm.cpp` that overlaps our NVS delegation patch. Resolve manually:
+Conflicts on rebase usually mean upstream ESPHome (or a fix landed on
+`pr/nvm-base`) changed something in `nvm.h`/`nvm.cpp` that overlaps our NVS
+delegation patch. Resolve manually:
 - `class PreferencesPartition : public NvmDataPartition, public Component, public ESPPreferences` (NOT `NvmPreferencesMixin`)
 - `nvs_preferences_{nullptr}` member preserved
 - In `setup()`: `this->nvs_preferences_ = global_preferences; global_preferences = this;`
 - In `make_preference(size_t, uint32_t)`: `if (type == safe_mode::RTC_KEY && this->nvs_preferences_ != nullptr) return this->nvs_preferences_->make_preference(length, type);`
 - `class NvmPreferenceBackend : public ESPPreferenceBackend` (with `override` on save/load)
+
+**Canonical conflict patterns seen in practice:**
+
+1. **Namespace declaration** (top of `nvm.h` / `nvm.cpp`):
+   ```
+   <<<<<<< HEAD              <- new pr/nvm-base
+   namespace esphome::nvm {
+   =======
+   namespace esphome {       <- old local commit, pre-modernization
+   namespace nvm {
+   >>>>>>> <local commit>
+   ```
+   → **Keep HEAD** (flat C++17 form). Same goes for the closing comment at
+   the bottom: `}  // namespace esphome::nvm`.
+
+2. **`NvmPreferenceObject` + `NvmPreferencesMixin` block** (around line 220 of
+   `nvm.h`): the standalone object/mixin classes only exist on the vanilla
+   `pr/nvm-base` design — `local/preferences-virtual` uses `ESPPreferences`
+   inheritance directly, so this entire block has no place on local.
+   → **Delete the HEAD block**, keep the local side (which is empty in that
+   location). After resolution, verify nothing in `nvm.cpp` still references
+   `NvmPreferenceObject` or `NvmPreferencesMixin` on local.
+
+3. **`nvm::RTC_KEY` constant**: removed on both branches as of 2026-05 (PR
+   #14121 merged → use `safe_mode::RTC_KEY`). Auto-merge handles this; if you
+   see a conflict here, both deletions should win.
+
+4. **`#include "esphome/components/safe_mode/safe_mode.h"` in `nvm.h`**: only
+   exists on local (needed for the delegation `if (type == safe_mode::RTC_KEY)`
+   check). Auto-merge usually keeps it; if conflicting, **keep the include**.
 
 Compile + flash test (same commands as Phase 3b):
 ```bash
@@ -264,13 +364,22 @@ ping -c 2 esp32-32.lan
 esphome ... run 0_DEV/esp32c3_dev.yaml --device esp32-32.lan
 ```
 
-Verify in the OTA log (in addition to Phase 3b checks):
-- `Pref: Boot Count` / `Pref: Test Value` come from FRAM (different from any
-  recent NVS-only run — proves NVS delegation is active)
+Verify in the OTA log (in addition to Phase 3b checks — same MQTT-misses-
+early-boot caveat applies):
+- **RGB LED 🟢 green** = preferences came up on FRAM. This is the primary
+  signal that the `local/preferences-virtual` delegation is active. If the
+  LED is 🟠 **orange**, the NVM partition failed to initialize and the device
+  fell back to NVS — investigate before declaring the rebase good.
+- `Pref: Boot Count` / `Pref: Test Value` reflect FRAM partition contents,
+  but only update when the user clicks the test rig button — they will not
+  change on their own. A stable post-reboot value matching the last manual
+  click before reboot proves partition reads work.
 - `[I][safe_mode:091]: Boot seems successful; resetting boot loop counter`
-  fires — proves `RTC_KEY` is delegated correctly to NVS (otherwise safe_mode
-  would be reading a FRAM value at pre-init when FRAM is not yet initialized,
-  leading to boot loop after 8 reboots)
+  proves `RTC_KEY` is delegated correctly to NVS (otherwise safe_mode would
+  be reading a FRAM value at pre-init when FRAM is not yet initialized,
+  leading to boot loop after 8 reboots). MQTT logs likely won't capture this
+  — the surrogate signal is "device is alive 60s+ after flash, RGB green,
+  no `Guru Meditation`/`panic`/`abort` in the captured log window".
 
 Push:
 ```bash
