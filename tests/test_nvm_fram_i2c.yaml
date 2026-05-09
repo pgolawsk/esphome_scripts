@@ -4,10 +4,13 @@
 # Pawelo, 20260307, removed safe_mode and commented my PR
 
 external_components:
-  - source: ../../esphome/esphome/components  # Adjust path to your local repo
+  - source: ../esphome-overrides/esphome/components  # local override of esp32/preferences.h
+    components: [esp32]
+    refresh: 0s
+  - source: ../../esphome/esphome/components  # local esphome clone (PR#14119 branch)
   # - source: github://pr#14119
-    components: [ nvm, fram_i2c]
-    refresh: 0s  # Always refresh from local source
+    components: [nvm, fram_i2c]
+    refresh: 0s
 
 nvm:
   - platform: fram_i2c

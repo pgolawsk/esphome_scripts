@@ -1,0 +1,7 @@
+# Symlinks point into machine-local .venv — do not commit them.
+# Only the patched preferences.h and the upstream snapshot for drift
+# detection are version-controlled.
+
+esphome/components/esp32/*
+!esphome/components/esp32/preferences.h
+.preferences.h.upstream
