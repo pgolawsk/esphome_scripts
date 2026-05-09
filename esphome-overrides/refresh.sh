@@ -18,7 +18,7 @@ set -euo pipefail
 HERE="$(cd "$(dirname "$0")" && pwd)"
 PIP_ESP32="${HERE}/../.venv/lib/python3.14/site-packages/esphome/components/esp32"
 OVERRIDE="${HERE}/esphome/components/esp32"
-KEEP_LOCAL=("preferences.h")
+KEEP_LOCAL=("preferences.h" "preference_backend.h")
 
 if [ ! -d "${PIP_ESP32}" ]; then
   echo "ERROR: pip esp32 not found at ${PIP_ESP32}" >&2
@@ -28,11 +28,19 @@ fi
 
 mkdir -p "${OVERRIDE}"
 
-# Remove stale symlinks that no longer exist upstream (cleanup)
+# Cleanup pass:
+#  - remove stale symlinks pointing to files that no longer exist upstream
+#  - remove symlinks for files that are now in KEEP_LOCAL (so the user
+#    can drop a real patched file in their place; only symlinks are
+#    removed, never real files)
 for existing in "${OVERRIDE}"/* "${OVERRIDE}"/.[!.]*; do
-  [ -e "${existing}" ] || continue
+  [ -e "${existing}" ] || [ -L "${existing}" ] || continue
   basename=$(basename "${existing}")
   if [[ " ${KEEP_LOCAL[*]} " =~ " ${basename} " ]]; then
+    if [ -L "${existing}" ]; then
+      echo "  - removing symlink for newly KEEP_LOCAL file: ${basename}"
+      rm "${existing}"
+    fi
     continue
   fi
   if [ -L "${existing}" ] && [ ! -e "${PIP_ESP32}/${basename}" ]; then
@@ -53,18 +61,20 @@ for src in "${PIP_ESP32}"/* "${PIP_ESP32}"/.[!.]*; do
   n_links=$((n_links + 1))
 done
 
-# Sanity: warn if upstream preferences.h drifted from cached snapshot
-SNAPSHOT="${HERE}/esphome/components/esp32/.preferences.h.upstream"
-if [ -f "${SNAPSHOT}" ]; then
-  if ! diff -q "${PIP_ESP32}/preferences.h" "${SNAPSHOT}" > /dev/null 2>&1; then
-    echo ""
-    echo "  ⚠  upstream preferences.h CHANGED since last refresh"
-    echo "     diff:"
-    diff -u "${SNAPSHOT}" "${PIP_ESP32}/preferences.h" | sed 's/^/       /'
-    echo "     → review and manually update ${OVERRIDE}/preferences.h if needed"
+# Sanity: warn if any upstream KEEP_LOCAL file drifted from cached snapshot
+for kept in "${KEEP_LOCAL[@]}"; do
+  SNAPSHOT="${OVERRIDE}/.${kept}.upstream"
+  if [ -f "${SNAPSHOT}" ]; then
+    if ! diff -q "${PIP_ESP32}/${kept}" "${SNAPSHOT}" > /dev/null 2>&1; then
+      echo ""
+      echo "  ⚠  upstream ${kept} CHANGED since last refresh"
+      echo "     diff:"
+      diff -u "${SNAPSHOT}" "${PIP_ESP32}/${kept}" | sed 's/^/       /'
+      echo "     → review and manually update ${OVERRIDE}/${kept} if needed"
+    fi
   fi
-fi
-cp "${PIP_ESP32}/preferences.h" "${SNAPSHOT}"
+  cp "${PIP_ESP32}/${kept}" "${SNAPSHOT}"
+done
 
 # Summary
 n_real=${#KEEP_LOCAL[@]}

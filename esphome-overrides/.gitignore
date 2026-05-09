@@ -1,7 +1,9 @@
 # Symlinks point into machine-local .venv — do not commit them.
-# Only the patched preferences.h and the upstream snapshot for drift
-# detection are version-controlled.
+# Only the patched header(s) under KEEP_LOCAL in refresh.sh are
+# version-controlled. The .upstream snapshot files are local-only
+# drift detectors created by refresh.sh.
 
 esphome/components/esp32/*
 !esphome/components/esp32/preferences.h
-.preferences.h.upstream
+!esphome/components/esp32/preference_backend.h
+esphome/components/esp32/.*.upstream
