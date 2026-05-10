@@ -1,10 +1,10 @@
 ---
-#* Base configuration for ESP8266 boards
-#! in case different setup needed please include components PRIOR the board itself
+# * Base configuration for ESP8266 boards
+# ! in case different setup needed please include components PRIOR the board itself
 
-#? Minimum soldering from https://sktechworks.ca/2017/03/28/esp-12f-and-breakout-board/
-#? PINOUT diagram: https://www.mischianti.org/2021/05/04/esp-12-high-resolution-pinout-and-specs/
-#? PINOUT diagram: https://randomnerdtutorials.com/esp8266-pinout-reference-gpios/
+# ? Minimum soldering from https://sktechworks.ca/2017/03/28/esp-12f-and-breakout-board/
+# ? PINOUT diagram: https://www.mischianti.org/2021/05/04/esp-12-high-resolution-pinout-and-specs/
+# ? PINOUT diagram: https://randomnerdtutorials.com/esp8266-pinout-reference-gpios/
 # NOTE: PIN 9 cannot be used at ALL
 # NOTE: PIN 10 can be used as GPIO for LED only or for SCL in I2C
 
@@ -18,11 +18,13 @@
 # Pawelo, 20250901, removed bme680 from external_components as PR was included in main branch of ESPHome since ver. 2025.8.0
 # Pawelo, 20250906, build_flags indented properly
 # Pawelo, 20251216, PR #9530 merged, removed local custom_components prometheus
+# FLUX, 20260510, Wired min_version: ${esphome_min_version} per BACKLOG item 9
 
 esphome:
   name: $devicename
   # friendly_name: $room
   # area: $room
+  min_version: ${esphome_min_version}
   comment: $room ESP${board_variant} controller with $devices
   project:
     name: $project_name
@@ -31,10 +33,10 @@ esphome:
   platformio_options:
     build_flags:
       # for details see https://docs.platformio.org/en/latest/platforms/espressif8266.html
-      - -DVTABLES_IN_FLASH # default PIO config value
+      - -DVTABLES_IN_FLASH  # default PIO config value
       # - -DPIO_FRAMEWORK_ARDUINO_MMU_CACHE16_IRAM48
       # - -DPIO_FRAMEWORK_ARDUINO_MMU_CACHE16_IRAM48_SECHEAP_SHARED
-      - -DPIO_FRAMEWORK_ARDUINO_MMU_CACHE16_IRAM32_SECHEAP_NOTSHARED # 16kB for cache, 32kB instructions, 16kB for heap/data
+      - -DPIO_FRAMEWORK_ARDUINO_MMU_CACHE16_IRAM32_SECHEAP_NOTSHARED  # 16kB for cache, 32kB instructions, 16kB for heap/data
   # includes:
   #   - ../src/esphome/components/prometheus/prometheus_handler.h
   #   - ../src/esphome/components/prometheus/prometheus_handler.cpp
@@ -50,12 +52,12 @@ esphome:
 #     refresh: 1h
 
 esp8266:
-  board: ${board} # like: esp12e, esp01_1m, full list here https://registry.platformio.org/platforms/platformio/espressif8266/boards
+  board: ${board}  # like: esp12e, esp01_1m, full list here https://registry.platformio.org/platforms/platformio/espressif8266/boards
   restore_from_flash: ${restore_from_flash}
   early_pin_init: false
   framework:
     # type: ${framework_type} # arduino only for ESP8266
-    version: recommended # like: dev, latest, recommended, 4.4, ...
+    version: recommended  # like: dev, latest, recommended, 4.4, ...
 
 preferences:
   flash_write_interval: ${flash_write_interval}
@@ -64,8 +66,8 @@ preferences:
 <<: !include api.yaml
 <<: !include ota.yaml
 <<: !include logger.yaml
-# <<: !include { file: web_server_basic.yaml, vars: { ota_enabled: false, web_server_version: 1 } } # ver 1 or 2 only
-<<: !include { file: web_server.yaml, vars: { ota_enabled: false, web_server_version: 3 } } # ver 3 only
+# <<: !include {file: web_server_basic.yaml, vars: {ota_enabled: false, web_server_version: 1}} # ver 1 or 2 only
+<<: !include {file: web_server.yaml, vars: {ota_enabled: false, web_server_version: 3}}  # ver 3 only
 <<: !include time_sntp.yaml
 <<: !include sun.yaml
 <<: !include prometheus.yaml

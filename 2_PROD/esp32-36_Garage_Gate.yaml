@@ -19,6 +19,7 @@
 # Pawelo, 20260228, replace door_cover.yaml by package set door_cover.yaml to avoid issues with !extend and optional endstops
 # Pawelo, 20260228, removed minimum_chip_revision variable as this is C3 - includes/board_esp32_variant.yaml
 # FLUX, 20260510, Lowercased sensor filename references for cross-platform portability (BACKLOG items 1-2)
+# FLUX, 20260510, Added esphome_min_version substitution per BACKLOG item 10
 
 # ! run with this command to override substitutions
 # esphome -s devicename espXX -s updates 1min -s room <Room name> -s mqtt_room <room> run esp32_MMmm_SSss__PP.yaml --device 192.168.x.x
@@ -28,6 +29,7 @@ substitutions:
   devices: "Temperature, Humidity, Pressure, Gas Resistance via BME680, Illuminance via BH1750 and Gate via GPIO"
   project_name: "pgolawsk.esp_home"
   version: "20260228"
+  esphome_min_version: 2025.8.0  # floor — bme680 in mainline since 2025.8.0; door cover package pattern stable since then
 
   # required by ../includes/board_esp32.yaml script
   framework_type: arduino  # "arduino" or "esp-idf"

@@ -1,11 +1,12 @@
 ---
-#* Base configuration for ESP-32 variants (C3, C6, S2, S3) board
-#! This is a variant of board_esp32.yaml WITHOUT minimum_chip_revision
-#! Use this for C3, C6, S2, S3 variants as they don't support minimum_chip_revision
+# * Base configuration for ESP-32 variants (C3, C6, S2, S3) board
+# ! This is a variant of board_esp32.yaml WITHOUT minimum_chip_revision
+# ! Use this for C3, C6, S2, S3 variants as they don't support minimum_chip_revision
 
 # Pawelo, 20260124, created as variant of board_esp32.yaml for C3/C6/S2/S3 without minimum_chip_revision
+# FLUX, 20260510, Wired min_version: ${esphome_min_version} per BACKLOG item 9
 
-#! those values are examples, not used in this file, need to be declared outside of this file
+# ! those values are examples, not used in this file, need to be declared outside of this file
 # substitutions:
 #   framework_type: esp-idf # "arduino" or "esp-idf"
 #   framework_version: recommended # or specific version like "latest", "recommended", "4.4.4"
@@ -18,6 +19,7 @@ esphome:
   name: $devicename
   friendly_name: $room
   area: $room
+  min_version: ${esphome_min_version}
   comment: $room ESP32${board_variant} with $devices
 #  platform: ESP8266   # OLD notation
   project:
@@ -32,15 +34,15 @@ esphome:
   #     - -DCONFIG_LWIP_MAX_SOCKETS=16
 
 esp32:
-  board: ${board} # like: esp32dev, esp32cam, esp32-c3-devkitm-1, esp32-c6-devkitm-1, esp32-s3-devkitc-1, esp32-s2-saola-1, full list here https://registry.platformio.org/platforms/platformio/espressif32/boards?version=5.3.0
-  flash_size: ${flash_size} # One of 2MB, 4MB, 8MB, 16MB or 32MB
+  board: ${board}  # like: esp32dev, esp32cam, esp32-c3-devkitm-1, esp32-c6-devkitm-1, esp32-s3-devkitc-1, esp32-s2-saola-1, full list here https://registry.platformio.org/platforms/platformio/espressif32/boards?version=5.3.0
+  flash_size: ${flash_size}  # One of 2MB, 4MB, 8MB, 16MB or 32MB
 #  restore_from_flash: true
   framework:
-    type: ${framework_type} # arduino or esp-idf
-    version: ${framework_version} # like: latest, recommended, 4.4, ...
+    type: ${framework_type}  # arduino or esp-idf
+    version: ${framework_version}  # like: latest, recommended, 4.4, ...
 
     # only for ESP-IDF
-    #warn: moved to sdkconfig.defaults file
+    # warn: moved to sdkconfig.defaults file
     # sdkconfig_options:
     #   # CONFIG_ESP32S3_DEFAULT_CPU_FREQ_240: "y"
     #   CONFIG_ESP32S3_DATA_CACHE_64KB: "y"
@@ -73,8 +75,8 @@ preferences:
 <<: !include api.yaml
 <<: !include ota.yaml
 <<: !include logger.yaml
-# <<: !include { file: web_server_basic.yaml, vars: { ota_enabled: false, web_server_version: 1 } } # ver 1 or 2 only
-<<: !include { file: web_server.yaml, vars: { ota_enabled: false, web_server_version: 3 } } # ver 3 only
+# <<: !include {file: web_server_basic.yaml, vars: {ota_enabled: false, web_server_version: 1}} # ver 1 or 2 only
+<<: !include {file: web_server.yaml, vars: {ota_enabled: false, web_server_version: 3}}  # ver 3 only
 <<: !include time_sntp.yaml
 <<: !include sun.yaml
 <<: !include prometheus.yaml

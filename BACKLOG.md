@@ -135,6 +135,7 @@ Scope walked: `2_PROD/*.yaml` (all 11), representative `0_DEV/*.yaml`, `includes
 **Suggested fix:** Add `min_version: ${esphome_min_version}` to the `esphome:` block of every board include file. Combined with item 10 (default value), this makes the pin uniform.
 **Effort:** S
 **Severity:** Important
+**Status:** ✅ done 2026-05-10
 
 ### 10. No central default for `esphome_min_version` substitution (CLIO minor 5)
 
@@ -148,6 +149,7 @@ Scope walked: `2_PROD/*.yaml` (all 11), representative `0_DEV/*.yaml`, `includes
 Recommend (a) for consistency with current style + add to upgrade SOP a check that the value matches the currently-installed version (`upgrade/COMPONENTS.md` already tracks this).
 **Effort:** M
 **Severity:** Notable
+**Status:** ✅ done 2026-05-10
 
 ### 11. `esphome_max_version` substitution declared but never enforced
 

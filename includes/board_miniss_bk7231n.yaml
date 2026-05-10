@@ -1,13 +1,15 @@
 ---
-#* Base configuration for BK7231N board Mini Smart Switch
+# * Base configuration for BK7231N board Mini Smart Switch
 # Pawelo 20230311, created as copy of board_esp32.yaml and https://www.elektroda.pl/rtvforum/topic3912748.html
 # Pawelo, 20241115, added area and friendly name
 # Pawelo, 20250413, added web_server_basic.yaml to avoid sorting groups (not supported in 2.x)
+# FLUX, 20260510, Wired min_version: ${esphome_min_version} per BACKLOG item 9
 
 esphome:
   name: $devicename
   friendly_name: $room
   area: $room
+  min_version: ${esphome_min_version}
   comment: $room BK7231N controller with $devices
 #  platform: ESP8266   # OLD notation
   project:
@@ -28,13 +30,13 @@ preferences:
 <<: !include api.yaml
 <<: !include ota.yaml
 <<: !include logger.yaml
-# <<: !include { file: web_server_basic.yaml, vars: { ota_enabled: false, web_server_version: 1 } } # ver 1 or 2 only
-<<: !include { file: web_server.yaml, vars: { ota_enabled: false, web_server_version: 3 } } # ver 3 only
+# <<: !include {file: web_server_basic.yaml, vars: {ota_enabled: false, web_server_version: 1}} # ver 1 or 2 only
+<<: !include {file: web_server.yaml, vars: {ota_enabled: false, web_server_version: 3}}  # ver 3 only
 <<: !include time_sntp.yaml
 <<: !include sun.yaml
 <<: !include prometheus.yaml
-#! as mqtt cannot be overwritten later in the code need to include in in each script (to facilitate "on_message" customization)
-#<<: !include mqtt.yaml
+# ! as mqtt cannot be overwritten later in the code need to include in in each script (to facilitate "on_message" customization)
+# <<: !include mqtt.yaml
 
 # packages:
 #   network: !include mqtt.yaml

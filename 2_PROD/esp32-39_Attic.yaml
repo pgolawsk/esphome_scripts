@@ -30,6 +30,7 @@
 # Pawelo, 20251231, set pressure_offset to 8.5 hPa to align with reference station
 # Pawelo, 20260124, added minimum_chip_revision variable to board_esp32.yaml to eliminate warnings
 # FLUX, 20260510, Lowercased sensor filename references for cross-platform portability (BACKLOG items 1-2)
+# FLUX, 20260510, Added esphome_min_version substitution per BACKLOG item 10
 
 # ! run with this command to override substitutions
 # esphome -s devicename espXX -s updates 1min -s room <Room name> -s mqtt_room <room> run esp32_MMmm_SSss__PP.yaml --device 192.168.x.x
@@ -39,6 +40,7 @@ substitutions:
   devices: "DEV Kit"
   project_name: "pgolawsk.esp_home"
   version: "20251231"
+  esphome_min_version: 2025.8.0  # floor — no specific component requires newer; DS18B20/BME280/BH1750/SHT30 stable since 2025.8.0
 
   # required by ../includes/board_esp32.yaml script
   # framework_type: arduino # "arduino" or "esp-idf"

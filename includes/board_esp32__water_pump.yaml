@@ -1,5 +1,5 @@
 ---
-#* Base configuration for ESP-32-WROOM board with water sensors and global variables
+# * Base configuration for ESP-32-WROOM board with water sensors and global variables
 # Pawelo 20230101, created as copy of board_esp12f.yaml
 # Pawelo 20230305, added time_sntp amd sun by default
 # Pawelo 20230305, forked as separate for water device
@@ -18,6 +18,7 @@
 # Pawelo, 20250906, moved sdkconfig options to sdkconfig.defaults file
 # Pawelo, 20250913, added reading water total values from HA at boot if available and if current total(s) is less than 1000L then add it to current total(s)
 # Pawelo, 20251023, moved reading water total values from HA to api on_client_connected event
+# FLUX, 20260510, Wired min_version: ${esphome_min_version} per BACKLOG item 9
 
 globals:
   - id: global_watertotal_all
@@ -49,6 +50,7 @@ esphome:
   name: $devicename
   friendly_name: $room
   area: $room
+  min_version: ${esphome_min_version}
   comment: $room ESP32 controller with $devices
 #  platform: ESP8266   # OLD notation
   project:
@@ -62,7 +64,7 @@ esphome:
   #     - -DCONFIG_LWIP_MAX_SOCKETS=16
 
   on_boot:
-    - priority: 600 # This is where most sensors are set up.
+    - priority: 600  # This is where most sensors are set up.
       then:
         # read totals from globals and push to sensors
         - pulse_meter.set_total_pulses:
@@ -81,19 +83,19 @@ esphome:
     #   then:
     #     - lambda: |-
     #         if (!isnan(id(ha_water_total_all).state)) {
-    #           if (id(water_total_all).state < 1000) { // sanity check - only update if total is less than 1000 liters
+    #           if (id(water_total_all).state < 1000) {// sanity check - only update if total is less than 1000 liters
     #             int new_total = (id(water_total_all).state * ${pulses_per_liter}) + (id(ha_water_total_all).state * ${pulses_per_liter});
     #             id(water_total_all).publish_state(new_total);
     #             ESP_LOGI("main", "on_boot: updated water_total_all from HA: %.2f L + current use: %.2f L", id(ha_water_total_all).state, id(water_total_all).state);
-    #           }
-    #         }
+    # }
+    # }
     #         if (!isnan(id(ha_water_total_garden).state)) {
-    #           if (id(water_total_garden).state < 1000) { // sanity check - only update if total is less than 1000 liters
+    #           if (id(water_total_garden).state < 1000) {// sanity check - only update if total is less than 1000 liters
     #             int new_total = (id(water_total_garden).state * ${pulses_per_liter_garden}) + (id(ha_water_total_garden).state * ${pulses_per_liter_garden});
     #             id(water_total_garden).publish_state(new_total);
     #             ESP_LOGI("main", "on_boot: updated water_total_garden from HA: %.2f L + current use: %.2f L", id(ha_water_total_garden).state, id(water_total_all).state);
-    #           }
-    #         }
+    # }
+    # }
     #     # - lambda: id(water_total_home).publish_state(id(global_watertotal_all) * ${pulses_per_liter}  - id(global_watertotal_garden) * ${pulses_per_liter_garden});
     #     # - lambda: id(water_used_home).publish_state((id(global_watertotal_all) * ${pulses_per_liter}  - id(global_watertotal_garden) * ${pulses_per_liter_garden})/1000);
   # on_shutdown:
@@ -107,13 +109,13 @@ esphome:
 
 esp32:
   # board: esp32dev
-  board: ${board} # like: esp32dev, esp32cam, esp32-c3-devkitm-1, esp32-c6-devkitm-1, esp32-s3-devkitc-1, esp32-s2-saola-1, full list here https://registry.platformio.org/platforms/platformio/espressif32/boards?version=5.3.0
-  flash_size: ${flash_size} # One of 2MB, 4MB, 8MB, 16MB or 32MB
+  board: ${board}  # like: esp32dev, esp32cam, esp32-c3-devkitm-1, esp32-c6-devkitm-1, esp32-s3-devkitc-1, esp32-s2-saola-1, full list here https://registry.platformio.org/platforms/platformio/espressif32/boards?version=5.3.0
+  flash_size: ${flash_size}  # One of 2MB, 4MB, 8MB, 16MB or 32MB
 #  restore_from_flash: true
   framework:
-    #! FRAM works with Arduino framework with no deprecation warnings, while ESP-IDF shows deprecation warning till 2026.3.0
-    type: ${framework_type} # arduino or esp-idf
-    version: ${framework_version} # like: latest, recommended, 4.4, ...
+    # ! FRAM works with Arduino framework with no deprecation warnings, while ESP-IDF shows deprecation warning till 2026.3.0
+    type: ${framework_type}  # arduino or esp-idf
+    version: ${framework_version}  # like: latest, recommended, 4.4, ...
 
     # # only for ESP-IDF
     # sdkconfig_options:
@@ -138,14 +140,14 @@ esp32:
 # preferences:
 #   flash_write_interval: 2min
 
-# <<: !include { file: wifi_extended.yaml, vars: { extended: "_N" } }
-# <<: !include { file: wifi_multi.yaml }
-<<: !include { file: wifi.yaml }
+# <<: !include {file: wifi_extended.yaml, vars: {extended: "_N"}}
+# <<: !include {file: wifi_multi.yaml}
+<<: !include {file: wifi.yaml}
 <<: !include api.yaml
 <<: !include ota.yaml
 <<: !include logger.yaml
-# <<: !include { file: web_server_basic.yaml, vars: { ota_enabled: false, web_server_version: 1 } } # ver 1 or 2 only
-<<: !include { file: web_server.yaml, vars: { ota_enabled: false, web_server_version: 3 } } # ver 3 only
+# <<: !include {file: web_server_basic.yaml, vars: {ota_enabled: false, web_server_version: 1}} # ver 1 or 2 only
+<<: !include {file: web_server.yaml, vars: {ota_enabled: false, web_server_version: 3}}  # ver 3 only
 <<: !include time_sntp_with_sun.yaml
 <<: !include sun.yaml
 <<: !include prometheus.yaml

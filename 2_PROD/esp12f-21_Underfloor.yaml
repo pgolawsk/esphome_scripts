@@ -35,6 +35,7 @@
 # Pawelo, 20251122, enabled Factory Reset button, to clean up NVS if needed
 # Pawelo, 20251122, enabled debug component and sensors, as prometheus /metrics endpoint is working fine now
 # FLUX, 20260510, Lowercased sensor filename references for cross-platform portability (BACKLOG items 1-2)
+# FLUX, 20260510, Added esphome_min_version substitution per BACKLOG item 10
 
 # ! run with this command to override substitutions
 # esphome -s devicename espXX -s updates 1min -s room <Room name> -s mqtt_room <room> run esp12f_SSss_MMmm__PP.yaml --device 192.168.x.x
@@ -43,6 +44,7 @@ substitutions:
   devices: "Temperatures via DS18B20, Temperature and Humidity via SHTx30"
   project_name: "pgolawsk.esp_home"
   version: "20251122"
+  esphome_min_version: 2025.8.0  # floor — no specific component requires newer; DS18B20/SHT30 stable since 2025.8.0
 
   # required by ../includes/board_esp8266.yaml script
   board_variant: "12F"  # determine variant like 12F, 07s, 01m, ...
