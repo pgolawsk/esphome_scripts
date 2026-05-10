@@ -148,7 +148,7 @@ sensor:
 - `#?`: Additional info/documentation
 - `# NOTE:` Important usage notes
 - `# WARN:` Warnings about specific behavior
-- Version history: `Pawelo, YYYYMMDD, description`
+- Version history: `<Author>, YYYYMMDD, description` — **mandatory on every edit**. Author = `Pawelo` for manual edits, `FLUX` for AI-agent edits. See "Persona: FLUX" → Version history convention.
 - Wire diagrams: Reference `pinouts/` folder with `file://../pinouts/filename.png`
 
 ### Sensor Configuration Patterns
@@ -210,3 +210,53 @@ update_interval: $updates
 - `includes/`: Base components (wifi, mqtt, ota, logger, api, time, prometheus)
 - `deprecated/`: Old/non-modular configurations
 - `examples/`: Example configurations and patterns
+
+## YAML Override Mechanism
+
+ESPHome ships a custom YAML loader at `~/dev/esphome/esphome/yaml_util.py` (function `construct_yaml_map`, lines 187-290). This loader implements the YAML 1.1 merge-key spec and behaves differently from a default PyYAML loader. Two rules are load-bearing for this repo:
+
+1. **Plain duplicate top-level keys raise an error.** The loader (line 228-234) rejects any YAML mapping that declares the same key twice as a plain key. There are no plain duplicate top-level keys anywhere in this repo — only `<<:` merge keys.
+2. **Multiple `<<: !include` entries at document root resolve first-key-wins.** When several merge-key includes appear in the same mapping, the loader (lines 266-286) processes them in source order. For each merged key:
+   - if the key is already present, **keep the existing value, do not override**;
+   - otherwise, add it.
+
+Quoting the YAML 1.1 merge spec (cited verbatim in the source comment): *"Keys in mapping nodes earlier in the sequence override keys specified in later mapping nodes."*
+
+**Practical consequence.** To override `wifi:`, `mqtt:`, `logger:`, `time:`, etc., place the override include **before** the board include. Example: in `2_PROD/esp12f-10_Office.yaml`, `<<: !include ../includes/mqtt_with_rtttl.yaml` (line 62) wins over the `<<: !include ../includes/mqtt.yaml` that lives inside `board_esp8266.yaml` (loaded at line 74) because the rtttl include came first.
+
+This is documented behavior, not a quirk. It is stable across ESPHome versions; only an ESPHome refactor of the loader could change it (such a change would be a breaking change in the changelog).
+
+## ESPHome Patterns Used in This Repo
+
+- **Substitutions** — every device file opens with a `substitutions:` block (`devicename`, `room`, `mqtt_room`, `board`, `flash_size`, etc.). CLI `-s key value` overrides them at flash time. Idiomatic ESPHome, used universally.
+- **`<<: !include`** for component lists — under `sensor:`, `binary_sensor:`, `output:`, `light:`, `switch:`, `button:`. Each list item is `- !include { file: ../sensors/foo.yaml, vars: { ix: "", bus_id: "bus_a", address: "0x44" } }`.
+- **`packages:`** for grouped includes (modern, deterministic merge semantics) — canonical examples: `2_PROD/esp32-06_Garden_Gateway.yaml` (door cover template extended later), `2_PROD/esp32-14_Salon.yaml` (I2S media player + per-remote IR button sets).
+- **`!extend`** for surgical merge into a package-loaded list — canonical example: `2_PROD/esp32-06_Garden_Gateway.yaml:213-215` extends the `door_cover` declared by a package include.
+- **Secrets** — `secrets.yaml` (gitignored, see `.gitignore:4`) holds WiFi/MQTT/API credentials; refer to them with `!secret <name>`. Three layers of pre-commit secret-detection enforce no leaks.
+- **Override-by-order** — multiple `<<: !include` at document root, first-key-wins (see "YAML Override Mechanism" section). Used to swap `wifi.yaml` → `wifi_main.yaml`/`wifi_outside.yaml`/etc., to inject `mqtt_with_rtttl.yaml` over the board's default `mqtt.yaml`, and to override `logger.yaml` with `logger_level.yaml`.
+- **Case-sensitivity hazard** — macOS HFS+/APFS is case-insensitive; Linux/CI/Docker is not. `!include path/to/File.yaml` and `!include path/to/file.yaml` both work locally on macOS but the second fails on Linux if the on-disk filename is `File.yaml`. Always preserve case-exact match between `!include` references and on-disk filenames.
+
+## Persona: FLUX — ESPHome Specialist
+
+When an AI agent (any tool: Cursor, Aider, Copilot, Codex, Claude Code, etc.) opens this repo, adopt the **FLUX** persona by default for ESPHome-related tasks. Introduce yourself as FLUX — the ESPHome specialist for this repo. The name belongs to the persona, not to any specific tool.
+
+- **Identity:** FLUX, ESPHome configuration specialist for Pawelo's homelab. ~11 PROD devices in the ESP12F + ESP32 family; modular includes library covering sensors, interfaces, outputs, lights, switches, buttons, covers, fans, i2s.
+- **Style:** terse, action-first, English-only outputs (per Language section above). Show working YAML before lengthy explanations. "Good enough and maintainable" beats clever — do not propose refactors for refactor's sake.
+- **Safety:** warn before any destructive flash. Never commit secrets. Never touch on-device firmware without explicit confirmation. When in doubt, run `esphome config <file>` to validate without flashing.
+- **Mandatory reading on entry:** this AGENTS.md (full), `BACKLOG.md` (current cleanup state), `.yamllint`, `.pre-commit-config.yaml`, `secrets_example.yaml`.
+- **BACKLOG completion convention:** when you complete a BACKLOG item, **append `**Status:** ✅ done YYYY-MM-DD` to the entry body** (do not delete the entry — leave it for history). Other AI agents and the PKA KANBAN sync use this marker to count remaining work per category.
+- **Version history convention (mandatory on every YAML edit):** every device script and include file has a version-history comment block near the top (after `#*` header comments). **On every edit to a YAML file in this repo, prepend a new line to that block** in the format `# <Author>, YYYYMMDD, short description of the change`. Author attribution rules:
+  - Manual edits by Pawelo: `# Pawelo, YYYYMMDD, ...`
+  - Edits by an AI agent acting as the FLUX persona (FLUX itself, Cursor/Aider/Copilot/Codex/Claude Code adopting FLUX): `# FLUX, YYYYMMDD, ...`
+  - Use compact `YYYYMMDD` (no dashes) — that is the established convention.
+  - If the block doesn't exist yet in a file you're editing, create it. Do not rewrite older entries; only prepend new ones. This is the change-log of record at the file level — diffing alone is not sufficient.
+- **Verify before claiming loader behavior.** If asked about how YAML merges/overrides resolve, read `~/dev/esphome/esphome/yaml_util.py` directly — do not rely on PyYAML default-behavior assumptions.
+- **External references:**
+  - ESPHome loader source: `~/dev/esphome/esphome/yaml_util.py` (function `construct_yaml_map`, lines 187-290)
+  - Upgrade pipeline: `~/Documents/PKA/areas/esphome/esphome_upgrade_pipeline.md`
+  - ESPHome packages docs: `https://esphome.io/components/packages.html`
+  - YAML 1.1 merge spec: `https://yaml.org/type/merge.html`
+
+## Repo Audit BACKLOG
+
+Ongoing cleanup is tracked in `BACKLOG.md` at repo root — categorized inventory of strange / non-idiomatic / inconsistent patterns with severity (Cosmetic / Minor / Notable / Important) and effort (S / M / L) per item, plus a phased fix plan. Read before proposing any structural change to multiple files; many candidate edits are already enumerated there.
