@@ -39,3 +39,7 @@ __pycache__
 *.log
 
 .memsearch/*
+
+# Claude Code runtime state (per-session/per-machine)
+.claude/scheduled_tasks.lock
+.claude/settings.local.json
