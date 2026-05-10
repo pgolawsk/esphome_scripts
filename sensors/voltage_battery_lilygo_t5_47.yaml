@@ -1,5 +1,5 @@
 ---
-#* Battery Voltage sensor on LilyGo T5 screen
+# * Battery Voltage sensor on LilyGo T5 screen
 # Pawelo, 20230314, created based on https://github.com/esphome/feature-requests/issues/1109#issuecomment-1408376503
 # Pawelo, 20230330, fixed related sensors not refreshing at the same time by adding lambda
 

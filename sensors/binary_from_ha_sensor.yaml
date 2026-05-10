@@ -1,5 +1,5 @@
 ---
-#* Binary sensor received from Home Assistant
+# * Binary sensor received from Home Assistant
 # Pawelo, 20250330, created based on https://esphome.io/components/binary_sensor/homeassistant
 
 platform: homeassistant

@@ -1,5 +1,5 @@
 ---
-#* HomeAssistant Connected status sensor
+# * HomeAssistant Connected status sensor
 # Pawelo, 20230923, created based on https://github.com/ageurtse/ESP-Home-SO-counter-with-persistant-memory-module/blob/main/102-fram.yaml
 # Pawelo, 20231020, fix for state_topic - removed $ at the end
 

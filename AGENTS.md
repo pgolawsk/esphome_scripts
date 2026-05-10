@@ -250,12 +250,12 @@ These conventions apply to every edit in this repo regardless of which agent or 
 
 ### Version-history convention (mandatory on every YAML edit)
 
-Every device script and include file has a version-history comment block near the top (after `#*` header comments). **On every edit to a YAML file in this repo, prepend a new line to that block** in the format `# <Author>, YYYYMMDD, short description of the change`. Author attribution rules:
+Every device script and include file has a version-history comment block near the top (after `#*` header comments). **On every edit to a YAML file in this repo, append a new line at the END of that block** (after the last existing entry) in the format `# <Author>, YYYYMMDD, short description of the change`. The block grows top→bottom chronologically: oldest entries at the top, newest at the bottom. Author attribution rules:
 
 - Manual edits by Pawelo: `# Pawelo, YYYYMMDD, ...`
 - Edits by an AI agent acting as the FLUX persona (FLUX itself, Cursor/Aider/Copilot/Codex/Claude Code adopting FLUX): `# FLUX, YYYYMMDD, ...`
 - Use compact `YYYYMMDD` (no dashes) — that is the established convention.
-- If the block doesn't exist yet in a file you're editing, create it. Do not rewrite older entries; only prepend new ones. This is the change-log of record at the file level — diffing alone is not sufficient.
+- If the block doesn't exist yet in a file you're editing, create it. Do not rewrite older entries; only append new ones at the bottom. This is the change-log of record at the file level — diffing alone is not sufficient.
 
 ### BACKLOG completion convention
 

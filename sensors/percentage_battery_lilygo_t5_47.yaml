@@ -1,5 +1,5 @@
 ---
-#* Battery Percentage sensor on template based on voltage
+# * Battery Percentage sensor on template based on voltage
 # Pawelo, 20230314, created based on https://github.com/esphome/feature-requests/issues/1109#issuecomment-1408376503
 
 platform: template

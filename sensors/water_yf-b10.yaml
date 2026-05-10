@@ -1,7 +1,7 @@
 ---
-#* Water usage sensors using YF-B10 valve configuration
-#? DONE: calibrate sensor on water, based on https://community.home-assistant.io/t/using-esphome-to-build-a-water-flow-rate-meter/119380/75
-#? DONE: CALIBRATION DONE: Looks like sensor measures  flow of 1.3L/min at minimum, so very slow move is not detected
+# * Water usage sensors using YF-B10 valve configuration
+# ? DONE: calibrate sensor on water, based on https://community.home-assistant.io/t/using-esphome-to-build-a-water-flow-rate-meter/119380/75
+# ? DONE: CALIBRATION DONE: Looks like sensor measures  flow of 1.3L/min at minimum, so very slow move is not detected
 # Pawelo, 20230111, created based on https://www.pieterbrinkman.com/2022/02/02/build-a-cheap-water-usage-sensor-using-esphome-home-assistant-and-a-proximity-sensor/
 # Pawelo, 20230121, final configuration with real sensor
 # Pawelo, 20231008, added to preserve total in global variable
@@ -29,8 +29,8 @@ on_value:
       payload: !lambda |-
         return to_string(x);
 filters:
-  - throttle_average: 5s # average over 5 seconds
-  - filter_out: nan # filter out NaN values if no flow is detected
+  - throttle_average: 5s  # average over 5 seconds
+  - filter_out: nan  # filter out NaN values if no flow is detected
   - lambda: return x / ${pulses_per_liter};
   - clamp:
       min_value: -0.05
@@ -47,7 +47,7 @@ total:
   state_class: total_increasing
   state_topic: $devicename/water_total${ix}
   filters:
-    - lambda: if (isnan(x)) { return 0; } return x / ${pulses_per_liter};
+    - lambda: if (isnan(x)) {return 0;} return x / ${pulses_per_liter};
 #        - multiply: 0.001
     - delta: ${water_flow_min_delta}
   on_value:

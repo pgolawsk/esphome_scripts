@@ -1,7 +1,7 @@
 ---
-#* ESP32 - Attic device script
-#* Please read README.md for details
-#* For pinout see: file://..//pinouts/ESP32_WROOM_32_pinout.jpg
+# * ESP32 - Attic device script
+# * Please read README.md for details
+# * For pinout see: file://..//pinouts/ESP32_WROOM_32_pinout.jpg
 ###
 # Pawelo 20230101, 1.1.5, created based on esp12f_.yaml
 # Pawelo 20230923, 1.1.5, added HA Connected binary sensor
@@ -29,8 +29,9 @@
 # Pawelo, 20251019, switched to ESP-IDF to see if http err 23 is addressed
 # Pawelo, 20251231, set pressure_offset to 8.5 hPa to align with reference station
 # Pawelo, 20260124, added minimum_chip_revision variable to board_esp32.yaml to eliminate warnings
+# FLUX, 20260510, Lowercased sensor filename references for cross-platform portability (BACKLOG items 1-2)
 
-#! run with this command to override substitutions
+# ! run with this command to override substitutions
 # esphome -s devicename espXX -s updates 1min -s room <Room name> -s mqtt_room <room> run esp32_MMmm_SSss__PP.yaml --device 192.168.x.x
 # here are default values if those are not given via command line
 substitutions:
@@ -41,18 +42,18 @@ substitutions:
 
   # required by ../includes/board_esp32.yaml script
   # framework_type: arduino # "arduino" or "esp-idf"
-  framework_type: esp-idf # "arduino" or "esp-idf"
-  framework_version: recommended # or specific version like "latest", "recommended", "4.4.4"
+  framework_type: esp-idf  # "arduino" or "esp-idf"
+  framework_version: recommended  # or specific version like "latest", "recommended", "4.4.4"
   # framework_version: latest # or specific version like "latest", "recommended", "4.4.4"
-  board_variant: "" # empty for ESP32, other values to display like c3, c6, s2, s3
-  board: "esp32dev" # like: esp32dev, esp32cam, esp32-c3-devkitm-1, esp32-s3-devkitc-1, esp32-s2-saola-1, full list here https://registry.platformio.org/platforms/platformio/espressif32/boards?version=5.3.0
-  flash_size: 4MB # One of 2MB, 4MB, 8MB, 16MB or 32MB
+  board_variant: ""  # empty for ESP32, other values to display like c3, c6, s2, s3
+  board: "esp32dev"  # like: esp32dev, esp32cam, esp32-c3-devkitm-1, esp32-s3-devkitc-1, esp32-s2-saola-1, full list here https://registry.platformio.org/platforms/platformio/espressif32/boards?version=5.3.0
+  flash_size: 4MB  # One of 2MB, 4MB, 8MB, 16MB or 32MB
   flash_write_interval: "5min"
   minimum_chip_revision: "1.0"
 
   devicename: esp32-xx
   updates: "30s"
-  room: Room # friendly name of room to display in HA/Web
+  room: Room  # friendly name of room to display in HA/Web
   # this is ADDITIONAL topic and sub-topic for MQTT - it publishes under <topic>/<sub-topic>/<sensor>
   # by default it's also published under <devicename>/<id_sensor>
   mqtt_location: home
@@ -66,35 +67,35 @@ substitutions:
   accuracy_decimals: "2"
 
 # Override some settings included below in _board_ setup
-<<: !include ../includes/time_sntp_with_sun.yaml #WARN: this is to make sunrise and sunset sensor to be updated on every time sync event
+<<: !include ../includes/time_sntp_with_sun.yaml  # WARN: this is to make sunrise and sunset sensor to be updated on every time sync event
 # <<: !include ../includes/mqtt_with_rtttl.yaml #WARN: override mqtt with RTTTL support if needed (buzzer and status led)
-# <<: !include { file: ../includes/logger_level.yaml, vars: { level: DEBUG, baud_rate: 115200 } } #WARN: override default log level to specific one
-# <<: !include { file: ../includes/logger_level.yaml, vars: { level: VERY_VERBOSE, baud_rate: 115200 } } #WARN: override default log level to specific one
+# <<: !include {file: ../includes/logger_level.yaml, vars: {level: DEBUG, baud_rate: 115200}} #WARN: override default log level to specific one
+# <<: !include {file: ../includes/logger_level.yaml, vars: {level: VERY_VERBOSE, baud_rate: 115200}} #WARN: override default log level to specific one
 # <<: !include ../includes/wifi_outside.yaml #WARN: override wifi to connect to outside network instead of default
-# <<: !include { file: ../includes/wifi_main.yaml, vars: { } } #WARN: override wifi to connect to extended network instead of default
-# <<: !include { file: ../includes/wifi_extended.yaml, vars: { } } #WARN: override wifi to connect to extended network instead of default
-# <<: !include { file: ../includes/wifi_extended2.yaml, vars: { } } #WARN: override wifi to connect to extended network instead of default
+# <<: !include {file: ../includes/wifi_main.yaml, vars: {}} #WARN: override wifi to connect to extended network instead of default
+# <<: !include {file: ../includes/wifi_extended.yaml, vars: {}} #WARN: override wifi to connect to extended network instead of default
+# <<: !include {file: ../includes/wifi_extended2.yaml, vars: {}} #WARN: override wifi to connect to extended network instead of default
 # <<: !include ../includes/api_services.yaml #WARN: this is to expose services like scan_wifi (results in scan_results sensor)
 
 # Include basics of a board
-# <<: !include { file: ../includes/board_esp32.yaml, vars: { board_variant: "${board_variant}", board: "${board}", flash_size: "${flash_size}", flash_write_interval: "${flash_write_interval}" } }
-<<: !include { file: ../includes/board_esp32.yaml, vars: {} }
-# <<: !include { file: ../includes/board_esp32__esp-idf.yaml, vars: {} }
-# <<: !include { file: ../includes/psram.yaml, vars: { mode: "quad" } } # "quad' for 2MB, "octal" for 4-8MB PSRAM
+# <<: !include {file: ../includes/board_esp32.yaml, vars: {board_variant: "${board_variant}", board: "${board}", flash_size: "${flash_size}", flash_write_interval: "${flash_write_interval}"}}
+<<: !include {file: ../includes/board_esp32.yaml, vars: {}}
+# <<: !include {file: ../includes/board_esp32__esp-idf.yaml, vars: {}}
+# <<: !include {file: ../includes/psram.yaml, vars: {mode: "quad"}} # "quad' for 2MB, "octal" for 4-8MB PSRAM
 
 # Include interfaces needed
-<<: !include { file: ../interfaces/debug.yaml, vars: { update_interval: "5s" } }
-<<: !include { file: ../interfaces/i2c.yaml, vars: { bus_id: "bus_a", sda: "GPIO21", scl: "GPIO22" } }
+<<: !include {file: ../interfaces/debug.yaml, vars: {update_interval: "5s"}}
+<<: !include {file: ../interfaces/i2c.yaml, vars: {bus_id: "bus_a", sda: "GPIO21", scl: "GPIO22"}}
 # note: when more i2c interfaces are needed then need to include those separately
 # i2c:
-#   - !include { file: ../interfaces/i2c__include.yaml, vars: { bus_id: "bus_a", sda: "GPIO21", scl: "GPIO22" } }
-#   - !include { file: ../interfaces/i2c__include.yaml, vars: { bus_id: "bus_b", sda: "GPIO17", scl: "GPIO18" } }
-<<: !include { file: ../interfaces/one_wire.yaml, vars: { wire_id: "ow_a", gpio: "GPIO19" } }
+#   - !include {file: ../interfaces/i2c__include.yaml, vars: {bus_id: "bus_a", sda: "GPIO21", scl: "GPIO22"}}
+#   - !include {file: ../interfaces/i2c__include.yaml, vars: {bus_id: "bus_b", sda: "GPIO17", scl: "GPIO18"}}
+<<: !include {file: ../interfaces/one_wire.yaml, vars: {wire_id: "ow_a", gpio: "GPIO19"}}
 # OR
-#<<: !include { file: ../interfaces/dallasng.yaml, vars: { gpio: "GPIO19" } }
-# <<: !include { file: ../interfaces/rtttl.yaml, vars: { ix: "" } }
-# <<: !include { file: ../interfaces/spi.yaml, vars: { spi_id: "spi_a", clk: "GPIO18", mosi: "GPIO23", miso: "GPIO19" } }
-# <<: !include { file: ../interfaces/spi_rc522.yaml, vars: { spi_id: "spi_a", cs: "GPIO5", reset: "GPIO21" } }
+# <<: !include {file: ../interfaces/dallasng.yaml, vars: {gpio: "GPIO19"}}
+# <<: !include {file: ../interfaces/rtttl.yaml, vars: {ix: ""}}
+# <<: !include {file: ../interfaces/spi.yaml, vars: {spi_id: "spi_a", clk: "GPIO18", mosi: "GPIO23", miso: "GPIO19"}}
+# <<: !include {file: ../interfaces/spi_rc522.yaml, vars: {spi_id: "spi_a", cs: "GPIO5", reset: "GPIO21"}}
 
 text_sensor:
   - !include ../sensors/text_uptime.yaml
@@ -112,7 +113,7 @@ text_sensor:
   - !include ../sensors/text_sun_direction.yaml
 
   # Air Quality sensor
-  # - !include { file: ../sensors/text_air_quality.yaml }
+  # - !include {file: ../sensors/text_air_quality.yaml}
 
 # RFID tags
 #  - !include ../sensors/text_last_tag.yaml
@@ -122,10 +123,10 @@ binary_sensor:
   - !include ../sensors/binary_ha_connected.yaml
 
   # RFID tags
-  # - !include { file: ../sensors/binary_tag.yaml, vars: { ix: "1", uid: !secret rfid_tag_1_uid, name: !secret rfid_tag_1_name } }
-  # - !include { file: ../sensors/binary_tag.yaml, vars: { ix: "2", uid: !secret rfid_tag_2_uid, name: !secret rfid_tag_2_name } }
-  # - !include { file: ../sensors/binary_tag.yaml, vars: { ix: "3", uid: !secret rfid_tag_3_uid, name: !secret rfid_tag_3_name } }
-  # - !include { file: ../sensors/binary_tag.yaml, vars: { ix: "4", uid: !secret rfid_tag_4_uid, name: !secret rfid_tag_4_name } }
+  # - !include {file: ../sensors/binary_tag.yaml, vars: {ix: "1", uid: !secret rfid_tag_1_uid, name: !secret rfid_tag_1_name}}
+  # - !include {file: ../sensors/binary_tag.yaml, vars: {ix: "2", uid: !secret rfid_tag_2_uid, name: !secret rfid_tag_2_name}}
+  # - !include {file: ../sensors/binary_tag.yaml, vars: {ix: "3", uid: !secret rfid_tag_3_uid, name: !secret rfid_tag_3_name}}
+  # - !include {file: ../sensors/binary_tag.yaml, vars: {ix: "4", uid: !secret rfid_tag_4_uid, name: !secret rfid_tag_4_name}}
 
 sensor:
   - !include ../sensors/temp_internal.yaml
@@ -143,48 +144,48 @@ sensor:
   - !include ../sensors/sun_azimuth.yaml
 
   # Temperature Dallas sensor
-  - !include { file: ../sensors/temp_DS18B20.yaml, vars: { ix: "Solar", wire_id: "ow_a", address: "0x515b56c21e64ff28", min_temp: -15, max_temp: 85 } }
+  - !include {file: ../sensors/temp_ds18b20.yaml, vars: {ix: "Solar", wire_id: "ow_a", address: "0x515b56c21e64ff28", min_temp: -15, max_temp: 85}}
   # OR
-  #- !include { file: ../sensors/temp_DS18B20_on_dallasng.yaml, vars: { ix: "Solar", address: "0x515b56c21e64ff28", min_temp: -15, max_temp: 85 } }
+  # - !include {file: ../sensors/temp_ds18b20_on_dallasng.yaml, vars: {ix: "Solar", address: "0x515b56c21e64ff28", min_temp: -15, max_temp: 85}}
 
   # Temperature and Humidity sensor
-  - !include { file: ../sensors/temp_hum_SHT3x.yaml, vars: { ix: "", bus_id: "bus_a", address: "0x44" } }
-  # - !include { file: ../sensors/temp_hum_SHT4x.yaml, vars: { ix: "2", bus_id: "bus_b", address: "0x44", room: "${room2}", mqtt_location: "${mqtt_location2}", mqtt_room: "${mqtt_room2}" } }
-  # - !include { file: ../sensors/temp_hum_AHT2x.yaml, vars: { ix: "", bus_id: "bus_a", address: "0x38", temp_offset: 0.0, hum_offset: 0.0 } }
+  - !include {file: ../sensors/temp_hum_sht3x.yaml, vars: {ix: "", bus_id: "bus_a", address: "0x44"}}
+  # - !include {file: ../sensors/temp_hum_sht4x.yaml, vars: {ix: "2", bus_id: "bus_b", address: "0x44", room: "${room2}", mqtt_location: "${mqtt_location2}", mqtt_room: "${mqtt_room2}"}}
+  # - !include {file: ../sensors/temp_hum_aht2x.yaml, vars: {ix: "", bus_id: "bus_a", address: "0x38", temp_offset: 0.0, hum_offset: 0.0}}
 
   # Temperature, Humidity and Pressure sensor
-  - !include { file: ../sensors/temp_hum_press_BME280.yaml, vars: { ix: "Box", bus_id: "bus_a", address: "0x76", temp_offset: 0.0, hum_offset: 0.0, pressure_offset: 8.5 } }
+  - !include {file: ../sensors/temp_hum_press_bme280.yaml, vars: {ix: "Box", bus_id: "bus_a", address: "0x76", temp_offset: 0.0, hum_offset: 0.0, pressure_offset: 8.5}}
 
   # Temperature, Humidity, Pressure and Gas Resistance sensor
-  # - !include { file: ../sensors/temp_hum_press_gas_BME680.yaml, vars: { ix: "", bus_id: "bus_a", address: "0x77", temp_offset: 0.0, hum_offset: 0.0, pressure_offset: 0.0 } }
+  # - !include {file: ../sensors/temp_hum_press_gas_bme680.yaml, vars: {ix: "", bus_id: "bus_a", address: "0x77", temp_offset: 0.0, hum_offset: 0.0, pressure_offset: 0.0}}
 
   # CO2, Temperature and Humidity sensor
-  # - !include { file: ../sensors/temp_hum_co2_SCD40.yaml, vars: { ix: "2", bus_id: "bus_a", address: "0x62", temp_offset: 0.0, hum_offset: 0.0 } }
+  # - !include {file: ../sensors/temp_hum_co2_scd40.yaml, vars: {ix: "2", bus_id: "bus_a", address: "0x62", temp_offset: 0.0, hum_offset: 0.0}}
 
   # Illuminance sensor
-  - !include { file: ../sensors/lux_BH1750.yaml, vars: { ix: "", bus_id: "bus_a", address: "0x23" } }
-  # - !include { file: ../sensors/lux_color_TCS3472.yaml, vars: { ix: "2", bus_id: "bus_a", address: "0x29" } }
-  # - !include { file: ../sensors/lux_uv_ltr390.yaml, vars: { ix: "", bus_id: "bus_a", address: "0x53" } }
+  - !include {file: ../sensors/lux_bh1750.yaml, vars: {ix: "", bus_id: "bus_a", address: "0x23"}}
+  # - !include {file: ../sensors/lux_color_tcs3472.yaml, vars: {ix: "2", bus_id: "bus_a", address: "0x29"}}
+  # - !include {file: ../sensors/lux_uv_ltr390.yaml, vars: {ix: "", bus_id: "bus_a", address: "0x53"}}
 
   # TVOC and eCO2 sensor
-  # - !include { file: ../sensors/tvoc_eco2_SGP30.yaml, vars: { ix: "", bus_id: "bus_a", address: "0x58" } }
-  # - !include { file: ../sensors/tvoc_eco2_ENS160.yaml, vars: { ix: "", bus_id: "bus_a", address: "0x53" } }
+  # - !include {file: ../sensors/tvoc_eco2_sgp30.yaml, vars: {ix: "", bus_id: "bus_a", address: "0x58"}}
+  # - !include {file: ../sensors/tvoc_eco2_ens160.yaml, vars: {ix: "", bus_id: "bus_a", address: "0x53"}}
 
   # Distance sensor
-  # - !include { file: ../sensors/distance_hc-sr04.yaml, vars: { ix: "", room: "Pellet", trigger_pin: "GPIO18", echo_pin: "GPIO17", updates: "5s" } }
-  # - !include { file: ../sensors/distance_vl53L0x.yaml, vars: { ix: "", room: "Pellet", bus_id: "bus_a", address: "0x29", updates: "5s", offset_filter: -0.05 } }
-  # - !include { file: ../sensors/percentage_distance.yaml, vars: { ix: "", thing: "Pellet", full_distance: "0.1", empty_distance: "0.6", updates: "5s" } }
+  # - !include {file: ../sensors/distance_hc-sr04.yaml, vars: {ix: "", room: "Pellet", trigger_pin: "GPIO18", echo_pin: "GPIO17", updates: "5s"}}
+  # - !include {file: ../sensors/distance_vl53l0x.yaml, vars: {ix: "", room: "Pellet", bus_id: "bus_a", address: "0x29", updates: "5s", offset_filter: -0.05}}
+  # - !include {file: ../sensors/percentage_distance.yaml, vars: {ix: "", thing: "Pellet", full_distance: "0.1", empty_distance: "0.6", updates: "5s"}}
 
   # DC Current, Power, Voltage
-  # - !include { file: ../sensors/current_power_voltage_INA226.yaml, vars: { ix: "", bus_id: "bus_a", address: "0x40", max_current: "1.2A" } }
-  # - !include { file: ../sensors/current_power_voltage_INA3221.yaml, vars: { ix: "", bus_id: "bus_a", address: "0x40" } }
+  # - !include {file: ../sensors/current_power_voltage_ina226.yaml, vars: {ix: "", bus_id: "bus_a", address: "0x40", max_current: "1.2A"}}
+  # - !include {file: ../sensors/current_power_voltage_ina3221.yaml, vars: {ix: "", bus_id: "bus_a", address: "0x40"}}
 
   # Color and Proximity
-  # - !include { file: ../sensors/color_proximity_apds9960.yaml, vars: { type: "CLEAR" } }
-  # - !include { file: ../sensors/color_proximity_apds9960.yaml, vars: { type: "RED" } }
-  # - !include { file: ../sensors/color_proximity_apds9960.yaml, vars: { type: "GREEN" } }
-  # - !include { file: ../sensors/color_proximity_apds9960.yaml, vars: { type: "BLUE" } }
-  # - !include { file: ../sensors/color_proximity_apds9960.yaml, vars: { type: "PROXIMITY" } }
+  # - !include {file: ../sensors/color_proximity_apds9960.yaml, vars: {type: "CLEAR"}}
+  # - !include {file: ../sensors/color_proximity_apds9960.yaml, vars: {type: "RED"}}
+  # - !include {file: ../sensors/color_proximity_apds9960.yaml, vars: {type: "GREEN"}}
+  # - !include {file: ../sensors/color_proximity_apds9960.yaml, vars: {type: "BLUE"}}
+  # - !include {file: ../sensors/color_proximity_apds9960.yaml, vars: {type: "PROXIMITY"}}
 
 # switch:
 #   # Restart button
@@ -192,12 +193,12 @@ sensor:
 
 button:
   # Restart, reset and shutdown buttons
-  - !include { file: ../buttons/restart_button.yaml }
+  - !include {file: ../buttons/restart_button.yaml}
   # for _dev.yaml scripts include additional buttons
-  - !include { file: ../buttons/safe_mode_restart_button.yaml }
-  - !include { file: ../buttons/factory_reset_button.yaml }
-  - !include { file: ../buttons/shutdown_button.yaml }
+  - !include {file: ../buttons/safe_mode_restart_button.yaml}
+  - !include {file: ../buttons/factory_reset_button.yaml}
+  - !include {file: ../buttons/shutdown_button.yaml}
 
   # Scan Wifi button (require wifi_info text sensor to be present to display results)
   # WARN: Performing the scan will disconnect device from current WiFi
-  - !include { file: ../buttons/scan_wifi_button.yaml }
+  - !include {file: ../buttons/scan_wifi_button.yaml}

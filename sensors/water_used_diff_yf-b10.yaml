@@ -1,5 +1,5 @@
 ---
-#* Water flow sensor using YF-B10 valve configuration - based on difference of 2 pulse_counter's
+# * Water flow sensor using YF-B10 valve configuration - based on difference of 2 pulse_counter's
 # Pawelo, 20230916, created
 # Pawelo, 20231015, added clamp filter to zero negative values
 # Pawelo, 20231017, added water_updates_interval for water sensors updates (much often than $updates)
@@ -17,7 +17,7 @@ on_value:
       topic: "$mqtt_location/$mqtt_room/water_used${ix}"
       payload: !lambda |-
         return to_string(x);
-#lambda: 'return id(water_used${ix_A}).state ${operator} id(water_used${ix_B}).state;'
+# lambda: 'return id(water_used${ix_A}).state ${operator} id(water_used${ix_B}).state;'
 lambda: |-
   float a, b;
   if (isnan(id(water_used${ix_A}).state)) {

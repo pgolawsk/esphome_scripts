@@ -1,42 +1,42 @@
 ---
-#* Water flow sensor using YF-B10 valve configuration - based on difference of 2 pulse_counter's
+# * Water total sensor using YF-B10 valve configuration - based on difference of 2 pulse_counter's
 # Pawelo, 20230916, created
-# Pawelo, 20230917, set accuracy_decimals to 2
-# Pawelo, 20230919, calculate values from range (0;80)
+# Pawelo, 20231015, added clamp filter to zero negative values
 # Pawelo, 20231017, added water_updates_interval for water sensors updates (much often than $updates)
 # Pawelo, 20231017, added delta filter to prevent very frequent mqtt messages on every pulse
 # Pawelo, 20231017, added water_flow_min_delta variable for water sensors updates (to have no publish on every pulse)
 
 platform: template
-id: water_flow${ix}
-icon: "mdi:water"
-name: "$room Water Flow${ix}"
-unit_of_measurement: "L/min"
+name: "$room Water Total${ix}"
+id: water_total${ix}
+icon: "mdi:water-plus"
+unit_of_measurement: "L"
 accuracy_decimals: 2
-internal: true
-state_topic: $devicename/water_flow${ix}
+device_class: water
+state_class: total_increasing
+state_topic: $devicename/water_total${ix}
 on_value:
   - mqtt.publish:
-      topic: "$mqtt_location/$mqtt_room/water_flow${ix}"
+      topic: "$mqtt_location/$mqtt_room/water_total${ix}"
       payload: !lambda |-
         return to_string(x);
-#lambda: 'return id(water_flow${ix_A}).state ${operator} id(water_flow${ix_B}).state;'
 lambda: |-
   float a, b;
-  if (isnan(id(water_flow${ix_A}).state)) {
+  if (isnan(id(water_total${ix_A}).state)) {
     a = 0;
   } else {
-    a = id(water_flow${ix_A}).state;
+    a = id(water_total${ix_A}).state;
   }
-  if (isnan(id(water_flow${ix_B}).state)) {
+  if (isnan(id(water_total${ix_B}).state)) {
     b = 0;
   } else {
-    b = id(water_flow${ix_B}).state;
+    b = id(water_total${ix_B}).state;
   }
   return (a ${operator} b);
 filters:
   - clamp:
       min_value: 0
-      max_value: 80
+  # - throttle: $updates
   - delta: ${water_flow_min_delta}
+  - filter_out: nan
 update_interval: ${water_updates_interval}

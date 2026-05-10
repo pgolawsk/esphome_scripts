@@ -1,11 +1,11 @@
 ---
-#* ESP32 - Pump & Garage device script
-#* Please read README.md for details
-#* For pinout see: file://../pinouts/ESP32_WROOM_32_pinout.jpg
+# * ESP32 - Pump & Garage device script
+# * Please read README.md for details
+# * For pinout see: file://../pinouts/ESP32_WROOM_32_pinout.jpg
 ###
 # Pawelo 20230101, 1.1.5, created based on esp32_dev.yaml and esp12f_dev.yaml
 # Pawelo 20230916, 1.1.5, added difference between 2 pulse counters as new counter
-#! Pawelo 20230916, 1.1.5, (NOT DONE) fix to preserve total values between reboots, based on https://github.com/esphome/feature-requests/issues/461
+# ! Pawelo 20230916, 1.1.5, (NOT DONE) fix to preserve total values between reboots, based on https://github.com/esphome/feature-requests/issues/461
 # Pawelo 20230917, 1.1.5, added temp & humid via SHT30
 # Pawelo 20230919, 1.1.5, added sunrise and sunset text sensors
 # Pawelo 20230923, 1.1.5, added HA Connected binary sensor
@@ -56,8 +56,9 @@
 # Pawelo, 20251205, switched to primary WIFI network instead of extended
 # Pawelo, 20251205, select.state replaced with select.current_option() to as per deprecation warning (2026.5)
 # Pawelo, 20260124, added minimum_chip_revision variable to board_esp32.yaml to eliminate warnings
+# FLUX, 20260510, Lowercased sensor filename references for cross-platform portability (BACKLOG items 1-2)
 
-#! run with this command to override substitutions
+# ! run with this command to override substitutions
 # esphome -s devicename espXX -s updates 1min -s room <Room name> -s mqtt_room <room> run esp32_MMmm_SSss__PP.yaml --device 192.168.x.x
 # here are default values if those are not given via command line
 
@@ -65,23 +66,23 @@ substitutions:
   devices: "ePaper Temperature and Humidity via SHTx30, Illuminance via BH1750, Water via YF-B10 G1"
   project_name: "pgolawsk.esp_home"
   version: "20251205"
-  esphome_min_version: 2025.6.3 # worked on previous versions as well
+  esphome_min_version: 2025.6.3  # worked on previous versions as well
   esphome_max_version: 2026.2 #! last version where FRAM component works
 
   # required by ../includes/board_esp32.yaml script
-  framework_type: arduino # "arduino" or "esp-idf"
+  framework_type: arduino  # "arduino" or "esp-idf"
   # framework_type: esp-idf # "arduino" or "esp-idf"
-  framework_version: recommended # or specific version like "latest", "recommended", "4.4.4"
+  framework_version: recommended  # or specific version like "latest", "recommended", "4.4.4"
   # framework_version: latest # or specific version like "latest", "recommended", "4.4.4"
-  board_variant: "" # empty for ESP32, other values to display like c3, c6, s2, s3
-  board: "esp32dev" # like: esp32dev, esp32cam, esp32-c3-devkitm-1, esp32-s3-devkitc-1, esp32-s2-saola-1, full list here https://registry.platformio.org/platforms/platformio/espressif32/boards?version=5.3.0
-  flash_size: 4MB # One of 2MB, 4MB, 8MB, 16MB or 32MB
+  board_variant: ""  # empty for ESP32, other values to display like c3, c6, s2, s3
+  board: "esp32dev"  # like: esp32dev, esp32cam, esp32-c3-devkitm-1, esp32-s3-devkitc-1, esp32-s2-saola-1, full list here https://registry.platformio.org/platforms/platformio/espressif32/boards?version=5.3.0
+  flash_size: 4MB  # One of 2MB, 4MB, 8MB, 16MB or 32MB
   flash_write_interval: "5min"
   minimum_chip_revision: "1.0"
 
   devicename: esp32-xx
   updates: "30s"
-  room: Room # friendly name of room to display in HA/Web
+  room: Room  # friendly name of room to display in HA/Web
   # this is ADDITIONAL topic and sub-topic for MQTT - it publishes under <topic>/<sub-topic>/<sensor>
   # by default it's also published under <devicename>/<id_sensor>
   mqtt_location: home
@@ -94,7 +95,7 @@ substitutions:
   # default variable values for !include statements
   accuracy_decimals: "2"
   pulses_per_liter: "476"
-  pulses_per_liter_garden: "450" # from experience it should be set as 42,9
+  pulses_per_liter_garden: "450"  # from experience it should be set as 42,9
   water_updates_interval: 5s
   water_flow_min_delta: "0.01"
 
@@ -102,38 +103,38 @@ substitutions:
   display_xRes: "296"
   display_yRes: "128"
   display_rotation: "90"
-  display_updates_interval: 1min # need to be small for display manageable interval cycle
+  display_updates_interval: 1min  # need to be small for display manageable interval cycle
   display_updates_manual_cycle_delay: 5min
 
 # Override some settings included below in _board_ setup
-<<: !include ../includes/time_sntp_with_sun.yaml #WARN: this is to make sunrise and sunset sensor to be updated on every time sync event
-<<: !include ../includes/mqtt_with_rtttl.yaml #WARN: override mqtt with RTTTL support if needed (buzzer and status led)
-# <<: !include { file: ../includes/logger_level.yaml, vars: { level: DEBUG, baud_rate: 115200 } } #WARN: override default log level to specific one
-# <<: !include { file: ../includes/logger_level.yaml, vars: { level: VERY_VERBOSE, baud_rate: 115200 } } #WARN: override default log level to specific one
+<<: !include ../includes/time_sntp_with_sun.yaml  # WARN: this is to make sunrise and sunset sensor to be updated on every time sync event
+<<: !include ../includes/mqtt_with_rtttl.yaml  # WARN: override mqtt with RTTTL support if needed (buzzer and status led)
+# <<: !include {file: ../includes/logger_level.yaml, vars: {level: DEBUG, baud_rate: 115200}} #WARN: override default log level to specific one
+# <<: !include {file: ../includes/logger_level.yaml, vars: {level: VERY_VERBOSE, baud_rate: 115200}} #WARN: override default log level to specific one
 # <<: !include ../includes/wifi_outside.yaml #WARN: override wifi to connect to outside network instead of default
-# <<: !include { file: ../includes/wifi_main.yaml, vars: { } } #WARN: override wifi to connect to extended network instead of default
-# <<: !include { file: ../includes/wifi_extended.yaml, vars: { } } #WARN: override wifi to connect to extended network instead of default
-# <<: !include { file: ../includes/wifi_extended2.yaml, vars: { } } #WARN: override wifi to connect to extended network instead of default
+# <<: !include {file: ../includes/wifi_main.yaml, vars: {}} #WARN: override wifi to connect to extended network instead of default
+# <<: !include {file: ../includes/wifi_extended.yaml, vars: {}} #WARN: override wifi to connect to extended network instead of default
+# <<: !include {file: ../includes/wifi_extended2.yaml, vars: {}} #WARN: override wifi to connect to extended network instead of default
 # <<: !include ../includes/api_services.yaml #WARN: this is to expose services like scan_wifi (results in scan_results sensor)
-<<: !include ../includes/api_services__water.yaml # add services to set total water usage for 2 water meters and scan_wifi
+<<: !include ../includes/api_services__water.yaml  # add services to set total water usage for 2 water meters and scan_wifi
 
 # Include basics of a board
 <<: !include ../includes/board_esp32__water_pump.yaml
-# <<: !include { file: ../includes/board_esp32.yaml, vars: { board_variant: "${board_variant}", board: "${board}", flash_size: "${flash_size}", flash_write_interval: "${flash_write_interval}" } }
-# <<: !include { file: ../includes/psram.yaml, vars: { mode: "quad" } } # "quad' for 2MB, "octal" for 4-8MB PSRAM
+# <<: !include {file: ../includes/board_esp32.yaml, vars: {board_variant: "${board_variant}", board: "${board}", flash_size: "${flash_size}", flash_write_interval: "${flash_write_interval}"}}
+# <<: !include {file: ../includes/psram.yaml, vars: {mode: "quad"}} # "quad' for 2MB, "octal" for 4-8MB PSRAM
 <<: !include ../includes/qr_guestwifi.yaml
 
 # Include interfaces needed
-<<: !include { file: ../interfaces/debug.yaml, vars: { update_interval: "5s" } }
-<<: !include { file: ../interfaces/i2c.yaml, vars: { bus_id: "bus_a", sda: "GPIO21", scl: "GPIO22" } }
-<<: !include { file: ../interfaces/rtttl.yaml, vars: { ix: "" } }
-<<: !include { file: ../interfaces/one_wire.yaml, vars: { wire_id: "ow_a", gpio: "GPIO27" } }
+<<: !include {file: ../interfaces/debug.yaml, vars: {update_interval: "5s"}}
+<<: !include {file: ../interfaces/i2c.yaml, vars: {bus_id: "bus_a", sda: "GPIO21", scl: "GPIO22"}}
+<<: !include {file: ../interfaces/rtttl.yaml, vars: {ix: ""}}
+<<: !include {file: ../interfaces/one_wire.yaml, vars: {wire_id: "ow_a", gpio: "GPIO27"}}
 # OR
-# <<: !include { file: ../interfaces/dallasng.yaml, vars: { gpio: "GPIO27" } }
-# <<: !include { file: ../interfaces/uart_ld2410.yaml, vars: { ix: "ld", tx_pin: "TX", rx_pin: "RX", baud_rate: 256000, sensor_name: "LD2420" } }
-# <<: !include { file: ../interfaces/uart_ld2420.yaml, vars: { ix: "ld", tx_pin: "TX", rx_pin: "RX", baud_rate: 256000 } }
-# <<: !include { file: ../interfaces/i2c_apds9960.yaml, vars: { address: "0x39" } }
-<<: !include { file: ../interfaces/fram__water_pump.yaml, vars: { bus_id: "bus_a", address: "0x50" } }
+# <<: !include {file: ../interfaces/dallasng.yaml, vars: {gpio: "GPIO27"}}
+# <<: !include {file: ../interfaces/uart_ld2410.yaml, vars: {ix: "ld", tx_pin: "TX", rx_pin: "RX", baud_rate: 256000, sensor_name: "LD2420"}}
+# <<: !include {file: ../interfaces/uart_ld2420.yaml, vars: {ix: "ld", tx_pin: "TX", rx_pin: "RX", baud_rate: 256000}}
+# <<: !include {file: ../interfaces/i2c_apds9960.yaml, vars: {address: "0x39"}}
+<<: !include {file: ../interfaces/fram__water_pump.yaml, vars: {bus_id: "bus_a", address: "0x50"}}
 
 text_sensor:
   - !include ../sensors/text_uptime.yaml
@@ -151,10 +152,10 @@ text_sensor:
   - !include ../sensors/text_sun_direction.yaml
 
   # # Gesture sensor
-  # - !include { file: ../sensors/text_gesture_apds9960.yaml }
+  # - !include {file: ../sensors/text_gesture_apds9960.yaml}
 
   # Distance sensor
-  # - !include { file: ../sensors/text_version_ld2410.yaml, vars: { sensor_name: "LD2410" } }
+  # - !include {file: ../sensors/text_version_ld2410.yaml, vars: {sensor_name: "LD2410"}}
 
   # #! for test purpose only
   # - platform: template
@@ -181,19 +182,19 @@ binary_sensor:
   - !include ../sensors/binary_ha_connected.yaml
 
   # Distance sensor
-  # - !include { file: ../sensors/binary_presence_ld2410.yaml, vars: { ix: "" } }
-  # - !include { file: ../sensors/binary_presence_ld2420.yaml, vars: { ix: "" } }
+  # - !include {file: ../sensors/binary_presence_ld2410.yaml, vars: {ix: ""}}
+  # - !include {file: ../sensors/binary_presence_ld2420.yaml, vars: {ix: ""}}
 
   # # Gesture sensor
-  # - !include { file: ../sensors/binary_gesture_apds9960.yaml, vars: { direction: "UP", mdi_icon: 'gesture-swipe-up' } }
-  # - !include { file: ../sensors/binary_gesture_apds9960.yaml, vars: { direction: "DOWN", mdi_icon: 'gesture-swipe-down' } }
-  # - !include { file: ../sensors/binary_gesture_apds9960.yaml, vars: { direction: "LEFT", mdi_icon: 'gesture-swipe-left' } }
-  # - !include { file: ../sensors/binary_gesture_apds9960.yaml, vars: { direction: "RIGHT", mdi_icon: 'gesture-swipe-right' } }
+  # - !include {file: ../sensors/binary_gesture_apds9960.yaml, vars: {direction: "UP", mdi_icon: 'gesture-swipe-up'}}
+  # - !include {file: ../sensors/binary_gesture_apds9960.yaml, vars: {direction: "DOWN", mdi_icon: 'gesture-swipe-down'}}
+  # - !include {file: ../sensors/binary_gesture_apds9960.yaml, vars: {direction: "LEFT", mdi_icon: 'gesture-swipe-left'}}
+  # - !include {file: ../sensors/binary_gesture_apds9960.yaml, vars: {direction: "RIGHT", mdi_icon: 'gesture-swipe-right'}}
 
   # Physical buttons
-  # - !include { file: ../sensors/binary_display_button__pullup.yaml, vars: { ix: "Refresh", gpio: "GPIO33" } }
-  - !include { file: ../sensors/binary_select_cycle__pullup.yaml, vars: { ix: "Next", gpio: "GPIO33", select_id: "select_display_cycle_interval", command: "next" } }
-  - !include { file: ../sensors/binary_display_button__pullup.yaml, vars: { ix: "Next", gpio: "GPIO32" } }
+  # - !include {file: ../sensors/binary_display_button__pullup.yaml, vars: {ix: "Refresh", gpio: "GPIO33"}}
+  - !include {file: ../sensors/binary_select_cycle__pullup.yaml, vars: {ix: "Next", gpio: "GPIO33", select_id: "select_display_cycle_interval", command: "next"}}
+  - !include {file: ../sensors/binary_display_button__pullup.yaml, vars: {ix: "Next", gpio: "GPIO32"}}
 
 sensor:
   - !include ../sensors/temp_internal.yaml
@@ -211,50 +212,50 @@ sensor:
   - !include ../sensors/sun_azimuth.yaml
 
   # Home Assistant sensors
-  - !include { file: ../sensors/HA_sensor.yaml, vars: { sensor_name: "water_total_all", ha_entity_id: "pump_water_total_all" } }
-  - !include { file: ../sensors/HA_sensor.yaml, vars: { sensor_name: "water_total_garden", ha_entity_id: "pump_water_total_garden" } }
+  - !include {file: ../sensors/ha_sensor.yaml, vars: {sensor_name: "water_total_all", ha_entity_id: "pump_water_total_all"}}
+  - !include {file: ../sensors/ha_sensor.yaml, vars: {sensor_name: "water_total_garden", ha_entity_id: "pump_water_total_garden"}}
 
   # Temperature Dallas sensor
-  - !include { file: ../sensors/temp_DS18B20.yaml, vars: { ix: "Floor", wire_id: "ow_a", address: "0x450417c411e3ff28", min_temp: -10, max_temp: 50 } }
-  # - !include { file: ../sensors/temp_DS18B20_on_dallasng.yaml, vars: { ix: "Floor", address: "0x450417c411e3ff28", min_temp: -10, max_temp: 50 } }
+  - !include {file: ../sensors/temp_ds18b20.yaml, vars: {ix: "Floor", wire_id: "ow_a", address: "0x450417c411e3ff28", min_temp: -10, max_temp: 50}}
+  # - !include {file: ../sensors/temp_ds18b20_on_dallasng.yaml, vars: {ix: "Floor", address: "0x450417c411e3ff28", min_temp: -10, max_temp: 50}}
 
   # Temperature and Humidity sensor
-  - !include { file: ../sensors/temp_hum_SHT3x.yaml, vars: { ix: "", bus_id: "bus_a", address: "0x44" } }
+  - !include {file: ../sensors/temp_hum_sht3x.yaml, vars: {ix: "", bus_id: "bus_a", address: "0x44"}}
   # Illuminance sensor
-  # - !include { file: ../sensors/lux_BH1750.yaml, vars: { ix: "", bus_id: "bus_a", address: "0x23" } }
-  # - !include { file: ../sensors/lux_BH1750.yaml, vars: { ix: "", bus_id: "bus_a", address: "0x23", room: "Garage", mqtt_room: "garage" } }
-  - !include { file: ../sensors/lux_BH1750.yaml, vars: { ix: "", bus_id: "bus_a", address: "0x23", room: "${room2}", mqtt_location: "${mqtt_location2}", mqtt_room: "${mqtt_room2}", updates: "${display_updates_interval}" } }
+  # - !include {file: ../sensors/lux_bh1750.yaml, vars: {ix: "", bus_id: "bus_a", address: "0x23"}}
+  # - !include {file: ../sensors/lux_bh1750.yaml, vars: {ix: "", bus_id: "bus_a", address: "0x23", room: "Garage", mqtt_room: "garage"}}
+  - !include {file: ../sensors/lux_bh1750.yaml, vars: {ix: "", bus_id: "bus_a", address: "0x23", room: "${room2}", mqtt_location: "${mqtt_location2}", mqtt_room: "${mqtt_room2}", updates: "${display_updates_interval}"}}
 
   # Water usage YF-B10 sensor
-  - !include { file: ../sensors/water_YF-B10.yaml, vars: { ix: "_all", gpio: "GPIO16" } }
-  - !include { file: ../sensors/water_used_YF-B10.yaml, vars: { ix: "_all" } }
+  - !include {file: ../sensors/water_yf-b10.yaml, vars: {ix: "_all", gpio: "GPIO16"}}
+  - !include {file: ../sensors/water_used_yf-b10.yaml, vars: {ix: "_all"}}
 
-  - !include { file: ../sensors/water_YF-B10.yaml, vars: { ix: "_garden", gpio: "GPIO17", pulses_per_liter: "${pulses_per_liter_garden}" } }
-  - !include { file: ../sensors/water_used_YF-B10.yaml, vars: { ix: "_garden" } }
+  - !include {file: ../sensors/water_yf-b10.yaml, vars: {ix: "_garden", gpio: "GPIO17", pulses_per_liter: "${pulses_per_liter_garden}"}}
+  - !include {file: ../sensors/water_used_yf-b10.yaml, vars: {ix: "_garden"}}
 
-  - !include { file: ../sensors/water_flow_diff_YF-B10.yaml, vars: { ix: "_home",  ix_A: "_all", ix_B: "_garden", operator: "-"} }
-  - !include { file: ../sensors/water_total_diff_YF-B10.yaml, vars: { ix: "_home",  ix_A: "_all", ix_B: "_garden", operator: "-"} }
-  - !include { file: ../sensors/water_used_diff_YF-B10.yaml, vars: { ix: "_home",  ix_A: "_all", ix_B: "_garden", operator: "-"} }
+  - !include {file: ../sensors/water_flow_diff_yf-b10.yaml, vars: {ix: "_home", ix_A: "_all", ix_B: "_garden", operator: "-"}}
+  - !include {file: ../sensors/water_total_diff_yf-b10.yaml, vars: {ix: "_home", ix_A: "_all", ix_B: "_garden", operator: "-"}}
+  - !include {file: ../sensors/water_used_diff_yf-b10.yaml, vars: {ix: "_home", ix_A: "_all", ix_B: "_garden", operator: "-"}}
 
   # Distance sensor
-  # - !include { file: ../sensors/distance_ld2410.yaml, vars: { ix: "", sensor_name: "LD2410" } }
-  # - !include { file: ../sensors/distance_ld2420.yaml, vars: { ix: "" } }
+  # - !include {file: ../sensors/distance_ld2410.yaml, vars: {ix: "", sensor_name: "LD2410"}}
+  # - !include {file: ../sensors/distance_ld2420.yaml, vars: {ix: ""}}
 
   # Various MQTT sensors
-  - !include { file: ../sensors/value_mqtt_subscribe.yaml, vars: { topic: "home/entrance/temperature", id: "temp_entrance", name: "Temperature Entrance", unit: "°C", mdi_icon: "thermometer" } }
-  - !include { file: ../sensors/value_mqtt_subscribe.yaml, vars: { topic: "home/upstairs/temperature", id: "temp_upstairs", name: "Temperature Upstairs", unit: "°C", mdi_icon: "thermometer" } }
+  - !include {file: ../sensors/value_mqtt_subscribe.yaml, vars: {topic: "home/entrance/temperature", id: "temp_entrance", name: "Temperature Entrance", unit: "°C", mdi_icon: "thermometer"}}
+  - !include {file: ../sensors/value_mqtt_subscribe.yaml, vars: {topic: "home/upstairs/temperature", id: "temp_upstairs", name: "Temperature Upstairs", unit: "°C", mdi_icon: "thermometer"}}
 
-  - !include { file: ../sensors/value_mqtt_subscribe.yaml, vars: { topic: "measures/underfloor/temperature", id: "temp_underfloor", name: "Temperature Underfloor", unit: "°C", mdi_icon: "thermometer" } }
-  - !include { file: ../sensors/value_mqtt_subscribe.yaml, vars: { topic: "measures/underfloor/temperature_Dwall", id: "temp_underfloorW", name: "Temperature Underfloor Wall", unit: "°C", mdi_icon: "thermometer" } }
-  - !include { file: ../sensors/value_mqtt_subscribe.yaml, vars: { topic: "measures/underfloor/temperature_Dboiler", id: "temp_underfloorB", name: "Temperature Underfloor Boiler", unit: "°C", mdi_icon: "thermometer" } }
-  - !include { file: ../sensors/value_mqtt_subscribe.yaml, vars: { topic: "measures/aquarium_window/temperature", id: "temp_aquariumW", name: "Temperature Aquarium Window", unit: "°C", mdi_icon: "thermometer" } }
+  - !include {file: ../sensors/value_mqtt_subscribe.yaml, vars: {topic: "measures/underfloor/temperature", id: "temp_underfloor", name: "Temperature Underfloor", unit: "°C", mdi_icon: "thermometer"}}
+  - !include {file: ../sensors/value_mqtt_subscribe.yaml, vars: {topic: "measures/underfloor/temperature_Dwall", id: "temp_underfloorW", name: "Temperature Underfloor Wall", unit: "°C", mdi_icon: "thermometer"}}
+  - !include {file: ../sensors/value_mqtt_subscribe.yaml, vars: {topic: "measures/underfloor/temperature_Dboiler", id: "temp_underfloorB", name: "Temperature Underfloor Boiler", unit: "°C", mdi_icon: "thermometer"}}
+  - !include {file: ../sensors/value_mqtt_subscribe.yaml, vars: {topic: "measures/aquarium_window/temperature", id: "temp_aquariumW", name: "Temperature Aquarium Window", unit: "°C", mdi_icon: "thermometer"}}
 
-  - !include { file: ../sensors/value_mqtt_subscribe.yaml, vars: { topic: "home/entrance/humidity", id: "hum_entrance", name: "Humidity Entrance", unit: "%", mdi_icon: "water-percent" } }
-  - !include { file: ../sensors/value_mqtt_subscribe.yaml, vars: { topic: "home/upstairs/humidity", id: "hum_upstairs", name: "Humidity Upstairs", unit: "%", mdi_icon: "water-percent" } }
-  - !include { file: ../sensors/value_mqtt_subscribe.yaml, vars: { topic: "measures/underfloor/humidity", id: "hum_underfloor", name: "Humidity Underfloor", unit: "%", mdi_icon: "water-percent" } }
-  - !include { file: ../sensors/value_mqtt_subscribe.yaml, vars: { topic: "measures/aquarium_window/humidity", id: "hum_aquariumW", name: "Humidity Aquarium Window", unit: "%", mdi_icon: "water-percent" } }
+  - !include {file: ../sensors/value_mqtt_subscribe.yaml, vars: {topic: "home/entrance/humidity", id: "hum_entrance", name: "Humidity Entrance", unit: "%", mdi_icon: "water-percent"}}
+  - !include {file: ../sensors/value_mqtt_subscribe.yaml, vars: {topic: "home/upstairs/humidity", id: "hum_upstairs", name: "Humidity Upstairs", unit: "%", mdi_icon: "water-percent"}}
+  - !include {file: ../sensors/value_mqtt_subscribe.yaml, vars: {topic: "measures/underfloor/humidity", id: "hum_underfloor", name: "Humidity Underfloor", unit: "%", mdi_icon: "water-percent"}}
+  - !include {file: ../sensors/value_mqtt_subscribe.yaml, vars: {topic: "measures/aquarium_window/humidity", id: "hum_aquariumW", name: "Humidity Aquarium Window", unit: "%", mdi_icon: "water-percent"}}
 
-  #! for test purpose only
+  # ! for test purpose only
   # - platform: template
   #   name: Test global_water_total_all
   #   lambda: return id(global_water_total_all);
@@ -266,79 +267,79 @@ sensor:
 
 # switch:
 #     # Distance sensor setup
-#     - !include { file: ../switches/setup_ld2410.yaml, vars: { sensor_name: "LD2410" } }
+#     - !include {file: ../switches/setup_ld2410.yaml, vars: {sensor_name: "LD2410"}}
 
 button:
   # Restart, reset and shutdown buttons
-  - !include { file: ../buttons/restart_button.yaml }
+  - !include {file: ../buttons/restart_button.yaml}
   # for _dev.yaml scripts include additional buttons
-  - !include { file: ../buttons/safe_mode_restart_button.yaml }
-  - !include { file: ../buttons/factory_reset_button.yaml }
-  - !include { file: ../buttons/shutdown_button.yaml }
+  - !include {file: ../buttons/safe_mode_restart_button.yaml}
+  - !include {file: ../buttons/factory_reset_button.yaml}
+  - !include {file: ../buttons/shutdown_button.yaml}
 
   # Scan Wifi button (require wifi_info text sensor to be present to display results)
   # WARN: Performing the scan will disconnect device from current WiFi
-  - !include { file: ../buttons/scan_wifi_button.yaml }
+  - !include {file: ../buttons/scan_wifi_button.yaml}
 
   # Display buttons
-  - !include { file: ../buttons/display_button.yaml, vars: { ix: "Refresh", display_id: "weact_display", command: "", mdi_icon: "refresh" } }
-  - !include { file: ../buttons/display_button.yaml, vars: { ix: "Next", display_id: "weact_display", command: "next", mdi_icon: "page-next" } }
-  - !include { file: ../buttons/display_button.yaml, vars: { ix: "Prev", display_id: "weact_display", command: "previous", mdi_icon: "page-previous" } }
-  - !include { file: ../buttons/display_page_button.yaml, vars: { page_ix: "blank", display_id: "weact_display" } }
+  - !include {file: ../buttons/display_button.yaml, vars: {ix: "Refresh", display_id: "weact_display", command: "", mdi_icon: "refresh"}}
+  - !include {file: ../buttons/display_button.yaml, vars: {ix: "Next", display_id: "weact_display", command: "next", mdi_icon: "page-next"}}
+  - !include {file: ../buttons/display_button.yaml, vars: {ix: "Prev", display_id: "weact_display", command: "previous", mdi_icon: "page-previous"}}
+  - !include {file: ../buttons/display_page_button.yaml, vars: {page_ix: "blank", display_id: "weact_display"}}
 
   # Water Save buttons
-  # - !include { file: ../buttons/save_water_total_button.yaml, vars: { ix: "_all" } }
-  # - !include { file: ../buttons/save_water_total_button.yaml, vars: { ix: "_garden", pulses_per_liter: "${pulses_per_liter_garden}" } }
+  # - !include {file: ../buttons/save_water_total_button.yaml, vars: {ix: "_all"}}
+  # - !include {file: ../buttons/save_water_total_button.yaml, vars: {ix: "_garden", pulses_per_liter: "${pulses_per_liter_garden}"}}
 
   # Water Reset (zero) buttons
-  # - !include { file: ../buttons/reset_water_total_button.yaml, vars: { ix: "_all" } }
-  # - !include { file: ../buttons/reset_water_total_button.yaml, vars: { ix: "_garden" } }
+  # - !include {file: ../buttons/reset_water_total_button.yaml, vars: {ix: "_all"}}
+  # - !include {file: ../buttons/reset_water_total_button.yaml, vars: {ix: "_garden"}}
 
   # Log water sensor values buttons (for DEBUGing)
-  # - !include { file: ../buttons/log_sensor_value_button.yaml, vars: { id: "water_flow_all" } }
-  # - !include { file: ../buttons/log_sensor_value_button.yaml, vars: { id: "water_total_all" } }
-  # - !include { file: ../buttons/log_sensor_value_button.yaml, vars: { id: "water_flow_garden" } }
-  # - !include { file: ../buttons/log_sensor_value_button.yaml, vars: { id: "water_total_garden" } }
+  # - !include {file: ../buttons/log_sensor_value_button.yaml, vars: {id: "water_flow_all"}}
+  # - !include {file: ../buttons/log_sensor_value_button.yaml, vars: {id: "water_total_all"}}
+  # - !include {file: ../buttons/log_sensor_value_button.yaml, vars: {id: "water_flow_garden"}}
+  # - !include {file: ../buttons/log_sensor_value_button.yaml, vars: {id: "water_total_garden"}}
 
 
 output:
   # LED
-  - !include { file: ../outputs/led.yaml, vars: { ix: "", gpio: "GPIO0", inverted: false } }
+  - !include {file: ../outputs/led.yaml, vars: {ix: "", gpio: "GPIO0", inverted: false}}
 
   # RTTTL Buzzer (passive_buzzer)
-  - !include { file: ../outputs/passive_buzzer_ledc.yaml, vars: { ix: "", gpio: "GPIO4" } }
+  - !include {file: ../outputs/passive_buzzer_ledc.yaml, vars: {ix: "", gpio: "GPIO4"}}
 
 light:
   # LED
-  - !include { file: ../lights/led.yaml, vars: { ix: "", platform: "binary", off_delay: "5s", entity_category: "" } }
+  - !include {file: ../lights/led.yaml, vars: {ix: "", platform: "binary", off_delay: "5s", entity_category: ""}}
 
 switch:
   # LED cycle
-  - !include { file: ../switches/led_cycle.yaml, vars: { ID: "led", cycles: 5, on_delay: "1s", off_delay: "500ms" } }
+  - !include {file: ../switches/led_cycle.yaml, vars: {ID: "led", cycles: 5, on_delay: "1s", off_delay: "500ms"}}
 
   # RTTTL Play (passive_buzzer)
-  - !include { file: ../switches/rtttl_play.yaml, vars: { ix: "" } }
+  - !include {file: ../switches/rtttl_play.yaml, vars: {ix: ""}}
 
 # # override section from includes - temp fix
 # external_components:
 #   - source: github://pr#4847
-#     components: [ ld2420 ]
+#     components: [ld2420]
 #     refresh: 0s
 #   - source: github://nrandell/dallasng
 
 # Include fonts for display
 <<: !include ../fonts/fonts_weact_display.yaml
 
-<<: !include { file: ../scripts/interval_display_cycle_pages_with_lux.yaml, vars: { display_id: weact_display, cycle_script: cycle_pages_in_lux_on_select, lux_sensor: lux, lux_dark_threshold: 2.9, lux_dark_threshold_elevation_multiplier: 0.1, page_to_skip: page_wifi_qr } }
+<<: !include {file: ../scripts/interval_display_cycle_pages_with_lux.yaml, vars: {display_id: weact_display, cycle_script: cycle_pages_in_lux_on_select, lux_sensor: lux, lux_dark_threshold: 2.9, lux_dark_threshold_elevation_multiplier: 0.1, page_to_skip: page_wifi_qr}}
 
 select:
   # Display Cycle Interval selection
   # id: select_display_cycle_interval
-  - !include { file: ../selects/display_cycle_interval.yaml, vars: { global_variable: "global_display_cycle_page", display_id: "weact_display" } }
+  - !include {file: ../selects/display_cycle_interval.yaml, vars: {global_variable: "global_display_cycle_page", display_id: "weact_display"}}
 
 external_components:
   - source: github://pr#4880
-    components: [ fram, fram_pref ]
+    components: [fram, fram_pref]
   - source: github://nrandell/dallasng
   # - source: github://pr#4579
   #   components: [waveshare_epaper]
@@ -349,8 +350,8 @@ external_components:
     refresh: 5min
 spi:
   id: spi_v
-  clk_pin: GPIO18 # SCL
-  mosi_pin: GPIO23 # SDA
+  clk_pin: GPIO18  # SCL
+  mosi_pin: GPIO23  # SDA
 
 display:
   - platform: waveshare_epaper

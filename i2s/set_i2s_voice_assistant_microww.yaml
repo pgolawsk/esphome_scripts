@@ -1,5 +1,5 @@
 ---
-#* Voice Assistant component with mic and Speaker
+# * Voice Assistant component with mic and Speaker
 # !only on ESP-IDF framework due to micro_wake_word
 # Pawelo, 20250120 created based on https://smarthomecircle.com/created-voice-assistant-esp32-with-wake-word-in-home-assistant
 # Pawelo, 20250123 added micro_wake_word based on https://smarthomecircle.com/How-to-setup-on-device-wake-word-for-voice-assistant-home-assistant
@@ -43,19 +43,19 @@
 
 i2s_audio:
   - id: "i2s_in"
-    i2s_lrclk_pin: ${in_ws_pin} # WS or LRC
-    i2s_bclk_pin: ${in_sck_pin} # SCK or BCLK
+    i2s_lrclk_pin: ${in_ws_pin}  # WS or LRC
+    i2s_bclk_pin: ${in_sck_pin}  # SCK or BCLK
     # i2s_mclk_pin: GPIOXX
   - id: "i2s_out"
-    i2s_lrclk_pin: ${out_ws_pin} # WS or LRC
-    i2s_bclk_pin: ${out_sck_pin} # SCK or BCLK
+    i2s_lrclk_pin: ${out_ws_pin}  # WS or LRC
+    i2s_bclk_pin: ${out_sck_pin}  # SCK or BCLK
 
 microphone:
   - platform: i2s_audio
     id: "mic_id"
-    channel: ${din_channel} # The channel of the microphone. One of left, right, or stereo. If stereo, the output data will be twice as big, with each right sample followed by a left sample. Defaults to right.
-    sample_rate: 16000 # I2S sample rate. Defaults to 16000.
-    bits_per_sample: 16bit # The bit depth of the audio samples. Note that while set to 24bit or 32bit, the samples will be scaled down to 16bit before being forwarded. One of 8bit, 16bit, 24bit, or 32bit. Defaults to 32bit.
+    channel: ${din_channel}  # The channel of the microphone. One of left, right, or stereo. If stereo, the output data will be twice as big, with each right sample followed by a left sample. Defaults to right.
+    sample_rate: 16000  # I2S sample rate. Defaults to 16000.
+    bits_per_sample: 16bit  # The bit depth of the audio samples. Note that while set to 24bit or 32bit, the samples will be scaled down to 16bit before being forwarded. One of 8bit, 16bit, 24bit, or 32bit. Defaults to 32bit.
     # bits_per_sample: ${din_bits_per_sample} # The bit depth of the audio samples. Note that while set to 24bit or 32bit, the samples will be scaled down to 16bit before being forwarded. One of 8bit, 16bit, 24bit, or 32bit. Defaults to 32bit.
     # bits_per_channel: ${bits_per_sample} # The bit depth of the audio channels. See the datasheet of your I2S device for details. Defaults to bits_per_sample.
     # use_apll: ${din_use_apll} # I2S using APLL as main I2S clock, enable it to get accurate clock. Defaults to false.
@@ -63,7 +63,7 @@ microphone:
     adc_type: external
     pdm: false
     i2s_audio_id: "i2s_in"
-    i2s_din_pin: ${din_pin} #sd
+    i2s_din_pin: ${din_pin}  # sd
 
 speaker:
   - platform: i2s_audio
@@ -96,11 +96,11 @@ media_player:
     volume_min: 0.5
     volume_max: 0.8
     media_pipeline:
-        speaker: media_spk_resampling_input
-        num_channels: 2
+      speaker: media_spk_resampling_input
+      num_channels: 2
     announcement_pipeline:
-        speaker: announcement_spk_resampling_input
-        num_channels: 1
+      speaker: announcement_spk_resampling_input
+      num_channels: 1
 
 micro_wake_word:
   models:
@@ -205,7 +205,7 @@ voice_assistant:
               voice_assistant.is_running:
     - if:
         condition:
-            - lambda: return id(ww_el).state == "On device";
+          - lambda: return id(ww_el).state == "On device";
         then:
           - micro_wake_word.start:
 

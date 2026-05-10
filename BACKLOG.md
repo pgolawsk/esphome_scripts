@@ -52,6 +52,7 @@ Scope walked: `2_PROD/*.yaml` (all 11), representative `0_DEV/*.yaml`, `includes
 **Suggested fix:** Pick a convention (recommend lowercase everywhere per AGENTS.md), `git mv` rename in two commits (lowercase → temp uppercase → final lowercase, to survive case-insensitive FS), and grep-replace references in PROD/DEV.
 **Effort:** L
 **Severity:** Notable
+**Status:** ✅ done 2026-05-10
 
 ### 2. ~139 case-mismatch `!include` references between PROD/DEV files and the on-disk sensor filenames
 
@@ -61,6 +62,7 @@ Scope walked: `2_PROD/*.yaml` (all 11), representative `0_DEV/*.yaml`, `includes
 **Suggested fix:** After item 1 settles a single case convention, sweep all `!include` lines and rewrite to match. Add a pre-commit hook that resolves each `!include`'d path and fails if it doesn't match the on-disk case (see item 65).
 **Effort:** L
 **Severity:** Important
+**Status:** ✅ done 2026-05-10
 
 ### 3. Reference to non-existent file `sensors/text_air_quality_bme68x_bsec2.yaml`
 

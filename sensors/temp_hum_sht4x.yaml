@@ -1,15 +1,9 @@
 ---
-#* Temperature and Humidity sensor SHT30 configuration
-# Pawelo, 20221119, created as my framework based on !include statements
-# Pawelo, 20221127, extended accuracy decimals to 2
-# Pawelo, 20230108, testing confirm the same config is ok for cable outdoor version of SHT30,
-#                   wiring: BLACK - GND, RED - 3.3V, YELLOW = CLK/SCL, WHITE - SDA/SAA
-# Pawelo, 20230111, added i2c bus identification
-# Pawelo, 20230121, add variables to configure sensor
-# Pawelo, 20240619, added commented "heater_enabled" option
+# * Temperature and Humidity sensor SHT40 configuration
+# Pawelo, 20240619, created based on SHT30 configuration and https://esphome.io/components/sensor/sht4x.html
 # Pawelo, 20240907, set device_class and icon for sensor values
 
-platform: sht3xd
+platform: sht4x
 temperature:
   name: "$room Temperature${ix}"
   id: temp${ix}
@@ -34,7 +28,10 @@ humidity:
         topic: "$mqtt_location/$mqtt_room/humidity${ix}"
         payload: !lambda |-
           return to_string(id(hum${ix}).state);
-# heater_enabled: false
+precision: High
+# heater_max_duty: 0 # zero means heater is off
+# heater_power: High
+# heater_time: Long # Long = 1000ms, Short = 100ms
 i2c_id: ${bus_id}
 # address: 0x44
 address: ${address}

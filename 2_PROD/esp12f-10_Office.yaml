@@ -1,7 +1,7 @@
 ---
-#* ESP12F - Office device script
-#* Please read README.md for details
-#* For pinout see: file://../pinouts/ESP_12E_pinout.png
+# * ESP12F - Office device script
+# * Please read README.md for details
+# * For pinout see: file://../pinouts/ESP_12E_pinout.png
 # NOTE: pin 9 do not work (it hangs ESP)- reserved for flashing;
 # NOTE: pin 10 - use with caution, read https://www.letscontrolit.com/forum/viewtopic.php?t=1462
 ###
@@ -31,8 +31,9 @@
 # Pawelo, 20251122, enabled eCO2 and TVOC sensor back as prometheus /metrics endpoint is working fine now
 # Pawelo, 20251130, disabled TVOC sensor as it increases temp by ~ 5 Celsius degrees
 # Pawelo, 20251130, enabled TVOC sensor as SCD40 increases temp by ~ 5 Celsius degrees (adjusted thermostat to compensate for increase)
+# FLUX, 20260510, Lowercased sensor filename references for cross-platform portability (BACKLOG items 1-2)
 
-#! run with this command to override substitutions
+# ! run with this command to override substitutions
 # esphome -s devicename espXX -s updates 1min -s room <Room name> -s mqtt_room <room> run esp12f_MMmm_SSss__PP.yaml --device 192.168.x.x
 # here are default values if those are not given via command line
 substitutions:
@@ -41,14 +42,14 @@ substitutions:
   version: "20251218"
 
   # required by ../includes/board_esp8266.yaml script
-  board_variant: "12F" # determine variant like 12F, 07s, 01m, ...
-  board: "esp12e" # like: esp12e, esp01_1m, full list here https://registry.platformio.org/platforms/platformio/espressif8266/boards
-  restore_from_flash: "false" # must be set as string to work
+  board_variant: "12F"  # determine variant like 12F, 07s, 01m, ...
+  board: "esp12e"  # like: esp12e, esp01_1m, full list here https://registry.platformio.org/platforms/platformio/espressif8266/boards
+  restore_from_flash: "false"  # must be set as string to work
   flash_write_interval: "5min"
 
   devicename: esp12f-xx
   updates: "30s"
-  room: Room # friendly name of room to display in HA/Web
+  room: Room  # friendly name of room to display in HA/Web
   # this is ADDITIONAL topic and sub-topic for MQTT - it publishes under <topic>/<sub-topic>/<sensor>
   # by default it's also published under <devicename>/<id_sensor>
   mqtt_location: home
@@ -59,26 +60,26 @@ substitutions:
 
 # Override some settings included below in _board_ setup
 # <<: !include ../includes/time_sntp_with_sun.yaml #WARN: this is to make sunrise and sunset sensor to be updated on every time sync event
-<<: !include ../includes/mqtt_with_rtttl.yaml #WARN: override mqtt with RTTTL support if needed (buzzer and status led)
-# <<: !include { file: ../includes/logger_level.yaml, vars: { level: INFO, baud_rate: 115200 } } #WARN: override default log level to specific one
-# <<: !include { file: ../includes/logger_level.yaml, vars: { level: DEBUG, baud_rate: 115200 } } #WARN: override default log level to specific one
-# <<: !include { file: ../includes/logger_level.yaml, vars: { level: VERY_VERBOSE, baud_rate: 115200 } } #WARN: override default log level to specific one
+<<: !include ../includes/mqtt_with_rtttl.yaml  # WARN: override mqtt with RTTTL support if needed (buzzer and status led)
+# <<: !include {file: ../includes/logger_level.yaml, vars: {level: INFO, baud_rate: 115200}} #WARN: override default log level to specific one
+# <<: !include {file: ../includes/logger_level.yaml, vars: {level: DEBUG, baud_rate: 115200}} #WARN: override default log level to specific one
+# <<: !include {file: ../includes/logger_level.yaml, vars: {level: VERY_VERBOSE, baud_rate: 115200}} #WARN: override default log level to specific one
 # <<: !include ../includes/wifi_outside.yaml #WARN: override wifi to connect to outside network instead of default
-# <<: !include { file: ../includes/wifi_main.yaml, vars: { } } #WARN: override wifi to connect to extended network instead of default
-# <<: !include { file: ../includes/wifi_extended.yaml, vars: { } } #WARN: override wifi to connect to extended network instead of default
-# <<: !include { file: ../includes/wifi_extended2.yaml, vars: { } } #WARN: override wifi to connect to extended network instead of default
+# <<: !include {file: ../includes/wifi_main.yaml, vars: {}} #WARN: override wifi to connect to extended network instead of default
+# <<: !include {file: ../includes/wifi_extended.yaml, vars: {}} #WARN: override wifi to connect to extended network instead of default
+# <<: !include {file: ../includes/wifi_extended2.yaml, vars: {}} #WARN: override wifi to connect to extended network instead of default
 # <<: !include ../includes/api_services.yaml #WARN: this is to expose services like scan_wifi (results in scan_results sensor)
 
 # Include basics of a board
-# <<: !include { file: ../includes/board_esp8266.yaml, vars: { board: "${board}", board_variant: "${board_variant}", restore_from_flash: "${restore_from_flash}", flash_write_interval: "${flash_write_interval}" } }
-<<: !include { file: ../includes/board_esp8266.yaml, vars: {} }
+# <<: !include {file: ../includes/board_esp8266.yaml, vars: {board: "${board}", board_variant: "${board_variant}", restore_from_flash: "${restore_from_flash}", flash_write_interval: "${flash_write_interval}"}}
+<<: !include {file: ../includes/board_esp8266.yaml, vars: {}}
 # <<: !include ../includes/board_esp12f.yaml
 # <<: !include ../includes/board_esp12f_with_sun.yaml
 
 # Include interfaces needed
-<<: !include { file: ../interfaces/debug.yaml, vars: { update_interval: "15s" } }
-<<: !include { file: ../interfaces/rtttl.yaml, vars: { ix: "" } }
-<<: !include { file: ../interfaces/i2c.yaml, vars: { bus_id: "bus_a", sda: "GPIO4", scl: "GPIO0" } }
+<<: !include {file: ../interfaces/debug.yaml, vars: {update_interval: "15s"}}
+<<: !include {file: ../interfaces/rtttl.yaml, vars: {ix: ""}}
+<<: !include {file: ../interfaces/i2c.yaml, vars: {bus_id: "bus_a", sda: "GPIO4", scl: "GPIO0"}}
 
 text_sensor:
   - !include ../sensors/text_uptime.yaml
@@ -95,8 +96,8 @@ binary_sensor:
   - !include ../sensors/binary_ha_connected.yaml
 
   # Double light Switch on AVT5713
-  - !include { file: ../sensors/binary_switch.yaml, vars: { ix: "Top", gpio: "GPIO13" } }
-  # - !include { file: ../sensors/binary_switch.yaml, vars: { ix: "B", gpio: "GPIO14" } }
+  - !include {file: ../sensors/binary_switch.yaml, vars: {ix: "Top", gpio: "GPIO13"}}
+  # - !include {file: ../sensors/binary_switch.yaml, vars: {ix: "B", gpio: "GPIO14"}}
 
 sensor:
   # - !include ../sensors/uptime.yaml
@@ -108,55 +109,55 @@ sensor:
   - !include ../sensors/debug.yaml
 
   # # Temperature and Humidity sensor
-  # - !include { file: ../sensors/temp_hum_SHT3x.yaml, vars: { ix: "", bus_id: "bus_a", address: "0x44" } }
+  # - !include {file: ../sensors/temp_hum_sht3x.yaml, vars: {ix: "", bus_id: "bus_a", address: "0x44"}}
 
   # Illuminance sensor
-  - !include { file: ../sensors/lux_BH1750.yaml, vars: { ix: "", bus_id: "bus_a", address: "0x23" } }
+  - !include {file: ../sensors/lux_bh1750.yaml, vars: {ix: "", bus_id: "bus_a", address: "0x23"}}
 
   # CO2, Temperature and Humidity sensor
-  #! it increases temp by ~5C degrees
-  - !include { file: ../sensors/temp_hum_co2_SCD40.yaml, vars: { ix: "", bus_id: "bus_a", address: "0x62", temp_offset: -11.5, hum_offset: 17.0 } }
+  # ! it increases temp by ~5C degrees
+  - !include {file: ../sensors/temp_hum_co2_scd40.yaml, vars: {ix: "", bus_id: "bus_a", address: "0x62", temp_offset: -11.5, hum_offset: 17.0}}
 
   # TVOC and eCO2 sensor
-  # - !include { file: ../sensors/tvoc_SGP30.yaml, vars: { ix: "", bus_id: "bus_a", address: "0x58" } }
-  - !include { file: ../sensors/tvoc_eco2_SGP30.yaml, vars: { ix: "", bus_id: "bus_a", address: "0x58" } }
+  # - !include {file: ../sensors/tvoc_sgp30.yaml, vars: {ix: "", bus_id: "bus_a", address: "0x58"}}
+  - !include {file: ../sensors/tvoc_eco2_sgp30.yaml, vars: {ix: "", bus_id: "bus_a", address: "0x58"}}
 
 output:
   # LED
-  - !include { file: ../outputs/led.yaml, vars: { ix: "", gpio: "GPIO10", inverted: false } }
+  - !include {file: ../outputs/led.yaml, vars: {ix: "", gpio: "GPIO10", inverted: false}}
 
   # RTTTL Buzzer (passive_buzzer)
-  - !include { file: ../outputs/passive_buzzer.yaml, vars: { ix: "", gpio: "GPIO16" } }
+  - !include {file: ../outputs/passive_buzzer.yaml, vars: {ix: "", gpio: "GPIO16"}}
 
   # Double relay on AVT5713
-  - !include { file: ../outputs/relay.yaml, vars: { ix: "Top", gpio: "GPIO5", inverted: false } }
-#  - !include { file: ../outputs/relay.yaml, vars: { ix: "B", gpio: "GPIO12", inverted: false } }
+  - !include {file: ../outputs/relay.yaml, vars: {ix: "Top", gpio: "GPIO5", inverted: false}}
+#  - !include {file: ../outputs/relay.yaml, vars: {ix: "B", gpio: "GPIO12", inverted: false}}
 
 light:
   # LED
-  - !include { file: ../lights/led.yaml, vars: { ix: "", platform: "binary", off_delay: "5s", entity_category: "" } }
+  - !include {file: ../lights/led.yaml, vars: {ix: "", platform: "binary", off_delay: "5s", entity_category: ""}}
 
   # Double relay on AVT5713
-  - !include { file: ../lights/light_on_relay.yaml, vars: { ix: "Top", mdi_icon: "ceiling-light-outline" } }
-#  - !include { file: ../lights/light_on_relay.yaml, vars: { ix: "B", mdi_icon: "ceiling-light-multiple-outline" } }
+  - !include {file: ../lights/light_on_relay.yaml, vars: {ix: "Top", mdi_icon: "ceiling-light-outline"}}
+#  - !include {file: ../lights/light_on_relay.yaml, vars: {ix: "B", mdi_icon: "ceiling-light-multiple-outline"}}
 
 switch:
   # LED
-  # - !include { file: ../switches/led.yaml, vars: { ix: "", off_delay: "5s", entity_category: "" } }
+  # - !include {file: ../switches/led.yaml, vars: {ix: "", off_delay: "5s", entity_category: ""}}
 
   # LED cycle
-  # - !include { file: ../switches/led_cycle.yaml, vars: { ID: "led", cycles: 3, on_delay: "1s" , off_delay: "500ms" } }
+  # - !include {file: ../switches/led_cycle.yaml, vars: {ID: "led", cycles: 3, on_delay: "1s" , off_delay: "500ms"}}
 
   # RTTTL Play (passive_buzzer)
-  - !include { file: ../switches/rtttl_play.yaml, vars: { ix: "" } }
+  - !include {file: ../switches/rtttl_play.yaml, vars: {ix: ""}}
 
 button:
   # Restart, reset and shutdown buttons
-  - !include { file: ../buttons/restart_button.yaml }
-  - !include { file: ../buttons/safe_mode_restart_button.yaml }
-  - !include { file: ../buttons/factory_reset_button.yaml }
-  # - !include { file: ../buttons/shutdown_button.yaml }
+  - !include {file: ../buttons/restart_button.yaml}
+  - !include {file: ../buttons/safe_mode_restart_button.yaml}
+  - !include {file: ../buttons/factory_reset_button.yaml}
+  # - !include {file: ../buttons/shutdown_button.yaml}
 
   # Scan Wifi button (require wifi_info text sensor to be present to display results)
   # WARN: Performing the scan will disconnect device from current WiFi
-  # - !include { file: ../buttons/scan_wifi_button.yaml }
+  # - !include {file: ../buttons/scan_wifi_button.yaml}

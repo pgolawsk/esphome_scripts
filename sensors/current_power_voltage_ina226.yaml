@@ -1,5 +1,5 @@
 ---
-#* DC Current, Power and Voltage sensor INA226 configuration
+# * DC Current, Power and Voltage sensor INA226 configuration
 # Pawelo, 20230306, created based on https://esphome.io/components/sensor/ina226.html
 
 platform: ina226
