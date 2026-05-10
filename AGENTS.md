@@ -265,6 +265,21 @@ When you complete a `BACKLOG.md` item, **append `**Status:** ✅ done YYYY-MM-DD
 
 If asked about how YAML merges/overrides resolve, read `~/dev/esphome/esphome/yaml_util.py` directly — do not rely on PyYAML default-behavior assumptions.
 
+### Validation rigor — `esphome config` ≠ `esphome compile`
+
+ESPHome offers two validation tiers; they catch different classes of bugs. Pick the right one for your change.
+
+| Command | What it does | What it catches | What it MISSES | Time |
+|---------|-------------|-----------------|----------------|------|
+| `esphome config <file>` | Parse YAML, resolve substitutions, apply includes/packages, validate schema. Renders the merged YAML. | Bad YAML syntax, unresolved substitutions, missing `!include` paths (case-sensitive), schema violations, package merge conflicts. | Lambda errors, undefined `id(...)` references, missing component methods, library/linker conflicts, RAM/Flash overflow. | ~5 s/file |
+| `esphome compile <file>` | Full PlatformIO build: render YAML → C++, compile, link, generate firmware. | Everything `config` catches **plus** lambda body errors, `id(...)` resolution, generated-code conflicts, dependency resolution, library compatibility. | Runtime behavior (sensor read errors, network conditions, hardware-specific quirks). Caught only by flash + run. | 30 s – 5 min/file (cached); minutes more on cold cache. |
+
+**Rule for agents:** for any change that touches **lambdas, `id(...)` references, component wiring, package internals, or board file globals/sensors** — `esphome config` is **not sufficient**. Run `esphome compile` on at least one representative device per touched board family (ESP8266 / ESP32 / ESP32-S3 / ESP32-C3 / BK7231N).
+
+For meta-only changes (substitutions, comments, formatting, `esphome_min_version`, version-history blocks), `esphome config` alone is fine.
+
+If `esphome compile` fails on a **pre-existing bug** not introduced by your change (verify by running compile on the parent commit), document it in the final report as `pre-existing, see BACKLOG item N` and do NOT block the push — but flag for a follow-up fix.
+
 ### External references
 
 - ESPHome loader source: `~/dev/esphome/esphome/yaml_util.py` (function `construct_yaml_map`, lines 187-290)
