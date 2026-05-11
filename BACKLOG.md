@@ -586,6 +586,7 @@ Audit: grepping for un-commented uses of each across PROD/DEV gives:
 **Suggested fix:** Move to `0_DEV/` if still relevant, delete from PROD.
 **Effort:** S
 **Severity:** Cosmetic
+**Status:** ❌ cancelled 2026-05-11 — Pawelo keeps the commented test sensors in place as reference
 
 ### 57. `2_PROD/esp32-35_Pump_Garage.yaml:79-99` has commented `on_boot:` priority -100 block
 
@@ -615,6 +616,7 @@ Audit: grepping for un-commented uses of each across PROD/DEV gives:
 **Where:** `2_PROD/esp32-05_Shades_WinterGardenUpp.yaml`.
 **What:** Commented-out display page with extensive `lambda:` code. ~110 lines of dead code.
 **Suggested fix:** Either delete (history is in git), or move to a `0_DEV/<device>_alt_pages.yaml` reference.
+**Status:** ✅ done 2026-05-11 (deleted commented epaper_spi external_components block + 111-line commented page_time lambda; history in git)
 **Effort:** S
 **Severity:** Cosmetic
 
@@ -798,6 +800,7 @@ Per-device files `0_DEV/.gitignore:5` → `/secrets.yaml` and `2_PROD/.gitignore
 **Suggested fix:** Fix typo.
 **Effort:** S
 **Severity:** Cosmetic
+**Status:** ✅ done 2026-05-11
 
 ### 80. `AGENTS.md` "Build and Flash Commands" example uses old shorthand
 
