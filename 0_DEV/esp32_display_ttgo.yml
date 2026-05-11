@@ -4,8 +4,8 @@
 # * For pinout see: file://..//pinouts//ESP32_T-display_dev_board_pinout.jpg
 ###
 # Pawelo, 20250201, created based on esp32_dev_display.yaml
-# FLUX, 20260510, Lowercased sensor filename references for cross-platform portability (BACKLOG items 1-2)
 # Pawelo, 20260124, added minimum_chip_revision variable to board_esp32.yaml to eliminate warnings
+# FLUX, 20260510, Lowercased sensor filename references for cross-platform portability (BACKLOG items 1-2)
 # FLUX, 20260511, Cleaned up commented wifi-variant boilerplate; see includes/wifi.yaml header for variants (BACKLOG item 19)
 # ! NOT FINISHED/NOT TESTED
 
