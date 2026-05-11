@@ -165,7 +165,7 @@ Recommend (a) for consistency with current style + add to upgrade SOP a check th
 **Suggested fix:** Either remove the substitution and put the constraint in a comment (`#! Do not upgrade beyond 2026.2 — FRAM component breaks`), or build the check into the upgrade SOP grep (item 65 / 70).
 **Effort:** S
 **Severity:** Minor
-**Status:** ✅ done 2026-05-12 (added comprehensive `#!` documentation block in `includes/board_esp32__water_pump.yaml` explaining the FRAM-version coupling, the resolution path via NVM/FRAM PR, and the upgrade-pipeline enforcement layer. Tried moving the substitution declaration to the board file but YAML `<<: !include` first-key-wins drops the entire board `substitutions:` block when the device file has its own — so declaration must stay in device-file substitutions with cross-link comment pointing to the full constraint doc in the board file. ESPHome has no native `max_version` schema; substitution remains documentary, enforcement is in upgrade SOP — cross-ref #65/#70.)
+**Status:** ✅ done 2026-05-12 (wired `${esphome_max_version}` into `esphome.comment` field of `includes/board_esp32__water_pump.yaml` — mirrors the `min_version: ${esphome_min_version}` pattern. Substitution declaration stays in device file (single source of truth), board file consumes it so removing the substitution causes `esphome config` to fail with "undefined" → config-time enforcement. Value also burns into firmware comment, visible via HA / OTA / web_server. ESPHome still has no native `max_version` schema check, but the substitution is no longer purely documentary — it's load-bearing for board-file rendering.)
 
 ---
 

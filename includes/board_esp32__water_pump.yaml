@@ -22,27 +22,8 @@
 # FLUX, 20260511, Removed orphan commented wifi_extended/wifi_multi includes; see includes/wifi.yaml header for variants (BACKLOG item 19)
 # FLUX, 20260511, Deleted commented on_boot priority -100 block (logic lives in api_services__water.yaml on_client_connected; BACKLOG item 57)
 # FLUX, 20260511, Renamed global_watertotal_* to global_water_total_* for cspell-friendly canonical naming (BACKLOG item 7)
-# FLUX, 20260512, Documented esphome_max_version constraint here (coupled with FRAM external_components); declaration must stay in device-file substitutions block due to YAML <<: first-key-wins merge — BACKLOG item 11
-
-#! ==============================================================================
-#! ESPHome version upper bound (esphome_max_version)
-#! ==============================================================================
-#! This board file ships with FRAM via external_components: github://pr#4880
-#! (loaded by interfaces/fram__water_pump.yaml). That PR is incompatible with
-#! ESPHome >= 2026.3 due to explicit ESPPreferenceObject(PreferenceBackend*)
-#! constructor change — see FRAM_PREF.cpp:282 compile error.
-#!
-#! Devices using this board MUST declare in their substitutions block:
-#!     esphome_max_version: 2026.2
-#!
-#! ESPHome has no native `max_version` check, so this substitution is purely
-#! documentary today. Upgrade pipeline (esp_upgrade.sh / upgrade SOP) is the
-#! enforcement layer — it greps device files for this substitution and refuses
-#! to bump past the declared cap. Cross-ref BACKLOG #11.
-#!
-#! Resolution path: replace this external_component with Pawelo's own NVM/FRAM
-#! PR — once merged, this constraint lifts and the substitution can be removed.
-#! ==============================================================================
+# FLUX, 20260512, Wired comment: ${esphome_max_version} to consume the device-file substitution (mirror of min_version pattern) — BACKLOG item 11
+#! FRAM via external_components github://pr#4880 breaks above ESPHome 2026.2 — devices using this board must declare `esphome_max_version` in their substitutions block
 
 globals:
   - id: global_water_total_all
@@ -75,7 +56,7 @@ esphome:
   friendly_name: $room
   area: $room
   min_version: ${esphome_min_version}
-  comment: $room ESP32 controller with $devices
+  comment: $room ESP32 controller with $devices (ESPHome max ${esphome_max_version} due to FRAM PR#4880)
 #  platform: ESP8266   # OLD notation
   project:
     name: $project_name

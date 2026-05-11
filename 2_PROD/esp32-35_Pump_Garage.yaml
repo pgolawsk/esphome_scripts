@@ -69,7 +69,7 @@ substitutions:
   project_name: "pgolawsk.esp_home"
   version: "20251205"
   esphome_min_version: 2025.6.3  # worked on previous versions as well
-  esphome_max_version: 2026.2  #! last version where FRAM works — full constraint doc in includes/board_esp32__water_pump.yaml header
+  esphome_max_version: 2026.2  #! consumed by includes/board_esp32__water_pump.yaml in esphome.comment field — coupled to FRAM PR#4880
 
   # required by ../includes/board_esp32.yaml script
   framework_type: arduino  # "arduino" or "esp-idf"
