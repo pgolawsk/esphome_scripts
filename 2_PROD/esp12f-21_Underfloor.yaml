@@ -36,6 +36,7 @@
 # Pawelo, 20251122, enabled debug component and sensors, as prometheus /metrics endpoint is working fine now
 # FLUX, 20260510, Lowercased sensor filename references for cross-platform portability (BACKLOG items 1-2)
 # FLUX, 20260510, Added esphome_min_version substitution per BACKLOG item 10
+# FLUX, 20260511, Fixed missing closing quote on wire_id in commented Dlong sensor include (BACKLOG item 5)
 
 # ! run with this command to override substitutions
 # esphome -s devicename espXX -s updates 1min -s room <Room name> -s mqtt_room <room> run esp12f_SSss_MMmm__PP.yaml --device 192.168.x.x
@@ -122,7 +123,7 @@ sensor:
   - !include {file: ../sensors/temp_ds18b20.yaml, vars: {ix: "Dboiler", wire_id: "ow_a", address: "0xba0000000ab27528", min_temp: -10, max_temp: 50}}  # 1m cable
   # - !include {file: ../sensors/temp_ds18b20_on_dallasng.yaml, vars: {ix: "Dwall", address: "0xc00000000c511a28", min_temp: -10, max_temp: 50}} # 1m cable
   # - !include {file: ../sensors/temp_ds18b20_on_dallasng.yaml, vars: {ix: "Dboiler", address: "0xba0000000ab27528", min_temp: -10, max_temp: 50}} # 1m cable
-#  - !include {file: ../sensors/temp_ds18b20.yaml, vars: {ix: "Dlong", wire_id: "ow_a, address: "0x0b0417c42dceff28", min_temp: -10, max_temp: 50}} # 2m cable
+#  - !include {file: ../sensors/temp_ds18b20.yaml, vars: {ix: "Dlong", wire_id: "ow_a", address: "0x0b0417c42dceff28", min_temp: -10, max_temp: 50}} # 2m cable
 
   # Temperature and Humidity sensor
   - !include {file: ../sensors/temp_hum_sht3x.yaml, vars: {ix: "", bus_id: "bus_a", address: "0x44"}}

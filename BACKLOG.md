@@ -92,6 +92,7 @@ Scope walked: `2_PROD/*.yaml` (all 11), representative `0_DEV/*.yaml`, `includes
 **Suggested fix:** Add the missing quote: `wire_id: "ow_a", address: "0x0b0417c42dceff28"`.
 **Effort:** S
 **Severity:** Notable
+**Status:** ✅ done 2026-05-11
 
 ### 6. Typo `wifi__bssod.yaml` in secrets.yaml comment
 
@@ -100,6 +101,7 @@ Scope walked: `2_PROD/*.yaml` (all 11), representative `0_DEV/*.yaml`, `includes
 **Suggested fix:** Replace `bssod` with `bssid`.
 **Effort:** S
 **Severity:** Cosmetic
+**Status:** ✅ done 2026-05-11 (note: `secrets.yaml` is gitignored — fix applied locally only)
 
 ### 7. `globals_water_totals_restore.yaml` defines variables that diverge from the loaded `board_esp32__water_pump.yaml`
 
@@ -126,6 +128,7 @@ Scope walked: `2_PROD/*.yaml` (all 11), representative `0_DEV/*.yaml`, `includes
 **Suggested fix:** Add one substitution line to each of the 8 PROD files at the same default level as the existing 3 (currently `2025.6.3`).
 **Effort:** M
 **Severity:** Notable
+**Status:** ✅ done 2026-05-10 (covered alongside items 9+10 in commit `69b28f9` — per-device floor pins added to all 11 PROD files)
 
 ### 9. `esphome_min_version` only takes effect when `min_version: ${esphome_min_version}` is wired in the board file — and only `board_esp32_with_psram_fix.yaml` wires it
 
