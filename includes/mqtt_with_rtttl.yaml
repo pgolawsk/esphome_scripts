@@ -7,6 +7,7 @@
 #! Pawelo, 20230410, prometheus not working with "on_message" section
 #! Pawelo, 20230410, prometheus randomly not working while client_id is set
 # Pawelo, 20250126, set discovery to false to avoid duplicated entries on HA
+# FLUX, 20260512, Added keepalive: 60s to match mqtt.yaml fix (BACKLOG item 38)
 
 mqtt:
   id: mqtt_client
@@ -14,6 +15,7 @@ mqtt:
   port: !secret mqtt_port
   username: !secret mqtt_user
   password: !secret mqtt_password
+  keepalive: 60s
 #  client_id: $devicename
   discovery: false
   # discovery_retain: false
