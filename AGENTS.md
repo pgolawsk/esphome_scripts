@@ -79,6 +79,13 @@ When a dual-room script is added, the device substitutions block **must** declar
 
 - Grouped by type: `sensors/`, `outputs/`, `lights/`, `switches/`, `buttons/`, `fans/`, `interfaces/`, `includes/`
 
+**`.yml` vs `.yaml` extension** — intentional convention:
+
+- **`.yaml`** is the default extension for all device scripts and includes. The bulk-compile loop in `esp_upgrade.sh` (`find 0_DEV -name "*.yaml" -exec esphome ... compile {} \;`) only picks up `.yaml` files.
+- **`.yml`** is used as a deliberate marker for scripts that are **known not to compile in the current state** (work-in-progress experiments, ESP variants without a working board file, drafts kept for reference). Renaming them to `.yml` excludes them from the upgrade-time compile sweep without deleting them.
+- Examples currently in repo: `0_DEV/esp32-33_s3_VA.yml`, `0_DEV/esp32_display_ttgo.yml`, `0_DEV/miniss_dev.yml`.
+- Do **not** rename `.yml` files to `.yaml` as a cleanup pass — the extension carries semantic information. When a `.yml` script starts compiling reliably, rename it to `.yaml` to opt it back into the sweep.
+
 ### YAML Structure
 
 **Device scripts** follow this order:

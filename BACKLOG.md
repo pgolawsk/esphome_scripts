@@ -79,6 +79,7 @@ Scope walked: `2_PROD/*.yaml` (all 11), representative `0_DEV/*.yaml`, `includes
 **Suggested fix:** `git mv esp32-33_s3_VA.yml esp32-33_s3_VA.yaml` etc.
 **Effort:** S
 **Severity:** Cosmetic
+**Status:** ❌ cancelled 2026-05-11 — **wontfix**: `.yml` is a deliberate marker for scripts that don't currently compile (excluded from the `find *.yaml` upgrade sweep in `esp_upgrade.sh`). Convention now documented in AGENTS.md § File Naming Conventions.
 
 ---
 
