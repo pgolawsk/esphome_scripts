@@ -431,7 +431,7 @@ Audit: grepping for un-commented uses of each across PROD/DEV gives:
 **Suggested fix:** Either sync `mqtt_with_rtttl.yaml` to add `keepalive: 60s`, or merge to one file driven by substitution `${mqtt_extras: empty|rtttl}` (cross-ref item 14).
 **Effort:** S
 **Severity:** Notable (real config drift)
-**Status:** ✅ done 2026-05-12 (added `keepalive: 60s` to `mqtt_with_rtttl.yaml` matching `mqtt.yaml`. The `on_message:` block difference is intentional — `mqtt_with_rtttl.yaml` actively subscribes to RTTTL topics for devices with buzzers; `mqtt.yaml` keeps it commented for devices without. Full consolidation deferred to BACKLOG #14. Note: `reboot_timeout: 0s` also present in `mqtt.yaml` but not in `mqtt_with_rtttl.yaml` — left as-is, separate question of intent.)
+**Status:** ✅ done 2026-05-12 (synced `keepalive: 60s` and `reboot_timeout: 0s` from `mqtt.yaml` to `mqtt_with_rtttl.yaml`. The `on_message:` block difference is intentional — `mqtt_with_rtttl.yaml` actively subscribes to RTTTL topics for devices with buzzers; `mqtt.yaml` keeps it commented for devices without. Full consolidation deferred to BACKLOG #14.)
 
 ### 39. `mqtt.yaml` has 6 lines of commented `on_message: log_level_set` actions referenced as `mqtt_on_message/log_level_set.yaml`
 

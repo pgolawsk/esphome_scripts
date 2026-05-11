@@ -8,6 +8,7 @@
 #! Pawelo, 20230410, prometheus randomly not working while client_id is set
 # Pawelo, 20250126, set discovery to false to avoid duplicated entries on HA
 # FLUX, 20260512, Added keepalive: 60s to match mqtt.yaml fix (BACKLOG item 38)
+# FLUX, 20260512, Added reboot_timeout: 0s to match mqtt.yaml (BACKLOG item 38 follow-up)
 
 mqtt:
   id: mqtt_client
@@ -16,6 +17,7 @@ mqtt:
   username: !secret mqtt_user
   password: !secret mqtt_password
   keepalive: 60s
+  reboot_timeout: 0s
 #  client_id: $devicename
   discovery: false
   # discovery_retain: false
