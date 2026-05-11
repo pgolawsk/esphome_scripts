@@ -112,7 +112,8 @@ Scope walked: `2_PROD/*.yaml` (all 11), representative `0_DEV/*.yaml`, `includes
 **Why fix:** A future "let me move globals out of the board file" refactor will hit a name mismatch. Confuses readers about which is canonical.
 **Suggested fix:** Decide one canonical name (recommend `global_water_total_*` for readability), update both files + the lambdas in `board_esp32__water_pump.yaml:64-77` and `api_services__water.yaml:33-46`. Or delete `globals_water_totals_restore.yaml` if it's not used.
 **Effort:** M
-**Severity:** Notable
+**Severity:** Notable (was actually Important — PROD esp32-35 failed `esphome config` since cspell commit `c4daa57` 2026-03-09)
+**Status:** ✅ done 2026-05-11 (variant A: canonical = `global_water_total_*` with underscore. Renamed across `includes/board_esp32__water_pump.yaml` (defs + lambdas), `interfaces/fram__water_pump.yaml` (FRAM keys + replaced hand-copied hash lambdas with `fnv1_hash("...")` calls), `buttons/reset_watertotal_button.yaml`, `buttons/save_watertotal_button.yaml`, `includes/api_services__water.yaml` (commented refs), `0_DEV/esp32_THIWdb_SBYr.yaml` (commented test sensors). `esphome config` passes on PROD and DEV esp32-35 (was failing on parent). FRAM data loss acceptable per Pawelo — migrating to own NVM/FRAM PR anyway. `esphome compile` exposes separate **pre-existing C++ error** in stale external_component `fram_pref` (PR#4880) `FRAM_PREF.cpp:282` — incompatible with current ESPHome's explicit `ESPPreferenceObject` constructor; unrelated to #7, resolved by NVM/FRAM PR migration. Note: button filenames `reset_watertotal_button.yaml`/`save_watertotal_button.yaml` not renamed — separate cosmetic task.)
 
 ---
 

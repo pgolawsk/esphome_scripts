@@ -26,6 +26,7 @@
 # Pawelo, 20250221, added uptime_boot text sensor
 # Pawelo, 20260124, added minimum_chip_revision variable to board_esp32.yaml to eliminate warnings
 # FLUX, 20260510, Lowercased sensor filename references for cross-platform portability (BACKLOG items 1-2)
+# FLUX, 20260511, Renamed global_watertotal_* to global_water_total_* for cspell-friendly canonical naming (BACKLOG item 7)
 
 # ! run with this command to override substitutions
 # esphome -s devicename espXX -s updates 1min -s room <Room name> -s mqtt_room <room> run esp32_MMmm_SSss__PP.yaml --device 192.168.x.x
@@ -180,12 +181,12 @@ sensor:
 
   # #! for test purpose only
   # - platform: template
-  #   name: Test global_watertotal_all
-  #   lambda: return id(global_watertotal_all);
+  #   name: Test global_water_total_all
+  #   lambda: return id(global_water_total_all);
   #   accuracy_decimals: 5
   # - platform: template
-  #   name: Test global_watertotal_garden
-  #   lambda: return id(global_watertotal_garden);
+  #   name: Test global_water_total_garden
+  #   lambda: return id(global_water_total_garden);
   #   accuracy_decimals: 5
 
 # switch:

@@ -3,10 +3,11 @@
 # Pawelo, 20231007, created based on https://github.com/esphome/esphome/pull/4880 and https://deploy-preview-2950--esphome.netlify.app/components/fram.html#fram-types
 # Pawelo, 20231012, added select_display_cycle_interval preservation
 # Pawelo, 20231017, added customizable address for FRAM
+# FLUX, 20260511, Renamed global_watertotal_* to global_water_total_* for cspell-friendly canonical naming (BACKLOG item 7)
 
 external_components:
   - source: github://pr#4880
-    components: [ fram, fram_pref ]
+    components: [fram, fram_pref]
 
 fram:
   - id: fram_a
@@ -22,13 +23,13 @@ fram_pref:
   pool_start: 2048
   pool_size: 2KiB
   static_prefs:
-    - key: global_watertotal_all
-      lambda: return 210044532; // read from logs in DEBUG mode
+    - key: global_water_total_all
+      lambda: return fnv1_hash("global_water_total_all");
       addr: 12
       size: 6
       persist_key: true
-    - key: global_watertotal_garden
-      lambda: return 1166242707; // read from logs in DEBUG mode
+    - key: global_water_total_garden
+      lambda: return fnv1_hash("global_water_total_garden");
       addr: 24
       size: 6
       persist_key: true
@@ -37,7 +38,7 @@ fram_pref:
       addr: 128
       size: 6
       persist_key: true
-    # - key: global_watertotal_home
+    # - key: global_water_total_home
     #   lambda: return fnv1_hash("watertotal_home");
     #   # addr: 12
     #   # size: 4

@@ -2,6 +2,7 @@
 #* Reset Water Total (global variable) button
 #! NEED RESTART after use to make set it up (as total sensor is preserving old value)
 # Pawelo, 20231021, created
+# FLUX, 20260511, Renamed global_watertotal_* to global_water_total_* for cspell-friendly canonical naming (BACKLOG item 7)
 
 platform: template
 name: "$room Reset Water Total${ix}"
@@ -11,5 +12,5 @@ state_topic: $devicename/button_reset_total${ix}
 on_press:
   then:
     - globals.set:
-        id: global_watertotal${ix}
+        id: global_water_total${ix}
         value: "0"

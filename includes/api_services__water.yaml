@@ -9,6 +9,7 @@
 # Pawelo, 20250914, added add_total_water service for 2 water meter
 # Pawelo, 20251023, added on_client_connected to update totals on HA connect
 # FLUX, 20260511, Removed obsolete api_password reference (BACKLOG item 41)
+# FLUX, 20260511, Renamed global_watertotal_* to global_water_total_* for cspell-friendly canonical naming (BACKLOG item 7)
 
 api:
   reboot_timeout: 0s # 0s will disable reboot if no HA connected
@@ -44,5 +45,5 @@ api:
             ESP_LOGI("api", "on_client_connected: updated water_total_garden from HA: %.2f L + current use: %.2f L", id(ha_water_total_garden).state, id(water_total_all).state);
           }
         }
-    # - lambda: id(water_total_home).publish_state(id(global_watertotal_all) * ${pulses_per_liter}  - id(global_watertotal_garden) * ${pulses_per_liter_garden});
-    # - lambda: id(water_used_home).publish_state((id(global_watertotal_all) * ${pulses_per_liter}  - id(global_watertotal_garden) * ${pulses_per_liter_garden})/1000);
+    # - lambda: id(water_total_home).publish_state(id(global_water_total_all) * ${pulses_per_liter}  - id(global_water_total_garden) * ${pulses_per_liter_garden});
+    # - lambda: id(water_used_home).publish_state((id(global_water_total_all) * ${pulses_per_liter}  - id(global_water_total_garden) * ${pulses_per_liter_garden})/1000);

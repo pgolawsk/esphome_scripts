@@ -3,6 +3,7 @@
 #! NOT TESTED
 # Pawelo, 20230917, created
 # Pawelo, 20231021, parametrized vi ${ix}
+# FLUX, 20260511, Renamed global_watertotal_* to global_water_total_* for cspell-friendly canonical naming (BACKLOG item 7)
 
 platform: template
 name: "$room Button Save Total${ix}"
@@ -12,8 +13,8 @@ state_topic: $devicename/button_save_total${ix}
 on_press:
   then:
     - globals.set:
-        id: global_watertotal${ix}
+        id: global_water_total${ix}
         value: !lambda 'return id(water_flow_all).state / ${pulses_per_liter};'
     # - globals.set:
-    #     id: global_watertotal_garden
+    #     id: global_water_total_garden
     #     value: !lambda 'return id(water_flow_garden).state / ${pulses_per_liter_garden};'

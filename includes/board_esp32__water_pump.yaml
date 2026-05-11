@@ -21,17 +21,18 @@
 # FLUX, 20260510, Wired min_version: ${esphome_min_version} per BACKLOG item 9
 # FLUX, 20260511, Removed orphan commented wifi_extended/wifi_multi includes; see includes/wifi.yaml header for variants (BACKLOG item 19)
 # FLUX, 20260511, Deleted commented on_boot priority -100 block (logic lives in api_services__water.yaml on_client_connected; BACKLOG item 57)
+# FLUX, 20260511, Renamed global_watertotal_* to global_water_total_* for cspell-friendly canonical naming (BACKLOG item 7)
 
 globals:
-  - id: global_watertotal_all
+  - id: global_water_total_all
     type: float
     restore_value: true
     initial_value: "0.0"
-  - id: global_watertotal_garden
+  - id: global_water_total_garden
     type: float
     restore_value: true
     initial_value: "0.0"
-  # - id: global_watertotal_home
+  # - id: global_water_total_home
   #   type: float
   #   restore_value: true
   #   initial_value: "0.0"
@@ -71,21 +72,21 @@ esphome:
         # read totals from globals and push to sensors
         - pulse_meter.set_total_pulses:
             id: water_flow_all
-            value: !lambda 'return (id(global_watertotal_all) * ${pulses_per_liter});'
-        - lambda: id(water_total_all).publish_state(id(global_watertotal_all) * ${pulses_per_liter});
+            value: !lambda 'return (id(global_water_total_all) * ${pulses_per_liter});'
+        - lambda: id(water_total_all).publish_state(id(global_water_total_all) * ${pulses_per_liter});
         - pulse_meter.set_total_pulses:
             id: water_flow_garden
-            value: !lambda 'return (id(global_watertotal_garden) * ${pulses_per_liter_garden});'
-        - lambda: id(water_total_garden).publish_state(id(global_watertotal_garden) * ${pulses_per_liter_garden});
-        - lambda: id(water_total_home).publish_state(id(global_watertotal_all) * ${pulses_per_liter}  - id(global_watertotal_garden) * ${pulses_per_liter_garden});
-        - lambda: id(water_used_home).publish_state((id(global_watertotal_all) * ${pulses_per_liter}  - id(global_watertotal_garden) * ${pulses_per_liter_garden})/1000);
+            value: !lambda 'return (id(global_water_total_garden) * ${pulses_per_liter_garden});'
+        - lambda: id(water_total_garden).publish_state(id(global_water_total_garden) * ${pulses_per_liter_garden});
+        - lambda: id(water_total_home).publish_state(id(global_water_total_all) * ${pulses_per_liter}  - id(global_water_total_garden) * ${pulses_per_liter_garden});
+        - lambda: id(water_used_home).publish_state((id(global_water_total_all) * ${pulses_per_liter}  - id(global_water_total_garden) * ${pulses_per_liter_garden})/1000);
   # on_shutdown:
   #   then:
   #     - globals.set:
-  #         id: global_watertotal_all
+  #         id: global_water_total_all
   #         value: !lambda 'return id(water_flow_all).state / ${pulses_per_liter};'
   #     - globals.set:
-  #         id: global_watertotal_garden
+  #         id: global_water_total_garden
   #         value: !lambda 'return id(water_flow_garden).state / ${pulses_per_liter};'
 
 esp32:
