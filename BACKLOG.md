@@ -647,6 +647,7 @@ Audit: grepping for un-commented uses of each across PROD/DEV gives:
 
 **Where:** Cross-ref item 7.
 **Severity:** Notable (covered in item 7)
+**Status:** ✅ done 2026-05-11 (resolved by item 7 — `board_esp32__water_pump.yaml` renamed to canonical `global_water_total_*`, matches `globals_water_totals_restore.yaml`. Verified both files now use identical naming.)
 
 ### 63. Polish-source comment string `"Pawelo, YYYYMMDD, ..."` is the changelog format vs README/AGENTS.md English conventions
 
