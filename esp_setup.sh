@@ -16,6 +16,7 @@
 # Pawelo 20250107, some typos corrected, some obsolete script names corrected
 # Pawelo 20250220, added venv creation for python3
 # FLUX, 20260511, Slimmed 6 PROD upgrade commands to use 2_PROD/ paths (per BACKLOG item 25) — old DEV-style filenames mapped to current PROD equivalents
+# FLUX, 20260511, Fixed dead references — esp12f_THICDV2lbd_BCDar→0_DEV/esp12f_dev.yaml (TestSwitch2 superset); miniss_dev.yaml→0_DEV/miniss_dev.yml (correct ext); commented obsolete esp12f_TH2L_SA.yaml in OPTIONAL section
 
 #TODO: Read more complicated AIQ measurement on https://github.com/nkitanov/iaq_board
 #TODO: Read about speaker with PAM8403 (amplifier) connection to ESP826 on: https://www.instructables.com/MQTT-Audio-Notifier-for-ESP8266-Play-MP3-TTS-RTTL/
@@ -132,7 +133,7 @@ esphome run 2_PROD/esp12f-25_AquariumWindow.yaml --device 192.168.x.x      # ali
 # TEST devices
 esphome -s devicename esp12f-29 -s updates 30s -s room Test -s mqtt_location measures -s mqtt_room test run esp12f_dev.yaml --device 192.168.x.x
 #esphome -s devicename esp12f-28 -s updates 30s -s room TestSwitch  -s mqtt_location measures -s mqtt_room test_switch run esp12f_THI2lbd_SBar.yaml --device 192.168.x.x
-esphome -s devicename esp12f-28 -s updates 30s -s room TestSwitch2 -s mqtt_location measures -s mqtt_room test_switch2 run esp12f_THICDV2lbd_BCDar.yaml --device 192.168.x.x
+esphome -s devicename esp12f-28 -s updates 30s -s room TestSwitch2 -s mqtt_location measures -s mqtt_room test_switch2 run 0_DEV/esp12f_dev.yaml --device 192.168.x.x   # was esp12f_THICDV2lbd_BCDar.yaml — superseded by reference DEV template
 
 # esphome -s devicename esp12f-11 -s updates 30s -s room Kitchen -s mqtt_room kitchen run esp12f_THI_SB.yaml --device 192.168.x.x
 
@@ -154,7 +155,7 @@ esphome -s devicename esp32-40 -s updates 1min -s room Test32cam -s mqtt_locatio
 
 esphome -s devicename esp32-50 -s updates 60s -s room Display -s mqtt_location measures -s mqtt_room display run esp32_display_lillygoT5.yaml --device 192.168.x.x
 
-esphome -s devicename miniss-200 -s updates 60s -s room TestMiniSS -s mqtt_location measures -s mqtt_room test_miniss run miniss_dev.yaml --device 192.168.x.x
+esphome -s devicename miniss-200 -s updates 60s -s room TestMiniSS -s mqtt_location measures -s mqtt_room test_miniss run 0_DEV/miniss_dev.yml --device 192.168.x.x
 
 ###########################
 #* Set up Prometheus scraping
@@ -200,7 +201,9 @@ docker-compose logs prometheus
 esptool.py --port /dev/cu.usbserial-22120 read_flash 0x00000 0x100000 image1M.bin
 
 # upload new ESPHome firmware with OTA
-esphome -s devicename esp12f-13 -s updates 1min -s room TestSwitch -s mqtt_room test_switch run esp12f_TH2L_SA.yaml
+# OBSOLETE: esp12f_TH2L_SA.yaml (SHTx30 + AVT5713 double light switch) no longer exists.
+# For a similar smart-switch config see 0_DEV/esp12f_THI2lbd_SBar.yaml (SHTx30 + AVT5713 + BH1750/buzzer/diode).
+# esphome -s devicename esp12f-13 -s updates 1min -s room TestSwitch -s mqtt_room test_switch run esp12f_TH2L_SA.yaml
 
 # any further upload can be done via OTA:) with no soldering again
 
