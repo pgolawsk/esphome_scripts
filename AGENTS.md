@@ -122,7 +122,7 @@ When a dual-room script is added, the device substitutions block **must** declar
 
 - `board`: PlatformIO board name (e.g., `esp12e`, `esp01_1m`)
 - `board_variant`: Board variant (e.g., `12F`, `07s`, `01m`)
-- `restore_from_flash`: String `"false"` or `"true"`
+- `restore_from_flash`: Boolean `false` or `true` (unquoted). ESPHome's `cv.boolean` validator accepts native bool through the substitutions chain since type-preservation was added; the old "must be set as string" convention was historical and is no longer required (see BACKLOG #53).
 - `flash_write_interval`: e.g., `"5min"`
 
 ### Include Patterns
