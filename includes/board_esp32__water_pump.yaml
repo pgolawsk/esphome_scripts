@@ -20,6 +20,7 @@
 # Pawelo, 20251023, moved reading water total values from HA to api on_client_connected event
 # FLUX, 20260510, Wired min_version: ${esphome_min_version} per BACKLOG item 9
 # FLUX, 20260511, Removed orphan commented wifi_extended/wifi_multi includes; see includes/wifi.yaml header for variants (BACKLOG item 19)
+# FLUX, 20260511, Deleted commented on_boot priority -100 block (logic lives in api_services__water.yaml on_client_connected; BACKLOG item 57)
 
 globals:
   - id: global_watertotal_all
@@ -78,27 +79,6 @@ esphome:
         - lambda: id(water_total_garden).publish_state(id(global_watertotal_garden) * ${pulses_per_liter_garden});
         - lambda: id(water_total_home).publish_state(id(global_watertotal_all) * ${pulses_per_liter}  - id(global_watertotal_garden) * ${pulses_per_liter_garden});
         - lambda: id(water_used_home).publish_state((id(global_watertotal_all) * ${pulses_per_liter}  - id(global_watertotal_garden) * ${pulses_per_liter_garden})/1000);
-    # NOTE: MOVED to api on_client_connected
-    # - priority: -100 # At this priority, pretty much everything should already be initialized.
-    #   #! this is in case ESPHome device was reset and lost totals in globals - to avoid losing total water usage
-    #   then:
-    #     - lambda: |-
-    #         if (!isnan(id(ha_water_total_all).state)) {
-    #           if (id(water_total_all).state < 1000) {// sanity check - only update if total is less than 1000 liters
-    #             int new_total = (id(water_total_all).state * ${pulses_per_liter}) + (id(ha_water_total_all).state * ${pulses_per_liter});
-    #             id(water_total_all).publish_state(new_total);
-    #             ESP_LOGI("main", "on_boot: updated water_total_all from HA: %.2f L + current use: %.2f L", id(ha_water_total_all).state, id(water_total_all).state);
-    # }
-    # }
-    #         if (!isnan(id(ha_water_total_garden).state)) {
-    #           if (id(water_total_garden).state < 1000) {// sanity check - only update if total is less than 1000 liters
-    #             int new_total = (id(water_total_garden).state * ${pulses_per_liter_garden}) + (id(ha_water_total_garden).state * ${pulses_per_liter_garden});
-    #             id(water_total_garden).publish_state(new_total);
-    #             ESP_LOGI("main", "on_boot: updated water_total_garden from HA: %.2f L + current use: %.2f L", id(ha_water_total_garden).state, id(water_total_all).state);
-    # }
-    # }
-    #     # - lambda: id(water_total_home).publish_state(id(global_watertotal_all) * ${pulses_per_liter}  - id(global_watertotal_garden) * ${pulses_per_liter_garden});
-    #     # - lambda: id(water_used_home).publish_state((id(global_watertotal_all) * ${pulses_per_liter}  - id(global_watertotal_garden) * ${pulses_per_liter_garden})/1000);
   # on_shutdown:
   #   then:
   #     - globals.set:

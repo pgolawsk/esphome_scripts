@@ -595,6 +595,7 @@ Audit: grepping for un-commented uses of each across PROD/DEV gives:
 **Suggested fix:** Delete; the `api on_client_connected` lambda is in `api_services__water.yaml:30-46` and works.
 **Effort:** S
 **Severity:** Cosmetic
+**Status:** ✅ done 2026-05-11 (deleted 21 lines of commented `on_boot: priority -100` block; live logic is in `api_services__water.yaml on_client_connected`)
 
 ### 58. Header version-history comments in PROD files have grown to 30+ lines each
 
@@ -775,6 +776,7 @@ Per-device files `0_DEV/.gitignore:5` → `/secrets.yaml` and `2_PROD/.gitignore
 **Suggested fix:** Remove the public-broker line. Keep only LAN options.
 **Effort:** S
 **Severity:** Minor (if uncommented = data leak)
+**Status:** ✅ done 2026-05-11 (removed `#mqtt_ip: "test.mosquitto.org"` from secrets.yaml — note: gitignored, fix applied locally only)
 
 ---
 
