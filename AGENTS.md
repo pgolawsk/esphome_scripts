@@ -50,7 +50,7 @@ All YAML configuration files, comments (including `#*`, `#!`, `#?`, `# NOTE:`, `
 
 ### File Naming Conventions
 
-**Device scripts**: `board_MMmm_SSss__PP.yaml`
+**Reference / DEV scripts** (`0_DEV/`): `board_MMmm_SSss__PP.yaml`
 
 - `board`: ESP board type (esp12f, esp32c3, esp32s3, etc.)
 - `MM`: Measures (T=Temperature, H=Humidity, P=Pressure, I=Illuminance, C=CO2, etc.)
@@ -61,6 +61,19 @@ All YAML configuration files, comments (including `#*`, `#!`, `#?`, `# NOTE:`, `
 - `_dev`: Development scripts with many sensors (reference implementations)
 
 Example: `esp12f_THIb_STr.yaml` = ESP12F with Temperature/Humidity/Illuminance, buzzer, SHT3x, TCS3472, RTTTL
+
+**Deployed device scripts** (`2_PROD/`, `1_UAT/`): `<board>-<id>_<RoomA>[_<RoomB>].yaml`
+
+- `<board>`: ESP board type (esp12f, esp32, esp32c3, …)
+- `<id>`: Two-digit device identifier matching the MQTT/network hostname (e.g. `10`, `35`)
+- `<RoomA>`: PascalCase friendly name of the primary room/area the device serves (matches `${room}` substitution; published under `${mqtt_location}/${mqtt_room}/...`)
+- `<RoomB>` (optional): PascalCase friendly name of the **secondary** room when the device exposes sensors/actuators for a second area (matches `${room2}` substitution). Omit when the device serves only one room.
+
+Examples:
+- Single-room: `esp12f-10_Office.yaml`, `esp32-14_Salon.yaml`, `esp32-39_Attic.yaml`
+- Dual-room: `esp12f-11_Entrance_Entry.yaml` (doorbell in Entrance + gate switch on Entry), `esp32-05_Shades_WinterGardenUpp.yaml` (shades motor in Shades + ePaper/sensors in WinterGardenUpp), `esp32-06_Garden_Gateway.yaml`, `esp32-35_Pump_Garage.yaml`, `esp32-36_Garage_Gate.yaml`
+
+When a dual-room script is added, the device substitutions block **must** declare `room2`, `mqtt_location2`, `mqtt_room2` with concrete defaults (single source of truth — see `.dir_aliases` for current values).
 
 **Include files**: `category_specific_name.yaml` (e.g., `sensor_sht30.yaml`, `output_relay.yaml`)
 
