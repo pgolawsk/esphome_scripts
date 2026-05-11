@@ -818,6 +818,7 @@ Per-device files `0_DEV/.gitignore:5` → `/secrets.yaml` and `2_PROD/.gitignore
 **Suggested fix:** Lead with the alias example, push the long-form to a "without aliases" subsection.
 **Effort:** S
 **Severity:** Cosmetic
+**Status:** ✅ done 2026-05-12 (rewrote AGENTS.md "Build and Flash Commands" block: lead with `esp10` / `esp10dev` alias form, then explicit `esphome run ... --device ...lan` form, then ad-hoc `-s` override pattern. Removed obsolete long-form example with hardcoded substitution overrides — substitution defaults now live in device YAMLs per BACKLOG #25.)
 
 ### 81. `upgrade/COMPONENTS.md:31` says "Min version pins in configs | 2025.6.3 – 2025.8.0" but the table at line 36-39 only lists 3 devices (cross-ref item 8)
 

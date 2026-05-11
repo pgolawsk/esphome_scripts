@@ -9,11 +9,16 @@ This repository contains modular ESPHome YAML configurations for ESP devices (ES
 ./check_esphome_version.sh --check-only   # Exit 10 if update available
 ./check_esphome_version.sh --auto          # Auto-upgrade
 
-# Flash a device with variable substitutions
-esphome -s devicename esp12f_office -s updates 30s -s room Office -s mqtt_room office run 2_PROD/esp12f-10_Office.yaml
+# Flash a device — preferred form: shell alias (see Device Aliases table below)
+esp10            # PROD: flash esp12f-10 (Office) over OTA via esp12f-10.lan
+esp10dev         # DEV variant of the same device
 
-# OTA update to specific IP (add --device flag)
-esphome run 2_PROD/esp12f-10_Office.yaml --device 192.168.x.x
+# Without aliases — explicit esphome CLI form
+esphome run 2_PROD/esp12f-10_Office.yaml --device esp12f-10.lan
+esphome run 2_PROD/esp12f-10_Office.yaml --device 192.168.x.x    # specific IP
+
+# Ad-hoc substitution overrides (only if you need a non-default value)
+esphome -s updates 5s -s room Office run 2_PROD/esp12f-10_Office.yaml --device esp12f-10.lan
 
 # Validate configuration without flashing
 esphome config 2_PROD/esp12f-10_Office.yaml
@@ -21,6 +26,8 @@ esphome config 2_PROD/esp12f-10_Office.yaml
 # Clean build (useful after ESPHome updates)
 esphome clean 2_PROD/esp12f-10_Office.yaml
 ```
+
+All substitution defaults (`devicename`, `room`, `mqtt_room`, etc.) live in the device YAMLs themselves, so the alias and the plain `esphome run` form are equivalent. Use `-s key value` only for ad-hoc overrides.
 
 ## Device Aliases
 
