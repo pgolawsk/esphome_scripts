@@ -564,6 +564,7 @@ Audit: grepping for un-commented uses of each across PROD/DEV gives:
 **Suggested fix:** Document in AGENTS.md.
 **Effort:** S
 **Severity:** Cosmetic
+**Status:** ✅ done 2026-05-11 (variant B: unquoted `restore_from_flash: false/true` across 5 PROD + 7 DEV ESP8266 files — modern ESPHome substitutions preserve raw types when token spans entire string, and `cv.boolean` accepts native bool; old "must be set as string" comment removed. Validated `esphome config` on 5 PROD + `esphome compile` on esp12f-10_Office (SUCCESS, 52.96s, RAM 51.1%, Flash 57.8%). DEV files esp01s_1r_x__F and esp12f_dev fail config on pre-existing missing `esphome_min_version` substitution — unrelated, see BACKLOG #8/#9/#10.)
 
 ---
 
