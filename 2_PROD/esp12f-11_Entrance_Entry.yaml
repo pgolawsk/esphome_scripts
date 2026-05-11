@@ -33,6 +33,7 @@
 # Pawelo, 20251123, adjusted pressure offset to 9.5 hPa to align with reference station
 # FLUX, 20260510, Lowercased sensor filename references for cross-platform portability (BACKLOG items 1-2)
 # FLUX, 20260510, Added esphome_min_version substitution per BACKLOG item 10
+# FLUX, 20260511, Cleaned up commented wifi-variant boilerplate; see includes/wifi.yaml header for variants (BACKLOG item 19)
 
 # ! run with this command to override substitutions
 # esphome -s devicename espXX -s updates 1min -s room <Room name> -s mqtt_room <room> run esp12f_MMmm_SSss__PP.yaml --device 192.168.x.x
@@ -72,10 +73,7 @@ substitutions:
 # <<: !include {file: ../includes/logger_level.yaml, vars: {level: INFO, baud_rate: 115200}} #WARN: override default log level to specific one
 # <<: !include {file: ../includes/logger_level.yaml, vars: {level: DEBUG, baud_rate: 115200}} #WARN: override default log level to specific one
 # <<: !include {file: ../includes/logger_level.yaml, vars: {level: VERY_VERBOSE, baud_rate: 115200}} #WARN: override default log level to specific one
-# <<: !include ../includes/wifi_outside.yaml #WARN: override wifi to connect to outside network instead of default
-# <<: !include {file: ../includes/wifi_main.yaml, vars: {}} #WARN: override wifi to connect to extended network instead of default
-# <<: !include {file: ../includes/wifi_extended.yaml, vars: {}} #WARN: override wifi to connect to extended network instead of default
-# <<: !include {file: ../includes/wifi_extended2.yaml, vars: {}} #WARN: override wifi to connect to extended network instead of default
+# wifi: default (wifi.yaml via board). To switch — see includes/wifi.yaml header for variants.
 # <<: !include ../includes/api_services.yaml #WARN: this is to expose services like scan_wifi (results in scan_results sensor)
 
 # Include basics of a board

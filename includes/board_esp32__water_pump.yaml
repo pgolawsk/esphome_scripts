@@ -19,6 +19,7 @@
 # Pawelo, 20250913, added reading water total values from HA at boot if available and if current total(s) is less than 1000L then add it to current total(s)
 # Pawelo, 20251023, moved reading water total values from HA to api on_client_connected event
 # FLUX, 20260510, Wired min_version: ${esphome_min_version} per BACKLOG item 9
+# FLUX, 20260511, Removed orphan commented wifi_extended/wifi_multi includes; see includes/wifi.yaml header for variants (BACKLOG item 19)
 
 globals:
   - id: global_watertotal_all
@@ -140,8 +141,7 @@ esp32:
 # preferences:
 #   flash_write_interval: 2min
 
-# <<: !include {file: wifi_extended.yaml, vars: {extended: "_N"}}
-# <<: !include {file: wifi_multi.yaml}
+# wifi: default (wifi.yaml). To switch — see includes/wifi.yaml header for variants.
 <<: !include {file: wifi.yaml}
 <<: !include api.yaml
 <<: !include ota.yaml

@@ -245,6 +245,7 @@ Recommend (a) for consistency with current style + add to upgrade SOP a check th
 **Suggested fix:** Move the menu of wifi options into a docstring at the top of `includes/wifi.yaml` (or AGENTS.md). In each device file, keep only the line that's currently active.
 **Effort:** M
 **Severity:** Cosmetic
+**Status:** ✅ done 2026-05-11 (variant A3: docstring header added to `includes/wifi.yaml` listing all 6 variants + override-by-order instructions; wifi-variant boilerplate replaced with single-line pointer comment in 11 PROD + 23 0_DEV files; orphan `wifi_extended`/`wifi_multi` comments removed from `board_esp32__water_pump.yaml`. Audit confirmed all 11 PROD use default `wifi.yaml` via board files — no active overrides.)
 
 ### 20. `restart_button.yaml` + `safe_mode_restart_button.yaml` + `factory_reset_button.yaml` triplet repeated in every PROD file
 
