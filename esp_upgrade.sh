@@ -23,6 +23,7 @@
 # Pawelo, 20251230, use check_esphome_version.sh to verify if there is new ESPHome version
 # Pawelo, 20260221, added esp32-06 Garden/Gateway device to 1_UAT for testing before PROD upgrade
 # Pawelo, 20260228, moved esp32-06 Garden/Gateway device to 2_PROD after successful testing and deployment
+# FLUX, 20260511, Slimmed PROD upgrade commands — substitution defaults live in device YAMLs per BACKLOG item 25
 
 #*###########################
 #* Check Python VENV
@@ -99,21 +100,22 @@ pip install --upgrade "ltchiptool>=3.0.1,<4.0"
 
 #*###########################
 #* Upgrade PROD ESP devices via OTA
-#! use aliases instead of below PROD, example esp10, esp05, ...
-esphome -s devicename esp32-05 -s updates 1min -s room Shades -s mqtt_location outside -s mqtt_room shades -s room2 WinterGardenUpp -s mqtt_location2 home -s mqtt_room2 winter_garden_upp run 2_PROD/esp32-05_Shades_WinterGardenUpp.yaml
-esphome -s devicename esp32-06 -s updates 1min -s room Garden -s mqtt_location outside -s mqtt_room garden -s room2 Gateway -s mqtt_location2 outside -s mqtt_room2 gateway run 2_PROD/esp32-06_Garden_Gateway.yaml
-esphome -s devicename esp12f-10 -s updates 30s -s room Office -s mqtt_room office run 2_PROD/esp12f-10_Office.yaml
-esphome -s devicename esp12f-11 -s updates 30s -s room Entrance -s mqtt_room entrance -s room2 Entry -s mqtt_location2 outside -s mqtt_room2 entry run 2_PROD/esp12f-11_Entrance_Entry.yaml
-esphome -s devicename esp32-14 -s updates 30s -s room Salon -s mqtt_room salon run 2_PROD/esp32-14_Salon.yaml
-esphome -s devicename esp12f-15 -s updates 30s -s room Upstairs -s mqtt_room upstairs run 2_PROD/esp12f-15_Upstairs.yaml
-esphome -s devicename esp12f-21 -s updates 30s -s room Underfloor -s mqtt_location measures -s mqtt_room underfloor run 2_PROD/esp12f-21_Underfloor.yaml
-esphome -s devicename esp12f-25 -s updates 30s -s room AquariumW -s mqtt_location measures -s mqtt_room aquarium_window run 2_PROD/esp12f-25_AquariumWindow.yaml
-esphome -s devicename esp32-35 -s updates 1min -s room Pump -s mqtt_location measures -s mqtt_room pump -s room2 Garage -s mqtt_location2 outside -s mqtt_room2 garage run 2_PROD/esp32-35_Pump_Garage.yaml
-esphome -s devicename esp32-36 -s updates 30s -s room Garage -s mqtt_location outside -s mqtt_room garage -s room2 Gate -s mqtt_location2 outside -s mqtt_room2 gate  run 2_PROD/esp32-36_Garage_Gate.yaml
-esphome -s devicename esp32-39 -s updates 1min -s room Attic -s mqtt_location home -s mqtt_room attic run 2_PROD/esp32-39_Attic.yaml
+#! prefer aliases from .dir_aliases (esp05, esp06, esp10, …); raw commands kept for scripted upgrade loops
+#? substitution defaults live in each device YAML — slim invocation suffices
+esphome run 2_PROD/esp32-05_Shades_WinterGardenUpp.yaml
+esphome run 2_PROD/esp32-06_Garden_Gateway.yaml
+esphome run 2_PROD/esp12f-10_Office.yaml
+esphome run 2_PROD/esp12f-11_Entrance_Entry.yaml
+esphome run 2_PROD/esp32-14_Salon.yaml
+esphome run 2_PROD/esp12f-15_Upstairs.yaml
+esphome run 2_PROD/esp12f-21_Underfloor.yaml
+esphome run 2_PROD/esp12f-25_AquariumWindow.yaml
+esphome run 2_PROD/esp32-35_Pump_Garage.yaml
+esphome run 2_PROD/esp32-36_Garage_Gate.yaml
+esphome run 2_PROD/esp32-39_Attic.yaml
 
 #* Future devices via OTA (with "compile" instead of "run")
-# esphome -s devicename esp32-06 -s updates 1min -s room Garden -s mqtt_location outside -s mqtt_room garden -s room2 Gateway -s mqtt_location2 outside -s mqtt_room2 gateway compile 1_UAT/esp32-06_Garden_Gateway.yaml
+# esphome compile 1_UAT/esp32-06_Garden_Gateway.yaml
 
 #* New exploring devices
 esphome -s devicename esp12f-29 -s updates 30s -s room Test -s mqtt_location measures -s mqtt_room test run 0_DEV/esp12f_dev.yaml

@@ -15,6 +15,7 @@
 # Pawelo 20231205, added esp32c3_dev flashing
 # Pawelo 20250107, some typos corrected, some obsolete script names corrected
 # Pawelo 20250220, added venv creation for python3
+# FLUX, 20260511, Slimmed 6 PROD upgrade commands to use 2_PROD/ paths (per BACKLOG item 25) — old DEV-style filenames mapped to current PROD equivalents
 
 #TODO: Read more complicated AIQ measurement on https://github.com/nkitanov/iaq_board
 #TODO: Read about speaker with PAM8403 (amplifier) connection to ESP826 on: https://www.instructables.com/MQTT-Audio-Notifier-for-ESP8266-Play-MP3-TTS-RTTL/
@@ -111,22 +112,22 @@ mosquitto_sub -v -t home/#
 #? 30s is 30 seconds and it's optimal as the same interval is setup on prometheus (could be 10s, 1min, 5min, ...)
 # esphome -s devicename esp12f-10 -s updates 30s -s room Office -s mqtt_room office run esp12f_TH_S.yaml --device 192.168.x.x
 # GROUND Floor
-esphome -s devicename esp12f-10 -s updates 30s -s room Office -s mqtt_room office run esp12f_THICEO2lbd_BCOar.yaml --device 192.168.x.x
-esphome -s devicename esp12f-11 -s updates 30s -s room Entrance -s mqtt_room entrance run esp12f_THIPGbdss_BGr__G.yaml --device 192.168.x.x
+esphome run 2_PROD/esp12f-10_Office.yaml --device 192.168.x.x        # alias: esp10
+esphome run 2_PROD/esp12f-11_Entrance_Entry.yaml --device 192.168.x.x  # alias: esp11
 # esphome -s devicename esp12f-12 -s updates 30s -s room Kitchen -s mqtt_room kitchen run esp12f_dev.yaml --device 192.168.x.x
 # esphome -s devicename esp12f-13 -s updates 30s -s room Salon -s mqtt_room salon run esp12f_dev.yaml --device 192.168.x.x
 # esphome -s devicename esp12f-14 -s updates 30s -s room Toilet -s mqtt_room toilet run esp12f_dev.yaml --device 192.168.x.x
 # esphome -s devicename esp12f-20 -s updates 30s -s room Dining -s mqtt_room dining run esp12f_dev.yaml --device 192.168.x.x
 # 1ST Floor
-esphome -s devicename esp12f-15 -s updates 30s -s room Upstairs -s mqtt_room upstairs run esp12f_THP_P.yaml --device 192.168.x.x
+esphome run 2_PROD/esp12f-15_Upstairs.yaml --device 192.168.x.x      # alias: esp15
 # esphome -s devicename esp12f-16 -s updates 30s -s room Aquarium -s mqtt_room aquarium run esp12f_dev.yaml --device 192.168.x.x
 # esphome -s devicename esp12f-17 -s updates 30s -s room Forest -s mqtt_room forest run esp12f_dev.yaml --device 192.168.x.x
 # esphome -s devicename esp12f-18 -s updates 30s -s room Bedroom -s mqtt_room bedroom run esp12f_dev.yaml --device 192.168.x.x
 # esphome -s devicename esp12f-19 -s updates 30s -s room Bathroom -s mqtt_room bathroom run esp12f_dev.yaml --device 192.168.x.x
 
 # MEASURES devices
-esphome -s devicename esp12f-21 -s updates 30s -s room Underfloor -s mqtt_location measures -s mqtt_room underfloor run esp12f_THdb_SDr.yaml --device 192.168.x.x
-esphome -s devicename esp12f-25 -s updates 30s -s room AquariumWindow -s mqtt_location measures -s mqtt_room aquarium_window run esp12f_THIddb_STr.yaml --device 192.168.x.x
+esphome run 2_PROD/esp12f-21_Underfloor.yaml --device 192.168.x.x          # alias: esp21
+esphome run 2_PROD/esp12f-25_AquariumWindow.yaml --device 192.168.x.x      # alias: esp25
 
 # TEST devices
 esphome -s devicename esp12f-29 -s updates 30s -s room Test -s mqtt_location measures -s mqtt_room test run esp12f_dev.yaml --device 192.168.x.x
@@ -143,7 +144,7 @@ esphome -s devicename esp01s-100 -s updates 1min -s room "Kitchen" -s mqtt_room 
 
 #*! RUN those commands to compile and deliver updates to esp32 devices wit sensors, switches, ...
 #? --device is optional - if not given and device name can be found by dns then it will be flashed OTA anyway:)
-esphome -s devicename esp32-35 -s updates 1min -s room Pump -s mqtt_location measures -s mqtt_room pump run esp32_THIWdb_SBYr.yaml --device 192.168.x.x
+esphome run 2_PROD/esp32-35_Pump_Garage.yaml --device 192.168.x.x          # alias: esp35
 
 esphome -s devicename esp32-30 -s updates 1min -s room Test32 -s mqtt_location measures -s mqtt_room test32 run esp32_dev.yaml --device 192.168.x.x
 esphome -s devicename esp32-30 -s updates 60s -s room Test32Display -s mqtt_location measures -s mqtt_room test32disp run esp32_display_weact.yaml --device 192.168.x.x
