@@ -36,6 +36,7 @@
 # FLUX, 20260511, Cleaned up commented wifi-variant boilerplate; see includes/wifi.yaml header for variants (BACKLOG item 19)
 # FLUX, 20260511, Replaced placeholder substitutions with concrete defaults from .dir_aliases; aliases slimmed (BACKLOG item 25)
 # FLUX, 20260511, Removed quotes from restore_from_flash substitution; bool form works since modern ESPHome (BACKLOG item 53)
+# FLUX, 20260511, Fixed broken comment references to non-existent text_*_bme68x_bsec2.yaml files (BACKLOG item 3)
 
 # ! run with this command to override substitutions
 # esphome -s devicename espXX -s updates 1min -s room <Room name> -s mqtt_room <room> run esp12f_MMmm_SSss__PP.yaml --device 192.168.x.x
@@ -97,8 +98,8 @@ text_sensor:
   # - !include ../sensors/text_wifi_info.yaml
   # - !include ../sensors/text_firmware.yaml
 
-  # - !include ../sensors/text_air_quality_bme68x_bsec2.yaml #!not working (bricked ESP12F device)
-  # - !include ../sensors/text_IAQ_accuracy_bme68x_bsec2.yaml #!not working (bricked ESP12F device)
+  # - !include ../sensors/text_air_quality_bme68x.yaml #!not working (bricked ESP12F device)
+  # - !include ../sensors/text_iaq_accuracy_bme68x.yaml #!not working (bricked ESP12F device)
 
   # DEBUG component
   - !include ../sensors/text_debug.yaml

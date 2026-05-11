@@ -71,6 +71,7 @@ Scope walked: `2_PROD/*.yaml` (all 11), representative `0_DEV/*.yaml`, `includes
 **Suggested fix:** Either rename current `text_air_quality_bme68x.yaml` → `text_air_quality_bme68x_bsec2.yaml` (matches `i2c_bme68x_bsec2.yaml` interface naming), or fix the comment to reference the actual file.
 **Effort:** S
 **Severity:** Cosmetic
+**Status:** ✅ done 2026-05-11 (variant B: fixed broken comment references in 5 files — `2_PROD/esp12f-11_Entrance_Entry.yaml`, `0_DEV/esp32c6_dev.yaml`, `0_DEV/esp32s3_dev.yaml`, `0_DEV/esp32s2_dev.yaml`, `0_DEV/esp32s3supermini_dev.yaml` — replaced non-existent `text_air_quality_bme68x_bsec2.yaml` → `text_air_quality_bme68x.yaml` and `text_IAQ_accuracy_bme68x_bsec2.yaml` → `text_iaq_accuracy_bme68x.yaml`. Rename rejected because existing sensor files support both `bme680_bsec` and `bme68x_bsec2` platforms via `${platform}` substitution — `_bsec2` suffix would be misleading.)
 
 ### 4. `.yml` extension used in three 0_DEV files instead of `.yaml`
 
