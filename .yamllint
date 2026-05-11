@@ -6,3 +6,7 @@ rules:
     check-keys: false
   indentation:
     indent-sequences: whatever
+  # Allow `!include { file: ..., vars: { ... } }` and `vars: { }` per AGENTS.md "Include Patterns"
+  braces:
+    max-spaces-inside: 1
+    max-spaces-inside-empty: 1

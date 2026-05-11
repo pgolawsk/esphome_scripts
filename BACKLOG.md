@@ -449,6 +449,7 @@ Audit: grepping for un-commented uses of each across PROD/DEV gives:
 **Suggested fix:** Remove from `secrets.yaml` and `secrets_example.yaml`. The encryption `key:` is the modern auth.
 **Effort:** S
 **Severity:** Cosmetic
+**Status:** ✅ done 2026-05-11 (removed `# password:` lines from api.yaml/api_services.yaml/api_services__water.yaml; commented `api_password` in secrets.yaml + secrets_example.yaml — kept for reference per Pawelo's call)
 
 ### 42. `web_username` / `web_password` defined in secrets but auth block is commented in both web_server files
 
@@ -457,6 +458,7 @@ Audit: grepping for un-commented uses of each across PROD/DEV gives:
 **Suggested fix:** Either enable web auth (set `auth:` block), or remove the unused secrets.
 **Effort:** S
 **Severity:** Cosmetic
+**Status:** ✅ done 2026-05-11 (removed commented `auth:` block from web_server.yaml + web_server_basic.yaml; commented `web_username`/`web_password` in secrets.yaml + secrets_example.yaml — kept for reference per Pawelo's call)
 
 ### 43. `logger.yaml` comments mix mqtt-component logging level overrides with unrelated component overrides
 

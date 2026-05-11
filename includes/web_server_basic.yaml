@@ -5,13 +5,11 @@
 # Pawelo, 20230311, make ota as ota_enabled input variable
 # Pawelo, 20250106, added sorting groups to separate IR remotes
 # Pawelo, 20250413, created as copy of web_server.yaml with no sorting groups (supported only in ver 3)
+# FLUX, 20260511, Removed commented web auth block (BACKLOG item 42)
 
 web_server:
   port: 80
   include_internal: true
   # ota: false # disable OTA via web
   ota: ${ota_enabled}
-#  auth:
-#    username: !secret web_username
-#    password: !secret web_password
   version: ${web_server_version} # 1 or 2 or 3

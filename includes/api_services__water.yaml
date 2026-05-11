@@ -8,10 +8,10 @@
 # Pawelo, 20250913, added set_total_water service for 2 water meter
 # Pawelo, 20250914, added add_total_water service for 2 water meter
 # Pawelo, 20251023, added on_client_connected to update totals on HA connect
+# FLUX, 20260511, Removed obsolete api_password reference (BACKLOG item 41)
 
 api:
   reboot_timeout: 0s # 0s will disable reboot if no HA connected
-  # password: !secret api_password
   encryption:
     key: !secret api_key
   services:
