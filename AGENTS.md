@@ -93,7 +93,7 @@ When a dual-room script is added, the device substitutions block **must** declar
 1. Header comments with `#*` prefix
 1. Version history comments with `Pawelo, YYYYMMDD,`
 1. Substitutions section with default values
-1. Override includes for base components (wifi, mqtt, logger, etc.)
+1. Override includes for base components (wifi, mqtt, logger, etc.) — **order matters**: these must come **before** the board include because multiple `<<: !include` entries resolve first-key-wins. See "YAML Override Mechanism" section below for full semantics and source-code references.
 1. Board include (`!include { file: ../includes/board_*.yaml, vars: { ... } }`)
 1. Interface includes (I2C, UART, SPI, etc.)
 1. Component sections (text_sensor, binary_sensor, sensor, output, light, switch, button)
