@@ -682,6 +682,7 @@ What's missing for the override-by-order pattern:
 **Suggested fix:** Three small custom local hooks (Python scripts in `tools/`), each ~30 lines. Plug into `.pre-commit-config.yaml` as `repo: local`. Cross-ref items 69, 70.
 **Effort:** M
 **Severity:** Notable
+**Status:** ✅ done 2026-05-12 (added three local pre-commit hooks in `tools/`: `check_includes.py` (case-exact `!include` resolution), `check_merge_syntax.py` (`<<:` must be followed by `!include` or `*anchor`), `check_yaml_shape.py` (device files in 0_DEV/1_UAT/2_PROD should pull a board include — warn-only for count==0, error for count>15). Wired into `.pre-commit-config.yaml` as `repo: local`. Excludes: `.esphome/`, `build/`, `deprecated/`, symlinks, `.yml` files (per AGENTS.md "known-broken" marker convention). Hooks caught 3 real bugs during initial run: `fonts_weeact_display.yaml` typo (should be `fonts_weact_display.yaml`) in 3 DEV files — fixed in same change. Partly closes cross-refs #69, #70 — manual SOP grep promoted to automated hook.)
 
 ### 66. `yamllint` has `key-duplicates: disable` — intentional but blocks an entire category of bugs
 

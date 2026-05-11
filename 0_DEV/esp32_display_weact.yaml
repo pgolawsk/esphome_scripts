@@ -30,6 +30,7 @@
 # Pawelo, 20260124, added minimum_chip_revision variable to board_esp32.yaml to eliminate warnings
 # FLUX, 20260510, Lowercased sensor filename references for cross-platform portability (BACKLOG items 1-2)
 # FLUX, 20260511, Cleaned up commented wifi-variant boilerplate; see includes/wifi.yaml header for variants (BACKLOG item 19)
+# FLUX, 20260512, Fixed typo in font include path: fonts_weeact_display.yaml -> fonts_weact_display.yaml (caught by tools/check_includes.py — BACKLOG item 65)
 
 # ! run with this command to override substitutions
 # esphome -s devicename espXX -s updates 1min -s room <Room name> -s mqtt_room <room> run esp32_MMmm_SSss__PP.yaml --device 192.168.x.x
@@ -210,7 +211,7 @@ button:
 #     mode: ALL_LOW
 
 # Include fonts for display
-<<: !include ../fonts/fonts_weeact_display.yaml
+<<: !include ../fonts/fonts_weact_display.yaml
 
 # Scripts
 <<: !include {file: ../scripts/interval_display_cycle_pages.yaml, vars: {display_id: weact_display, cycle_script: cycle_pages_in_day, page_to_skip: page_wifi_qr}}

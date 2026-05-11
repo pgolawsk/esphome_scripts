@@ -37,3 +37,28 @@ repos:
     rev: v8.30.1
     hooks:
       - id: gitleaks
+
+  # Local hooks guarding the override-by-order merge-key pattern (BACKLOG #65)
+  - repo: local
+    hooks:
+      - id: yaml-include-resolve
+        name: every YAML include reference resolves (case-exact, file exists)
+        entry: tools/check_includes.py
+        language: python
+        types: [yaml]
+        exclude: ^(deprecated/|.*/\.esphome/|.*/build/)
+
+      - id: yaml-merge-syntax
+        name: merge key must be followed by include or anchor
+        entry: tools/check_merge_syntax.py
+        language: python
+        types: [yaml]
+        exclude: ^(deprecated/|.*/\.esphome/|.*/build/)
+
+      - id: yaml-shape
+        name: device files in 0_DEV/1_UAT/2_PROD should pull a board include
+        entry: tools/check_yaml_shape.py
+        language: python
+        types: [yaml]
+        files: ^(0_DEV|1_UAT|2_PROD)/
+        exclude: ^(deprecated/|.*/\.esphome/|.*/build/)

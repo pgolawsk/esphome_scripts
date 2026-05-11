@@ -3,6 +3,7 @@
 # Pawelo, 20240830, created based on https://esphome.io/components/display/sdl#sdl
 # Pawelo, 20250207, moved to 0_DEV folder
 # Pawelo, 20250221, added uptime_boot text sensor
+# FLUX, 20260512, Fixed typo in font include path: fonts_weeact_display.yaml -> fonts_weact_display.yaml (caught by tools/check_includes.py — BACKLOG item 65)
 
 #* FIRST install software run those:
 # brew install sdl2 libsodium (install step)
@@ -83,7 +84,7 @@ host:
   # - !include { file: ../sensors/value_mqtt_subscribe.yaml, vars: { topic: "measures/aquarium_window/humidity", id: "hum_aquariumW", name: "Humidity Aquarium Window", unit: "%", mdi_icon: "water-percent" } }
 
 # Include fonts for display
-<<: !include ../fonts/fonts_weeact_display.yaml
+<<: !include ../fonts/fonts_weact_display.yaml
 
 display:
   - platform: sdl
