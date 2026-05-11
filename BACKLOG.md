@@ -718,6 +718,7 @@ However, if an `<<: !include` line is ever placed inside a block (e.g., inside `
 **Suggested fix:** Change `grep -c '^<<: !include' "$f"` to `grep -cE '^<<:[[:space:]]+!include'` and add: `if [ "$count" -eq 0 ]; then echo "WARNING: $f has no top-level <<: !include"; fi`.
 **Effort:** S
 **Severity:** Minor
+**Status:** ✅ done 2026-05-12 (covered by #65: the proposed grep was never actually added to `upgrade/SOP_upgrade.md`; the tighter regex `^<<:\s*!include` plus the count==0 warning are both now in `tools/check_yaml_shape.py`, running as a pre-commit hook on every commit instead of only at upgrade time.)
 
 ### 70. P0-1 grep is in a markdown SOP file, not a runnable hook
 
@@ -726,6 +727,7 @@ However, if an `<<: !include` line is ever placed inside a block (e.g., inside `
 **Suggested fix:** Promote to a `tools/check_shape.py` script + `.pre-commit-config.yaml` local hook. Run on every commit. ~20 lines.
 **Effort:** M
 **Severity:** Minor
+**Status:** ✅ done 2026-05-12 (covered by #65: `tools/check_yaml_shape.py` is now wired into `.pre-commit-config.yaml` as `repo: local` and runs on every commit. Manual SOP grep promotion completed.)
 
 ### 71. `yamllint` configured but `check-yaml` from `pre-commit-hooks` runs before it — duplicates work
 
