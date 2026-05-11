@@ -300,6 +300,7 @@ Plus `# - !include { file: ../buttons/shutdown_button.yaml }` (commented).
 **What:** When the device doesn't have a secondary room, the substitution is set to literal string `"none"`. Then sensor includes pass `room: "${room2}"` which produces an MQTT topic like `home/none/temperature` or a friendly name `"none Temperature"`. It works but is ugly.
 **Suggested fix:** Either set `room2: ""` (empty string acts as no-op for topic concatenation, but produces odd entity names too), or guard the substitution at use site (`{% if room2 != 'none' %}`-style — but ESPHome substitutions don't support conditionals). Or just don't declare `room2` if not needed and don't include the per-room sensors.
 **Effort:** S
+**Status:** ✅ done 2026-05-11 (variant B: `none` sentinel replaced with real defaults from `.dir_aliases` across 11 PROD + 2 working 0_DEV; added missing `room2/mqtt_location2/mqtt_room2` to esp32-06 (fix undefined-sub crash) and esp32-36; removed unused `room2` triple from esp32-39; aliases slimmed to `esphome run <yaml> --device <host>.lan`. `esphome config` validates clean for esp10/esp32-05/esp32-06/esp32-39 without CLI overrides.)
 **Severity:** Minor
 
 ### 26. `version: "YYYYMMDD"` substitution drifts behind the actual last edit

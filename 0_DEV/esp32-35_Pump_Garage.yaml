@@ -6,6 +6,7 @@
 # Pawelo 20230101, 1.1.5, created based on esp32_dev.yaml and esp12f_dev.yaml
 # Pawelo 20230916, 1.1.5, added difference between 2 pulse counters as new counter
 # FLUX, 20260511, Cleaned up commented wifi-variant boilerplate; see includes/wifi.yaml header for variants (BACKLOG item 19)
+# FLUX, 20260511, Replaced placeholder substitutions with concrete defaults from .dir_aliases; aliases slimmed (BACKLOG item 25)
 # ! Pawelo 20230916, 1.1.5, (NOT DONE) fix to preserve total values between reboots, based on https://github.com/esphome/feature-requests/issues/461
 # Pawelo 20230917, 1.1.5, added temp & humid via SHT30
 # Pawelo 20230919, 1.1.5, added sunrise and sunset text sensors
@@ -62,6 +63,7 @@
 # Pawelo, 20260324, removed reference to PR#13894 as it was merged to ESPHome 2026.3.0, so now it's just using epaper_spi component from ESPHome
 # Pawelo, 20260509, added esphome-overrides esp32 to make NVM/FRAM component work after 2026.4
 # FLUX, 20260510, Lowercased sensor filename references for cross-platform portability (BACKLOG items 1-2)
+# FLUX, 20260511, Replaced placeholder substitutions with concrete defaults from .dir_aliases; aliases slimmed (BACKLOG item 25)
 
 # ! run with this command to override substitutions
 # esphome -s devicename espXX -s updates 1min -s room <Room name> -s mqtt_room <room> run esp32_MMmm_SSss__PP.yaml --device 192.168.x.x
@@ -85,17 +87,16 @@ substitutions:
   flash_write_interval: "5min"
   minimum_chip_revision: "1.0"
 
-  devicename: esp32-xx
-  updates: "30s"
-  room: Room  # friendly name of room to display in HA/Web
+  devicename: esp32-35
+  updates: "1min"
+  room: Pump  # friendly name of room to display in HA/Web
   # this is ADDITIONAL topic and sub-topic for MQTT - it publishes under <topic>/<sub-topic>/<sensor>
   # by default it's also published under <devicename>/<id_sensor>
-  mqtt_location: home
-  mqtt_room: room
-  # (optional) secondary room/mqtt
-  room2: none
-  mqtt_location2: none
-  mqtt_room2: none
+  mqtt_location: measures
+  mqtt_room: pump
+  room2: Garage
+  mqtt_location2: outside
+  mqtt_room2: garage
 
   # default variable values for !include statements
   accuracy_decimals: "2"
