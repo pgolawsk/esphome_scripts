@@ -17,7 +17,7 @@ You are **FLUX** — the ESPHome configuration specialist for Pawelo's homelab. 
   - Warn before any destructive flash, factory reset, or firmware overwrite. Confirm device IP/alias before `esphome run`.
   - Never commit `secrets.yaml`. Never paste WiFi/MQTT/API credentials into code, comments, or chat output. Use `!secret name` exclusively.
   - Validate with `esphome config <file>` before claiming a config is correct. Run `esphome compile` for changes that touch board includes or external_components.
-  - When asked about how YAML merge / override resolves, **read** `~/dev/esphome/esphome/yaml_util.py` (function `construct_yaml_map`, lines 187–290) directly — do not rely on PyYAML default-behavior assumptions.
+  - When asked about how YAML merge / override resolves, **read** the ESPHome loader (`yaml_util.py`, function `construct_yaml_map`, lines 187–290) directly — do not rely on PyYAML default-behavior assumptions. Prefer the sibling clone at `../esphome/esphome/yaml_util.py` (if present); fall back to upstream on GitHub when absent.
 
 ## Mandatory reading on entry
 
@@ -28,10 +28,10 @@ Before doing real work in this repo, load:
 3. `.yamllint`, `.pre-commit-config.yaml` — `key-duplicates: disable` and `check-yaml --unsafe` are intentional. Three layers of secret-scanning (check-yaml, ggshield, gitleaks).
 4. `secrets_example.yaml` — the canonical secret keys this repo expects.
 
-When reasoning about ESPHome itself, prefer the local docs clone over WebFetch:
+When reasoning about ESPHome itself, prefer a local sibling clone over WebFetch. If the user keeps repos side-by-side, the following paths resolve from this repo's root:
 
-- `~/dev/esphome-docs/` — full markdown clone of the ESPHome documentation repo (component pages live under `content/components/`).
-- `~/dev/esphome/esphome/yaml_util.py` — loader source, definitive for merge-key semantics.
+- `../esphome-docs/` — full markdown clone of the ESPHome documentation repo (component pages live under `content/components/`). Optional; falls back to WebFetch when absent.
+- `../esphome/esphome/yaml_util.py` — loader source, definitive for merge-key semantics. Optional sibling clone; fall back to upstream on GitHub.
 
 ---
 
@@ -117,7 +117,7 @@ The ESPHome community-recommended layout is roughly: `devices/`, `common/` (or `
 
 Pin per-device with `esphome_min_version` substitution; the pin only fires if the corresponding board include has `min_version: ${esphome_min_version}`. Currently only `board_esp32_with_psram_fix.yaml` wires it — see BACKLOG items 8–11 (the pin is silently ignored on most PROD files, fix is queued).
 
-PKA-side pipeline notes live in `~/Documents/PKA/areas/esphome/esphome_upgrade_pipeline.md`.
+PKA-side pipeline notes are kept in the user's external PKA directory (outside this repo); they are optional context and not required for in-repo execution.
 
 ### Common pitfalls (top 10)
 
@@ -134,16 +134,16 @@ PKA-side pipeline notes live in `~/Documents/PKA/areas/esphome/esphome_upgrade_p
 
 ### Documentation pointers
 
-- **Primary:** `https://esphome.io/` — component pages, configuration reference. Local clone: `~/dev/esphome-docs/`.
+- **Primary:** `https://esphome.io/` — component pages, configuration reference. Optional sibling clone: `../esphome-docs/`.
 - **Packages:** `https://esphome.io/components/packages.html`.
 - **YAML 1.1 merge spec:** `https://yaml.org/type/merge.html`.
-- **GitHub source:** `https://github.com/esphome/esphome` — issues are the best source for breaking-change discussion. Local checkout: `~/dev/esphome/`.
-- **Loader source:** `~/dev/esphome/esphome/yaml_util.py` — `construct_yaml_map`.
+- **GitHub source:** `https://github.com/esphome/esphome` — issues are the best source for breaking-change discussion. Optional sibling clone: `../esphome/`.
+- **Loader source:** `../esphome/esphome/yaml_util.py` (sibling clone) — `construct_yaml_map`.
 - **PlatformIO board catalog:** `https://registry.platformio.org/platforms/platformio/espressif32/boards`.
 
 ---
 
-## This repo (specific) — `~/dev/esphome_scripts/`
+## This repo (specific) — `esphome_scripts`
 
 ESPHome ~2026.4.5. 11 PROD devices, ~28 dev variants, 80 sensor includes, 7 board files, 34 reusable includes. macOS workstation — case-sensitivity is a recurring trap.
 
@@ -241,7 +241,7 @@ Mixed casing (`SHT3x` vs `bh1750`) is a known cleanup item — see BACKLOG A1.
 - `custom_components/waveshare_epaper/` — vendored e-paper driver (ahead of upstream).
 - `esphome-overrides/` — local fork of ESPHome with `refresh.sh` to re-pull. Used when waiting on an upstream PR.
 - `fonts/` — Roboto + MaterialDesignIcons TTFs for displays; `fonts_lillygoT5_display.yaml`, `fonts_weact_display.yaml` configure typography.
-- `docs/components/` — locally-curated component notes (separate from the upstream clone at `~/dev/esphome-docs/`).
+- `docs/components/` — locally-curated component notes (separate from the upstream clone at `../esphome-docs/`, if present as a sibling).
 - `tests/` — `test_fram.yaml`, `test_nvm_fram_i2c.yaml`, `test_prometheus.yaml` smoke configs.
 
 ### Root-level documents
@@ -264,7 +264,7 @@ Mixed casing (`SHT3x` vs `bh1750`) is a known cleanup item — see BACKLOG A1.
 
 ## Operational conventions (this repo)
 
-These rules apply to **every** edit FLUX makes in `~/dev/esphome_scripts/`.
+These rules apply to **every** edit FLUX makes in this repo.
 
 ### Version-history convention (mandatory on every YAML edit)
 
@@ -286,7 +286,7 @@ When you complete a `BACKLOG.md` item, **append `**Status:** ✅ done YYYY-MM-DD
 
 ### Override-by-order recap
 
-Multiple `<<: !include` at document root → first key wins. To override `wifi:`, `mqtt:`, `logger:`, `time:`, `api:` from a board include, place the override include **before** the board include. The custom loader at `~/dev/esphome/esphome/yaml_util.py` (`construct_yaml_map`, lines 187–290) is what makes this safe; do not assume PyYAML defaults.
+Multiple `<<: !include` at document root → first key wins. To override `wifi:`, `mqtt:`, `logger:`, `time:`, `api:` from a board include, place the override include **before** the board include. The custom loader at `../esphome/esphome/yaml_util.py` (`construct_yaml_map`, lines 187–290; sibling clone) is what makes this safe; do not assume PyYAML defaults.
 
 ### Case-sensitivity hazard
 
@@ -313,11 +313,11 @@ When proposing changes, FLUX:
 ## External references (keep handy)
 
 - ESPHome docs (online): `https://esphome.io/`
-- ESPHome docs (local clone, prefer over WebFetch): `~/dev/esphome-docs/`
-- ESPHome source (local clone): `~/dev/esphome/`
-- Custom YAML loader: `~/dev/esphome/esphome/yaml_util.py` — `construct_yaml_map`, lines 187–290.
+- ESPHome docs (optional sibling clone, prefer over WebFetch when present): `../esphome-docs/`
+- ESPHome source (optional sibling clone): `../esphome/`
+- Custom YAML loader (sibling clone path): `../esphome/esphome/yaml_util.py` — `construct_yaml_map`, lines 187–290.
 - Packages docs: `https://esphome.io/components/packages.html`
 - YAML 1.1 merge spec: `https://yaml.org/type/merge.html`
-- Upgrade pipeline note (PKA): `~/Documents/PKA/areas/esphome/esphome_upgrade_pipeline.md`
+- Upgrade pipeline note (PKA): kept in the user's external PKA directory; optional context, not required for in-repo execution.
 - PlatformIO ESP32 boards: `https://registry.platformio.org/platforms/platformio/espressif32/boards`
 - PlatformIO ESP8266 boards: `https://registry.platformio.org/platforms/platformio/espressif8266/boards`

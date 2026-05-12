@@ -240,7 +240,7 @@ update_interval: $updates
 
 ## YAML Override Mechanism
 
-ESPHome ships a custom YAML loader at `~/dev/esphome/esphome/yaml_util.py` (function `construct_yaml_map`, lines 187-290). This loader implements the YAML 1.1 merge-key spec and behaves differently from a default PyYAML loader. Two rules are load-bearing for this repo:
+ESPHome ships a custom YAML loader (`yaml_util.py`, function `construct_yaml_map`, lines 187-290). If the user keeps an ESPHome source clone as a sibling to this repo, the file resolves at `../esphome/esphome/yaml_util.py`; otherwise consult the upstream source on GitHub (`https://github.com/esphome/esphome`). This loader implements the YAML 1.1 merge-key spec and behaves differently from a default PyYAML loader. Two rules are load-bearing for this repo:
 
 1. **Plain duplicate top-level keys raise an error.** The loader (line 228-234) rejects any YAML mapping that declares the same key twice as a plain key. There are no plain duplicate top-level keys anywhere in this repo — only `<<:` merge keys.
 2. **Multiple `<<: !include` entries at document root resolve first-key-wins.** When several merge-key includes appear in the same mapping, the loader (lines 266-286) processes them in source order. For each merged key:
@@ -305,7 +305,7 @@ When you complete a `BACKLOG.md` item, **append `**Status:** ✅ done YYYY-MM-DD
 
 ### Verify before claiming loader behavior
 
-If asked about how YAML merges/overrides resolve, read `~/dev/esphome/esphome/yaml_util.py` directly — do not rely on PyYAML default-behavior assumptions.
+If asked about how YAML merges/overrides resolve, read the ESPHome loader directly (sibling clone at `../esphome/esphome/yaml_util.py`, or upstream on GitHub) — do not rely on PyYAML default-behavior assumptions.
 
 ### Validation rigor — `esphome config` ≠ `esphome compile`
 
@@ -324,8 +324,8 @@ If `esphome compile` fails on a **pre-existing bug** not introduced by your chan
 
 ### External references
 
-- ESPHome loader source: `~/dev/esphome/esphome/yaml_util.py` (function `construct_yaml_map`, lines 187-290)
-- Upgrade pipeline: `~/Documents/PKA/areas/esphome/esphome_upgrade_pipeline.md`
+- ESPHome loader source: `../esphome/esphome/yaml_util.py` (sibling clone, if present) — `construct_yaml_map`, lines 187-290. Fall back to upstream on GitHub when the clone is absent.
+- Upgrade pipeline (PKA): kept in the user's external PKA directory; optional context, not required for in-repo execution.
 - ESPHome packages docs: `https://esphome.io/components/packages.html`
 - YAML 1.1 merge spec: `https://yaml.org/type/merge.html`
 
@@ -343,9 +343,13 @@ FLUX is the primary execution agent. FLUX reads BACKLOG items from `BACKLOG.md` 
 
 ### ECHO — Consistency Reviewer
 
-ECHO is a read-only reviewer. FLUX calls ECHO **after staging changes and before committing** (post `git add`, pre `git commit`). ECHO reads the staged diff plus the satellite files listed in its map, and returns a structured checklist of what else needs updating.
+ECHO is a read-only reviewer. ECHO's own profile (`.claude/agents/echo.md`) is **caller-agnostic** — it does not know who invokes it. This file is the single source of truth for **when and how** to invoke ECHO.
 
-**FLUX must call ECHO when:**
+#### When to invoke ECHO
+
+ECHO is invoked **after staging changes and before committing** (post `git add`, pre `git commit`). The responsibility lies with whichever agent or workflow stages the change — FLUX, another AI agent, or Pawelo committing manually.
+
+Invoke ECHO when any of the following applies to the staged batch:
 
 - Any PROD device file is renamed, added, or deleted.
 - `.dir_aliases` is modified.
@@ -353,8 +357,16 @@ ECHO is a read-only reviewer. FLUX calls ECHO **after staging changes and before
 - A convention change occurred mid-session (version-history order, comment style, substitution naming, etc.).
 - Batch commit with 3+ files changed.
 
-**ECHO never modifies files.** It returns a checklist. FLUX or Pawelo acts on the flags.
+#### How to invoke ECHO
 
-**Skip rule.** FLUX may skip ECHO only for an isolated single-file change with no satellites and no mid-session convention change. The skip must be stated explicitly in the commit message (e.g. `Skipping ECHO — isolated change, no satellites.`). Skips on batch commits (3+ files) are never acceptable.
+Provide ECHO with either a `git diff --cached --stat` output or a plain list of changed filenames, plus a one-line session-context note (especially: any mid-session convention change, with old and new convention stated). Full input format is documented in `echo.md` → "Input Format".
+
+#### Acting on ECHO's output
+
+ECHO never modifies files. It returns a checklist of satellite files that may need updating. The caller (FLUX, other agent, or Pawelo) acts on the flags before committing.
+
+#### Skip rule
+
+The caller may skip ECHO only for an isolated single-file change with no satellites and no mid-session convention change. The skip must be stated explicitly in the commit message (e.g. `Skipping ECHO — isolated change, no satellites.`). Skips on batch commits (3+ files) are never acceptable.
 
 Full profile and heuristic checklist: `.claude/agents/echo.md`. Satellite file inventory: `STRUCTURE.md` (column **"ECHO satellite?"**).
