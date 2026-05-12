@@ -37,6 +37,7 @@
 # FLUX, 20260511, Removed quotes from restore_from_flash substitution; bool form works since modern ESPHome (BACKLOG item 53)
 # FLUX, 20260512, removed dead accuracy_decimals substitution; default now lives in sensors/value_mqtt_subscribe.yaml + sensors/ha_sensor.yaml via Jinja `|default(2)` (BACKLOG #24)
 # FLUX, 20260512, Removed esphome_min_version substitution; floor 2025.8.0 now provided by board file Jinja default (BACKLOG #10 refinement)
+# FLUX, 20260512, Removed board_variant/board/restore_from_flash/flash_write_interval substitutions; defaults now provided by board_esp8266.yaml via Jinja (Jinja default pattern extension, mirrors BACKLOG #10)
 
 # ! run with this command to override substitutions
 # esphome -s devicename espXX -s updates 1min -s room <Room name> -s mqtt_room <room> run esp12f_MMmm_SSss__PP.yaml --device 192.168.x.x
@@ -47,12 +48,6 @@ substitutions:
   project_name: "pgolawsk.esp_home"
   version: "20251223"
 
-  # required by ../includes/board_esp8266.yaml script
-  board_variant: "12F"  # determine variant like 12F, 07s, 01m, ...
-  board: "esp12e"  # like: esp12e, esp01_1m, full list here https://registry.platformio.org/platforms/platformio/espressif8266/boards
-  restore_from_flash: false
-  flash_write_interval: "5min"
-
   devicename: esp12f-15
   updates: "30s"
   room: Upstairs  # friendly name of room to display in HA/Web
@@ -60,7 +55,6 @@ substitutions:
   # by default it's also published under <devicename>/<id_sensor>
   mqtt_location: home
   mqtt_room: upstairs
-
 
 # Override some settings included below in _board_ setup
 # <<: !include ../includes/time_sntp_with_sun.yaml #WARN: this is to make sunrise and sunset sensor to be updated on every time sync event

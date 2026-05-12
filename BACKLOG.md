@@ -235,6 +235,7 @@ Recommend (a) for consistency with current style + add to upgrade SOP a check th
 **Suggested fix:** Extract a `substitutions_defaults.yaml` package, include via `packages:`. Each device file keeps only the fields it customizes (mostly `devices:`, `version:`, `board:`, `flash_size:`).
 **Effort:** L
 **Severity:** Minor
+**Progress note (2026-05-12):** `accuracy_decimals`, `board_variant`, `board`, `restore_from_flash`, `flash_write_interval` extracted to Jinja defaults in `sensors/value_mqtt_subscribe.yaml`, `sensors/ha_sensor.yaml`, and `includes/board_esp8266.yaml` — see BACKLOG #24 fix and #10 refinement entries. Item not closed (substitution block boilerplate for other fields remains in PROD files); this is partial reduction.
 
 ### 19. The "override block of commented-out alternative wifi files" boilerplate is in 11 PROD files
 
@@ -348,7 +349,7 @@ Plus `# - !include { file: ../buttons/shutdown_button.yaml }` (commented).
 
 ### 30. `flash_size` substitution declared on every ESP32 device but inconsistently for ESP8266
 
-**Where:** ESP32 devices declare `flash_size: 4MB` or `8MB`. ESP8266 devices declare `restore_from_flash: "false"` and `flash_write_interval: "5min"` but **not** `flash_size`. `board_esp8266.yaml` doesn't reference `${flash_size}`.
+**Where:** ESP32 devices declare `flash_size: 4MB` or `8MB`. ESP8266 devices used to declare `restore_from_flash: "false"` and `flash_write_interval: "5min"` (since 2026-05-12 only `esp01s_1r_x__F.yaml` declares `restore_from_flash` as override; ESP12F devices rely on Jinja defaults in `board_esp8266.yaml`) but **not** `flash_size`. `board_esp8266.yaml` doesn't reference `${flash_size}`.
 **What:** Asymmetry by hardware. Acceptable, but not documented.
 **Suggested fix:** Add a comment to ESP8266 PROD files: `# board_esp8266.yaml ignores flash_size — set via PlatformIO board variant`.
 **Effort:** S

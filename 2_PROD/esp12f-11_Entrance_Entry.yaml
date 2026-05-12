@@ -39,6 +39,7 @@
 # FLUX, 20260511, Fixed broken comment references to non-existent text_*_bme68x_bsec2.yaml files (BACKLOG item 3)
 # FLUX, 20260512, removed dead accuracy_decimals substitution; default now lives in sensors/value_mqtt_subscribe.yaml + sensors/ha_sensor.yaml via Jinja `|default(2)` (BACKLOG #24)
 # FLUX, 20260512, Removed esphome_min_version substitution; floor 2025.8.0 now provided by board file Jinja default (BACKLOG #10 refinement)
+# FLUX, 20260512, Removed board_variant/board/restore_from_flash/flash_write_interval substitutions; defaults now provided by board_esp8266.yaml via Jinja (Jinja default pattern extension, mirrors BACKLOG #10)
 
 # ! run with this command to override substitutions
 # esphome -s devicename espXX -s updates 1min -s room <Room name> -s mqtt_room <room> run esp12f_MMmm_SSss__PP.yaml --device 192.168.x.x
@@ -47,12 +48,6 @@ substitutions:
   devices: "Temperature, Humidity, Pressure, Gas Resistance via BME680, Illuminance via BH1750 and Gate/Doorbell via GPIO"
   project_name: "pgolawsk.esp_home"
   version: "20251223"
-
-  # required by ../includes/board_esp8266.yaml script
-  board_variant: "12F"  # determine variant like 12F, 07s, 01m, ...
-  board: "esp12e"  # like: esp12e, esp01_1m, full list here https://registry.platformio.org/platforms/platformio/espressif8266/boards
-  restore_from_flash: false
-  flash_write_interval: "5min"
 
   devicename: esp12f-11
   updates: "30s"
@@ -65,7 +60,6 @@ substitutions:
   room2: Entry
   mqtt_location2: outside
   mqtt_room2: entry
-
 
 # <<: !include {file: ../web_server.yaml, vars: {ota_enabled: false}} #WARN: this is to enable older version of web interface (consume less memory)
 
