@@ -62,3 +62,11 @@ repos:
         types: [yaml]
         files: ^(0_DEV|1_UAT|2_PROD)/
         exclude: ^(deprecated/|.*/\.esphome/|.*/build/)
+
+      - id: yaml-version-bump
+        name: bump `version:` substitution in staged YAML to today's date (BACKLOG #26)
+        entry: tools/bump_yaml_version.py
+        language: python
+        types: [yaml]
+        files: ^(0_DEV|1_UAT|2_PROD)/
+        exclude: ^(deprecated/|.*/\.esphome/|.*/build/)

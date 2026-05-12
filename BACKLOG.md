@@ -322,6 +322,7 @@ Plus `# - !include { file: ../buttons/shutdown_button.yaml }` (commented).
 **Suggested fix:** Either drop the field (the OTA mechanism doesn't need it), or auto-bump via a pre-commit hook that updates `version:` to today's date when the file is staged.
 **Effort:** S
 **Severity:** Cosmetic
+**Status:** ✅ done 2026-05-12 (variant b: pre-commit hook `yaml-version-bump` added in `.pre-commit-config.yaml`; backed by `tools/bump_yaml_version.py` which scans staged YAML files in `0_DEV/1_UAT/2_PROD/`, matches `  version: "YYYYMMDD"` lines, and rewrites the digits to today's date. Hook exits non-zero on change so pre-commit prompts re-stage. Pre-existing drifted values stay until each file is next edited — organic lazy update rather than a one-shot sweep, to keep the version meaningful as "last actual edit" date.)
 
 ### 27. `restore_mode` substitution declared only on esp32-14, used inconsistently
 

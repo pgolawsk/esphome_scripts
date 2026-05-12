@@ -57,7 +57,7 @@ See `AGENTS.md` for cross-tool agent definitions, `COMMUNICATION.md` for Larry �
 | `examples/` | Working YAML examples not used in PROD and not deprecated. Reference scripts | When example patterns are updated | No |
 | `custom_components/` | Local modifications to ESPHome components without upstream PRs. Experimental — not in PROD. No satellites | When local experiment changes | No |
 | `tests/` | Active test configs for Pawelo's own PRs submitted to ESPHome repo. Must be kept current | When PR behavior changes | No direct satellite, but must stay in sync with PR |
-| `tools/` | Python helper scripts used by pre-commit hooks (`check_includes.py`, `check_merge_syntax.py`, `check_yaml_shape.py`, `yamllint_fix.py`) | When a hook's logic or scope changes | No |
+| `tools/` | Python helper scripts used by pre-commit hooks (`check_includes.py`, `check_merge_syntax.py`, `check_yaml_shape.py`, `yamllint_fix.py`, `bump_yaml_version.py`) | When a hook's logic or scope changes | No |
 | `upgrade/` | Documentation of ESPHome upgrade cycles: per-release notes, SOPs (PR refresh, upgrade flow), component refs | When a new ESPHome release is processed or an SOP is revised | No |
 | `esphome-overrides/` | Local override of the upstream ESPHome Python package (used to apply pending PRs / local patches before they land upstream) + `refresh.sh` to re-sync | When the upstream patch surface changes or after refresh | No |
 | `deprecated/` | Retired configs that no longer work or are superseded. Archive only — these configs are not functional and are kept for historical reference | Never (archive) | No |
