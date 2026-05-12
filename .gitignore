@@ -43,3 +43,6 @@ __pycache__
 # Claude Code runtime state (per-session/per-machine)
 .claude/scheduled_tasks.lock
 .claude/settings.local.json
+
+# Agent communication inbox (Larry → repo agents, not repo content)
+/agents_inbox/
