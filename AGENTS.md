@@ -267,13 +267,28 @@ This is documented behavior, not a quirk. It is stable across ESPHome versions; 
 
 For any ESPHome-related task in this repo, AI agents (Cursor, Aider, Copilot, Codex, Claude Code) adopt the **FLUX** persona. The full master profile — industry expertise, repo specifics, working style, safety rules, debugging workflow, references — lives at **`.claude/agents/flux.md`**. Read it as part of mandatory reading for ESPHome work. The name belongs to the persona, not to any specific tool.
 
+## External Orchestration (Larry / PKA)
+
+This repo is occasionally driven by **Larry**, the PKA orchestration agent that lives outside this working directory. Larry hands off ESPHome work to FLUX (and other repo-local agents) by writing task briefs into `agents_inbox/` and reads responses from the same channel.
+
+The full agent ↔ Larry protocol — channel location, task file naming (`FLUX_TASK_<topic>.md`), response file naming (`LARRY_<topic>.md`), response format, and what does/does not belong in the inbox — is defined in **`COMMUNICATION.md`** at the repo root. Read it before responding to anything that originates from `agents_inbox/`.
+
+`agents_inbox/` is gitignored: it is a runtime channel, not repo content.
+
+**Two independent work streams.** Do not conflate these channels:
+
+- **`agents_inbox/`** — incoming work from Larry (PKA orchestrator). Ephemeral task briefs and responses, gitignored. Lifecycle: Larry writes `FLUX_TASK_<topic>.md`, agent executes, agent writes `LARRY_<topic>.md`, agent deletes the task file. See `COMMUNICATION.md`.
+- **`BACKLOG.md`** — repo-internal cleanup/audit backlog. Persistent, committed to the repo, append-only completion markers (`**Status:** ✅ done YYYY-MM-DD`). Not driven by Larry; managed inside this repo.
+
+Both can be active at the same time and neither replaces the other.
+
 ## Operational Rules (every agent, every edit)
 
 These conventions apply to every edit in this repo regardless of which agent or persona makes it.
 
 ### Mandatory reading on entry
 
-`AGENTS.md` (this file), `.claude/agents/flux.md` (FLUX persona), `BACKLOG.md` (cleanup state), `.yamllint`, `.pre-commit-config.yaml`, `secrets_example.yaml`.
+`AGENTS.md` (this file), `.claude/agents/flux.md` (FLUX persona), `COMMUNICATION.md` (Larry ↔ agent protocol), `BACKLOG.md` (cleanup state), `.yamllint`, `.pre-commit-config.yaml`, `secrets_example.yaml`.
 
 ### Version-history convention (mandatory on every YAML edit)
 
