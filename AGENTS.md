@@ -332,3 +332,29 @@ If `esphome compile` fails on a **pre-existing bug** not introduced by your chan
 ## Repo Audit BACKLOG
 
 Ongoing cleanup is tracked in `BACKLOG.md` at repo root — categorized inventory of strange / non-idiomatic / inconsistent patterns with severity (Cosmetic / Minor / Notable / Important) and effort (S / M / L) per item, plus a phased fix plan. Read before proposing any structural change to multiple files; many candidate edits are already enumerated there.
+
+## AI Agents
+
+This repository uses two repo-local Claude Code sub-agents defined in `.claude/agents/`. Both adopt the cross-tool persona conventions described above and can be invoked by Cursor, Aider, Copilot, Codex, or Claude Code.
+
+### FLUX — Execution Agent
+
+FLUX is the primary execution agent. FLUX reads BACKLOG items from `BACKLOG.md` (or task briefs from `agents_inbox/`, when driven by Larry), implements them, and commits the result. FLUX runs naming-convention and structural checks before editing any file. Full profile: `.claude/agents/flux.md`.
+
+### ECHO — Consistency Reviewer
+
+ECHO is a read-only reviewer. FLUX calls ECHO **after staging changes and before committing** (post `git add`, pre `git commit`). ECHO reads the staged diff plus the satellite files listed in its map, and returns a structured checklist of what else needs updating.
+
+**FLUX must call ECHO when:**
+
+- Any PROD device file is renamed, added, or deleted.
+- `.dir_aliases` is modified.
+- A shell script (`esp_upgrade.sh`, `esp_setup.sh`, `check_esphome_version.sh`) is modified.
+- A convention change occurred mid-session (version-history order, comment style, substitution naming, etc.).
+- Batch commit with 3+ files changed.
+
+**ECHO never modifies files.** It returns a checklist. FLUX or Pawelo acts on the flags.
+
+**Skip rule.** FLUX may skip ECHO only for an isolated single-file change with no satellites and no mid-session convention change. The skip must be stated explicitly in the commit message (e.g. `Skipping ECHO — isolated change, no satellites.`). Skips on batch commits (3+ files) are never acceptable.
+
+Full profile and heuristic checklist: `.claude/agents/echo.md`. Satellite file inventory: `STRUCTURE.md` (column **"ECHO satellite?"**).
