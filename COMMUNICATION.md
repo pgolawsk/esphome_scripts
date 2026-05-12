@@ -74,6 +74,23 @@ Keep response files short and actionable. Larry reads `agents_inbox/` at PKA ses
 <list of files created/modified, or "none">
 ```
 
+## Archiving completed exchanges
+
+Once Larry has consumed a `LARRY_*.md` response and the work is closed, **Larry moves the response (and the original task file, if still present) into `agents_inbox/archive/`**, prepending the archival date to each filename:
+
+```
+agents_inbox/archive/YYYY-MM-DD_<original_filename>.md
+```
+
+Examples:
+- `agents_inbox/LARRY_ECHO_DONE.md` → `agents_inbox/archive/2026-05-12_LARRY_ECHO_DONE.md`
+- `agents_inbox/FLUX_TASK_ECHO.md` → `agents_inbox/archive/2026-05-12_FLUX_TASK_ECHO.md`
+
+Rules:
+- **Archiving is Larry's responsibility.** Repo-local agents (FLUX, ECHO, future agents) never move files into `archive/`; they only create `LARRY_*.md` responses and delete the task brief they consumed (per "Larry → Agent" above).
+- `agents_inbox/archive/` is part of the gitignored `agents_inbox/` tree — it is a local trail, not repo content.
+- The session-start hook surfaces only the top-level `agents_inbox/` (live work). Anything under `archive/` is hidden from session context by design.
+
 ## What does NOT go in agents_inbox/
 
 - Permanent deliverables (research notes, design docs) → `~/Documents/PKA/inbox/`
