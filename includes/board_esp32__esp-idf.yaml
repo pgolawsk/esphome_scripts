@@ -18,12 +18,13 @@
 # Pawelo, 20250906, moved sdkconfig options to sdkconfig.defaults file
 # Pawelo, 20251019, forked from board_esp32.yaml to have ESP-IDF specific configuration
 # FLUX, 20260510, Wired min_version: ${esphome_min_version} per BACKLOG item 9
+# FLUX, 20260512, Added Jinja `|default("2025.8.0")` to min_version so devices without `esphome_min_version` declaration get a sane floor (BACKLOG #10 refinement)
 
 esphome:
   name: $devicename
   friendly_name: $room
   area: $room
-  min_version: ${esphome_min_version}
+  min_version: ${esphome_min_version | default("2025.8.0")}
   comment: $room ESP32${board_variant} with $devices
 #  platform: ESP8266   # OLD notation
   project:

@@ -23,6 +23,7 @@
 # FLUX, 20260511, Deleted commented on_boot priority -100 block (logic lives in api_services__water.yaml on_client_connected; BACKLOG item 57)
 # FLUX, 20260511, Renamed global_watertotal_* to global_water_total_* for cspell-friendly canonical naming (BACKLOG item 7)
 # FLUX, 20260512, Wired comment: ${esphome_max_version} to consume the device-file substitution (mirror of min_version pattern) — BACKLOG item 11
+# FLUX, 20260512, Added Jinja `|default("2025.8.0")` to min_version so devices without `esphome_min_version` declaration get a sane floor (BACKLOG #10 refinement)
 #! FRAM via external_components github://pr#4880 breaks above ESPHome 2026.2 — devices using this board must declare `esphome_max_version` in their substitutions block
 
 globals:
@@ -55,7 +56,7 @@ esphome:
   name: $devicename
   friendly_name: $room
   area: $room
-  min_version: ${esphome_min_version}
+  min_version: ${esphome_min_version | default("2025.8.0")}
   comment: $room ESP32 controller with $devices (ESPHome max ${esphome_max_version} due to FRAM PR#4880)
 #  platform: ESP8266   # OLD notation
   project:

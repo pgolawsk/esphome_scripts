@@ -34,6 +34,7 @@
 # FLUX, 20260511, Cleaned up commented wifi-variant boilerplate; see includes/wifi.yaml header for variants (BACKLOG item 19)
 # FLUX, 20260511, Replaced placeholder substitutions with concrete defaults from .dir_aliases; aliases slimmed (BACKLOG item 25)
 # FLUX, 20260512, removed dead accuracy_decimals substitution; default now lives in sensors/value_mqtt_subscribe.yaml + sensors/ha_sensor.yaml via Jinja `|default(2)` (BACKLOG #24)
+# FLUX, 20260512, Removed esphome_min_version substitution; floor 2025.8.0 now provided by board file Jinja default (BACKLOG #10 refinement)
 
 # ! run with this command to override substitutions
 # esphome -s devicename espXX -s updates 1min -s room <Room name> -s mqtt_room <room> run esp32_MMmm_SSss__PP.yaml --device 192.168.x.x
@@ -43,7 +44,6 @@ substitutions:
   devices: "DEV Kit"
   project_name: "pgolawsk.esp_home"
   version: "20251231"
-  esphome_min_version: 2025.8.0  # floor — no specific component requires newer; DS18B20/BME280/BH1750/SHT30 stable since 2025.8.0
 
   # required by ../includes/board_esp32.yaml script
   # framework_type: arduino # "arduino" or "esp-idf"

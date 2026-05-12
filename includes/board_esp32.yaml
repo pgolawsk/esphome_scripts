@@ -19,6 +19,7 @@
 # Pawelo, 20251019, added commented code for ESP-IDF specific configuration
 # Pawelo, 20260124, added advanced minimum_chip_revision variable
 # FLUX, 20260510, Wired min_version: ${esphome_min_version} per BACKLOG item 9
+# FLUX, 20260512, Added Jinja `|default("2025.8.0")` to min_version so devices without `esphome_min_version` declaration get a sane floor (BACKLOG #10 refinement)
 
 # ! those values are examples, not used in this file, need to be declared outside of this file
 # substitutions:
@@ -34,7 +35,7 @@ esphome:
   name: $devicename
   friendly_name: $room
   area: $room
-  min_version: ${esphome_min_version}
+  min_version: ${esphome_min_version | default("2025.8.0")}
   comment: $room ESP32${board_variant} with $devices
 #  platform: ESP8266   # OLD notation
   project:

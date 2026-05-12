@@ -19,11 +19,12 @@
 # Pawelo, 20250223, added esphome_min_version variable
 # Pawelo, 20250223, forced sdkconfig options for ESP-IDF to eliminate log warnings
 # Pawelo, 20250413, added web_server_basic.yaml to avoid sorting groups (not supported in 2.x)
+# FLUX, 20260512, Added Jinja `|default("2025.8.0")` to min_version so devices without `esphome_min_version` declaration get a sane floor (BACKLOG #10 refinement)
 
 esphome:
   name: $devicename
   friendly_name: $room
-  min_version: ${esphome_min_version}
+  min_version: ${esphome_min_version | default("2025.8.0")}
   area: $room
   comment: $room ESP32${board_variant} with $devices
 #  platform: ESP8266   # OLD notation

@@ -155,7 +155,8 @@ Scope walked: `2_PROD/*.yaml` (all 11), representative `0_DEV/*.yaml`, `includes
 Recommend (a) for consistency with current style + add to upgrade SOP a check that the value matches the currently-installed version (`upgrade/COMPONENTS.md` already tracks this).
 **Effort:** M
 **Severity:** Notable
-**Status:** ✅ done 2026-05-10
+**Status:** ✅ done 2026-05-10 (variant a: per-file declaration in 11 PROD files)
+**Refinement:** ✅ 2026-05-12 — adopted variant (d) using Jinja `${esphome_min_version | default("2025.8.0")}` in 7 board files (esp32/esp8266/water_pump/variant/esp-idf/with_psram_fix/miniss_bk7231n). Devices with `2025.8.0` floor (8 PROD) no longer declare the substitution. Devices with non-default floor keep their override: esp32-05 (2026.3.0 — epaper_spi), esp32-06 + esp32-35 PROD (2025.6.3), esp32-35 DEV (2026.3.0), esp32s3_dev (2025.2.0). Bonus: pre-existing `UndefinedError` in some 0_DEV files (e.g. `esp12f_dev.yaml`) now auto-fixed by the default. Pattern documented in memory `project_esphome_jinja_default_filter`.
 
 ### 11. `esphome_max_version` substitution declared but never enforced
 

@@ -36,6 +36,7 @@
 # FLUX, 20260511, Replaced placeholder substitutions with concrete defaults from .dir_aliases; aliases slimmed (BACKLOG item 25)
 # FLUX, 20260511, Removed quotes from restore_from_flash substitution; bool form works since modern ESPHome (BACKLOG item 53)
 # FLUX, 20260512, removed dead accuracy_decimals substitution; default now lives in sensors/value_mqtt_subscribe.yaml + sensors/ha_sensor.yaml via Jinja `|default(2)` (BACKLOG #24)
+# FLUX, 20260512, Removed esphome_min_version substitution; floor 2025.8.0 now provided by board file Jinja default (BACKLOG #10 refinement)
 
 # WARN: DO NOT ADD any more sensors as it will impact /metrics (prometheus) and in worst case brick the device
 # ! run with this command to override substitutions
@@ -45,7 +46,6 @@ substitutions:
   devices: "Temperature and Humidity via SHTx30, Illuminance, Color via TCS34725"
   project_name: "pgolawsk.esp_home"
   version: "20251122"
-  esphome_min_version: 2025.8.0  # floor — no specific component requires newer; SHT30/TCS3472 stable since 2025.8.0
 
   # required by ../includes/board_esp8266.yaml script
   board_variant: "12F"  # determine variant like 12F, 07s, 01m, ...
