@@ -7,7 +7,7 @@ See `AGENTS.md` for cross-tool agent definitions, `COMMUNICATION.md` for Larry �
 ## Root-level files
 
 | File | Purpose | Update trigger | ECHO satellite? |
-|---|---|---|---|
+| --- | --- | --- | --- |
 | `README.md` | Human-facing intro: overview, naming convention, usage, sensor/board catalog | When conventions or device list changes materially | No |
 | `AGENTS.md` | Cross-tool AI agent definitions (FLUX + ECHO). Readable by CC, Cursor, Aider, Copilot | When agent behavior or device alias table changes | Yes — update when device renamed/added |
 | `CLAUDE.md` | Claude Code entry-point that pulls in `AGENTS.md` and adds CC-specific notes (subagent registration, ECHO trigger pointer) | When CC-specific behavior changes | No |
@@ -35,7 +35,7 @@ See `AGENTS.md` for cross-tool agent definitions, `COMMUNICATION.md` for Larry �
 ## Directories
 
 | Directory | Purpose | Update trigger | ECHO satellite? |
-|---|---|---|---|
+| --- | --- | --- | --- |
 | `2_PROD/` | Deployed device configs — production. Primary working directory for FLUX | When device flashed to production | Yes — changes here trigger H1 |
 | `0_DEV/` | Development/experiment configs. Shares includes with PROD — indirect impact when includes change | When include files change (indirect) | Indirect |
 | `1_UAT/` | Pre-production validation configs. Also shares includes — indirect impact | When include files change (indirect) | Indirect |

@@ -192,27 +192,35 @@ Before running it please:
 
 #### Sample command
 
-`esphome -s devicename esp12f_office -s updates 30s -s room Office -s mqtt_room office run 0_PROD/esp12f-10_Office.yaml`
+```bash
+esphome run 2_PROD/esp12f-10_Office.yaml
+```
 
-To trigger only OTA update for particular IP please add `--device 192.168.x.x` at the end of above command.
+Each PROD device YAML declares its own substitution defaults (`devicename`, `room`, `mqtt_room`, etc.), so no `-s` flags are needed for the common case. Directory-scoped aliases in `.dir_aliases` (loaded automatically by zsh when you enter the repo) make this even shorter — `esp10` is equivalent to the command above. See `AGENTS.md` → "Device Aliases" for the full alias table.
 
-##### Command parameters
+To trigger an OTA update on a specific IP rather than the hostname `<devicename>.lan`, append `--device 192.168.x.x` at the end.
 
-The parameters are following `-s` argument. Those are:
+##### Ad-hoc substitution overrides
 
-- `devicename` - the name of the device, `esp-xx` is default
-- `updates` - how frequently sensors are updated, `30s` is default
-- `room` - friendly name of the room, `Room` is default
-- `mqtt_location` - name of the location for MQTT, `home` is default
-- `mqtt_room` - name of the room for MQTT, `room` is default
+Use `-s key value` only when you need to deviate from the device file's defaults for one run (e.g. faster sensor cadence for debugging):
 
-Some scripts which have sensors or manipulators in 2 areas have the parameters for 2nd area passed as:
+```bash
+esphome -s updates 5s run 2_PROD/esp12f-10_Office.yaml
+```
 
-- `room2` - friendly name of the room, `none` is default
-- `mqtt_location2` - name of the location for MQTT, `none` is default
-- `mqtt_room2` - name of the room for MQTT, `none` is default
+Available substitution keys (see device YAML for the actual default values):
+
+- `devicename` - the device hostname (matches `<devicename>.lan`)
+- `updates` - sensor update interval
+- `room` - friendly room name
+- `mqtt_location` - MQTT location prefix
+- `mqtt_room` - MQTT room name
+
+Dual-room devices additionally expose `room2`, `mqtt_location2`, `mqtt_room2` for the secondary area.
 
 ## Repo description
+
+For the operational map (per-file update triggers, ECHO satellite relationships, full directory inventory) see [STRUCTURE.md](STRUCTURE.md). The summary below covers the directory layout only.
 
 ### Device script folders
 
@@ -228,19 +236,26 @@ Remaining folder contain partial YAML configurations for single elements or sets
 
 - `buttons` - list of buttons intended to include them under `button:` section;
   - folder contains also `set_of_...` files which contain multiple buttons (like for IR remote controls), but those should be included in `packages:` section
-- `deprecated` - contain all old versions (not modular usually)
+- `covers` - cover component YAML blocks, loaded via `!include` under `cover:` section
+- `custom_components` - local experimental modifications to ESPHome components without upstream PRs; not used in PROD
+- `deprecated` - retired configs that are **no longer functional** and superseded by modular scripts; kept for historical reference only
+- `docs` - component and feature documentation for components Pawelo submits PRs for
 - `examples` - example configurations, how to use set of scripts
 - `fans` - list of switches intended to include them under `fan:` section
 - `fonts` - list of fonts to draw on displays intended to include them under `font:` section
 - `i2s` - scripts for i2s sound devices (mic, speaker, ...)
 - `includes` - basic scripts for ESP boards, wifi, mqtt, ota, ...
   - `board_...` scripts may contain wiring instructions - please READ those
-- `interfaces` - list of separate interfaces to include like `i2c`, `uart`, `dallas`
+- `interfaces` - interface configs (`i2c`, `uart`, `dallas`, display pages), loaded via `!include`
 - `lights` - list of switches intended to include them under `light:` section
 - `outputs` - list of outputs intended to include them under `output:` section
-- `pinouts` - images of pinouts, boards, displays referenced by [Inventory.md](Inventory.md)
+- `pinouts` - pinout images, wiring schematics, connection diagrams, and board photos - reference material for hardware assembly and troubleshooting
+- `scripts` - ESPHome automation scripts as YAML, loaded via `!include`
+- `selects` - select component YAML blocks, loaded via `!include` under `select:` section
 - `sensors` - list of sensors intended to include them under:
   - `binary_senor:` section, those with filenames starting as `binary_`
   - `text_senor:` section, those with filenames starting as `text_`
   - `sensor:` section, all remaining files
 - `switches` - list of switches intended to include them under `switch:` section
+- `temp` - temporary working files (gitignored)
+- `tests` - active test configs for Pawelo's own ESPHome PRs
