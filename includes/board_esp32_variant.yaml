@@ -6,6 +6,7 @@
 # Pawelo, 20260124, created as variant of board_esp32.yaml for C3/C6/S2/S3 without minimum_chip_revision
 # FLUX, 20260510, Wired min_version: ${esphome_min_version} per BACKLOG item 9
 # FLUX, 20260512, Added Jinja `|default("2025.8.0")` to min_version so devices without `esphome_min_version` declaration get a sane floor (BACKLOG #10 refinement)
+# FLUX, 20260512, Added Jinja default `"5min"` to flash_write_interval; board_variant + board are per-device (no shared default for variants) so devices keep their declarations (Jinja default pattern extension, mirrors BACKLOG #10)
 
 # ! those values are examples, not used in this file, need to be declared outside of this file
 # substitutions:
@@ -70,7 +71,7 @@ esp32:
       # CONFIG_HTTPD_SOCK_CLIENT_LINGER: "y"
 
 preferences:
-  flash_write_interval: ${flash_write_interval}
+  flash_write_interval: ${flash_write_interval | default("5min")}
 
 <<: !include wifi.yaml
 <<: !include api.yaml

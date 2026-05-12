@@ -20,13 +20,14 @@
 # Pawelo, 20250223, forced sdkconfig options for ESP-IDF to eliminate log warnings
 # Pawelo, 20250413, added web_server_basic.yaml to avoid sorting groups (not supported in 2.x)
 # FLUX, 20260512, Added Jinja `|default("2025.8.0")` to min_version so devices without `esphome_min_version` declaration get a sane floor (BACKLOG #10 refinement)
+# FLUX, 20260512, Added Jinja defaults for board_variant ("s3"), board ("esp32-s3-devkitc-1"), flash_write_interval ("5min") — all 3 PSRAM consumer devices (esp32-14, esp32s3_dev, esp32s3supermini_dev) match these (Jinja default pattern extension, mirrors BACKLOG #10)
 
 esphome:
   name: $devicename
   friendly_name: $room
   min_version: ${esphome_min_version | default("2025.8.0")}
   area: $room
-  comment: $room ESP32${board_variant} with $devices
+  comment: $room ESP32${board_variant | default("s3")} with $devices
 #  platform: ESP8266   # OLD notation
   project:
     name: $project_name
@@ -42,7 +43,7 @@ esphome:
     #   - -mfix-esp32-psram-cache-issue
 
 esp32:
-  board: ${board} # like: esp32dev, esp32cam, esp32-c3-devkitm-1, esp32-s3-devkitc-1, esp32-s2-saola-1, full list here https://registry.platformio.org/platforms/platformio/espressif32/boards?version=5.3.0
+  board: ${board | default("esp32-s3-devkitc-1")} # like: esp32dev, esp32cam, esp32-c3-devkitm-1, esp32-s3-devkitc-1, esp32-s2-saola-1, full list here https://registry.platformio.org/platforms/platformio/espressif32/boards?version=5.3.0
   flash_size: ${flash_size} # One of 2MB, 4MB, 8MB, 16MB or 32MB
 #  restore_from_flash: true
   framework:
@@ -82,7 +83,7 @@ esp32:
       CONFIG_SPIRAM_RODATA: y
 
 preferences:
-  flash_write_interval: ${flash_write_interval}
+  flash_write_interval: ${flash_write_interval | default("5min")}
 
 <<: !include wifi.yaml
 <<: !include api.yaml

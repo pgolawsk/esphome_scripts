@@ -53,6 +53,7 @@
 # FLUX, 20260511, Replaced placeholder substitutions with concrete defaults from .dir_aliases; aliases slimmed (BACKLOG item 25)
 # FLUX, 20260511, Removed commented epaper_spi external_components block + ~110 lines of commented page_time lambda (BACKLOG item 60)
 # FLUX, 20260512, removed dead accuracy_decimals substitution; default now lives in sensors/value_mqtt_subscribe.yaml + sensors/ha_sensor.yaml via Jinja `|default(2)` (BACKLOG #24)
+# FLUX, 20260512, Removed board_variant/board/flash_write_interval substitutions; defaults now provided by board file via Jinja (Jinja default pattern extension, mirrors BACKLOG #10)
 
 # ! run with this command to override substitutions
 # esphome -s devicename espXX -s updates 1min -s room <Room name> -s mqtt_room <room> run esp32_MMmm_SSss__PP.yaml --device 192.168.x.x
@@ -69,10 +70,7 @@ substitutions:
   framework_type: esp-idf  # "arduino" or "esp-idf"
   framework_version: recommended  # or specific version like "latest", "recommended", "4.4.4"
   # framework_version: latest # or specific version like "latest", "recommended", "4.4.4"
-  board_variant: ""  # empty for ESP32, other values to display like c3, c6, s2, s3
-  board: "esp32dev"  # like: esp32dev, esp32cam, esp32-c3-devkitm-1, esp32-s3-devkitc-1, esp32-s2-saola-1, full list here https://registry.platformio.org/platforms/platformio/espressif32/boards?version=5.3.0
   flash_size: 4MB  # One of 2MB, 4MB, 8MB, 16MB or 32MB
-  flash_write_interval: "5min"
   minimum_chip_revision: "3.0"
 
   devicename: esp32-05
@@ -86,7 +84,6 @@ substitutions:
   room2: WinterGardenUpp
   mqtt_location2: home
   mqtt_room2: winter_garden_upp
-
 
   # Display setup variables
   display_xRes: "128"
@@ -374,7 +371,6 @@ display:
             it.printf(x+100, y, id(size_50_font), fi, TextAlign::BASELINE_RIGHT , "%.1f", id(tempU).state);
             it.printf(x+100, y, id(units_30_font), color_black, TextAlign::BASELINE_LEFT , "\U000F0504");
           }
-
 
           // ALIGN Y TO BOTTOM
           x = 0, y = yRes - 25 - 5 - 3;
