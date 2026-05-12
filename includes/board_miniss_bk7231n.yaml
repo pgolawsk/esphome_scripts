@@ -5,6 +5,7 @@
 # Pawelo, 20250413, added web_server_basic.yaml to avoid sorting groups (not supported in 2.x)
 # FLUX, 20260510, Wired min_version: ${esphome_min_version} per BACKLOG item 9
 # FLUX, 20260512, Added Jinja `|default("2025.8.0")` to min_version so devices without `esphome_min_version` declaration get a sane floor (BACKLOG #10 refinement)
+# FLUX, 20260512, Added Jinja defaults: project_name ("pgolawsk.esp_home") (Jinja default pattern extension, mirrors BACKLOG #10)
 
 esphome:
   name: $devicename
@@ -14,7 +15,7 @@ esphome:
   comment: $room BK7231N controller with $devices
 #  platform: ESP8266   # OLD notation
   project:
-    name: $project_name
+    name: ${project_name | default("pgolawsk.esp_home")}
     version: $version
 
 libretuya:

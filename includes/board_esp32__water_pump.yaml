@@ -25,6 +25,7 @@
 # FLUX, 20260512, Wired comment: ${esphome_max_version} to consume the device-file substitution (mirror of min_version pattern) — BACKLOG item 11
 # FLUX, 20260512, Added Jinja `|default("2025.8.0")` to min_version so devices without `esphome_min_version` declaration get a sane floor (BACKLOG #10 refinement)
 # FLUX, 20260512, Added Jinja default `esp32dev` to board substitution; board_variant + flash_write_interval are not consumed by this board file so device-level declarations of those are dead and can be removed without further changes (Jinja default pattern extension, mirrors BACKLOG #10)
+# FLUX, 20260512, Added Jinja defaults: project_name ("pgolawsk.esp_home"), framework_version ("recommended"), flash_size ("4MB") (Jinja default pattern extension, mirrors BACKLOG #10)
 #! FRAM via external_components github://pr#4880 breaks above ESPHome 2026.2 — devices using this board must declare `esphome_max_version` in their substitutions block
 
 globals:
@@ -61,7 +62,7 @@ esphome:
   comment: $room ESP32 controller with $devices (ESPHome max ${esphome_max_version} due to FRAM PR#4880)
 #  platform: ESP8266   # OLD notation
   project:
-    name: $project_name
+    name: ${project_name | default("pgolawsk.esp_home")}
     version: $version
 
   # platformio_options:
@@ -96,12 +97,12 @@ esphome:
 esp32:
   # board: esp32dev
   board: ${board | default("esp32dev")}  # like: esp32dev, esp32cam, esp32-c3-devkitm-1, esp32-c6-devkitm-1, esp32-s3-devkitc-1, esp32-s2-saola-1, full list here https://registry.platformio.org/platforms/platformio/espressif32/boards?version=5.3.0
-  flash_size: ${flash_size}  # One of 2MB, 4MB, 8MB, 16MB or 32MB
+  flash_size: ${flash_size | default("4MB")}  # One of 2MB, 4MB, 8MB, 16MB or 32MB
 #  restore_from_flash: true
   framework:
     # ! FRAM works with Arduino framework with no deprecation warnings, while ESP-IDF shows deprecation warning till 2026.3.0
     type: ${framework_type}  # arduino or esp-idf
-    version: ${framework_version}  # like: latest, recommended, 4.4, ...
+    version: ${framework_version | default("recommended")}  # like: latest, recommended, 4.4, ...
 
     # # only for ESP-IDF
     # sdkconfig_options:

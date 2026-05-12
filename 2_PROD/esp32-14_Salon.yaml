@@ -44,6 +44,7 @@
 # FLUX, 20260512, removed dead accuracy_decimals substitution; default now lives in sensors/value_mqtt_subscribe.yaml + sensors/ha_sensor.yaml via Jinja `|default(2)` (BACKLOG #24)
 # FLUX, 20260512, Removed esphome_min_version substitution; floor 2025.8.0 now provided by board file Jinja default (BACKLOG #10 refinement)
 # FLUX, 20260512, Removed board_variant/board/flash_write_interval substitutions; defaults now provided by board file via Jinja (Jinja default pattern extension, mirrors BACKLOG #10)
+# FLUX, 20260512, Removed project_name/framework_version substitution(s); defaults now provided by board file via Jinja (Jinja default pattern extension, mirrors BACKLOG #10)
 
 # ! run with this command to override substitutions
 # esphome -s devicename espXX -s updates 1min -s room <Room name> -s mqtt_room <room> run esp32_MMmm_SSss__PP.yaml --device 192.168.x.x
@@ -51,13 +52,11 @@
 
 substitutions:
   devices: "Env monitoring via BME680, Illuminance via BH1750, IR Receiver/Transmitter, RTTTL Buzzer, mic via INMP441, speaker via MAX98357A"
-  project_name: "pgolawsk.esp_home"
   version: "20260123"
 
   # required by ../includes/board_esp32.yaml script
   # framework_type: arduino # "arduino" or "esp-idf"
   framework_type: esp-idf  # "arduino" or "esp-idf"
-  framework_version: recommended  # or specific version like "latest", "recommended", "4.4.4"
   # framework_version: latest # or specific version like "latest", "recommended", "4.4.4"
   flash_size: 8MB  # One of 2MB, 4MB, 8MB, 16MB or 32MB
 

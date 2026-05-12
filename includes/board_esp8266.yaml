@@ -21,6 +21,7 @@
 # FLUX, 20260510, Wired min_version: ${esphome_min_version} per BACKLOG item 9
 # FLUX, 20260512, Added Jinja `|default("2025.8.0")` to min_version so devices without `esphome_min_version` declaration get a sane floor (BACKLOG #10 refinement)
 # FLUX, 20260512, Added Jinja defaults for board_variant ("12F"), board ("esp12e"), restore_from_flash (false), flash_write_interval ("5min") — eliminates per-device declaration for ESP12F devices (mirror of accuracy_decimals/min_version pattern, Jinja default pattern extension, mirrors BACKLOG #10)
+# FLUX, 20260512, Added Jinja defaults: project_name ("pgolawsk.esp_home") (Jinja default pattern extension, mirrors BACKLOG #10)
 
 esphome:
   name: $devicename
@@ -29,7 +30,7 @@ esphome:
   min_version: ${esphome_min_version | default("2025.8.0")}
   comment: $room ESP${board_variant | default("12F")} controller with $devices
   project:
-    name: $project_name
+    name: ${project_name | default("pgolawsk.esp_home")}
     version: $version
 
   platformio_options:

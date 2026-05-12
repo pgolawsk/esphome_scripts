@@ -38,6 +38,7 @@
 # FLUX, 20260512, removed dead accuracy_decimals substitution; default now lives in sensors/value_mqtt_subscribe.yaml + sensors/ha_sensor.yaml via Jinja `|default(2)` (BACKLOG #24)
 # FLUX, 20260512, Removed esphome_min_version substitution; floor 2025.8.0 now provided by board file Jinja default (BACKLOG #10 refinement)
 # FLUX, 20260512, Removed board_variant/board/restore_from_flash/flash_write_interval substitutions; defaults now provided by board_esp8266.yaml via Jinja (Jinja default pattern extension, mirrors BACKLOG #10)
+# FLUX, 20260512, Removed project_name substitution(s); defaults now provided by board file via Jinja (Jinja default pattern extension, mirrors BACKLOG #10)
 
 # WARN: DO NOT ADD any more sensors as it will impact /metrics (prometheus) and in worst case brick the device
 # ! run with this command to override substitutions
@@ -45,7 +46,6 @@
 # here are default values if those are not given via command line
 substitutions:
   devices: "Temperature and Humidity via SHTx30, Illuminance, Color via TCS34725"
-  project_name: "pgolawsk.esp_home"
   version: "20251122"
 
   devicename: esp12f-25

@@ -235,7 +235,7 @@ Recommend (a) for consistency with current style + add to upgrade SOP a check th
 **Suggested fix:** Extract a `substitutions_defaults.yaml` package, include via `packages:`. Each device file keeps only the fields it customizes (mostly `devices:`, `version:`, `board:`, `flash_size:`).
 **Effort:** L
 **Severity:** Minor
-**Progress note (2026-05-12):** `accuracy_decimals`, `board_variant`, `board`, `restore_from_flash`, `flash_write_interval` extracted to Jinja defaults in `sensors/value_mqtt_subscribe.yaml`, `sensors/ha_sensor.yaml`, and `includes/board_esp8266.yaml` — see BACKLOG #24 fix and #10 refinement entries. Item not closed (substitution block boilerplate for other fields remains in PROD files); this is partial reduction.
+**Progress note (2026-05-12):** `accuracy_decimals`, `board_variant`, `board`, `restore_from_flash`, `flash_write_interval`, `esphome_min_version`, `project_name`, `framework_version`, `flash_size` extracted to Jinja defaults in `sensors/value_mqtt_subscribe.yaml`, `sensors/ha_sensor.yaml`, and 7 board files (`board_esp8266.yaml`, `board_miniss_bk7231n.yaml`, 5× `board_esp32*.yaml`) — see BACKLOG #24 fix and #10/#28/#30 refinement entries. Item not closed (`devicename`, `updates`, `room`, `mqtt_*`, `version`, `framework_type`, `minimum_chip_revision`, `devices` substitution boilerplate remains in PROD files); this is partial reduction (~9 of ~15 fields eliminated).
 
 ### 19. The "override block of commented-out alternative wifi files" boilerplate is in 11 PROD files
 
@@ -338,6 +338,7 @@ Plus `# - !include { file: ../buttons/shutdown_button.yaml }` (commented).
 **Suggested fix:** Add a one-line summary table to AGENTS.md or `upgrade/COMPONENTS.md` listing each device + framework + reason.
 **Effort:** S
 **Severity:** Minor
+**Progress note (2026-05-12):** `framework_version` half resolved — Jinja default `"recommended"` added to 5 ESP32 board files; 6 PROD ESP32 + 13 0_DEV ESP32 device files no longer declare it. `framework_type` drift remains (per-device decision — arduino vs esp-idf is a load-bearing choice for FRAM/PSRAM support, so no shared default makes sense). A summary table in AGENTS.md or `upgrade/COMPONENTS.md` would still help.
 
 ### 29. `minimum_chip_revision` substitution declared inconsistently — only 4 of 8 ESP32 PROD files have it
 
@@ -354,6 +355,7 @@ Plus `# - !include { file: ../buttons/shutdown_button.yaml }` (commented).
 **Suggested fix:** Add a comment to ESP8266 PROD files: `# board_esp8266.yaml ignores flash_size — set via PlatformIO board variant`.
 **Effort:** S
 **Severity:** Cosmetic
+**Progress note (2026-05-12):** ESP32 side resolved via Jinja default `"4MB"` in 5 ESP32 board files; 17 device files no longer declare `flash_size` (5 PROD ESP32 + 12 0_DEV). Devices with non-default flash size retain override: esp32-14 (8MB), esp32_display_lillygoT5 + esp32s3_dev + esp32-33_s3_VA_full (16MB). ESP8266 asymmetry (no `flash_size:` substitution) unchanged — still acceptable per `board_esp8266.yaml` ignoring the var.
 
 ### 31. `${platform_name}` and `${web_server_version}` are wired but the variables are interpolated as substitutions, not via `vars:` mechanism
 

@@ -16,6 +16,7 @@
 # FLUX, 20260511, Fixed broken comment references to non-existent text_*_bme68x_bsec2.yaml files (BACKLOG item 3)
 # FLUX, 20260512, removed dead accuracy_decimals substitution; default now lives in sensors/value_mqtt_subscribe.yaml + sensors/ha_sensor.yaml via Jinja `|default(2)` (BACKLOG #24)
 # FLUX, 20260512, Removed board_variant/board/flash_write_interval substitutions; defaults now provided by board file via Jinja (Jinja default pattern extension, mirrors BACKLOG #10)
+# FLUX, 20260512, Removed project_name/framework_version/flash_size substitution(s); defaults now provided by board file via Jinja (Jinja default pattern extension, mirrors BACKLOG #10)
 
 # ! run with this command to override substitutions
 # esphome -s devicename espXX -s updates 1min -s room <Room name> -s mqtt_room <room> run esp32_MMmm_SSss__PP.yaml --device 192.168.x.x
@@ -24,15 +25,12 @@
 substitutions:
 #  devices: "Temperature and Humidity via SHTx30 and Illuminance via BH1750"
   devices: "DEV Kit"
-  project_name: "pgolawsk.esp_home"
   version: "20250720"
 
   # required by ../includes/board_esp32.yaml script
   # framework_type: arduino # "arduino" or "esp-idf"
   framework_type: esp-idf  # "arduino" or "esp-idf"
-  framework_version: recommended  # or specific version like "latest", "recommended", "4.4.4"
   # framework_version: latest # or specific version like "latest", "recommended", "4.4.4"
-  flash_size: 4MB  # One of 2MB, 4MB, 8MB, 16MB or 32MB
 
   devicename: esp32-xx
   updates: "30s"
