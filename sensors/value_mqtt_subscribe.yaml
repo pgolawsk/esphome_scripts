@@ -2,12 +2,13 @@
 #* MQTT subscribe sensor configuration
 # Pawelo, 20230312, created based on https://esphome.io/components/sensor/mqtt_subscribe.html
 # Pawelo, 20240907, set entity_category for sensor to have it separately on web
+# FLUX, 20260512, add Jinja `|default(2)` to accuracy_decimals so callers can drop device-level substitution (BACKLOG #24)
 
 platform: mqtt_subscribe
 # name: "Office Temperature"
 name: ${name}
 entity_category: diagnostic
-accuracy_decimals: ${accuracy_decimals}
+accuracy_decimals: ${accuracy_decimals | default(2)}
 # unit_of_measurement: "°C"
 unit_of_measurement: ${unit}
 # id: temp_office

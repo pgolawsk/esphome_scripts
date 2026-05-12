@@ -297,6 +297,7 @@ Plus `# - !include { file: ../buttons/shutdown_button.yaml }` (commented).
 **Suggested fix:** Either start using it in sensor configs (so `BME280` etc. respect it via `accuracy_decimals: ${accuracy_decimals}`), or remove it from PROD substitution blocks where unused.
 **Effort:** S
 **Severity:** Minor
+**Status:** ✅ done 2026-05-12 (premise corrected: `${accuracy_decimals}` is consumed by `sensors/value_mqtt_subscribe.yaml` and `sensors/ha_sensor.yaml` — used in 4 PROD devices, not 1; per-call override via `vars:` is already in `0_DEV/esp32_display_weact.yaml`. Fix: added Jinja `${accuracy_decimals | default(2)}` to both includes, then removed device-level substitution from 11 PROD + 23 0_DEV files. `esphome config` validates clean on esp12f-10/esp32-14/esp32-05/esp32-35 with `accuracy_decimals: 2` correctly rendered in mqtt_subscribe + homeassistant sensors. Pattern documented in memory `project_esphome_jinja_default_filter`.)
 
 ### 25. `room2`/`mqtt_location2`/`mqtt_room2` declared in 4 PROD files; `none` literal used as sentinel
 

@@ -22,6 +22,7 @@
 # Pawelo, 20260124, added minimum_chip_revision variable to board_esp32.yaml to eliminate warnings
 # FLUX, 20260510, Lowercased sensor filename references for cross-platform portability (BACKLOG items 1-2)
 # FLUX, 20260511, Cleaned up commented wifi-variant boilerplate; see includes/wifi.yaml header for variants (BACKLOG item 19)
+# FLUX, 20260512, removed dead accuracy_decimals substitution; default now lives in sensors/value_mqtt_subscribe.yaml + sensors/ha_sensor.yaml via Jinja `|default(2)` (BACKLOG #24)
 
 # TODO: good example to deep_sleep: https://gist.github.com/Plawasan/8e27956db016eb5158311b94d096509b
 #                                  https://gist.github.com/Plawasan/4ae826b05aaa7812f3a191714ca47a50
@@ -56,8 +57,6 @@ substitutions:
   mqtt_location: home
   mqtt_room: room
 
-  # default variable values for !include statements
-  accuracy_decimals: "2"
 
   # Display setup variables
   display_xRes: "960"

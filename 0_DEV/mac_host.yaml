@@ -4,6 +4,7 @@
 # Pawelo, 20250207, moved to 0_DEV folder
 # Pawelo, 20250221, added uptime_boot text sensor
 # FLUX, 20260512, Fixed typo in font include path: fonts_weeact_display.yaml -> fonts_weact_display.yaml (caught by tools/check_includes.py — BACKLOG item 65)
+# FLUX, 20260512, removed dead accuracy_decimals substitution; default now lives in sensors/value_mqtt_subscribe.yaml + sensors/ha_sensor.yaml via Jinja `|default(2)` (BACKLOG #24)
 
 #* FIRST install software run those:
 # brew install sdl2 libsodium (install step)
@@ -30,8 +31,6 @@ substitutions:
   mqtt_location2: none
   mqtt_room2: none
 
-  # default variable values for !include statements
-  accuracy_decimals: "2"
 
 esphome:
   name: ${devicename}

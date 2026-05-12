@@ -59,6 +59,7 @@
 # FLUX, 20260510, Lowercased sensor filename references for cross-platform portability (BACKLOG items 1-2)
 # FLUX, 20260511, Cleaned up commented wifi-variant boilerplate; see includes/wifi.yaml header for variants (BACKLOG item 19)
 # FLUX, 20260511, Replaced placeholder substitutions with concrete defaults from .dir_aliases; aliases slimmed (BACKLOG item 25)
+# FLUX, 20260512, removed dead accuracy_decimals substitution; default now lives in sensors/value_mqtt_subscribe.yaml + sensors/ha_sensor.yaml via Jinja `|default(2)` (BACKLOG #24)
 
 # ! run with this command to override substitutions
 # esphome -s devicename espXX -s updates 1min -s room <Room name> -s mqtt_room <room> run esp32_MMmm_SSss__PP.yaml --device 192.168.x.x
@@ -94,8 +95,6 @@ substitutions:
   mqtt_location2: outside
   mqtt_room2: garage
 
-  # default variable values for !include statements
-  accuracy_decimals: "2"
   pulses_per_liter: "476"
   pulses_per_liter_garden: "450"  # from experience it should be set as 42,9
   water_updates_interval: 5s

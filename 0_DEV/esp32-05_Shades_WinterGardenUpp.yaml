@@ -49,6 +49,7 @@
 # FLUX, 20260511, Cleaned up commented wifi-variant boilerplate; see includes/wifi.yaml header for variants (BACKLOG item 19)
 # FLUX, 20260511, Replaced placeholder substitutions with concrete defaults from .dir_aliases; aliases slimmed (BACKLOG item 25)
 # FLUX, 20260512, Fixed typo in font include path: fonts_weeact_display.yaml -> fonts_weact_display.yaml (caught by tools/check_includes.py — BACKLOG item 65)
+# FLUX, 20260512, removed dead accuracy_decimals substitution; default now lives in sensors/value_mqtt_subscribe.yaml + sensors/ha_sensor.yaml via Jinja `|default(2)` (BACKLOG #24)
 
 # ! run with this command to override substitutions
 # esphome -s devicename espXX -s updates 1min -s room <Room name> -s mqtt_room <room> run esp32_MMmm_SSss__PP.yaml --device 192.168.x.x
@@ -81,8 +82,6 @@ substitutions:
   mqtt_location2: home
   mqtt_room2: winter_garden_upp
 
-  # default variable values for !include statements
-  accuracy_decimals: "2"
 
   # Display setup variables
   display_xRes: "128"

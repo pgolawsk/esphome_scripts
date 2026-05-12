@@ -4,11 +4,12 @@
 # Pawelo, 20250915, make it internal add name
 # Pawelo, 20250916, add icon
 # Pawelo, 20251023, add accuracy_decimals
+# FLUX, 20260512, add Jinja `|default(2)` to accuracy_decimals so callers can drop device-level substitution (BACKLOG #24)
 
 platform: homeassistant
 id: ha_${sensor_name}
 name: "HA: ${sensor_name}"
 icon: mdi:home-assistant
-accuracy_decimals: ${accuracy_decimals}
+accuracy_decimals: ${accuracy_decimals | default(2)}
 entity_id: sensor.${ha_entity_id}
 internal: true
