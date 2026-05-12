@@ -25,6 +25,22 @@ Examples:
 When you see a file matching your agent name, read it and execute.
 Delete the file when the task is complete (last step before closing the session).
 
+### Task briefs must be self-contained
+
+Repo-local agents (FLUX, ECHO, future agents) **stay within the repo boundary**. They do not read from `~/Documents/PKA/` or any other path outside `~/dev/esphome_scripts/`.
+
+Therefore, every `FLUX_TASK_<topic>.md` (and any other `<AGENT>_TASK_*.md`) **must contain all material the agent needs to execute the task** — design docs, specs, decision context, prior discussion, acceptance criteria. Larry is responsible for inlining that content into the task file.
+
+If a brief is too large to inline cleanly, Larry may drop **sibling attachment files** under `agents_inbox/` using the naming convention:
+
+```
+agents_inbox/<AGENT>_TASK_<topic>__<attachment_name>.md
+```
+
+Example: `agents_inbox/FLUX_TASK_ECHO__design_doc.md` alongside `agents_inbox/FLUX_TASK_ECHO.md`. The agent deletes all related files (task + attachments) together on completion.
+
+What is **never** acceptable: a task brief that points to a file in `~/Documents/PKA/`, `~/private/`, or any path outside the repo. If a brief contains such a reference, the agent responds with a `LARRY_*.md` asking for the content to be inlined, and does not execute the task.
+
 ## Agent → Larry (outgoing responses)
 
 When a task produces output that Larry needs to act on (decision, finding, question, deliverable summary), write a response file:
