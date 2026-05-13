@@ -160,19 +160,21 @@ ESPHome ~2026.4.5. 11 PROD devices, ~28 dev variants, 80 sensor includes, 6 boar
 
 ### PROD devices (`2_PROD/`)
 
-| Alias | File | Board family | Highlights |
-|---|---|---|---|
-| `esp05` | `esp32-05_Shades_WinterGardenUpp.yaml` | ESP32 classic | Outdoor sensor cluster (BME680, SHT41, LTR390, BH1750), 12 V alarm-bus power, 2.90" e-paper. |
-| `esp06` | `esp32-06_Garden_Gateway.yaml` | ESP32 classic, esp-idf | **Canonical `packages:` + `!extend` example** (door cover via package + `!extend` of `door_cover` for endstops). BME280 calibrated linearly against reference station. |
-| `esp10` | `esp12f-10_Office.yaml` | ESP12F | SCD40 + SGP30 + BH1750 + AVT5713 light switch. Heavy `mqtt_with_rtttl.yaml` override; canonical override-by-order example. |
-| `esp11` | `esp12f-11_Entrance_Entry.yaml` | ESP12F | BME680 + BH1750 + intercom button + gate relay. 12 V intercom-bus power. |
-| `esp14` | `esp32-14_Salon.yaml` | ESP32-S3 N16R8 | **Canonical `packages:` example** for I2S media player + multiple IR remote sets (Apple TV, LG, Yamaha). PSRAM enforced via `esphome_min_version: 2025.8.0`. |
-| `esp15` | `esp12f-15_Upstairs.yaml` | ESP12F | Minimal: BME280 only. |
-| `esp21` | `esp12f-21_Underfloor.yaml` | ESP12F | SHT30 + 2× DS18B20. 12 V mains-converter power. Has commented quote-bug at line 122 (BACKLOG item 5). |
-| `esp25` | `esp12f-25_AquariumWindow.yaml` | ESP12F | SHT30 + TCS3472. 12 V alarm-bus power. |
-| `esp35` | `esp32-35_Pump_Garage.yaml` | ESP32-D1 + water_pump | Water pulse counter, FRAM total persistence, 2.90" e-paper, dual MQTT room. **Has `esphome_max_version: 2026.2`** (FRAM breaks beyond) — currently inert, see BACKLOG item 11. |
-| `esp36` | `esp32-36_Garage_Gate.yaml` | ESP32-C3 supermini | BME680 + BH1750 + gate relay. 230 V transformer. |
-| `esp39` | `esp32-39_Attic.yaml` | ESP32 classic | DS18B20 + BME280 + BH1750 + SHT30 waterproof probe. 230 V Hi-Link. |
+| Alias | File | Board family | Framework | Highlights |
+|---|---|---|---|---|
+| `esp05` | `esp32-05_Shades_WinterGardenUpp.yaml` | ESP32 classic | esp-idf | Outdoor sensor cluster (BME680, SHT41, LTR390, BH1750), 12 V alarm-bus power, 2.90" e-paper. `minimum_chip_revision: "3.0"` (rev3 silicon). |
+| `esp06` | `esp32-06_Garden_Gateway.yaml` | ESP32 classic | esp-idf | **Canonical `packages:` + `!extend` example** (door cover via package + `!extend` of `door_cover` for endstops). BME280 calibrated linearly against reference station. |
+| `esp10` | `esp12f-10_Office.yaml` | ESP12F | arduino (n/a) | SCD40 + SGP30 + BH1750 + AVT5713 light switch. Heavy `mqtt_with_rtttl.yaml` override; canonical override-by-order example. |
+| `esp11` | `esp12f-11_Entrance_Entry.yaml` | ESP12F | arduino (n/a) | BME680 + BH1750 + intercom button + gate relay. 12 V intercom-bus power. |
+| `esp14` | `esp32-14_Salon.yaml` | ESP32-S3 N16R8 | esp-idf | **Canonical `packages:` example** for I2S media player + multiple IR remote sets (Apple TV, LG, Yamaha). PSRAM enforced via `esphome_min_version: 2025.8.0`. Audio sdkconfig tuning in `board_esp32s3.yaml`. |
+| `esp15` | `esp12f-15_Upstairs.yaml` | ESP12F | arduino (n/a) | Minimal: BME280 only. |
+| `esp21` | `esp12f-21_Underfloor.yaml` | ESP12F | arduino (n/a) | SHT30 + 2× DS18B20. 12 V mains-converter power. Has commented quote-bug at line 122 (BACKLOG item 5). |
+| `esp25` | `esp12f-25_AquariumWindow.yaml` | ESP12F | arduino (n/a) | SHT30 + TCS3472. 12 V alarm-bus power. |
+| `esp35` | `esp32-35_Pump_Garage.yaml` | ESP32 classic + water_pump | **arduino** | Water pulse counter, FRAM total persistence, 2.90" e-paper, dual MQTT room. **`esphome_max_version: 2026.2`** (FRAM breaks beyond) — currently inert, see BACKLOG item 11. *Arduino because FRAM driver works without deprecation warnings on Arduino; esp-idf path has issues.* |
+| `esp36` | `esp32-36_Garage_Gate.yaml` | ESP32-C3 supermini (variant) | **arduino** | BME680 + BH1750 + gate relay. 230 V transformer. Uses `board_esp32_variant.yaml` (C3 drops `minimum_chip_revision`). *Arduino because esp-idf path was unstable on this device — switched back manually.* |
+| `esp39` | `esp32-39_Attic.yaml` | ESP32 classic | esp-idf | DS18B20 + BME280 + BH1750 + SHT30 waterproof probe. 230 V Hi-Link. |
+
+**Framework summary:** ESP32 devices split — esp-idf is default (4 PROD: esp05, esp06, esp14, esp39); arduino retained for 2 PROD (esp35 for FRAM driver, esp36 for stability). ESP8266 (ESP12F) is arduino-only at platform level — column shows "n/a" for non-applicable. `framework_type` substitution is **load-bearing per-device** (changes both compile path and component compatibility) — there is no shared default; each device declares explicitly in its substitutions block. See BACKLOG #28.
 
 Each alias also has a `dev` variant (e.g. `esp15dev`) that flashes the `0_DEV/` copy of the same config to the same device. Hostnames are `<devicename>.lan`.
 

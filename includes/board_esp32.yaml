@@ -22,6 +22,7 @@
 # FLUX, 20260512, Added Jinja `|default("2025.8.0")` to min_version so devices without `esphome_min_version` declaration get a sane floor (BACKLOG #10 refinement)
 # FLUX, 20260512, Added Jinja defaults for board_variant (""), board ("esp32dev"), flash_write_interval ("5min") — eliminates per-device declaration for plain ESP32 devices (Jinja default pattern extension, mirrors BACKLOG #10)
 # FLUX, 20260512, Added Jinja defaults: project_name ("pgolawsk.esp_home"), framework_version ("recommended"), flash_size ("4MB") (Jinja default pattern extension, mirrors BACKLOG #10)
+# FLUX, 20260513, Added Jinja `|default("1.0")` to minimum_chip_revision — eliminates per-device declaration for devices on chip rev 1.0 (BACKLOG #29)
 
 # ! those values are examples, not used in this file, need to be declared outside of this file
 # substitutions:
@@ -59,7 +60,7 @@ esp32:
     type: ${framework_type}  # arduino or esp-idf
     version: ${framework_version | default("recommended")}  # like: latest, recommended, 4.4, ...
     advanced:
-      minimum_chip_revision: ${minimum_chip_revision}
+      minimum_chip_revision: ${minimum_chip_revision | default("1.0")}
 
     # only for ESP-IDF
     # warn: moved to sdkconfig.defaults file

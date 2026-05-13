@@ -331,6 +331,7 @@ Plus `# - !include { file: ../buttons/shutdown_button.yaml }` (commented).
 **Suggested fix:** Either remove, or wire it into a switch/light include that reads it.
 **Effort:** S
 **Severity:** Minor
+**Status:** ✅ done 2026-05-13 (BACKLOG note was outdated — `lights/led_rgb.yaml:26` DOES consume `${restore_mode}`. Resolved by adding Jinja `|default("ALWAYS_OFF")` in `lights/led_rgb.yaml`; removed `restore_mode: ALWAYS_OFF` declaration from 1 PROD (esp32-14) + 5 DEV (esp32_dev, esp32c6_dev, esp32s3_dev, esp32s3supermini_dev, esp12f_dev). Retained explicit override `restore_mode: RESTORE_DEFAULT_OFF` in esp32c3_dev (the only non-default consumer).)
 
 ### 28. `framework_type` and `framework_version` declared per-device — drift between devices
 
@@ -340,6 +341,7 @@ Plus `# - !include { file: ../buttons/shutdown_button.yaml }` (commented).
 **Effort:** S
 **Severity:** Minor
 **Progress note (2026-05-12):** `framework_version` half resolved — Jinja default `"recommended"` added to 5 ESP32 board files; 6 PROD ESP32 + 13 0_DEV ESP32 device files no longer declare it. `framework_type` drift remains (per-device decision — arduino vs esp-idf is a load-bearing choice for FRAM/PSRAM support, so no shared default makes sense). A summary table in AGENTS.md or `upgrade/COMPONENTS.md` would still help.
+**Status:** ✅ done 2026-05-13 (Framework column added to PROD devices table in `.claude/agents/flux.md`. Each of 11 PROD devices now lists its framework (arduino vs esp-idf) with reason for non-obvious choices (esp35 arduino for FRAM driver, esp36 arduino for stability). ESP8266 devices show "n/a" since framework_type doesn't apply at platform level. Summary paragraph below the table explains why `framework_type` has no shared default — it is load-bearing per-device.)
 
 ### 29. `minimum_chip_revision` substitution declared inconsistently — only 4 of 8 ESP32 PROD files have it
 
@@ -348,6 +350,7 @@ Plus `# - !include { file: ../buttons/shutdown_button.yaml }` (commented).
 **Suggested fix:** Add a comment in each board file's substitutions stub block saying which substitutions it expects; add a one-line guard in the device file's substitutions block: `# This file uses board_esp32.yaml — minimum_chip_revision required`.
 **Effort:** S
 **Severity:** Minor
+**Status:** ✅ done 2026-05-13 (Jinja `|default("1.0")` added to `board_esp32.yaml:62` — eliminates per-device declaration for chip rev 1.0 (the common case). Removed `minimum_chip_revision: "1.0"` from 3 PROD (esp32-06, esp32-35, esp32-39) + 9 DEV (esp32_cam, esp32_display_pcf8574, esp32_dev, esp32_THIWdb_SBYr, esp32_display_weact, esp32_display_lillygoT5, esp32_THIUGPdb_GUr, esp32-35, esp32_dev_display). Retained explicit override `minimum_chip_revision: "3.0"` in esp32-05 (PROD + DEV) — newer silicon. esp32-14 (board_esp32s3.yaml) and esp32-36 (board_esp32_variant.yaml) don't consume the substitution — unchanged.)
 
 ### 30. `flash_size` substitution declared on every ESP32 device but inconsistently for ESP8266
 

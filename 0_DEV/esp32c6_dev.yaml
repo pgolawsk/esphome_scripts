@@ -34,6 +34,7 @@
 # FLUX, 20260512, removed dead accuracy_decimals substitution; default now lives in sensors/value_mqtt_subscribe.yaml + sensors/ha_sensor.yaml via Jinja `|default(2)` (BACKLOG #24)
 # FLUX, 20260512, Removed flash_write_interval substitution; default "5min" now provided by board file via Jinja (Jinja default pattern extension, mirrors BACKLOG #10)
 # FLUX, 20260512, Removed project_name/framework_version/flash_size substitution(s); defaults now provided by board file via Jinja (Jinja default pattern extension, mirrors BACKLOG #10)
+# FLUX, 20260513, Removed restore_mode substitution; default "ALWAYS_OFF" now provided by lights/led_rgb.yaml Jinja (BACKLOG #27)
 
 # ! run with this command to override substitutions
 # esphome -s devicename espXX -s updates 1min -s room <Room name> -s mqtt_room <room> run esp32_MMmm_SSss__PP.yaml --device 192.168.x.x
@@ -59,8 +60,6 @@ substitutions:
   mqtt_location: home
   mqtt_room: room
 
-  restore_mode: ALWAYS_OFF
-  # restore_mode: RESTORE_DEFAULT_OFF
 
 # Override some settings included below in _board_ setup
 <<: !include ../includes/time_sntp_with_sun.yaml  # WARN: this is to make sunrise and sunset sensor to be updated on every time sync event
