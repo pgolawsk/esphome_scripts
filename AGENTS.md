@@ -299,6 +299,12 @@ Every device script and include file has a version-history comment block near th
 - Use compact `YYYYMMDD` (no dashes) — that is the established convention.
 - If the block doesn't exist yet in a file you're editing, create it. Do not rewrite older entries; only append new ones at the bottom. This is the change-log of record at the file level — diffing alone is not sufficient.
 
+### `version:` substitution semantics (functional changes only)
+
+The `version: "YYYYMMDD"` substitution in device YAMLs represents the date of the last **functional** change — a new sensor, a new option, a behavior change, a wiring change, anything that alters what the device does on the bench. It does **not** track cosmetic edits: refactors, version-history appends, substitution-block cleanups, comment fixes, formatting, or include reshuffles do **not** justify bumping `version:`. The field is what HA and the OTA UI show users; keep it meaningful.
+
+When a commit is functional, bump `version:` manually (e.g. `python3 tools/bump_yaml_version.py 2_PROD/esp12f-10_Office.yaml`). Pre-commit auto-bump was tried 2026-05-12 and reverted 2026-05-13 because automatic bumps on every commit destroyed this semantic.
+
 ### BACKLOG completion convention
 
 When you complete a `BACKLOG.md` item, **append `**Status:** ✅ done YYYY-MM-DD` to the entry body** (do not delete the entry — leave it for history). Other AI agents and the PKA KANBAN sync use this marker to count remaining work per category.

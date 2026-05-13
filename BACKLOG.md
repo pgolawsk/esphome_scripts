@@ -322,7 +322,7 @@ Plus `# - !include { file: ../buttons/shutdown_button.yaml }` (commented).
 **Suggested fix:** Either drop the field (the OTA mechanism doesn't need it), or auto-bump via a pre-commit hook that updates `version:` to today's date when the file is staged.
 **Effort:** S
 **Severity:** Cosmetic
-**Status:** ✅ done 2026-05-12 (variant b: pre-commit hook `yaml-version-bump` added in `.pre-commit-config.yaml`; backed by `tools/bump_yaml_version.py` which scans staged YAML files in `0_DEV/1_UAT/2_PROD/`, matches `  version: "YYYYMMDD"` lines, and rewrites the digits to today's date. Hook exits non-zero on change so pre-commit prompts re-stage. Pre-existing drifted values stay until each file is next edited — organic lazy update rather than a one-shot sweep, to keep the version meaningful as "last actual edit" date.)
+**Status:** ✅ done 2026-05-13 (clarified semantics + manual tool; the 2026-05-12 auto-bump pre-commit hook was reverted because `version:` should track the date of the last **functional change** — new sensor, new option, behavior change — NOT cosmetic refactors, version-history appends, or substitution cleanups. Auto-bump on every commit destroyed that meaning. Replacement: `tools/bump_yaml_version.py` retained as a **manual** helper for use after a functional change (`python3 tools/bump_yaml_version.py <yaml_path>`); pre-commit hook entry removed. Drift remains the user's discipline call, scoped to functional commits only. Convention recorded in AGENTS.md.)
 
 ### 27. `restore_mode` substitution declared only on esp32-14, used inconsistently
 

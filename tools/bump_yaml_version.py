@@ -1,14 +1,20 @@
 #!/usr/bin/env python3
-"""Pre-commit hook: bump `version: "YYYYMMDD"` substitution in staged ESPHome
+"""Manual helper: bump `version: "YYYYMMDD"` substitution in ESPHome device
 YAML files to today's date.
 
-Targets BACKLOG #26 — manual `version:` field drifts behind actual edits.
-This hook sweeps any staged device YAML containing a `  version: "<8-digit>"`
-substitution line and rewrites the digits to today's date. Files without
-the pattern, or files whose value already matches today, are left untouched.
+Semantics: `version:` should reflect the date of the last **functional change**
+(new sensor, new option, behavior change) — NOT cosmetic refactoring,
+version-history appends, formatting fixes, or substitution boilerplate
+cleanup. Run this script ONLY when committing a functional change. Do not
+register it as a pre-commit hook (an earlier attempt was reverted because
+auto-bump on every commit destroyed the semantics).
 
-Exits non-zero when any file is modified, so pre-commit prompts the user to
-re-stage the change.
+Usage: `python3 tools/bump_yaml_version.py <yaml_path> [<yaml_path>...]`
+
+Behavior: matches `^(  version: ")(\\d{8})(".*)$` per line, replaces the
+digits with `date.today().strftime("%Y%m%d")`. Files without the pattern,
+or files whose value already matches today, are left untouched. Prints the
+list of modified files; exits 1 when anything changed, 0 otherwise.
 """
 from __future__ import annotations
 
