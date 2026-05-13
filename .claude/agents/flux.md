@@ -80,7 +80,7 @@ The ESPHome community-recommended layout is roughly: `devices/`, `common/` (or `
 | **ESP32-C3 (supermini, supermini plus)** | Single-core RISC-V. RGB on GPIO8 in supermini-plus variant (so GPIO8 unusable for I2C). Compact but flaky power on cheap clones. |
 | **ESP32-C6** | Newer RISC-V with WiFi6/Thread. Supermini variant **only works with esp-idf** (no arduino) and produces frequent `httpd_sock_err` warnings — known and documented in `Inventory.md`. Use only when WiFi6/Thread/BLE-mesh is genuinely needed. |
 | **ESP32-S2 mini (FN4R2)** | Single-core, USB-OTG. GPIO19/20 are USB pins — do not assign as I2C or the device responds to ping but has no web UI. First flash needs hold-BOOT / press-RST sequence. |
-| **ESP32-S3 (supermini, N16R8, N8R2 dev boards)** | Dual-core + native USB + PSRAM-capable. PSRAM 8 MB needs `board_esp32_with_psram_fix.yaml` + arduino memory_type `qio_opi` (or sdkconfig options for esp-idf). RGB on GPIO48 in supermini. RMT on GPIO48 conflicts with WS2812 if also doing IR transmit. First flash same hold-BOOT / press-RST sequence. |
+| **ESP32-S3 (supermini, N16R8, N8R2 dev boards)** | Dual-core + native USB + PSRAM-capable. PSRAM 8 MB needs `board_esp32s3.yaml` + arduino memory_type `qio_opi` (or sdkconfig options for esp-idf). RGB on GPIO48 in supermini. RMT on GPIO48 conflicts with WS2812 if also doing IR transmit. First flash same hold-BOOT / press-RST sequence. |
 | **BK7231N (Mini Smart Switch)** | LibreTuya / OpenBeken-target. Uses `libretuya:` block instead of `esp32:`/`esp8266:`. Limited ESPHome component support. Used in `includes/board_miniss_bk7231n.yaml`. |
 
 ### Debugging & logs
@@ -115,7 +115,7 @@ The ESPHome community-recommended layout is roughly: `devices/`, `common/` (or `
 7. OTA-flash in priority order; observe 2–3 min for crashes/reboots after each.
 8. Mark device `Done` in the impact file.
 
-Pin per-device with `esphome_min_version` substitution; the pin only fires if the corresponding board include has `min_version: ${esphome_min_version}`. Currently only `board_esp32_with_psram_fix.yaml` wires it — see BACKLOG items 8–11 (the pin is silently ignored on most PROD files, fix is queued).
+Pin per-device with `esphome_min_version` substitution; the pin only fires if the corresponding board include has `min_version: ${esphome_min_version}`. Currently only `board_esp32s3.yaml` wires it — see BACKLOG items 8–11 (the pin is silently ignored on most PROD files, fix is queued).
 
 PKA-side pipeline notes are kept in the user's external PKA directory (outside this repo); they are optional context and not required for in-repo execution.
 
@@ -145,7 +145,7 @@ PKA-side pipeline notes are kept in the user's external PKA directory (outside t
 
 ## This repo (specific) — `esphome_scripts`
 
-ESPHome ~2026.4.5. 11 PROD devices, ~28 dev variants, 80 sensor includes, 7 board files, 34 reusable includes. macOS workstation — case-sensitivity is a recurring trap.
+ESPHome ~2026.4.5. 11 PROD devices, ~28 dev variants, 80 sensor includes, 6 board files, 34 reusable includes. macOS workstation — case-sensitivity is a recurring trap.
 
 ### Boards (`includes/`)
 
@@ -153,9 +153,8 @@ ESPHome ~2026.4.5. 11 PROD devices, ~28 dev variants, 80 sensor includes, 7 boar
 |---|---|
 | `board_esp8266.yaml` | All ESP12F devices. Loads wifi/api/ota/logger/web_server v3/time_sntp/sun/prometheus/mqtt. `friendly_name`/`area:` deliberately commented (RAM). |
 | `board_esp32.yaml` | ESP32 classic (WROOM). Has `minimum_chip_revision` since 2026-01-24. Default for new ESP32 devices. |
-| `board_esp32__esp-idf.yaml` | ESP32 forked variant pinned to esp-idf framework with sdkconfig defaults. |
 | `board_esp32__water_pump.yaml` | Specialty board for esp32-35: declares `globals_watertotal_*`, FRAM-restored. Boots into HA total-fetch lambdas. |
-| `board_esp32_with_psram_fix.yaml` | ESP32-S3 N16R8 / N8R2 with PSRAM. Wires `min_version: ${esphome_min_version}` and `board_build.arduino.memory_type: qio_opi`. Used by Salon. |
+| `board_esp32s3.yaml` | ESP32-S3 with PSRAM + audio sdkconfig tuning (renamed from `board_esp32_with_psram_fix.yaml` on 2026-05-13). Wires `min_version: ${esphome_min_version}` and `board_build.arduino.memory_type: qio_opi`. Used by Salon (esp32-14) and S3 dev boards. |
 | `board_esp32_variant.yaml` | C3/C6/S2/S3 variants — same as `board_esp32.yaml` but **without** `minimum_chip_revision` (those chips don't support it). |
 | `board_miniss_bk7231n.yaml` | LibreTuya for BK7231N "Mini Smart Switch". Limited component coverage. |
 

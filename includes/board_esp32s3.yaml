@@ -1,5 +1,5 @@
 ---
-#* Base configuration for ESP-32-WROOM board
+#* Base configuration for ESP32-S3 board (with PSRAM + audio sdkconfig tuning)
 #! in case different setup needed please include components PRIOR the board itself
 # WARN: PSRAM 8MB is not working? then https://community.home-assistant.io/t/esp32-s3-devkitc-1-n16r8-using-psram-howto
 
@@ -22,6 +22,7 @@
 # FLUX, 20260512, Added Jinja `|default("2025.8.0")` to min_version so devices without `esphome_min_version` declaration get a sane floor (BACKLOG #10 refinement)
 # FLUX, 20260512, Added Jinja defaults for board_variant ("s3"), board ("esp32-s3-devkitc-1"), flash_write_interval ("5min") — all 3 PSRAM consumer devices (esp32-14, esp32s3_dev, esp32s3supermini_dev) match these (Jinja default pattern extension, mirrors BACKLOG #10)
 # FLUX, 20260512, Added Jinja defaults: project_name ("pgolawsk.esp_home"), framework_version ("recommended"), flash_size ("4MB") (Jinja default pattern extension, mirrors BACKLOG #10)
+# FLUX, 20260513, Renamed from board_esp32_with_psram_fix.yaml → board_esp32s3.yaml; clarified intent (S3 + PSRAM + audio sdkconfig) (BACKLOG #44)
 
 esphome:
   name: $devicename

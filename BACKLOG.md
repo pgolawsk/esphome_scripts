@@ -135,8 +135,8 @@ Scope walked: `2_PROD/*.yaml` (all 11), representative `0_DEV/*.yaml`, `includes
 
 ### 9. `esphome_min_version` only takes effect when `min_version: ${esphome_min_version}` is wired in the board file — and only `board_esp32_with_psram_fix.yaml` wires it
 
-**Where:** `includes/board_esp32_with_psram_fix.yaml:26` → `min_version: ${esphome_min_version}` is the only `min_version:` line in any board include. The other board files (`board_esp32.yaml`, `board_esp8266.yaml`, `board_esp32__esp-idf.yaml`, `board_esp32__water_pump.yaml`, `board_esp32_variant.yaml`, `board_miniss_bk7231n.yaml`) do **not** read the substitution.
-**What:** So even though `esp32-06_Garden_Gateway.yaml:23` sets `esphome_min_version: 2025.6.3`, the value is never consumed because `board_esp32.yaml` doesn't reference `${esphome_min_version}`. Same for esp32-35 (uses `board_esp32__water_pump.yaml`). Only esp32-14 (using `board_esp32_with_psram_fix.yaml`) actually enforces the pin.
+**Where:** `includes/board_esp32s3.yaml:26` (renamed from `board_esp32_with_psram_fix.yaml` on 2026-05-13) → `min_version: ${esphome_min_version}` is the only `min_version:` line in any board include. The other board files (`board_esp32.yaml`, `board_esp8266.yaml`, `board_esp32__water_pump.yaml`, `board_esp32_variant.yaml`, `board_miniss_bk7231n.yaml`) do **not** read the substitution.
+**What:** So even though `esp32-06_Garden_Gateway.yaml:23` sets `esphome_min_version: 2025.6.3`, the value is never consumed because `board_esp32.yaml` doesn't reference `${esphome_min_version}`. Same for esp32-35 (uses `board_esp32__water_pump.yaml`). Only esp32-14 (using `board_esp32s3.yaml`) actually enforces the pin.
 **Why fix:** This is a silent failure mode — the substitution is set but does nothing. Pawelo thinks the pin is enforced, but for 06 and 35 it isn't.
 **Suggested fix:** Add `min_version: ${esphome_min_version}` to the `esphome:` block of every board include file. Combined with item 10 (default value), this makes the pin uniform.
 **Effort:** S
@@ -343,7 +343,7 @@ Plus `# - !include { file: ../buttons/shutdown_button.yaml }` (commented).
 
 ### 29. `minimum_chip_revision` substitution declared inconsistently — only 4 of 8 ESP32 PROD files have it
 
-**Where:** Has it: `2_PROD/esp32-06_Garden_Gateway.yaml:34`, `esp32-39_Attic.yaml:51`, `esp32-35_Pump_Garage.yaml:80`, `esp32-05_Shades_WinterGardenUpp.yaml:69`. Doesn't have it: `esp32-14_Salon.yaml`, `esp32-36_Garage_Gate.yaml` (commented out at line 40 with "removed minimum_chip_revision variable as this is C3"). And `board_esp32.yaml:57` references `${minimum_chip_revision}` while `board_esp32_with_psram_fix.yaml` does NOT (used by esp32-14 — that's why esp32-14 doesn't need it). And `board_esp32_variant.yaml` (used by esp32-36) explicitly drops it.
+**Where:** Has it: `2_PROD/esp32-06_Garden_Gateway.yaml:34`, `esp32-39_Attic.yaml:51`, `esp32-35_Pump_Garage.yaml:80`, `esp32-05_Shades_WinterGardenUpp.yaml:69`. Doesn't have it: `esp32-14_Salon.yaml`, `esp32-36_Garage_Gate.yaml` (commented out at line 40 with "removed minimum_chip_revision variable as this is C3"). And `board_esp32.yaml:57` references `${minimum_chip_revision}` while `board_esp32s3.yaml` does NOT (used by esp32-14 — that's why esp32-14 doesn't need it). And `board_esp32_variant.yaml` (used by esp32-36) explicitly drops it.
 **What:** The interlocking of "which board file consumes the substitution" with "which device sets it" is fragile. Reader can't tell from a device file alone whether `minimum_chip_revision` is required.
 **Suggested fix:** Add a comment in each board file's substitutions stub block saying which substitutions it expects; add a one-line guard in the device file's substitutions block: `# This file uses board_esp32.yaml — minimum_chip_revision required`.
 **Effort:** S
@@ -485,7 +485,7 @@ Audit: grepping for un-commented uses of each across PROD/DEV gives:
 
 ## I. Board file inheritance & edge cases
 
-### 44. `board_esp8266.yaml` and `board_esp32.yaml` and `board_esp32_with_psram_fix.yaml` and `board_esp32__water_pump.yaml` and `board_esp32_variant.yaml` and `board_esp32__esp-idf.yaml` and `board_miniss_bk7231n.yaml` — 7 board files, partially overlapping
+### 44. `board_esp8266.yaml` and `board_esp32.yaml` and `board_esp32s3.yaml` (was `board_esp32_with_psram_fix.yaml`) and `board_esp32__water_pump.yaml` and `board_esp32_variant.yaml` and `board_esp32__esp-idf.yaml` (deleted 2026-05-13) and `board_miniss_bk7231n.yaml` — 7 board files, partially overlapping
 
 **Where:** `includes/board_*.yaml`.
 **What:** Each board file is a near-copy of `board_esp32.yaml` with minor variations (PSRAM fix, water-pump globals, ESP32 variants without minimum_chip_revision, ESP-IDF specific, BK7231N specific). Total ~35KB of nearly-duplicated YAML across these 7 files.
@@ -493,6 +493,7 @@ Audit: grepping for un-commented uses of each across PROD/DEV gives:
 **Suggested fix:** Identify the shared base (esphome:, preferences:, framework:, the !include chain) and the per-variant deltas (sdkconfig_options for ESP-IDF, platformio_options for PSRAM fix, globals for water pump). Refactor to `board_base.yaml` + per-variant `board_<variant>.yaml` that pulls the base via `<<: !include` and adds only its specifics. Big change.
 **Effort:** L
 **Severity:** Notable
+**Status:** ✅ done 2026-05-13 (per-chip duplication accepted by user as legit; eliminated unused `board_esp32__esp-idf.yaml` (0 active consumers, was a fork-and-drift of audio sdkconfig); renamed `board_esp32_with_psram_fix.yaml` → `board_esp32s3.yaml` to reflect S3+PSRAM+audio intent. Final tally: 6 board files (was 7) — `board_esp8266`, `board_esp32`, `board_esp32_variant` (C3/C6/S2), `board_esp32s3` (S3+PSRAM+audio), `board_esp32__water_pump` (FRAM globals), `board_miniss_bk7231n`. Updated 3 device files (esp32-14 PROD, esp32s3_dev DEV, esp32s3supermini_dev DEV) + flux.md + dangling commented include in esp32-39_Attic.yaml:74. Audio sdkconfig drift between `__esp-idf` and `psram_fix` resolved by deleting the unused `__esp-idf` copy. HTTPD_* experimental options (that were in `__esp-idf` and `2_PROD/sdkconfig.defaults` but never wired to esp32-14) preserved in `2_PROD/sdkconfig.defaults` for future reference.)
 
 ### 45. `board_esp32__esp-idf.yaml` and `board_esp32.yaml` — `sdkconfig_options` block duplicated, drifted
 
@@ -501,6 +502,7 @@ Audit: grepping for un-commented uses of each across PROD/DEV gives:
 **Suggested fix:** Move sdkconfig_options to `2_PROD/sdkconfig.defaults` (already exists, see esp32-35 build) and reference from one board file.
 **Effort:** M
 **Severity:** Minor
+**Status:** ✅ done 2026-05-13 (resolved alongside #44 — `board_esp32__esp-idf.yaml` deleted, eliminating one of the two drift sources. Audio sdkconfig_options now live in single canonical location: `board_esp32s3.yaml`. `2_PROD/sdkconfig.defaults` retained as historical reference per user decision — its `platformio_options.board_build.sdkconfig_defaults` wiring is still commented in `board_esp32.yaml:47-52`; revisit when needed.)
 
 ### 46. `board_miniss_bk7231n.yaml` does not include `mqtt.yaml` — comments say it cannot be overridden
 
@@ -520,9 +522,9 @@ Audit: grepping for un-commented uses of each across PROD/DEV gives:
 **Effort:** M
 **Severity:** Minor (hypothetical, but worth a 30-line script for safety)
 
-### 48. `board_esp32__esp-idf.yaml` filename has double-underscore separator
+### 48. Double-underscore filename convention (partially resolved 2026-05-13)
 
-**Where:** `includes/board_esp32__esp-idf.yaml`, `includes/board_esp32__water_pump.yaml`, `includes/api_services__water.yaml`, `includes/api_services__water.yaml`, `interfaces/fram__water_pump.yaml`, `interfaces/nvm_fram_i2c__water_pump.yaml`. Other naming style with `_` single separator: `board_esp32_with_psram_fix.yaml`, `board_esp32_variant.yaml`.
+**Where:** Remaining `__`: `includes/board_esp32__water_pump.yaml`, `includes/api_services__water.yaml`, `interfaces/fram__water_pump.yaml`, `interfaces/nvm_fram_i2c__water_pump.yaml`. Single-underscore style: `board_esp32s3.yaml`, `board_esp32_variant.yaml`. (Was: `board_esp32__esp-idf.yaml` — deleted 2026-05-13.)
 **What:** Two conventions for "compound name with variant suffix": `board_esp32__variant` (double underscore = "variant") and `board_esp32_variant` (single underscore = continuation). Inconsistent.
 **Suggested fix:** Pick one. Recommend single underscore (matches AGENTS.md `category_specific_name.yaml`).
 **Effort:** S
@@ -530,7 +532,7 @@ Audit: grepping for un-commented uses of each across PROD/DEV gives:
 
 ### 49. Board file comments still show `OLD notation` line that has been irrelevant for years
 
-**Where:** `includes/board_esp8266.yaml`, `board_esp32.yaml`, `board_esp32_variant.yaml`, `board_esp32__esp-idf.yaml`, `board_esp32_with_psram_fix.yaml`, `board_esp32__water_pump.yaml`, `board_miniss_bk7231n.yaml` — every board file has `#  platform: ESP8266   # OLD notation` near `comment:`.
+**Where:** `includes/board_esp8266.yaml`, `board_esp32.yaml`, `board_esp32_variant.yaml`, `board_esp32s3.yaml`, `board_esp32__water_pump.yaml`, `board_miniss_bk7231n.yaml` — every board file has `#  platform: ESP8266   # OLD notation` near `comment:`.
 **What:** Reminder of pre-2022 ESPHome syntax, now decade-stale.
 **Suggested fix:** Delete the line everywhere.
 **Effort:** S
@@ -587,7 +589,7 @@ Audit: grepping for un-commented uses of each across PROD/DEV gives:
 
 ### 55. `board_esp32.yaml` has 30+ lines of commented `sdkconfig_options:`
 
-**Where:** `includes/board_esp32.yaml:43-83`. Drifted from `board_esp32__esp-idf.yaml:48-71`.
+**Where:** `includes/board_esp32.yaml:43-83`. (Was drifted from `board_esp32__esp-idf.yaml:48-71`; that file deleted 2026-05-13 — drift source eliminated. Commented block in `board_esp32.yaml` remains as documentation; consider trimming.)
 **Suggested fix:** Decide: either uncomment and use, or delete. Cross-ref item 45.
 **Effort:** S
 **Severity:** Minor
@@ -959,7 +961,7 @@ Brief compliance: Pass
 ### What works
 
 - **Format discipline holds across all 86 entries.** Every item has Where (file:line), What, Why fix (or omitted when self-evident), Suggested fix, Effort, Severity. TOC at top maps to category sections; summary table at bottom matches the body counts. Each entry is genuinely small enough to convert to a KANBAN card with no follow-up clarification — the actionability bar Pawelo asked for is met.
-- **Evidence holds up to spot-checks.** Verified 9 items against the live repo: item 2 (case-mismatch — confirmed 32+ uppercase + 33 lowercase active mismatches in PROD alone, ~139 across PROD+DEV is plausible), item 3 (`bme68x_bsec2` sensor files genuinely don't exist on disk), item 5 (esp12f-21:122 malformed quote confirmed), item 8 (exactly 3 PROD files have `esphome_min_version`), item 9 (only `board_esp32_with_psram_fix.yaml` wires `min_version: ${esphome_min_version}` — silent failure for esp32-06 and esp32-35 is real), items 66-68 (yamllint config matches description), items 72-76 (`secrets.yaml` confirmed in `.gitignore:4`, `wifi.yaml` uses `!secret` throughout). No padding detected in Important/Notable tier — the two Important items are genuinely the highest-leverage fixes in the list.
+- **Evidence holds up to spot-checks.** Verified 9 items against the live repo: item 2 (case-mismatch — confirmed 32+ uppercase + 33 lowercase active mismatches in PROD alone, ~139 across PROD+DEV is plausible), item 3 (`bme68x_bsec2` sensor files genuinely don't exist on disk), item 5 (esp12f-21:122 malformed quote confirmed), item 8 (exactly 3 PROD files have `esphome_min_version`), item 9 (only `board_esp32s3.yaml` (was `board_esp32_with_psram_fix.yaml`) wires `min_version: ${esphome_min_version}` — silent failure for esp32-06 and esp32-35 is real), items 66-68 (yamllint config matches description), items 72-76 (`secrets.yaml` confirmed in `.gitignore:4`, `wifi.yaml` uses `!secret` throughout). No padding detected in Important/Notable tier — the two Important items are genuinely the highest-leverage fixes in the list.
 - **CLIO blind spots are properly closed, not restated.** Item 47 (board inheritance) describes the actual failure mode (`Cannot have both esp32: and esp8266: blocks` at compile), notes failures would be loud not silent, and proposes a concrete 30-line walking-includes hook — answers the question rather than echoing it. Item 65 (pre-commit override coverage) breaks the gap into three named missing hook types (shape check, merge-key syntax, reference resolution) with clear scope. Items 72-76 (secrets) include verification commands (`git check-ignore`, `git ls-files`) and a positive verdict on item 75 with no make-work fix attached.
 - **Phasing recommendation is honest.** The Phase 1 (~3h) / Phase 2 (~12h) / Phase 3 (~25h) / Phase 4 (opportunistic) split frames the 58h total realistically — Pawelo gets a "what to do this weekend" answer without a guilt trip about the 47 cosmetic items. Including verdict-only and positive-observation entries (72, 75) instead of forcing a fix is appropriate restraint.
 
