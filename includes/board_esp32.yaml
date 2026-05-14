@@ -23,6 +23,7 @@
 # FLUX, 20260512, Added Jinja defaults for board_variant (""), board ("esp32dev"), flash_write_interval ("5min") — eliminates per-device declaration for plain ESP32 devices (Jinja default pattern extension, mirrors BACKLOG #10)
 # FLUX, 20260512, Added Jinja defaults: project_name ("pgolawsk.esp_home"), framework_version ("recommended"), flash_size ("4MB") (Jinja default pattern extension, mirrors BACKLOG #10)
 # FLUX, 20260513, Added Jinja `|default("1.0")` to minimum_chip_revision — eliminates per-device declaration for devices on chip rev 1.0 (BACKLOG #29)
+# FLUX, 20260514, Removed 26 lines of commented `sdkconfig_options:` drift (BACKLOG #55); platformio_options breadcrumb retained per BACKLOG #45 status
 
 # ! those values are examples, not used in this file, need to be declared outside of this file
 # substitutions:
@@ -61,33 +62,6 @@ esp32:
     version: ${framework_version | default("recommended")}  # like: latest, recommended, 4.4, ...
     advanced:
       minimum_chip_revision: ${minimum_chip_revision | default("1.0")}
-
-    # only for ESP-IDF
-    # warn: moved to sdkconfig.defaults file
-    # sdkconfig_options:
-    #   # CONFIG_ESP32S3_DEFAULT_CPU_FREQ_240: "y"
-    #   CONFIG_ESP32S3_DATA_CACHE_64KB: "y"
-    #   CONFIG_ESP32S3_DATA_CACHE_LINE_64B: "y"
-    #   CONFIG_AUDIO_BOARD_CUSTOM: "y"
-    #   # some of LWIP options removed those 2 info/errors messages from logs:
-    #   # [I][esp-idf:000][httpd]: E (39736) httpd: httpd_accept_conn: error in accept (23)
-    #   # [I][esp-idf:000][httpd]: W (39742) httpd: httpd_server: error accepting new connection
-    #   CONFIG_LWIP_SO_LINGER: "y"
-    #   CONFIG_LWIP_MAX_SOCKETS: "16"
-    #   CONFIG_LWIP_MAX_ACTIVE_TCP: "16"
-    #   CONFIG_LWIP_TCP_MAXRTX: "12"
-    #   CONFIG_LWIP_TCP_SYNMAXRTX: "6"
-    #   CONFIG_LWIP_TCP_RECVMBOX_SIZE: "12"
-    #   # LWIP_STATS eliminated 104 error
-    #   # [I][esp-idf:000][httpd]: W (605634) httpd_txrx: httpd_sock_err: error in recv : 104
-    #   CONFIG_LWIP_TCPIP_RECVMBOX_SIZE: "48"
-    #   CONFIG_LWIP_STATS: "y"
-      # # Let HTTP server evict oldest connections when hitting limits
-      # CONFIG_HTTPD_PURGE_BUF_LEN: "32"
-      # CONFIG_HTTPD_MAX_OPEN_SOCKETS: "7"
-      # # Make closed sockets free resources immediately (so_linger)
-      # CONFIG_HTTPD_SOCK_LISTENER_LINGER: "y"
-      # CONFIG_HTTPD_SOCK_CLIENT_LINGER: "y"
 
 preferences:
   flash_write_interval: ${flash_write_interval | default("5min")}

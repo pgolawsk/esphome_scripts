@@ -597,6 +597,7 @@ Audit: grepping for un-commented uses of each across PROD/DEV gives:
 **Suggested fix:** Decide: either uncomment and use, or delete. Cross-ref item 45.
 **Effort:** S
 **Severity:** Minor
+**Status:** ✅ done 2026-05-14 (deleted 26-line `sdkconfig_options:` commented block from `board_esp32.yaml`; `platformio_options` breadcrumb at lines 47-52 retained per #45 status decision; `esphome config` valid on esp32-05.)
 
 ### 56. `2_PROD/esp32-35_Pump_Garage.yaml` has commented "test" template sensors at lines 159-178
 
