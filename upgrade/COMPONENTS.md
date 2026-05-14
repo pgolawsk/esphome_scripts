@@ -267,8 +267,8 @@ Examples: `esp12f-10_Office.yaml`, `esp32-35_Pump_Garage.yaml`
 |---------|----------|
 | `wifi.yaml` | Default AP |
 | `wifi_main.yaml` | Primary indoor AP |
-| `wifi_extended.yaml` / `wifi_extended2.yaml` | Range extenders |
 | `wifi_outside.yaml` | Outdoor perimeter |
+| `wifi_multi.yaml` | Multi-network fallback |
 | `wifi__bssid.yaml` | MAC-address specific (roaming prevention) |
 
 ### Flash / OTA Config

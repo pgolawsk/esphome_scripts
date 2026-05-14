@@ -204,7 +204,7 @@ Mixed casing (`SHT3x` vs `bh1750`) is a known cleanup item — see BACKLOG A1.
 
 ### Includes (`includes/`) — base components
 
-- WiFi: `wifi.yaml` (default single SSID), `wifi_main.yaml`, `wifi_outside.yaml`, `wifi_extended.yaml`, `wifi_extended2.yaml`, `wifi_multi.yaml`, `wifi__bssid.yaml`. Override before the board include.
+- WiFi: `wifi.yaml` (default single SSID), `wifi_main.yaml`, `wifi_outside.yaml`, `wifi_multi.yaml`, `wifi__bssid.yaml`. Override before the board include.
 - MQTT: `mqtt.yaml` (no RTTTL), `mqtt_with_rtttl.yaml` (adds `on_message:` for `play_rtttl`).
 - API: `api.yaml`, `api_services.yaml`, `api_services__water.yaml`.
 - Logger: `logger.yaml` (default INFO, baud=0), `logger_level.yaml` (parameterised level + baud).

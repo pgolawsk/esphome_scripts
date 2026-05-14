@@ -415,6 +415,7 @@ Audit: grepping for un-commented uses of each across PROD/DEV gives:
 **Suggested fix:** Replace both with `wifi_indexed.yaml` taking `${index}` and using `!secret wifi${index}_ssid` / `!secret wifi${index}_password`. Or just use `wifi_multi.yaml` (already exists, has all 3).
 **Effort:** S
 **Severity:** Minor
+**Status:** ✅ done 2026-05-14 (both files deleted — audit confirmed zero active consumers in PROD/0_DEV/UAT after BACKLOG #19 cleanup; only `deprecated/board_esp32_with_sun_wifi_extended.yaml` retained the call, irrelevant. Menu lines pruned from `wifi.yaml` docstring. `wifi_multi.yaml` remains for future multi-network needs. `esphome config` valid on esp12f-10.)
 
 ### 36. `wifi.yaml` and `wifi__bssid.yaml` differ only by adding `bssid: !secret wifi__bssid` and `power_save_mode: none`
 

@@ -8,8 +8,6 @@
 #*
 #*   <<: !include ../includes/wifi_main.yaml       # main router (different SSID secret + reboot_timeout)
 #*   <<: !include ../includes/wifi_outside.yaml    # outdoor AP (separate SSID, power_save_mode tweaks)
-#*   <<: !include ../includes/wifi_extended.yaml   # mesh extender, primary SSID
-#*   <<: !include ../includes/wifi_extended2.yaml  # mesh extender, secondary SSID
 #*   <<: !include ../includes/wifi__bssid.yaml     # lock to specific BSSID (same SSID on multiple APs)
 #*   <<: !include ../includes/wifi_multi.yaml      # multi-network fallback (#! see file header warning)
 #*
@@ -21,6 +19,7 @@
 # Pawelo, 20251122, added min_auth_mode: WPA2 to avoid connecting to insecure networks
 # Pawelo, 20251218, added power_save_mode: none to avoid issues with some APs
 # FLUX, 20260511, Added docstring header listing wifi variants + switch instructions (BACKLOG item 19)
+# FLUX, 20260514, Removed wifi_extended.yaml + wifi_extended2.yaml (zero active consumers; menu lines pruned from docstring) (BACKLOG #35)
 
 wifi:
   min_auth_mode: WPA2
