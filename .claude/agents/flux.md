@@ -207,7 +207,7 @@ Mixed casing (`SHT3x` vs `bh1750`) is a known cleanup item — see BACKLOG A1.
 - WiFi: `wifi.yaml` (default single SSID), `wifi_main.yaml`, `wifi_outside.yaml`, `wifi_multi.yaml`, `wifi__bssid.yaml`. Override before the board include.
 - MQTT: `mqtt.yaml` (no RTTTL), `mqtt_with_rtttl.yaml` (adds `on_message:` for `play_rtttl`).
 - API: `api.yaml`, `api_services.yaml`, `api_services__water.yaml`.
-- Logger: `logger.yaml` (default INFO, baud=0), `logger_level.yaml` (parameterised level + baud).
+- Logger: `logger.yaml` — Jinja defaults `level=INFO`, `baud_rate=0`; override per-device with `<<: !include {file: ../includes/logger.yaml, vars: {level: DEBUG, baud_rate: 115200}}`.
 - OTA: `ota.yaml`. Web: `web_server.yaml` (v3), `web_server_basic.yaml` (v1). Time: `time_sntp.yaml`, `time_sntp_with_sun.yaml`. Sun: `sun.yaml`. Prometheus: `prometheus.yaml`.
 - PSRAM: `psram.yaml` (mode `quad` or `octal`).
 - Globals: `globals_display_cycle.yaml`, `globals_water_totals_restore.yaml` (orphan vs. `board_esp32__water_pump.yaml` — see BACKLOG item 7).

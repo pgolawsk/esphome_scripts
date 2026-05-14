@@ -205,7 +205,7 @@ update_interval: $updates
 
 ### Logger Configuration
 
-- Default level: `INFO` (can be overridden with `logger_level.yaml`)
+- Default level: `INFO` (override per-device via `<<: !include {file: ../includes/logger.yaml, vars: {level: DEBUG, baud_rate: 115200}}` — Jinja defaults: `level=INFO`, `baud_rate=0`)
 - USB logging disabled by default (`baud_rate: 0`)
 - Per-component log levels to reduce noise (e.g., `tcs34725: ERROR`)
 - Debug component available via `interfaces/debug.yaml`
@@ -260,7 +260,7 @@ This is documented behavior, not a quirk. It is stable across ESPHome versions; 
 - **`packages:`** for grouped includes (modern, deterministic merge semantics) — canonical examples: `2_PROD/esp32-06_Garden_Gateway.yaml` (door cover template extended later), `2_PROD/esp32-14_Salon.yaml` (I2S media player + per-remote IR button sets).
 - **`!extend`** for surgical merge into a package-loaded list — canonical example: `2_PROD/esp32-06_Garden_Gateway.yaml:213-215` extends the `door_cover` declared by a package include.
 - **Secrets** — `secrets.yaml` (gitignored, see `.gitignore:4`) holds WiFi/MQTT/API credentials; refer to them with `!secret <name>`. Three layers of pre-commit secret-detection enforce no leaks.
-- **Override-by-order** — multiple `<<: !include` at document root, first-key-wins (see "YAML Override Mechanism" section). Used to swap `wifi.yaml` → `wifi_main.yaml`/`wifi_outside.yaml`/etc., to inject `mqtt_with_rtttl.yaml` over the board's default `mqtt.yaml`, and to override `logger.yaml` with `logger_level.yaml`.
+- **Override-by-order** — multiple `<<: !include` at document root, first-key-wins (see "YAML Override Mechanism" section). Used to swap `wifi.yaml` → `wifi_main.yaml`/`wifi_outside.yaml`/etc., to inject `mqtt_with_rtttl.yaml` over the board's default `mqtt.yaml`, and to re-include `logger.yaml` with `vars: {level: DEBUG, baud_rate: 115200}` for runtime log-level overrides.
 - **Case-sensitivity hazard** — macOS HFS+/APFS is case-insensitive; Linux/CI/Docker is not. `!include path/to/File.yaml` and `!include path/to/file.yaml` both work locally on macOS but the second fails on Linux if the on-disk filename is `File.yaml`. Always preserve case-exact match between `!include` references and on-disk filenames.
 
 ## Persona: FLUX

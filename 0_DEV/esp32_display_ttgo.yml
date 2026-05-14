@@ -7,6 +7,7 @@
 # Pawelo, 20260124, added minimum_chip_revision variable to board_esp32.yaml to eliminate warnings
 # FLUX, 20260510, Lowercased sensor filename references for cross-platform portability (BACKLOG items 1-2)
 # FLUX, 20260511, Cleaned up commented wifi-variant boilerplate; see includes/wifi.yaml header for variants (BACKLOG item 19)
+# FLUX, 20260514, Swept logger_level.yaml → logger.yaml include path; logger.yaml now accepts level/baud_rate via Jinja defaults (BACKLOG #15 + #43)
 # ! NOT FINISHED/NOT TESTED
 
 # ! run with this command to override substitutions
@@ -55,8 +56,8 @@ substitutions:
 # Override some settings included below in _board_ setup
 <<: !include ../includes/time_sntp_with_sun.yaml  # WARN: this is to make sunrise and sunset sensor to be updated on every time sync event
 # <<: !include ../includes/mqtt_with_rtttl.yaml #WARN: override mqtt with RTTTL support if needed (buzzer and status led)
-# <<: !include {file: ../includes/logger_level.yaml, vars: {level: DEBUG, baud_rate: 115200}} #WARN: override default log level to specific one
-# <<: !include {file: ../includes/logger_level.yaml, vars: {level: VERY_VERBOSE, baud_rate: 115200}} #WARN: override default log level to specific one
+# <<: !include {file: ../includes/logger.yaml, vars: {level: DEBUG, baud_rate: 115200}} #WARN: override default log level to specific one
+# <<: !include {file: ../includes/logger.yaml, vars: {level: VERY_VERBOSE, baud_rate: 115200}} #WARN: override default log level to specific one
 # wifi: default (wifi.yaml via board). To switch — see includes/wifi.yaml header for variants.
 # <<: !include ../includes/api_services.yaml #WARN: this is to expose services like scan_wifi (results in scan_results sensor)
 

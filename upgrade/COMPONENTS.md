@@ -250,7 +250,7 @@ Include categories:
 - `includes/board_*.yaml` — 8 board templates (ESP8266, ESP32 variants, BK7231N)
 - `includes/wifi*.yaml` — 5 WiFi profiles (main, extended, outside, BSSID-specific)
 - `includes/api*.yaml`, `includes/mqtt*.yaml`, `includes/ota*.yaml` — core protocol configs
-- `includes/logger_level.yaml` — runtime log level selection
+- `includes/logger.yaml` — log config with Jinja defaults (level=INFO, baud_rate=0); override per-device via `vars: {level, baud_rate}`
 - `includes/web_server*.yaml` — web UI version selection
 
 ### Device Naming Convention

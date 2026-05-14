@@ -206,6 +206,7 @@ Recommend (a) for consistency with current style + add to upgrade SOP a check th
 **Suggested fix:** Replace `logger.yaml` with `logger_level.yaml` everywhere (give it sensible defaults `level=INFO, baud_rate=0`), delete `logger.yaml`. Saves one override site.
 **Effort:** M
 **Severity:** Minor
+**Status:** ✅ done 2026-05-14 (inverted: merged `logger_level.yaml` INTO `logger.yaml` via Jinja `|default("INFO")` / `|default(0)` for level/baud_rate. `logger_level.yaml` deleted. All ~80 callsites across 34 device files (2 PROD active + 9 PROD commented + 23 0_DEV) and 3 doc files swept to `logger.yaml`. Resolves #43 too.)
 
 ### 16. Override-by-order used for `api_services.yaml` and `api_services__water.yaml` in 3 PROD files
 
@@ -485,6 +486,7 @@ Audit: grepping for un-commented uses of each across PROD/DEV gives:
 **Suggested fix:** Pick one canonical list, sync. Cross-ref item 15.
 **Effort:** S
 **Severity:** Minor
+**Status:** ✅ done 2026-05-14 (resolved alongside #15 — single unified `logger.yaml` with superset `logs:` set: mqtt.component/mqtt.client/mqtt/mqtt.idf INFO, sensor INFO, i2c/i2c.idf INFO, component ERROR, tcs34725 ERROR, sgp30 WARN; `weact_2.90_3c` removed at user request — no longer used (replaced by epaper_spi).)
 
 ---
 

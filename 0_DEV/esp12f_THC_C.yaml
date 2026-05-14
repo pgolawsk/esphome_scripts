@@ -17,6 +17,7 @@
 # FLUX, 20260512, removed dead accuracy_decimals substitution; default now lives in sensors/value_mqtt_subscribe.yaml + sensors/ha_sensor.yaml via Jinja `|default(2)` (BACKLOG #24)
 # FLUX, 20260512, Removed board_variant/board/restore_from_flash/flash_write_interval substitutions; defaults now provided by board_esp8266.yaml via Jinja (Jinja default pattern extension, mirrors BACKLOG #10)
 # FLUX, 20260512, Removed project_name substitution(s); defaults now provided by board file via Jinja (Jinja default pattern extension, mirrors BACKLOG #10)
+# FLUX, 20260514, Swept logger_level.yaml → logger.yaml include path; logger.yaml now accepts level/baud_rate via Jinja defaults (BACKLOG #15 + #43)
 
 # ! run with this command to override substitutions
 # esphome -s devicename espXX -s updates 1min -s room <Room name> -s mqtt_room <room> run esp12f_MMmm_SSss__PP.yaml --device 192.168.x.x
@@ -36,9 +37,9 @@ substitutions:
 # Override some settings included below in _board_ setup
 # <<: !include ../includes/time_sntp_with_sun.yaml #WARN: this is to make sunrise and sunset sensor to be updated on every time sync event
 # <<: !include ../includes/mqtt_with_rtttl.yaml #WARN: override mqtt with RTTTL support if needed (buzzer and status led)
-<<: !include {file: ../includes/logger_level.yaml, vars: {level: INFO, baud_rate: 115200}}  # WARN: override default log level to specific one
-# <<: !include {file: ../includes/logger_level.yaml, vars: {level: DEBUG, baud_rate: 115200}} #WARN: override default log level to specific one
-# <<: !include {file: ../includes/logger_level.yaml, vars: {level: VERY_VERBOSE, baud_rate: 115200}} #WARN: override default log level to specific one
+<<: !include {file: ../includes/logger.yaml, vars: {level: INFO, baud_rate: 115200}}  # WARN: override default log level to specific one
+# <<: !include {file: ../includes/logger.yaml, vars: {level: DEBUG, baud_rate: 115200}} #WARN: override default log level to specific one
+# <<: !include {file: ../includes/logger.yaml, vars: {level: VERY_VERBOSE, baud_rate: 115200}} #WARN: override default log level to specific one
 # wifi: default (wifi.yaml via board). To switch — see includes/wifi.yaml header for variants.
 # <<: !include ../includes/api_services.yaml #WARN: this is to expose services like scan_wifi (results in scan_results sensor)
 
