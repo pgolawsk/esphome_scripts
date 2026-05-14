@@ -6,6 +6,7 @@
 # FLUX, 20260510, Wired min_version: ${esphome_min_version} per BACKLOG item 9
 # FLUX, 20260512, Added Jinja `|default("2025.8.0")` to min_version so devices without `esphome_min_version` declaration get a sane floor (BACKLOG #10 refinement)
 # FLUX, 20260512, Added Jinja defaults: project_name ("pgolawsk.esp_home") (Jinja default pattern extension, mirrors BACKLOG #10)
+# FLUX, 20260515, Migrated libretuya → bk72xx (chip-split per ESPHome 2025.x); lt_config.LT_UART_DEFAULT_PORT → framework.uart_port; added wifi_bk72xx.yaml override (no min_auth_mode); uncommented `<<: !include mqtt.yaml` — nested include works in current ESPHome (BACKLOG #46)
 
 esphome:
   name: $devicename
@@ -18,16 +19,16 @@ esphome:
     name: ${project_name | default("pgolawsk.esp_home")}
     version: $version
 
-libretuya:
+bk72xx:
   board: generic-bk7231n-qfn32-tuya
   framework:
     version: latest
-  lt_config:
-    LT_UART_DEFAULT_PORT: 1
+    uart_port: 1
 
 preferences:
   flash_write_interval: 1min
 
+<<: !include wifi_bk72xx.yaml  #! bk72xx variant — wins via first-key-wins over wifi.yaml below (bk72xx rejects min_auth_mode)
 <<: !include wifi.yaml
 <<: !include api.yaml
 <<: !include ota.yaml
@@ -37,8 +38,4 @@ preferences:
 <<: !include time_sntp.yaml
 <<: !include sun.yaml
 <<: !include prometheus.yaml
-# ! as mqtt cannot be overwritten later in the code need to include in in each script (to facilitate "on_message" customization)
-# <<: !include mqtt.yaml
-
-# packages:
-#   network: !include mqtt.yaml
+<<: !include mqtt.yaml

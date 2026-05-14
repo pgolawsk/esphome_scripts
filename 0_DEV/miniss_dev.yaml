@@ -4,6 +4,7 @@
 # Pawelo, 20230311, created based on https://www.elektroda.pl/rtvforum/topic3912748.html
 # Pawelo, 20250207, moved to 0_DEV folder
 # Pawelo, 20250221, added uptime_boot text sensor (disabled)
+# FLUX, 20260515, Removed redundant `<<: !include mqtt.yaml` — board file now provides it (libretiny mqtt nested-include limitation was historical) (BACKLOG #46)
 
 #! run with this command to override substitutions
 # esphome -s devicename esp-xx -s updates 1min -s room <Room name> -s mqtt_room <room> -s delay_off <time of active output> run esp01s_SSss_MMmm__PP.yaml --device 192.168.x.x
@@ -26,8 +27,6 @@ substitutions:
 
 # Include basics of a board
 <<: !include ../includes/board_miniss_bk7231n.yaml
-#! reinclude MQTT separately as via nested include it do not work:/
-<<: !include ../includes/mqtt.yaml
 
 # Include interfaces needed
 # <<: !include { file: interfaces/i2c.yaml, vars: { bus_id: "bus_a", sda: "GPIO4", scl: "GPIO2" } }

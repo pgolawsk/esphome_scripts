@@ -81,7 +81,7 @@ The ESPHome community-recommended layout is roughly: `devices/`, `common/` (or `
 | **ESP32-C6** | Newer RISC-V with WiFi6/Thread. Supermini variant **only works with esp-idf** (no arduino) and produces frequent `httpd_sock_err` warnings — known and documented in `Inventory.md`. Use only when WiFi6/Thread/BLE-mesh is genuinely needed. |
 | **ESP32-S2 mini (FN4R2)** | Single-core, USB-OTG. GPIO19/20 are USB pins — do not assign as I2C or the device responds to ping but has no web UI. First flash needs hold-BOOT / press-RST sequence. |
 | **ESP32-S3 (supermini, N16R8, N8R2 dev boards)** | Dual-core + native USB + PSRAM-capable. PSRAM 8 MB needs `board_esp32s3.yaml` + arduino memory_type `qio_opi` (or sdkconfig options for esp-idf). RGB on GPIO48 in supermini. RMT on GPIO48 conflicts with WS2812 if also doing IR transmit. First flash same hold-BOOT / press-RST sequence. |
-| **BK7231N (Mini Smart Switch)** | LibreTuya / OpenBeken-target. Uses `libretuya:` block instead of `esp32:`/`esp8266:`. Limited ESPHome component support. Used in `includes/board_miniss_bk7231n.yaml`. |
+| **BK7231N (Mini Smart Switch)** | LibreTiny (formerly LibreTuya) / OpenBeken-target. Uses `bk72xx:` block (chip-family-split since ESPHome 2025.x; previously `libretuya:`). `min_auth_mode:` is **not** supported (ESP32/ESP8266-only) — `includes/board_miniss_bk7231n.yaml` swaps in `includes/wifi_bk72xx.yaml` via override-by-order. Limited ESPHome component support. |
 
 ### Debugging & logs
 
@@ -156,7 +156,7 @@ ESPHome ~2026.4.5. 11 PROD devices, ~28 dev variants, 80 sensor includes, 6 boar
 | `board_esp32__water_pump.yaml` | Specialty board for esp32-35: declares `globals_watertotal_*`, FRAM-restored. Boots into HA total-fetch lambdas. |
 | `board_esp32s3.yaml` | ESP32-S3 with PSRAM + audio sdkconfig tuning (renamed from `board_esp32_with_psram_fix.yaml` on 2026-05-13). Wires `min_version: ${esphome_min_version}` and `board_build.arduino.memory_type: qio_opi`. Used by Salon (esp32-14) and S3 dev boards. |
 | `board_esp32_variant.yaml` | C3/C6/S2/S3 variants — same as `board_esp32.yaml` but **without** `minimum_chip_revision` (those chips don't support it). |
-| `board_miniss_bk7231n.yaml` | LibreTuya for BK7231N "Mini Smart Switch". Limited component coverage. |
+| `board_miniss_bk7231n.yaml` | LibreTiny / `bk72xx:` for BK7231N "Mini Smart Switch". Overrides default wifi with `wifi_bk72xx.yaml` (no `min_auth_mode:`). Limited component coverage. |
 
 ### PROD devices (`2_PROD/`)
 

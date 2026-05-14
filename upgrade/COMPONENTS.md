@@ -48,7 +48,7 @@ Version pins are defined via `esphome_min_version` substitution variable in sele
 | **ESP32** | ESP32-WROOM-32, -32U, -32UE | esp32dev, esp32cam | 4 |
 | **ESP32-S3** | ESP32-S3 N8R2 | esp32-s3-devkitc-1 | 1 |
 | **ESP32-C3** | C3 supermini | esp32-c3-devkitm-1 | 1 |
-| **LibreTuya** | BK7231N | generic-bk7231n | dev only |
+| **LibreTiny (`bk72xx:`)** | BK7231N | generic-bk7231n-qfn32-tuya | dev only |
 
 ### Framework
 

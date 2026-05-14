@@ -1,0 +1,21 @@
+---
+#* WiFi variant for BK7231N (bk72xx platform) — same as wifi.yaml minus `min_auth_mode:`
+#! `min_auth_mode:` is ESP32/ESP8266-only; bk72xx rejects the key.
+#! Loaded via override-by-order in `board_miniss_bk7231n.yaml` BEFORE the generic `wifi.yaml`.
+# FLUX, 20260515, Created as bk72xx-compatible variant of wifi.yaml (BACKLOG #46)
+
+wifi:
+  networks:
+    - ssid: !secret wifi_ssid
+      password: !secret wifi_password
+      hidden: true
+  domain: ""
+  fast_connect: true
+  reboot_timeout: 45min
+
+  # Enable fallback hotspot (captive portal) in case wifi connection fails
+  ap:
+    ssid: "$devicename Recovery"
+    password: !secret wifi_fallback_password
+
+captive_portal:

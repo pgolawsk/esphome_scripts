@@ -155,7 +155,7 @@ esphome -s devicename esp32-40 -s updates 1min -s room Test32cam -s mqtt_locatio
 
 esphome -s devicename esp32-50 -s updates 60s -s room Display -s mqtt_location measures -s mqtt_room display run esp32_display_lillygoT5.yaml --device 192.168.x.x
 
-esphome -s devicename miniss-200 -s updates 60s -s room TestMiniSS -s mqtt_location measures -s mqtt_room test_miniss run 0_DEV/miniss_dev.yml --device 192.168.x.x
+esphome -s devicename miniss-200 -s updates 60s -s room TestMiniSS -s mqtt_location measures -s mqtt_room test_miniss run 0_DEV/miniss_dev.yaml --device 192.168.x.x
 
 ###########################
 #* Set up Prometheus scraping

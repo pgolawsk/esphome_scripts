@@ -518,6 +518,7 @@ Audit: grepping for un-commented uses of each across PROD/DEV gives:
 **Suggested fix:** Document the exception in AGENTS.md "How overrides work" section (cross-ref P0-2).
 **Effort:** S
 **Severity:** Minor
+**Status:** ✅ done 2026-05-15 (verified empirically: nested mqtt.yaml include WORKS in current ESPHome 2026.4.5 — the historical "cannot be overwritten" comment was stale libretuya-era observation. Full BK7231N migration applied: `libretuya:` → `bk72xx:` (chip-split per ESPHome 2025.x), `lt_config.LT_UART_DEFAULT_PORT: 1` → `framework.uart_port: 1`. Discovered second blocker: `min_auth_mode: WPA2` (ESP32/ESP8266-only) — solved via new `includes/wifi_bk72xx.yaml` variant overridden in board file by first-key-wins. Redundant device-level mqtt include removed from `miniss_dev`. File renamed `.yml` → `.yaml` (now in compile sweep). `esphome config` valid on miniss_dev + esp32-05 + esp12f-10. No AGENTS.md exception needed — exception eliminated.)
 
 ### 47. CLIO blind spot: transitive double-board inclusion
 

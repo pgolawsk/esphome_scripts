@@ -75,7 +75,7 @@ These changes improve stability and reliability automatically — no config chan
 |-----|---------|---------|
 | **ESP8266 crash handler parity** | All 5 ESP8266 devices | Post-mortem crash diagnostics now sent via WiFi without serial cable — easier remote debugging |
 | **LWIP use-after-free bug fixed** | ESP8266 + RP2040 | Eliminated heap corruption crashes under high network load. Office, Entrance, Upstairs, Aquarium, Underfloor all benefit |
-| **LibreTuya BK72xx loop stall reduced: 110ms → 14ms** | Dev BK7231N device | Faster response in development |
+| **LibreTiny BK72xx loop stall reduced: 110ms → 14ms** | Dev BK7231N device | Faster response in development |
 
 ---
 
