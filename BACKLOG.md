@@ -222,6 +222,7 @@ Recommend (a) for consistency with current style + add to upgrade SOP a check th
 **Suggested fix:** Move to `packages:` block. Cleaner reading and explicit intent ("I'm adding a package, not overriding a key").
 **Effort:** S
 **Severity:** Minor
+**Status:** ✅ done 2026-05-14 (both PROD files migrated to `packages:` block with `#* Packages — inject net-new top-level blocks` header; `esphome config` passes on both. 0_DEV callsites and the include filenames left untouched — out of scope.)
 
 ---
 
