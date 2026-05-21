@@ -154,6 +154,7 @@ Short instruction:
 
 - To install please use following: `pip3 install esphome`
 - To install upgrade use following: `pip3 install -U esphome`
+- Full upgrade procedure (impact analysis, compile sweep, reflash order): see `upgrade/SOP_upgrade.md`
 - Font files (TTF) need to be downloaded separately (see below)
 
 To see full installation procedure please follow `esp_setup.sh` file and run specific commands. DO NOT RUN this script at once. The file includes:

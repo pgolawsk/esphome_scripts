@@ -8,6 +8,8 @@ This repository contains modular ESPHome YAML configurations for ESP devices (ES
 # Check ESPHome version (use check_esphome_version.sh)
 ./check_esphome_version.sh --check-only   # Exit 10 if update available
 ./check_esphome_version.sh --auto          # Auto-upgrade
+# Full upgrade SOP (impact analysis, compile sweep, reflash order): upgrade/SOP_upgrade.md
+# FLUX executes the upgrade procedure — see .claude/agents/flux.md → "Upgrade hygiene"
 
 # Flash a device — preferred form: shell alias (see Device Aliases table below)
 esp10            # PROD: flash esp12f-10 (Office) over OTA via esp12f-10.lan
@@ -332,6 +334,7 @@ If `esphome compile` fails on a **pre-existing bug** not introduced by your chan
 
 - ESPHome loader source: `../esphome/esphome/yaml_util.py` (sibling clone, if present) — `construct_yaml_map`, lines 187-290. Fall back to upstream on GitHub when the clone is absent.
 - Upgrade pipeline (PKA): kept in the user's external PKA directory; optional context, not required for in-repo execution.
+- ESPHome upgrade SOP: `upgrade/SOP_upgrade.md` — step-by-step procedure; `upgrade/COMPONENTS.md` — component inventory; `upgrade/ESPHOME_<version>.md` — per-release impact analysis. FLUX owns this workflow.
 - ESPHome packages docs: `https://esphome.io/components/packages.html`
 - YAML 1.1 merge spec: `https://yaml.org/type/merge.html`
 
