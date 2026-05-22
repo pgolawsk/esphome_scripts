@@ -50,6 +50,19 @@ Or use the helper script with auto mode:
 bash check_esphome_version.sh --auto
 ```
 
+### Refresh the override symlink farm (mandatory after every pip upgrade)
+
+The repo ships a local override of the esp32 component (NVM/FRAM, PR#14119) as a symlink farm under `esphome-overrides/`, where every sibling file symlinks to the pip-installed esp32 component and only `preferences.h` + `preference_backend.h` are real patched files. The farm is pinned to the version it was last built against — a new ESPHome release can **add** files to the esp32 component (e.g. 2026.5.0 added `hal.h`/`hal.cpp` in the HAL split), and a stale farm will be missing them, breaking **every ESP32 build that uses the override** with a `fatal error: ... No such file or directory`.
+
+```bash
+bash esphome-overrides/refresh.sh
+```
+
+This re-symlinks all current sibling files and re-checks the two patched headers against upstream. Watch the output:
+
+- **No warning** → upstream `preferences.h`/`preference_backend.h` are unchanged; the patches still apply, nothing to do.
+- **`⚠ upstream <file> CHANGED`** → upstream moved a patched file; manually rebase the local patch per `SOP_pr14119_refresh.md` before compiling.
+
 ---
 
 ## Step 3: Update COMPONENTS.md
@@ -110,7 +123,25 @@ If compile fails: fix the error, re-check breaking changes section.
 
 ---
 
-## Step 7: Flash Devices
+## Step 7: Smoke-Test on Reference Rigs (mandatory before any PROD flash)
+
+**Always** flash the new ESPHome version onto the two reference test rigs and observe behavior **before** flashing any PROD device. The rigs cover both chip families (ESP8266 + ESP32-C3) with dense reference configs, so a regression in the new release surfaces on the bench instead of on a deployed device. Neither rig has a `.dir_aliases` alias — they are flashed via generic DEV YAMLs with `-s` overrides (commands live verbatim in `esp_upgrade.sh`).
+
+```bash
+# ESP8266 rig — esp12f-29
+esphome -s devicename esp12f-29 -s updates 30s -s room Test -s mqtt_location measures -s mqtt_room test run 0_DEV/esp12f_dev.yaml
+
+# ESP32-C3 rig — esp32-32
+esphome -s devicename esp32-32 -s updates 15s -s room Test32c3rgb -s mqtt_location measures -s mqtt_room test32c3rgb run 0_DEV/esp32c3_dev.yaml
+```
+
+Observe on each rig: clean boot, no panic / Guru Meditation, no reset loop, sensors report. Only proceed to PROD once **both** rigs are healthy. If a rig is unreachable or busy, document the skip in the impact file (carryover note).
+
+If a rig surfaces an upstream behavior/quirk that is not this version's fault and may recur across versions (e.g. a web_server frontend glitch), record it in `KNOWN_ISSUES.md` rather than the per-version impact file, so future cycles don't re-investigate it.
+
+---
+
+## Step 8: Flash Devices
 
 Flash in priority order from the impact file. Start with lowest-risk devices to validate the process.
 
@@ -129,7 +160,7 @@ After each flash:
 
 ---
 
-## Step 8: Mark Device as Done
+## Step 9: Mark Device as Done
 
 In the impact file (`ESPHOME_<version>.md`), update the **Devices to Reflash** table:
 - Change priority to `Done` once reflashed and verified

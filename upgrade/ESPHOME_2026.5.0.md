@@ -95,17 +95,17 @@ Prioritized by risk of breaking change or benefit of new features.
 
 | Device | Priority | Reason |
 |--------|----------|--------|
-| `esp32-14_Salon.yaml` | **High** | Audio pipeline: verify WAV/TTS after flash. Main loop timing fix. I2S audio stack improvements. Compile first with `esphome compile` |
-| `esp32-36_Garage_Gate.yaml` | **High** | Main loop cadence fix directly affects gate motor timing. Verify open/close sequence unchanged after flash. (⚠️ bootloader old — OTA only; USB when physically accessible) |
-| `esp32-35_Pump_Garage.yaml` | **Medium** | Main loop fix relevant for pump timer accuracy. (⚠️ bootloader old) |
-| `esp12f-10_Office.yaml` | Medium | millis() 2.7× speedup; RTTTL flash saving |
-| `esp12f-11_Entrance_Entry.yaml` | Medium | millis() 2.7× speedup |
-| `esp12f-15_Upstairs.yaml` | Medium | millis() 2.7× speedup |
-| `esp12f-21_Underfloor.yaml` | Medium | millis() 2.7× speedup |
-| `esp12f-25_AquariumWindow.yaml` | Medium | millis() 2.7× speedup |
-| `esp32-05_Shades_WinterGardenUpp.yaml` | Low | Main loop + general ESP32 improvements. (⚠️ bootloader old) |
-| `esp32-06_Garden_Gateway.yaml` | Low | Main loop + general ESP32 improvements. (⚠️ bootloader old) |
-| `esp32-39_Attic.yaml` | Low | Env only — low risk. (⚠️ bootloader old) |
+| `esp32-14_Salon.yaml` | **Done** 2026-05-22 | Audio pipeline: verify WAV/TTS after flash. Main loop timing fix. I2S audio stack improvements. Compile first with `esphome compile` |
+| `esp32-36_Garage_Gate.yaml` | **Done** 2026-05-22 | Main loop cadence fix directly affects gate motor timing. Verify open/close sequence unchanged after flash. (⚠️ bootloader old — OTA only; USB when physically accessible) |
+| `esp32-35_Pump_Garage.yaml` | **Done** 2026-05-22 | Flashed from migrated `0_DEV` (nvm/fram_i2c + epaper_spi); since promoted to `2_PROD`. Stable 64s, no boot-loop. (⚠️ bootloader old) |
+| `esp12f-10_Office.yaml` | Done 2026-05-22 | millis() 2.7× speedup; RTTTL flash saving |
+| `esp12f-11_Entrance_Entry.yaml` | Done 2026-05-22 | millis() 2.7× speedup |
+| `esp12f-15_Upstairs.yaml` | Done 2026-05-22 | millis() 2.7× speedup |
+| `esp12f-21_Underfloor.yaml` | Done 2026-05-22 | millis() 2.7× speedup |
+| `esp12f-25_AquariumWindow.yaml` | Done 2026-05-22 | millis() 2.7× speedup |
+| `esp32-05_Shades_WinterGardenUpp.yaml` | Done 2026-05-22 | Main loop + general ESP32 improvements. (⚠️ bootloader old) |
+| `esp32-06_Garden_Gateway.yaml` | Done 2026-05-22 | Main loop + general ESP32 improvements. (⚠️ bootloader old) |
+| `esp32-39_Attic.yaml` | Done 2026-05-22 | Env only — low risk. (⚠️ bootloader old) |
 
 ---
 
@@ -114,41 +114,6 @@ Prioritized by risk of breaking change or benefit of new features.
 - **Bootloader update for 5 devices** (esp32-05, esp32-06, esp32-35, esp32-36, esp32-39). 2026.5.0 adds `esphome upload --bootloader` — attempt during next physical USB access to each device. Resolves the OTA rollback + SRAM1 IRAM limitation noted since 2026.4.5.
 - **WAV codec declaration** — if Salon TTS breaks after upgrade, add `audio: codecs: wav:` to `i2s/set_i2s_media_player.yaml` and reflash.
 - **Native ESP-IDF toolchain** (`toolchain: esp-idf`) for Salon — low urgency, consider for next Salon config change.
-
----
-
-## Upgrade Procedure
-
-```bash
-# 1. Activate venv
-cd ~/dev/esphome_scripts
-source .venv/bin/activate
-
-# 2. Upgrade ESPHome
-pip install -U esphome
-esphome version  # verify 2026.5.0
-
-# 3. Pre-flight checks
-grep -rn "codec_support_enabled" --include="*.yaml" . | grep -v ".esphome"
-grep -rn "throttle_average" --include="*.yaml" . | grep -v ".esphome"
-grep -A5 "^ota:" includes/ota.yaml
-
-# 4. Compile Salon first (highest risk — audio pipeline)
-esphome compile 2_PROD/esp32-14_Salon.yaml
-
-# 5. Flash in priority order
-esphome run 2_PROD/esp32-14_Salon.yaml      # verify TTS/audio after
-esphome run 2_PROD/esp32-36_Garage_Gate.yaml # verify gate timing after
-esphome run 2_PROD/esp32-35_Pump_Garage.yaml
-esphome run 2_PROD/esp12f-10_Office.yaml
-esphome run 2_PROD/esp12f-11_Entrance_Entry.yaml
-esphome run 2_PROD/esp12f-15_Upstairs.yaml
-esphome run 2_PROD/esp12f-21_Underfloor.yaml
-esphome run 2_PROD/esp12f-25_AquariumWindow.yaml
-esphome run 2_PROD/esp32-05_Shades_WinterGardenUpp.yaml
-esphome run 2_PROD/esp32-06_Garden_Gateway.yaml
-esphome run 2_PROD/esp32-39_Attic.yaml
-```
 
 ---
 

@@ -8,7 +8,8 @@ This directory manages the ESPHome version upgrade lifecycle for this repo.
 |------|---------|---------------|
 | `COMPONENTS.md` | Snapshot of all ESPHome components used across the repo (platforms, sensors, integrations, architecture patterns) | Every upgrade cycle — update version table and snapshot date |
 | `ESPHOME_<version>.md` | Impact analysis for a specific ESPHome version: breaking changes, new features (rated by relevance), devices to reflash | Create one per upgrade; mark devices done as you flash them |
-| `SOP_upgrade.md` | Step-by-step upgrade procedure (8 steps: check → upgrade → update docs → grep checks → compile → flash → verify → mark done) | Update if the process changes |
+| `SOP_upgrade.md` | Step-by-step upgrade procedure (9 steps: check → upgrade → update docs → impact file → grep checks → compile → rig smoke-test → flash → mark done) | Update if the process changes |
+| `KNOWN_ISSUES.md` | Cross-version, long-lived log of upstream bugs/quirks that recur across upgrades (e.g. web_server v3 entity-sorting glitch). Distinct from per-release `ESPHOME_<version>.md` | Append an entry whenever a rig test or flash surfaces an upstream behavior worth not re-investigating |
 
 ## Typical workflow
 

@@ -18,7 +18,7 @@ Used as a baseline for tracking what the repo uses vs. what ESPHome adds or chan
 | Development devices | 28 |
 | Reusable includes | 34 |
 | Sensor definitions | 80 |
-| Snapshot date | 2026-05-08 |
+| Snapshot date | 2026-05-22 |
 
 ---
 
@@ -26,8 +26,8 @@ Used as a baseline for tracking what the repo uses vs. what ESPHome adds or chan
 
 | Item | Version |
 |------|---------|
-| Installed in `.venv` | **2026.4.5** (latest as of 2026-05-06) |
-| Last used to flash (user report) | ~2026.2 |
+| Installed in `.venv` | **2026.5.0** (latest as of 2026-05-22) |
+| Last used to flash (user report) | 2026.4.5 |
 | Min version pins in configs | 2025.6.3 – 2025.8.0 |
 
 Version pins are defined via `esphome_min_version` substitution variable in select configs:
