@@ -3,9 +3,9 @@
 Covers changes from the last used version (**2026.4.5**) to **2026.5.0** (released 2026-05).
 Use this file as a checklist when updating configs and reflashing devices.
 
-> **Installed version:** 2026.4.5 (in `.venv`) — upgrade to 2026.5.0
-> **Previous version used:** 2026.4.5
-> **Versions covered:** 2026.5.0
+> **Installed version:** 2026.5.3 (in `.venv`) — upgraded from 2026.5.0 on 2026-06-13 (patch)
+> **Previous version used:** 2026.5.0 (all 11 PROD devices reflashed 2026-06-13)
+> **Versions covered:** 2026.5.0, 2026.5.3
 
 ---
 
@@ -95,22 +95,23 @@ Prioritized by risk of breaking change or benefit of new features.
 
 | Device | Priority | Reason |
 |--------|----------|--------|
-| `esp32-14_Salon.yaml` | **Done** 2026-05-22 | Audio pipeline: verify WAV/TTS after flash. Main loop timing fix. I2S audio stack improvements. Compile first with `esphome compile` |
-| `esp32-36_Garage_Gate.yaml` | **Done** 2026-05-22 | Main loop cadence fix directly affects gate motor timing. Verify open/close sequence unchanged after flash. (⚠️ bootloader old — OTA only; USB when physically accessible) |
-| `esp32-35_Pump_Garage.yaml` | **Done** 2026-05-22 | Flashed from migrated `0_DEV` (nvm/fram_i2c + epaper_spi); since promoted to `2_PROD`. Stable 64s, no boot-loop. (⚠️ bootloader old) |
-| `esp12f-10_Office.yaml` | Done 2026-05-22 | millis() 2.7× speedup; RTTTL flash saving |
-| `esp12f-11_Entrance_Entry.yaml` | Done 2026-05-22 | millis() 2.7× speedup |
-| `esp12f-15_Upstairs.yaml` | Done 2026-05-22 | millis() 2.7× speedup |
-| `esp12f-21_Underfloor.yaml` | Done 2026-05-22 | millis() 2.7× speedup |
-| `esp12f-25_AquariumWindow.yaml` | Done 2026-05-22 | millis() 2.7× speedup |
-| `esp32-05_Shades_WinterGardenUpp.yaml` | Done 2026-05-22 | Main loop + general ESP32 improvements. (⚠️ bootloader old) |
-| `esp32-06_Garden_Gateway.yaml` | Done 2026-05-22 | Main loop + general ESP32 improvements. (⚠️ bootloader old) |
-| `esp32-39_Attic.yaml` | Done 2026-05-22 | Env only — low risk. (⚠️ bootloader old) |
+| `esp32-14_Salon.yaml` | **Done** 2026-05-22 / 2026-06-13 | Audio pipeline: verify WAV/TTS after flash. Main loop timing fix. I2S audio stack improvements. Compile first with `esphome compile` |
+| `esp32-36_Garage_Gate.yaml` | **Done** 2026-05-22 / 2026-06-13 | Main loop cadence fix directly affects gate motor timing. Verify open/close sequence unchanged after flash. (⚠️ bootloader old — OTA only; USB when physically accessible) |
+| `esp32-35_Pump_Garage.yaml` | **Done** 2026-05-22 / 2026-06-13 | Flashed from migrated `0_DEV` (nvm/fram_i2c + epaper_spi); since promoted to `2_PROD`. Stable 64s, no boot-loop. (⚠️ bootloader old) |
+| `esp12f-10_Office.yaml` | Done 2026-05-22 / 2026-06-13 | millis() 2.7× speedup; RTTTL flash saving |
+| `esp12f-11_Entrance_Entry.yaml` | Done 2026-05-22 / 2026-06-13 | millis() 2.7× speedup |
+| `esp12f-15_Upstairs.yaml` | Done 2026-05-22 / 2026-06-13 | millis() 2.7× speedup |
+| `esp12f-21_Underfloor.yaml` | Done 2026-05-22 / 2026-06-13 | millis() 2.7× speedup |
+| `esp12f-25_AquariumWindow.yaml` | Done 2026-05-22 / 2026-06-13 | millis() 2.7× speedup |
+| `esp32-05_Shades_WinterGardenUpp.yaml` | Done 2026-05-22 / 2026-06-13 | Main loop + general ESP32 improvements. (⚠️ bootloader old) |
+| `esp32-06_Garden_Gateway.yaml` | Done 2026-05-22 / 2026-06-13 | Main loop + general ESP32 improvements. (⚠️ bootloader old) |
+| `esp32-39_Attic.yaml` | Done 2026-05-22 / 2026-06-13 | Env only — low risk. (⚠️ bootloader old) |
 
 ---
 
 ## Carryover to Next Upgrade Cycle
 
+- **Patch 2026.5.3** — upgraded 2026-06-13, all 11 PROD reflashed (no config changes required). MQTT broker changed from hardcoded IP to `mqtt.lan` hostname (`secrets.yaml` + `secrets_example.yaml`).
 - **Bootloader update for 5 devices** (esp32-05, esp32-06, esp32-35, esp32-36, esp32-39). 2026.5.0 adds `esphome upload --bootloader` — attempt during next physical USB access to each device. Resolves the OTA rollback + SRAM1 IRAM limitation noted since 2026.4.5.
 - **WAV codec declaration** — if Salon TTS breaks after upgrade, add `audio: codecs: wav:` to `i2s/set_i2s_media_player.yaml` and reflash.
 - **Native ESP-IDF toolchain** (`toolchain: esp-idf`) for Salon — low urgency, consider for next Salon config change.
