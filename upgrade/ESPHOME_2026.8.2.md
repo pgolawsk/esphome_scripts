@@ -3,9 +3,9 @@
 Covers changes from the last used version (**2026.5.3**, flashed 2026-06-14) to **2026.8.2** (latest stable, released 2026-08-31).
 Use this file as a checklist when updating configs and reflashing devices.
 
-> **Installed version:** 2026.5.3 (in `.venv`) — confirmed live 2026-09-05
-> **Latest available:** 2026.8.2
+> **Installed version:** 2026.8.2 (in `.venv`) — upgraded 2026-09-05
 > **Versions covered:** 2026.6.0–5, 2026.7.0–4, 2026.8.0–2 (minor releases researched in detail; patches from GitHub release notes)
+> **Rollout status (2026-09-05):** 6 of 11 PROD devices flashed and verified. **Blocked on 6 devices with old bootloaders — see Known Issue below.**
 
 ---
 
@@ -33,6 +33,43 @@ grep -rn "\.state\b" --include="*.yaml" 0_DEV/esp32_dev_display.yaml | grep -v "
 grep -rn "led_rgb_neopixelbus\|web_server\.yaml" --include="*.yaml" 2_PROD includes
 grep -rn "framework_type:" 2_PROD/*.yaml   # confirm still explicit on all 6 ESP32 devices
 ```
+
+---
+
+## Known Issue — Old Bootloaders Block Safe OTA (discovered during rollout)
+
+**Not a config/YAML issue — this is physical hardware state, invisible to grep or compile.**
+
+During the actual flash rollout (2026-09-05), `esp32-39_Attic.yaml` OTA'd successfully (`OTA successful`, firmware accepted) but the device **never came back online** — not even after Pawelo power-cycled it physically. Router showed "Destination Host Unreachable" / no ARP entry, meaning it never reached WiFi association after reboot.
+
+Root cause: the 2026.5.0 impact file (previous cycle) already flagged 5 devices with **old bootloaders lacking OTA rollback support**: `esp32-05`, `esp32-06`, `esp32-35`, `esp32-36`, `esp32-39`. That flag was never acted on (`esphome upload --bootloader` requires USB, deferred to "next physical access" — never happened). Without rollback support, if a new app image doesn't boot cleanly, the bootloader has no fallback slot to revert to — it just hangs. This is very plausibly what happened to Attic.
+
+**Confirmed a 6th device shares this risk**: `esp32-14_Salon.yaml` printed on successful boot:
+```
+[W][app:193]: Bootloader too old for OTA rollback. Flash via USB once to update the bootloader
+```
+Salon's OTA happened to succeed this time, but it carries the identical exposure for any *future* OTA.
+
+| Device | Status | Bootloader |
+|--------|--------|-----------|
+| `esp32-39_Attic` | 🔴 **Down** — OTA succeeded, device never rejoined network, survived power-cycle attempt. Needs USB recovery. | Old (no rollback) — confirmed by failure |
+| `esp32-14_Salon` | 🟡 Flashed OK, running 2026.8.2 | Old (no rollback) — confirmed by boot-log warning |
+| `esp32-05_Shades_WinterGardenUpp` | ⏸️ Not attempted | Old (no rollback) — per 2026.5.0 cycle note, unconfirmed on 2026.8.2 |
+| `esp32-06_Garden_Gateway` | ⏸️ Not attempted | Old (no rollback) — per 2026.5.0 cycle note, unconfirmed on 2026.8.2 |
+| `esp32-35_Pump_Garage` | ⏸️ Not attempted (also blocked separately by the override-farm drift, see below) | Old (no rollback) — per 2026.5.0 cycle note, unconfirmed on 2026.8.2 |
+| `esp32-36_Garage_Gate` | ⏸️ Not attempted | Old (no rollback) — per 2026.5.0 cycle note, unconfirmed on 2026.8.2 |
+
+**Action required before touching any of these 6 via OTA again:** physical USB session, run `esphome upload --bootloader 2_PROD/<device>.yaml` on each, starting with recovering Attic. Do this as one batch — same USB cable trip covers all 6.
+
+---
+
+## Known Issue — esp32 override farm drift (blocks Pump_Garage specifically)
+
+`bash esphome-overrides/refresh.sh` failed (exit 1) after the pip upgrade: upstream `preferences.h` changed structurally between 2026.5.3 and 2026.8.2 (added RTC-backed preference storage, changed `make_preference` from inline to declared, added `load_from_key`/`make_backend_`). This is the header our private NVS/FRAM patch (PR#14119) modifies.
+
+Only `esp32-35_Pump_Garage.yaml` uses this override (`external_components:` → `../esphome-overrides/esphome/components`) — confirmed via grep, no other PROD device is affected.
+
+**Action required**: follow `upgrade/SOP_pr14119_refresh.md` Phase 2 — manually merge the upstream header changes into `esphome-overrides/esphome/components/esp32/preferences.h` (keep methods virtual), re-run `refresh.sh` until clean, flash-test on the `esp32-32` rig before touching production Pump_Garage. This is independent of the bootloader issue above but Pump_Garage needs *both* resolved before it can be safely reflashed.
 
 ---
 
@@ -97,18 +134,26 @@ Automatic improvements after reflash — pulled from the 2026.6.0/7.0/8.0 change
 
 ---
 
-## Devices to Reflash
+## Devices to Reflash — Rollout Log
 
-Prioritized by risk/benefit. None of the breaking changes above require pre-flash config edits on any **PROD** file — the one required fix (`select.state`) is isolated to a **DEV** file.
+Actual results, in the order flashed (least → most risky). Compile dry-run of all 11 PROD devices passed cleanly before any flashing started (only pre-existing, unrelated warnings — MQTT merge-key notice, ESP8266 flash-pin notice, cosmetic `-Waddress` compiler notes).
 
-| Device | Priority | Reason |
-|--------|----------|--------|
-| `esp32-14_Salon.yaml` | Medium | Audio pipeline fixes (I2S DMA, voice assistant zero-length fix) + light brightness-on-turn-off behavior change — verify RGB LED + TTS/voice assistant after flash |
-| All 5× ESP8266 (`esp12f-10/11/15/21/25`) | Low-Medium | Crash-state reporting fix — better diagnostics only, no functional change expected |
-| All 6× ESP32 (`esp32-05/06/14/35/36/39`) | Low | `one_wire` timing fix (all 6 use Dallas), crash-handler fix — general stability, no functional change expected |
-| `0_DEV/esp32_dev_display.yaml` | **Done** 2026-09-05 | `select.state` → `.current_option()` fixed — no longer blocks compiling on ≥2026.7.0 |
+| Device | Status | Notes |
+|--------|--------|-------|
+| `esp12f-15_Upstairs` | ✅ Done 2026-09-05 | Online, I2C sensor responding, publishing normally |
+| `esp12f-10_Office` | ✅ Done 2026-09-05 | Online, 3 I2C sensors (CO2/light/gas) responding, brief MQTT DNS retry then connected |
+| `esp12f-25_AquariumWindow` | ✅ Done 2026-09-05 | Online, illuminance/color + temp/humidity publishing |
+| `esp12f-11_Entrance_Entry` | ✅ Done 2026-09-05 | Online, BME680 + BH1750 publishing |
+| `esp12f-21_Underfloor` | ✅ Done 2026-09-05 | Transient DNS failure on first attempt (pre-existing, unrelated, resolved itself); flashed fine on retry, SHT sensor + MQTT ok |
+| `esp32-14_Salon` | ✅ Done 2026-09-05 | Online, BME680/lux/WiFi sensors ok. **Bootloader-too-old-for-rollback warning in boot log** — succeeded this time but see Known Issue above |
+| `esp32-39_Attic` | 🔴 **Down** | OTA reported success but device never rejoined network; survived a physical power-cycle attempt with no change. Needs USB recovery — see Known Issue above |
+| `esp32-06_Garden_Gateway` | ⏸️ Paused | Held back pending USB bootloader update round (shares Attic's old-bootloader risk) |
+| `esp32-05_Shades_WinterGardenUpp` | ⏸️ Paused | Held back pending USB bootloader update round |
+| `esp32-36_Garage_Gate` | ⏸️ Paused | Held back pending USB bootloader update round — also the highest-disruption device if it ever repeats Attic's failure (physical gate access) |
+| `esp32-35_Pump_Garage` | ⏸️ Paused | Held back for USB bootloader round **and** the separate override-farm drift fix (see Known Issue above) — both must be resolved first |
+| `0_DEV/esp32_dev_display.yaml` | ✅ Done 2026-09-05 | `select.state` → `.current_option()` fixed — no longer blocks compiling on ≥2026.7.0 |
 
-Suggested order: upgrade `.venv` → compile dry-run every PROD device → flash Salon first (most complex pipeline) → flash the rest in any order.
+**Next step**: one USB session covering `esp32-39` (recovery), `esp32-05`, `esp32-06`, `esp32-14`, `esp32-35`, `esp32-36` (bootloader update) — then resume OTA rollout for the remaining 5.
 
 ---
 
