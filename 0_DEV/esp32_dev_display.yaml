@@ -397,10 +397,10 @@ display:
 
           //* Display Cycle
           x = 0; y = yRes - 5;
-          if (id(select_display_cycle_interval).state != "Never") {
+          if (id(select_display_cycle_interval).current_option() != "Never") {
             it.printf(x, y, id(cycle_icon_font), TextAlign::BASELINE_LEFT, "\U000F04E6");
             x = x + 24;
-            it.printf(x, y, id(size_25_font), TextAlign::BASELINE_LEFT, "%s", id(select_display_cycle_interval).state.c_str());
+            it.printf(x, y, id(size_25_font), TextAlign::BASELINE_LEFT, "%s", id(select_display_cycle_interval).current_option().c_str());
           } else {
             it.printf(x, y, id(cycle_icon_font), TextAlign::BASELINE_LEFT, "\U000F04E8");
           }
@@ -538,10 +538,10 @@ display:
 
           //* Display Cycle
           x = 0; y = yRes - 5;
-          if (id(select_display_cycle_interval).state != "Never") {
+          if (id(select_display_cycle_interval).current_option() != "Never") {
             it.printf(x, y, id(cycle_icon_font), TextAlign::BASELINE_LEFT, "\U000F04E6");
             x = x + 24;
-            it.printf(x, y, id(size_25_font), TextAlign::BASELINE_LEFT, "%s", id(select_display_cycle_interval).state.c_str());
+            it.printf(x, y, id(size_25_font), TextAlign::BASELINE_LEFT, "%s", id(select_display_cycle_interval).current_option().c_str());
           } else {
             it.printf(x, y, id(cycle_icon_font), TextAlign::BASELINE_LEFT, "\U000F04E8");
           }
@@ -586,10 +586,10 @@ display:
 
           //* Display Cycle
           x = 0; y = yRes - 5;
-          if (id(select_display_cycle_interval).state != "Never") {
+          if (id(select_display_cycle_interval).current_option() != "Never") {
             it.printf(x, y, id(cycle_icon_font), TextAlign::BASELINE_LEFT, "\U000F04E6");
             x = x + 24;
-            it.printf(x, y, id(size_25_font), TextAlign::BASELINE_LEFT, "%s", id(select_display_cycle_interval).state.c_str());
+            it.printf(x, y, id(size_25_font), TextAlign::BASELINE_LEFT, "%s", id(select_display_cycle_interval).current_option().c_str());
           } else {
             it.printf(x, y, id(cycle_icon_font), TextAlign::BASELINE_LEFT, "\U000F04E8");
           }
