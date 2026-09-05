@@ -15,7 +15,7 @@ Items that **may require config changes or verification** before reflashing. Ver
 
 | Change | Affects | Action required |
 |--------|---------|----------------|
-| **`select` component: deprecated `.state` accessor removed** (2026.7.0) | `0_DEV/esp32_dev_display.yaml` uses `id(select_display_cycle_interval).state` (uncommented, active code, lines ~400/403/541) — will fail to compile on ≥2026.7.0 | Replace `.state` with `.state.c_str()` → already correct there, but the *pattern* itself (`.state` member access) is what's removed — replace with `.current_option()` as already done in `esp32-35_Pump_Garage.yaml` (2025-12-05 fix). This DEV file was missed by that earlier fix. |
+| **`select` component: deprecated `.state` accessor removed** (2026.7.0) | `0_DEV/esp32_dev_display.yaml` used `id(select_display_cycle_interval).state` (6 occurrences) — would have failed to compile on ≥2026.7.0 | **Fixed 2026-09-05** — replaced with `.current_option()`, same pattern already applied to `esp32-35_Pump_Garage.yaml` (2025-12-05 fix) |
 | **ESP-IDF becomes default toolchain for ESP32** (2026.7.0) | All 6 ESP32 PROD devices | **No action** — every PROD device declares `framework_type:` explicitly (verified via grep). 4 already on `esp-idf` (Salon, Garden_Gateway, Shades, Attic); 2 still on `arduino` (Pump_Garage, Garage_Gate) — explicit, so the new default doesn't silently change anything. |
 | **Web server v1 deprecated** (2026.7.0) | `esp12f-11_Entrance_Entry.yaml` has a `web_server.yaml` include line | **No action** — the include is fully commented out (`# <<: !include {file: ../web_server.yaml...}`). No PROD device currently runs web_server at all. |
 | **NeoPixelBus deprecated on ESP32** (2026.6.0) | Salon RGB LED (GPIO48) | **No action** — active config uses `lights/led_rgb.yaml` (RMT-based). The alternate `lights/led_rgb_neopixelbus.yaml` include is commented out and unused — just don't re-enable it without checking its replacement. |
@@ -106,9 +106,9 @@ Prioritized by risk/benefit. None of the breaking changes above require pre-flas
 | `esp32-14_Salon.yaml` | Medium | Audio pipeline fixes (I2S DMA, voice assistant zero-length fix) + light brightness-on-turn-off behavior change — verify RGB LED + TTS/voice assistant after flash |
 | All 5× ESP8266 (`esp12f-10/11/15/21/25`) | Low-Medium | Crash-state reporting fix — better diagnostics only, no functional change expected |
 | All 6× ESP32 (`esp32-05/06/14/35/36/39`) | Low | `one_wire` timing fix (all 6 use Dallas), crash-handler fix — general stability, no functional change expected |
-| `0_DEV/esp32_dev_display.yaml` | **Fix before compiling** | Contains the removed `select.state` pattern — will fail to build on ≥2026.7.0 until fixed (see Breaking Changes) |
+| `0_DEV/esp32_dev_display.yaml` | **Done** 2026-09-05 | `select.state` → `.current_option()` fixed — no longer blocks compiling on ≥2026.7.0 |
 
-Suggested order: fix the DEV file first (cheap, no hardware involved) → upgrade `.venv` → compile dry-run every PROD device → flash Salon first (most complex pipeline) → flash the rest in any order.
+Suggested order: upgrade `.venv` → compile dry-run every PROD device → flash Salon first (most complex pipeline) → flash the rest in any order.
 
 ---
 
