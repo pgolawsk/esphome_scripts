@@ -8,10 +8,11 @@
 # Pawelo, 20250619, added use_psram=false, use_dma=false and rmt_symbols as parameter; PSRAM is corrupting IR receiver and transmitter
 # Pawelo, 20260221, added restore_mode
 # FLUX, 20260513, Added Jinja `|default("ALWAYS_OFF")` to restore_mode — most consumers want ALWAYS_OFF; eliminates per-device declaration (BACKLOG #27)
+# Pawelo, 20260906, renamed rgb_order -> channel_colors (deprecated, removed in 2027.3.0)
 
 platform: esp32_rmt_led_strip
 chipset: WS2812
-rgb_order: GRB
+channel_colors: GRB
 # rmt_channel is only for Arduino
 # rmt_channel: ${rmt_channel} # for ESP32c3 can be 0-1, for ESP32 can be 0-7, for ESP32s2 0-3, for ESP32s3 0-3
 name: "$room LED RGB${ix}"
