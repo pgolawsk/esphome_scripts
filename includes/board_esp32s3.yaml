@@ -62,8 +62,11 @@ esp32:
       # [I][esp-idf:000][httpd]: E (39736) httpd: httpd_accept_conn: error in accept (23)
       # [I][esp-idf:000][httpd]: W (39742) httpd: httpd_server: error accepting new connection
       CONFIG_LWIP_SO_LINGER: "y"
-      CONFIG_LWIP_MAX_SOCKETS: "16"
-      CONFIG_LWIP_MAX_ACTIVE_TCP: "16"
+      # Pawelo, 20260906, bumped 16->20 - 2026.8.2 compile warning: config needs 18 sockets
+      # (12 TCP + 3 UDP + 3 TCP_LISTEN), 16 was causing MQTT "Software caused connection abort"
+      # (socket exhaustion) on Salon after upgrade
+      CONFIG_LWIP_MAX_SOCKETS: "20"
+      CONFIG_LWIP_MAX_ACTIVE_TCP: "18"
       CONFIG_LWIP_TCP_MAXRTX: "12"
       CONFIG_LWIP_TCP_SYNMAXRTX: "6"
       CONFIG_LWIP_TCP_RECVMBOX_SIZE: "12"
