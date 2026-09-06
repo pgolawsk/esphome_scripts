@@ -3,6 +3,7 @@
 # Pawelo, 20230206, created based on https://esphome.io/components/time/index.html#base-time-config
 # Pawelo, 20230919, fix to display sunrise and sunset components (if they exists) in local time
 # Pawelo, 20230920, switching loging info to debug level
+# FLUX, 20260906, Removed dead if(sunrise)/if(sunset) truthy guards in the lambda — this include only compiles when sunrise/sunset entities are declared, so the guard was always true; fixes -Waddress compiler warning ("address will never be NULL")
 
 time:
   - platform: sntp
@@ -14,8 +15,8 @@ time:
             format: "Synchronized system clock via SNTP"
             level: DEBUG
         - lambda: |-
-            if (sunrise) { id(sunrise).update(); }
-            if (sunset) { id(sunset).update(); }
+            id(sunrise).update();
+            id(sunset).update();
     #     - component.update: sunrise
     #     - component.update: sunset
 
