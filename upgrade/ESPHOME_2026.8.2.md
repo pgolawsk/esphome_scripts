@@ -111,7 +111,7 @@ The compile log (both M1 and, verified separately, pMacM5) shows: `WARNING GPIO2
 - It concerns the chip's **native** USB-Serial-JTAG peripheral (GPIO19/20). Flashing was done through the **external WCH UART bridge** (separate physical UART TX/RX pins, e.g. GPIO43/44) — electrically independent of GPIO20.
 - I2C on `bus_a` only initializes once application firmware boots; during the actual flash write (ROM bootloader / stub flasher) the app isn't running yet, so GPIO20's I2C role can't interfere with that transfer.
 
-Worth fixing eventually (move `bus_a` off GPIO20, or accept that Salon's native "USB" port can never be used while `bus_a` is wired) — but it's a separate, pre-existing item, not the explanation for the pMacM5 issue above.
+**Fixed anyway, 2026-09-06**, while the case was open for the pMacM5 recovery: moved `bus_a` SCL from `GPIO20` to `GPIO47` (free pin, adjacent to `GPIO48` which the RGB LED already uses safely — confirmed Quad-mode PSRAM on this N8R2 module, so 47/48 aren't PSRAM-reserved). Required a physical wire move on the board (not just a config change) — done, reflashed via OTA, BME680 + BH1750 both confirmed reading again. Salon's native "USB" port is now free to use in the future without any I2C conflict.
 
 ---
 
