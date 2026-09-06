@@ -216,6 +216,7 @@ Actual results, in the order flashed (least → most risky). Compile dry-run of 
 
 - ~~**Garage_Gate hardware**: Hörmann or DIY?~~ **Answered 2026-09-05**: it's a **Wiśniewski** gate operator (2009), no remote/bus protocol — `hoermann_hcp` is not applicable, relay+endstop via `esp32-36_Garage_Gate.yaml` remains the correct approach.
 - **LD6002b (60GHz radar)**: worth evaluating as a hardware upgrade anywhere the existing 24GHz LD2410/LD2420 give unreliable presence readings? This is a new purchase, not a firmware-only change.
+- ~~**`Key '...' was dropped while processing a '<<' merge` warning (logger/time/mqtt) on every compile that uses override-by-order — silence via `esphome: { merge_warnings: false }` in board_*.yaml?**~~ **Answered 2026-09-06**: leave as-is. Confirmed intentional/expected behavior (10 of 11 PROD devices use override-by-order), cosmetic only, not worth touching 4-6 shared board files for log noise.
 
 ---
 
