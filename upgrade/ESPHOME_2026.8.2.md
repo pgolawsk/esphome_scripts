@@ -5,7 +5,7 @@ Use this file as a checklist when updating configs and reflashing devices.
 
 > **Installed version:** 2026.8.2 (in `.venv`) — upgraded 2026-09-05
 > **Versions covered:** 2026.6.0–5, 2026.7.0–4, 2026.8.0–2 (minor releases researched in detail; patches from GitHub release notes)
-> **Rollout status (2026-09-06, updated later same day):** 7 of 11 PROD devices flashed and verified — 5 on 2026-09-05, `esp32-14_Salon` recovered via USB from M1 earlier on 2026-09-06, plus `esp32-36_Garage_Gate` bootloader-updated via full USB flash from pMacM5 in the evening. **1 device still down** (`esp32-39_Attic`, needs USB recovery, deferred — dismount from attic required). **3 devices paused** pending USB bootloader update (`esp32-05`, `esp32-06`, `esp32-35`). **pMacM5 USB flashing is FIXED** (disabled WCH driver extension — enabled it; see resolved Known Issue below). M1 no longer required.
+> **Rollout status (2026-09-06, updated later same day):** 7 of 11 PROD devices flashed and verified — 5 on 2026-09-05, `esp32-14_Salon` recovered via USB from M1 earlier on 2026-09-06, plus `esp32-36_Garage_Gate` bootloader-updated via full USB flash from pMacM5 in the evening. **1 device still down** (`esp32-39_Attic`, needs USB recovery, deferred — dismount from attic required). **2 devices paused** pending USB bootloader update (`esp32-05`, `esp32-06`). **`esp32-35_Pump_Garage` blocked on a hardware swap** — power-only cable in the enclosure, no USB path; board to be replaced with a WROOM-32U (tracked in PKA KANBAN). **pMacM5 USB flashing is FIXED** (disabled WCH driver extension — enabled it; see resolved Known Issue below). M1 no longer required.
 
 ---
 
@@ -60,10 +60,10 @@ Salon's OTA happened to succeed that time, but it carried the identical exposure
 | `esp32-14_Salon` | ✅ Recovered via USB from M1, 2026-09-06 | **Fixed** — full USB flash from M1 wrote a fresh bootloader; confirmed via clean-boot log, 2026-09-06. No further USB action needed. |
 | `esp32-05_Shades_WinterGardenUpp` | ⏸️ Not attempted | Old (no rollback) — per 2026.5.0 cycle note, unconfirmed on 2026.8.2 |
 | `esp32-06_Garden_Gateway` | ⏸️ Not attempted | Old (no rollback) — per 2026.5.0 cycle note, unconfirmed on 2026.8.2 |
-| `esp32-35_Pump_Garage` | ⏸️ Not attempted (also blocked separately by the override-farm drift, see below) | Old (no rollback) — per 2026.5.0 cycle note, unconfirmed on 2026.8.2 |
+| `esp32-35_Pump_Garage` | ⛔ Blocked on hardware swap | Enclosure has only a **power-only cable** (no USB data lines) — no USB flash path exists. Board to be replaced with an ESP32-WROOM-32U (external antenna; also fixes long-standing weak WiFi). Also blocked by the override-farm drift (see below). Old bootloader per 2026.5.0 note. |
 | `esp32-36_Garage_Gate` | ✅ Bootloader updated via full USB flash from pMacM5, 2026-09-06 | **Fixed** — `esphome upload` wrote `firmware.factory.bin` at 0x0 (bootloader + partitions + app); hash-verified, clean boot, WiFi + MQTT reconnected |
 
-**Action required before touching the remaining 4 via OTA again:** physical USB session, run `esphome upload --bootloader 2_PROD/<device>.yaml` (or a full `esphome run`, which also refreshes the bootloader) on each of `esp32-39`, `esp32-05`, `esp32-06`, `esp32-35`, starting with recovering Attic. Do this as one batch — same USB cable trip covers all 4. pMacM5 works for this now.
+**Action required before touching the remaining devices via OTA again:** physical USB session, run `esphome upload --bootloader 2_PROD/<device>.yaml` (or a full `esphome run`, which also refreshes the bootloader) on each of `esp32-39`, `esp32-05`, `esp32-06`, starting with recovering Attic. pMacM5 works for this now. `esp32-35` is **excluded** — no USB path until its board is swapped (power-only cable in the enclosure); handled under the Garage Pump board-swap track.
 
 ---
 
@@ -223,10 +223,10 @@ Actual results, in the order flashed (least → most risky). Compile dry-run of 
 | `esp32-06_Garden_Gateway` | ⏸️ Paused | Held back pending USB bootloader update round (shares Attic's old-bootloader risk) |
 | `esp32-05_Shades_WinterGardenUpp` | ⏸️ Paused | Held back pending USB bootloader update round |
 | `esp32-36_Garage_Gate` | ✅ Done 2026-09-06 | Bootloader updated via full USB `esphome upload` from pMacM5 (`firmware.factory.bin` at 0x0); hash-verified, clean boot, WiFi + MQTT reconnected |
-| `esp32-35_Pump_Garage` | ⏸️ Paused | Held back for USB bootloader round **and** the separate override-farm drift fix (see Known Issue above) — both must be resolved first |
+| `esp32-35_Pump_Garage` | ⛔ Blocked on hardware swap | Enclosure cable is power-only — no USB flash path. Board to be replaced (WROOM-32U, external antenna). Also needs the override-farm drift fix. Tracked under the Garage Pump board-swap card in PKA KANBAN. |
 | `0_DEV/esp32_dev_display.yaml` | ✅ Done 2026-09-05 | `select.state` → `.current_option()` fixed — no longer blocks compiling on ≥2026.7.0 |
 
-**Next step**: `esp32-14_Salon` (recovered + bootloader-fixed from M1) and `esp32-36_Garage_Gate` (bootloader-fixed from pMacM5) — done. Remaining: one USB session (pMacM5 or M1 — both work now) covering `esp32-39` (full recovery, needs dismount from attic first — deferred to a separate visit), `esp32-05`, `esp32-06`, `esp32-35` (bootloader update; esp32-35 also needs the override-farm drift fix) — then resume OTA rollout for the remaining 3 (esp32-05/06/35).
+**Next step**: `esp32-14_Salon` (recovered + bootloader-fixed from M1) and `esp32-36_Garage_Gate` (bootloader-fixed from pMacM5) — done. Remaining: one USB session (pMacM5 or M1 — both work now) covering `esp32-39` (full recovery, needs dismount from attic first — deferred to a separate visit), `esp32-05`, `esp32-06` (bootloader update) — then resume OTA rollout for those. `esp32-35` is parked until its board is swapped (power-only enclosure cable) — see the Garage Pump board-swap card in PKA KANBAN.
 
 ---
 
