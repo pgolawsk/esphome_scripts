@@ -29,6 +29,7 @@
 # FLUX, 20260512, Removed project_name/framework_version/flash_size substitution(s); defaults now provided by board file via Jinja (Jinja default pattern extension, mirrors BACKLOG #10)
 # FLUX, 20260513, Removed minimum_chip_revision substitution; default "1.0" now provided by board_esp32.yaml Jinja (BACKLOG #29)
 # FLUX, 20260514, Swept logger_level.yaml → logger.yaml include path; logger.yaml now accepts level/baud_rate via Jinja defaults (BACKLOG #15 + #43)
+# FLUX, 20260905, Replaced deprecated select .state accessor with .current_option() (removed in 2026.7.0) for id(select_display_cycle_interval), 6 occurrences
 
 # ! run with this command to override substitutions
 # esphome -s devicename espXX -s updates 1min -s room <Room name> -s mqtt_room <room> run esp32_MMmm_SSss__PP.yaml --device 192.168.x.x

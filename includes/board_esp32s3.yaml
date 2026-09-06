@@ -23,6 +23,7 @@
 # FLUX, 20260512, Added Jinja defaults for board_variant ("s3"), board ("esp32-s3-devkitc-1"), flash_write_interval ("5min") — all 3 PSRAM consumer devices (esp32-14, esp32s3_dev, esp32s3supermini_dev) match these (Jinja default pattern extension, mirrors BACKLOG #10)
 # FLUX, 20260512, Added Jinja defaults: project_name ("pgolawsk.esp_home"), framework_version ("recommended"), flash_size ("4MB") (Jinja default pattern extension, mirrors BACKLOG #10)
 # FLUX, 20260513, Renamed from board_esp32_with_psram_fix.yaml → board_esp32s3.yaml; clarified intent (S3 + PSRAM + audio sdkconfig) (BACKLOG #44)
+# FLUX, 20260906, Bumped CONFIG_LWIP_MAX_SOCKETS 16->20 and CONFIG_LWIP_MAX_ACTIVE_TCP 16->18 — 2026.8.2 compile warning said 18 sockets needed (12 TCP + 3 UDP + 3 TCP_LISTEN); 16 was causing MQTT "Software caused connection abort" (socket exhaustion) on Salon after the 2026.8.2 upgrade
 
 esphome:
   name: $devicename
@@ -62,9 +63,6 @@ esp32:
       # [I][esp-idf:000][httpd]: E (39736) httpd: httpd_accept_conn: error in accept (23)
       # [I][esp-idf:000][httpd]: W (39742) httpd: httpd_server: error accepting new connection
       CONFIG_LWIP_SO_LINGER: "y"
-      # Pawelo, 20260906, bumped 16->20 - 2026.8.2 compile warning: config needs 18 sockets
-      # (12 TCP + 3 UDP + 3 TCP_LISTEN), 16 was causing MQTT "Software caused connection abort"
-      # (socket exhaustion) on Salon after upgrade
       CONFIG_LWIP_MAX_SOCKETS: "20"
       CONFIG_LWIP_MAX_ACTIVE_TCP: "18"
       CONFIG_LWIP_TCP_MAXRTX: "12"

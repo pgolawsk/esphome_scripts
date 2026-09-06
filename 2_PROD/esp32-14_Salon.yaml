@@ -48,6 +48,7 @@
 # FLUX, 20260513, Updated board include path: board_esp32_with_psram_fix.yaml → board_esp32s3.yaml (rename only, no behavior change) (BACKLOG #44)
 # FLUX, 20260513, Removed restore_mode substitution; default "ALWAYS_OFF" now provided by lights/led_rgb.yaml Jinja (BACKLOG #27)
 # FLUX, 20260514, Swept logger_level.yaml → logger.yaml include path; logger.yaml now accepts level/baud_rate via Jinja defaults (BACKLOG #15 + #43)
+# FLUX, 20260906, Moved I2C bus_a SCL from GPIO20 to GPIO47 to free the native USB-Serial-JTAG pin for future use
 
 # ! run with this command to override substitutions
 # esphome -s devicename espXX -s updates 1min -s room <Room name> -s mqtt_room <room> run esp32_MMmm_SSss__PP.yaml --device 192.168.x.x
@@ -55,7 +56,7 @@
 
 substitutions:
   devices: "Env monitoring via BME680, Illuminance via BH1750, IR Receiver/Transmitter, RTTTL Buzzer, mic via INMP441, speaker via MAX98357A"
-  version: "20260123"
+  version: "20260906"
 
   # required by ../includes/board_esp32.yaml script
   # framework_type: arduino # "arduino" or "esp-idf"
@@ -89,7 +90,7 @@ substitutions:
 
 # Include interfaces needed
 <<: !include {file: ../interfaces/debug.yaml, vars: {update_interval: "5s"}}
-<<: !include {file: ../interfaces/i2c.yaml, vars: {bus_id: "bus_a", sda: "GPIO21", scl: "GPIO47"}}  # Pawelo, 20260906, moved off GPIO20 (native USB-Serial-JTAG D+) to allow using the native USB port later
+<<: !include {file: ../interfaces/i2c.yaml, vars: {bus_id: "bus_a", sda: "GPIO21", scl: "GPIO47"}}
 # <<: !include {file: ../interfaces/i2c.yaml, vars: {bus_id: "bus_a", sda: "GPIO15", scl: "GPIO16"}}
 # <<: !include {file: ../interfaces/dallas.yaml, vars: {gpio: "GPIO10"}}
 <<: !include {file: ../interfaces/rtttl.yaml, vars: {ix: ""}}
