@@ -103,6 +103,15 @@ The exact same board + firmware + a UART-port cable connection **succeeded on th
 - If the driver fix above doesn't resolve it, re-test on pMacM5 after a macOS update (this is a very recently released macOS — plausible fresh regression in `IOUSBHostFamily`/`AppleUSBXHCI` or in the generic CDC composite driver) or an esptool update.
 - Not filed upstream yet (no confirmed esptool/Espressif GitHub issue reference) — worth a search/filing if this resurfaces on the next upgrade cycle.
 
+### Ruled out: GPIO20/native-USB conflict is not the cause
+
+The compile log (both M1 and, verified separately, pMacM5) shows: `WARNING GPIO20 is used by the USB-Serial-JTAG interface. Using this pin as GPIO will conflict with USB-Serial-JTAG.` `esp32-14_Salon.yaml` assigns `GPIO20` as I2C `bus_a` SCL (`interfaces/i2c.yaml`). This is a real, pre-existing config note — GPIO20 is electrically the native USB-Serial-JTAG D+ line on ESP32-S3 — but it is **not** related to the pMacM5 bulk-write bug:
+- It's a static compile-time config warning, identical on both Macs (confirmed by recompiling on pMacM5) — it doesn't depend on which machine or USB port is used.
+- It concerns the chip's **native** USB-Serial-JTAG peripheral (GPIO19/20). Flashing was done through the **external WCH UART bridge** (separate physical UART TX/RX pins, e.g. GPIO43/44) — electrically independent of GPIO20.
+- I2C on `bus_a` only initializes once application firmware boots; during the actual flash write (ROM bootloader / stub flasher) the app isn't running yet, so GPIO20's I2C role can't interfere with that transfer.
+
+Worth fixing eventually (move `bus_a` off GPIO20, or accept that Salon's native "USB" port can never be used while `bus_a` is wired) — but it's a separate, pre-existing item, not the explanation for the pMacM5 issue above.
+
 ---
 
 ## Known Issue — esp32 override farm drift (blocks Pump_Garage specifically)
