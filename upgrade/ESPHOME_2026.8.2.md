@@ -5,7 +5,7 @@ Use this file as a checklist when updating configs and reflashing devices.
 
 > **Installed version:** 2026.8.2 (in `.venv`) — upgraded 2026-09-05
 > **Versions covered:** 2026.6.0–5, 2026.7.0–4, 2026.8.0–2 (minor releases researched in detail; patches from GitHub release notes)
-> **Rollout status (2026-09-05):** 6 of 11 PROD devices flashed and verified. **Blocked on 6 devices with old bootloaders — see Known Issue below.**
+> **Rollout status (2026-09-06):** 5 of 11 PROD devices flashed and verified (2026-09-05). **2 devices down** (`esp32-39_Attic`, `esp32-14_Salon`) needing USB recovery. **4 devices paused** pending USB bootloader update. **pMacM5 cannot do any of this USB work — confirmed bug, use Mac Mini M1 instead — see Known Issue below.**
 
 ---
 
@@ -53,13 +53,54 @@ Salon's OTA happened to succeed this time, but it carries the identical exposure
 | Device | Status | Bootloader |
 |--------|--------|-----------|
 | `esp32-39_Attic` | 🔴 **Down** — OTA succeeded, device never rejoined network, survived power-cycle attempt. Needs USB recovery. | Old (no rollback) — confirmed by failure |
-| `esp32-14_Salon` | 🟡 Flashed OK, running 2026.8.2 | Old (no rollback) — confirmed by boot-log warning |
+| `esp32-14_Salon` | 🔴 **Down** — see USB-recovery attempt below; flash was erased mid-recovery and never rewritten | Old (no rollback) — confirmed by boot-log warning |
 | `esp32-05_Shades_WinterGardenUpp` | ⏸️ Not attempted | Old (no rollback) — per 2026.5.0 cycle note, unconfirmed on 2026.8.2 |
 | `esp32-06_Garden_Gateway` | ⏸️ Not attempted | Old (no rollback) — per 2026.5.0 cycle note, unconfirmed on 2026.8.2 |
 | `esp32-35_Pump_Garage` | ⏸️ Not attempted (also blocked separately by the override-farm drift, see below) | Old (no rollback) — per 2026.5.0 cycle note, unconfirmed on 2026.8.2 |
 | `esp32-36_Garage_Gate` | ⏸️ Not attempted | Old (no rollback) — per 2026.5.0 cycle note, unconfirmed on 2026.8.2 |
 
 **Action required before touching any of these 6 via OTA again:** physical USB session, run `esphome upload --bootloader 2_PROD/<device>.yaml` on each, starting with recovering Attic. Do this as one batch — same USB cable trip covers all 6.
+
+---
+
+## Known Issue — pMacM5 cannot reliably write ESP32-S3 flash over USB (2026-09-06)
+
+**Scope:** this is a finding about the **Mac (pMacM5)**, not about any device config. Confirmed reproducible; not yet reported upstream.
+
+### What happened
+
+Attempted USB recovery of `esp32-14_Salon.yaml` (as a precautionary bootloader update, prompted by the Known Issue above) from pMacM5 (MacBook Air M5, very recent macOS — `arm64_tahoe` per Homebrew's platform tag). Board is a genuine Espressif ESP32-S3-DevKitC-1 N8R2 with two USB-C ports (native "USB" + "UART" bridge).
+
+**Symptom, 100% reproducible across every combination tried:**
+- Small/control esptool commands always succeed: connect, chip-id read, `SET_ADDRESS`-adjacent handshake, SPI flash erase (a ~1s blocking operation).
+- Any command carrying a **bulk data payload** always fails at the first chunk: the stub-flasher upload (`esphome run`/`esphome upload`, both baud rates tried) fails with `Failed to write to target RAM (result was 0107: Checksum error)`; the ROM-loader direct write (`esptool --no-stub write-flash`) fails with `Failed to write to target flash after seq 0 (result was 0105: The format of the received message is invalid)`.
+- Failure point never moves, never succeeds, regardless of any of the following (all tried, all identical result):
+  - **5 different USB-C cables**
+  - **3 different USB hubs** (one independently confirmed fully healthy — enumerated its own hub chip + an unrelated HID USB receiver with zero errors) **and direct connection (no hub)**
+  - **Both USB-C ports on the board** (native "USB" — enumerates as `USB JTAG/serial debug unit`/CDC but can't be used for flashing at all, since the auto-reset DTR/RTS circuit isn't wired to it — `No serial data received`; and "UART" bridge — enumerates as `USB Single Serial`/CDC, connects fine, fails on bulk write)
+  - **Both USB-C ports on the Mac itself**
+  - **Silicon Labs CP210x driver and WCH CH34x driver**, installed/uninstalled/reinstalled in every combination, including neither (Apple's native/generic `AppleUSBCDCCompositeDevice` driver claims the device either way — chip is likely **not** CP2102N/CH340 at all, since installing the matching vendor driver never changed the port's name from generic `/dev/cu.usbmodemXXXX` to a vendor-specific name; likely a native-CDC chip such as CH9102X)
+  - macOS's "Allow accessories to connect" security setting (set to always-allow)
+  - Board powered via USB only vs. simultaneous 230V + USB
+  - Baud rate 9600 (fails to even connect — confirms this is a virtual USB-CDC port, not a real variable-baud UART), 115200, 460800
+  - Compressed vs. uncompressed flash write
+  - Stub-flasher vs. `--no-stub` (direct ROM-loader) upload path
+
+One early kernel-log capture (direct-connection attempt, before switching to a hub) showed the underlying pattern clearly: `AppleUSBXHCICommandRing::setAddress: completed with result code 4` repeating every ~1.3s until `AppleUSBHostPort::disconnect: persistent enumeration failures` — i.e. the device cycles connect/reconfigure/fail at the USB-protocol level. Later attempts (through a hub) got further — the device stayed enumerated — but any actual bulk data transfer still corrupts consistently.
+
+### Consequence
+
+**`esp32-14_Salon.yaml` is currently down** (confirmed via `ping` — router returns "Destination Host Unreachable", same signature as Attic). Each failed `write-flash` attempt genuinely erases the target flash region (0x0–0x15efff, covering bootloader + partition table + app) before the write fails, so after ~5-6 repeated attempts the board's flash in that region is blank. It will not boot until a full flash succeeds — this is no longer just a "precautionary bootloader update", it now needs the same full USB recovery as Attic.
+
+### Working alternative
+
+The exact same board + firmware + a UART-port cable connection **succeeded on the Mac Mini M1** earlier in this same upgrade cycle (through a USB hub). The bug is specific to pMacM5's USB stack (or its interaction with this device class), not the board, firmware, or cable/hub inventory in general.
+
+### Recommendation
+
+- Recover `esp32-14_Salon` and `esp32-39_Attic` via USB from the **Mac Mini M1**, not pMacM5, until this is resolved.
+- Re-test on pMacM5 after a macOS update (this is a very recently released macOS — plausible fresh regression in `IOUSBHostFamily`/`AppleUSBXHCI` or in the generic CDC composite driver) or an esptool update.
+- Not filed upstream yet (no confirmed esptool/Espressif GitHub issue reference) — worth a search/filing if this resurfaces on the next upgrade cycle.
 
 ---
 
@@ -145,15 +186,15 @@ Actual results, in the order flashed (least → most risky). Compile dry-run of 
 | `esp12f-25_AquariumWindow` | ✅ Done 2026-09-05 | Online, illuminance/color + temp/humidity publishing |
 | `esp12f-11_Entrance_Entry` | ✅ Done 2026-09-05 | Online, BME680 + BH1750 publishing |
 | `esp12f-21_Underfloor` | ✅ Done 2026-09-05 | Transient DNS failure on first attempt (pre-existing, unrelated, resolved itself); flashed fine on retry, SHT sensor + MQTT ok |
-| `esp32-14_Salon` | ✅ Done 2026-09-05 | Online, BME680/lux/WiFi sensors ok. **Bootloader-too-old-for-rollback warning in boot log** — succeeded this time but see Known Issue above |
-| `esp32-39_Attic` | 🔴 **Down** | OTA reported success but device never rejoined network; survived a physical power-cycle attempt with no change. Needs USB recovery — see Known Issue above |
+| `esp32-14_Salon` | 🔴 **Down** (as of 2026-09-06) | OTA'd fine 2026-09-05 (bootloader-too-old warning noted). USB precautionary bootloader update attempted 2026-09-06 from pMacM5 — hit the pMacM5 USB bulk-write bug (see Known Issue above), flash region erased across ~5-6 attempts, never rewritten. Needs full USB recovery, **from M1, not pMacM5** |
+| `esp32-39_Attic` | 🔴 **Down** | OTA reported success but device never rejoined network; survived a physical power-cycle attempt with no change. Needs USB recovery **from M1** (pMacM5 has a confirmed separate USB bulk-write bug — see Known Issue above) — deferred, no USB port near the physical install location (attic), needs dismount first |
 | `esp32-06_Garden_Gateway` | ⏸️ Paused | Held back pending USB bootloader update round (shares Attic's old-bootloader risk) |
 | `esp32-05_Shades_WinterGardenUpp` | ⏸️ Paused | Held back pending USB bootloader update round |
 | `esp32-36_Garage_Gate` | ⏸️ Paused | Held back pending USB bootloader update round — also the highest-disruption device if it ever repeats Attic's failure (physical gate access) |
 | `esp32-35_Pump_Garage` | ⏸️ Paused | Held back for USB bootloader round **and** the separate override-farm drift fix (see Known Issue above) — both must be resolved first |
 | `0_DEV/esp32_dev_display.yaml` | ✅ Done 2026-09-05 | `select.state` → `.current_option()` fixed — no longer blocks compiling on ≥2026.7.0 |
 
-**Next step**: one USB session covering `esp32-39` (recovery), `esp32-05`, `esp32-06`, `esp32-14`, `esp32-35`, `esp32-36` (bootloader update) — then resume OTA rollout for the remaining 5.
+**Next step**: one USB session **on Mac Mini M1** (not pMacM5 — see Known Issue above) covering `esp32-14` (full recovery, urgent), `esp32-39` (full recovery, needs dismount from attic first — deferred to a separate visit), `esp32-05`, `esp32-06`, `esp32-35`, `esp32-36` (bootloader update) — then resume OTA rollout for the remaining 4 (esp32-05/06/35/36).
 
 ---
 
