@@ -45,22 +45,24 @@ During the actual flash rollout (2026-09-05), `esp32-39_Attic.yaml` OTA'd succes
 
 Root cause: the 2026.5.0 impact file (previous cycle) already flagged 5 devices with **old bootloaders lacking OTA rollback support**: `esp32-05`, `esp32-06`, `esp32-35`, `esp32-36`, `esp32-39`. That flag was never acted on (`esphome upload --bootloader` requires USB, deferred to "next physical access" — never happened). Without rollback support, if a new app image doesn't boot cleanly, the bootloader has no fallback slot to revert to — it just hangs. This is very plausibly what happened to Attic.
 
-**Confirmed a 6th device shares this risk**: `esp32-14_Salon.yaml` printed on successful boot:
+**A 6th device shared this risk**: `esp32-14_Salon.yaml` printed on successful boot (2026-09-05):
 ```
 [W][app:193]: Bootloader too old for OTA rollback. Flash via USB once to update the bootloader
 ```
-Salon's OTA happened to succeed this time, but it carries the identical exposure for any *future* OTA.
+Salon's OTA happened to succeed that time, but it carried the identical exposure for any *future* OTA.
+
+**Resolved for Salon, 2026-09-06** — verified via a clean OTA restart (`esphome run`, reset reason `Reboot request from esphome.ota`) and a full fresh boot-log capture from `app:151` onward: the `Bootloader too old` warning no longer appears. The full `esphome run` used to recover Salon via USB from M1 (see Known Issue below) wrote a fresh bootloader from offset 0x0 as part of that flash, which incidentally fixed this too — not something I'd verified until asked directly; the impact-file note below had been carried over stale from the 2026-09-05 entry.
 
 | Device | Status | Bootloader |
 |--------|--------|-----------|
 | `esp32-39_Attic` | 🔴 **Down** — OTA succeeded, device never rejoined network, survived power-cycle attempt. Needs USB recovery. | Old (no rollback) — confirmed by failure |
-| `esp32-14_Salon` | ✅ Recovered via USB from M1, 2026-09-06 (after pMacM5 bricked it — see below) | Old (no rollback) — confirmed by boot-log warning; still worth a `--bootloader` update next physical M1 session |
+| `esp32-14_Salon` | ✅ Recovered via USB from M1, 2026-09-06 | **Fixed** — full USB flash from M1 wrote a fresh bootloader; confirmed via clean-boot log, 2026-09-06. No further USB action needed. |
 | `esp32-05_Shades_WinterGardenUpp` | ⏸️ Not attempted | Old (no rollback) — per 2026.5.0 cycle note, unconfirmed on 2026.8.2 |
 | `esp32-06_Garden_Gateway` | ⏸️ Not attempted | Old (no rollback) — per 2026.5.0 cycle note, unconfirmed on 2026.8.2 |
 | `esp32-35_Pump_Garage` | ⏸️ Not attempted (also blocked separately by the override-farm drift, see below) | Old (no rollback) — per 2026.5.0 cycle note, unconfirmed on 2026.8.2 |
 | `esp32-36_Garage_Gate` | ⏸️ Not attempted | Old (no rollback) — per 2026.5.0 cycle note, unconfirmed on 2026.8.2 |
 
-**Action required before touching any of these 6 via OTA again:** physical USB session, run `esphome upload --bootloader 2_PROD/<device>.yaml` on each, starting with recovering Attic. Do this as one batch — same USB cable trip covers all 6.
+**Action required before touching the remaining 5 via OTA again:** physical USB session, run `esphome upload --bootloader 2_PROD/<device>.yaml` (or a full `esphome run`, which also refreshes the bootloader) on each, starting with recovering Attic. Do this as one batch — same USB cable trip covers all 5.
 
 ---
 
@@ -197,7 +199,7 @@ Actual results, in the order flashed (least → most risky). Compile dry-run of 
 | `esp12f-25_AquariumWindow` | ✅ Done 2026-09-05 | Online, illuminance/color + temp/humidity publishing |
 | `esp12f-11_Entrance_Entry` | ✅ Done 2026-09-05 | Online, BME680 + BH1750 publishing |
 | `esp12f-21_Underfloor` | ✅ Done 2026-09-05 | Transient DNS failure on first attempt (pre-existing, unrelated, resolved itself); flashed fine on retry, SHT sensor + MQTT ok |
-| `esp32-14_Salon` | ✅ Recovered 2026-09-06 | OTA'd fine 2026-09-05 (bootloader-too-old warning noted). USB precautionary bootloader update attempted 2026-09-06 from pMacM5 hit the pMacM5 USB bulk-write bug (see Known Issue above), flash region erased across ~5-6 attempts. **Recovered via full `esphome run` from Mac Mini M1** using `/dev/cu.wchusbserial*` |
+| `esp32-14_Salon` | ✅ Recovered 2026-09-06, bootloader fixed too | OTA'd fine 2026-09-05 (bootloader-too-old warning noted). USB precautionary bootloader update attempted 2026-09-06 from pMacM5 hit the pMacM5 USB bulk-write bug (see Known Issue above), flash region erased across ~5-6 attempts. **Recovered via full `esphome run` from Mac Mini M1** using `/dev/cu.wchusbserial*` — that full flash also refreshed the bootloader; confirmed via clean-boot log, warning gone, no further USB action needed for this device |
 | `esp32-39_Attic` | 🔴 **Down** | OTA reported success but device never rejoined network; survived a physical power-cycle attempt with no change. Needs USB recovery **from M1** (pMacM5 has a confirmed separate USB bulk-write bug — see Known Issue above) — deferred, no USB port near the physical install location (attic), needs dismount first |
 | `esp32-06_Garden_Gateway` | ⏸️ Paused | Held back pending USB bootloader update round (shares Attic's old-bootloader risk) |
 | `esp32-05_Shades_WinterGardenUpp` | ⏸️ Paused | Held back pending USB bootloader update round |
@@ -205,7 +207,7 @@ Actual results, in the order flashed (least → most risky). Compile dry-run of 
 | `esp32-35_Pump_Garage` | ⏸️ Paused | Held back for USB bootloader round **and** the separate override-farm drift fix (see Known Issue above) — both must be resolved first |
 | `0_DEV/esp32_dev_display.yaml` | ✅ Done 2026-09-05 | `select.state` → `.current_option()` fixed — no longer blocks compiling on ≥2026.7.0 |
 
-**Next step**: `esp32-14_Salon` recovered (2026-09-06, from M1). Remaining: one USB session **on Mac Mini M1** (not pMacM5, unless the WCH driver fix above is confirmed working) covering `esp32-39` (full recovery, needs dismount from attic first — deferred to a separate visit), `esp32-05`, `esp32-06`, `esp32-35`, `esp32-36` (bootloader update), plus a follow-up `--bootloader` pass on `esp32-14` itself — then resume OTA rollout for the remaining 4 (esp32-05/06/35/36).
+**Next step**: `esp32-14_Salon` recovered and bootloader-fixed (2026-09-06, from M1) — done, no more work needed on it. Remaining: one USB session **on Mac Mini M1** (not pMacM5, unless the WCH driver fix above is confirmed working) covering `esp32-39` (full recovery, needs dismount from attic first — deferred to a separate visit), `esp32-05`, `esp32-06`, `esp32-35`, `esp32-36` (bootloader update) — then resume OTA rollout for the remaining 4 (esp32-05/06/35/36).
 
 ---
 
