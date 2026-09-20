@@ -37,6 +37,18 @@ Author: Pawel Golawski, <pawel.golawski@2com.pl>
 - 13x **ESP32-WROOM-32 expansion board** (to solder)
 
   ![ESP32 adapter image](pinouts/esp32_adapter_1.jpg "ESP32S adapter board")
+
+  IMPORTANT: FLASHing soldered chip via USB ESP32-WROOM-32 adapter:
+
+  - Connect the adapter to the board via 6-pin cable (Adapter - Board)
+    - 3.3V to 3.3V
+    - EN to EN
+    - GND to GND
+    - TXD to TXD
+    - RXD to RXD
+    - IO0 to IO0
+  > See board pins location below
+
   ![ESP32 adapter image](pinouts/esp32_adapter_2.jpg "ESP32S adapter board")
   ![ESP32 adapter image](pinouts/esp32_adapter_3.jpg "ESP32S adapter board")
 
