@@ -3,10 +3,19 @@
 # Pawelo, 20221119, created as my framework based on !include statements
 # Pawelo, 20240621, updated with 2024.6 version of ESPHome
 # Pawelo, 20250716, updated with 2025.7 version of ESPHome - added web_server OTA option
+# Larry, 20260920, added commented allow_partition_access for OTA bootloader updates (see comment below)
 
 ota:
   - platform: esphome
     password: !secret ota_password
+    # Enable ONLY temporarily, when updating the bootloader over OTA (device without USB access):
+    #   1. uncomment, OTA-flash the device with its CURRENT ESPHome version (`esphome run ... --device <name>.lan`)
+    #   2. compile with the target ESPHome version, then `esphome upload --bootloader <yaml> --device <name>.lan`
+    #      (--bootloader is OTA-only; it is rejected over USB, where a full `esphome run` refreshes the bootloader)
+    #   3. comment it out again, so bootloader/partition writes over the network stay disabled
+    # ESP32 ONLY: this file is shared with ESP8266/BK72xx, where the option fails validation — never leave it enabled here.
+    # Risk: a failed bootloader write can brick the device; without a USB port that means a board swap.
+    # allow_partition_access: true
 # - platform: web_server
 
 safe_mode:
