@@ -46,7 +46,7 @@ Rated by relevance to this repo's architecture.
 | **Native ESP-IDF toolchain** (`toolchain: esp-idf`) | Salon already uses `framework: esp-idf`. New native toolchain eliminates PlatformIO overhead; supports ESP-IDF v6.0.1 | Add `toolchain: esp-idf` under `esp32: framework:` in `board_esp32s3.yaml` or Salon directly. Optional — default still works |
 | **Audio stack: microMP3 / microFLAC / microWAV streaming codecs** | Salon has full media player pipeline (speaker + mixer + resampler). New codecs enable MP3/FLAC streaming in addition to WAV | Add `audio: codecs: mp3:` (and/or `flac:`) to Salon config to enable streaming those formats from HA |
 | **`audio_http` media source** | Salon media player can now play arbitrary HTTP URLs directly from ESPHome YAML without HA automation | Add `media_source: audio_http` and use `media_player.play_media` with URL in ESPHome automations |
-| **`esphome upload --bootloader`** | 5 PROD devices flagged as "bootloader too old" in previous cycle (esp32-05, esp32-06, esp32-35, esp32-36, esp32-39). 2026.5.0 adds explicit bootloader update command | `esphome upload --bootloader 2_PROD/<device>.yaml` — requires USB connection; attempt during next physical access to each device |
+| **`esphome upload --bootloader`** | 5 PROD devices flagged as "bootloader too old" in previous cycle (esp32-05, esp32-06, esp32-35, esp32-36, esp32-39). 2026.5.0 adds explicit bootloader update command | `esphome upload --bootloader 2_PROD/<device>.yaml --device <name>.lan` — **OTA only** (the flag is rejected for USB: "can only be used for Over The Air updates"; corrected 2026-09-20). Over USB, a full `esphome run` refreshes the bootloader. Untested whether OTA works on a device with a very old bootloader |
 
 ### Medium Relevance ★★
 
@@ -112,7 +112,7 @@ Prioritized by risk of breaking change or benefit of new features.
 ## Carryover to Next Upgrade Cycle
 
 - **Patch 2026.5.3** — upgraded 2026-06-13, all 11 PROD reflashed (no config changes required). MQTT broker changed from hardcoded IP to `mqtt.lan` hostname (`secrets.yaml` + `secrets_example.yaml`).
-- **Bootloader update for 5 devices** (esp32-05, esp32-06, esp32-35, esp32-36, esp32-39). 2026.5.0 adds `esphome upload --bootloader` — attempt during next physical USB access to each device. Resolves the OTA rollback + SRAM1 IRAM limitation noted since 2026.4.5.
+- **Bootloader update for 5 devices** (esp32-05, esp32-06, esp32-35, esp32-36, esp32-39). 2026.5.0 adds `esphome upload --bootloader` — try OTA first (`--device <name>.lan`); fall back to a full USB `esphome run` if that fails (corrected 2026-09-20 — earlier text wrongly said USB is required). Resolves the OTA rollback + SRAM1 IRAM limitation noted since 2026.4.5.
 - **WAV codec declaration** — if Salon TTS breaks after upgrade, add `audio: codecs: wav:` to `i2s/set_i2s_media_player.yaml` and reflash.
 - **Native ESP-IDF toolchain** (`toolchain: esp-idf`) for Salon — low urgency, consider for next Salon config change.
 
