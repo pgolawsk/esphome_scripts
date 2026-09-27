@@ -271,15 +271,15 @@ For any ESPHome-related task in this repo, AI agents (Cursor, Aider, Copilot, Co
 
 ## External Orchestration (Larry / PKA)
 
-This repo is occasionally driven by **Larry**, the PKA orchestration agent that lives outside this working directory. Larry hands off ESPHome work to FLUX (and other repo-local agents) by writing task briefs into `agents_inbox/` and reads responses from the same channel.
+This repo is occasionally driven by **Larry**, the PKA orchestration agent that lives outside this working directory. Larry hands off ESPHome work to FLUX (and other repo-local agents) by writing task briefs into `inbox/` and reads responses from the same channel.
 
-The full agent ↔ Larry protocol — channel location, task file naming (`FLUX_TASK_<topic>.md`), response file naming (`LARRY_<topic>.md`), response format, and what does/does not belong in the inbox — is defined in **`COMMUNICATION.md`** at the repo root. Read it before responding to anything that originates from `agents_inbox/`.
+The full agent ↔ Larry protocol — channel location, task file naming (`FLUX_TASK_<topic>.md`), response file naming (`LARRY_<KIND>_<topic>.md`), response format, and what does/does not belong in the inbox — is defined in **`COMMUNICATION.md`** at the repo root. Read it before responding to anything that originates from `inbox/`.
 
-`agents_inbox/` is gitignored: it is a runtime channel, not repo content.
+`inbox/` is gitignored: it is a runtime channel, not repo content.
 
 **Two independent work streams.** Do not conflate these channels:
 
-- **`agents_inbox/`** — incoming work from Larry (PKA orchestrator). Ephemeral task briefs and responses, gitignored. Lifecycle: Larry writes `FLUX_TASK_<topic>.md`, agent executes, agent writes `LARRY_<topic>.md`, agent deletes the task file. See `COMMUNICATION.md`.
+- **`inbox/`** — incoming work from Larry (PKA orchestrator). Ephemeral task briefs and responses, gitignored. Lifecycle: Larry writes `FLUX_TASK_<topic>.md`, agent executes, agent writes `LARRY_DONE_<topic>.md`, agent deletes the task file. See `COMMUNICATION.md`.
 - **`BACKLOG.md`** — repo-internal cleanup/audit backlog. Persistent, committed to the repo, append-only completion markers (`**Status:** ✅ done YYYY-MM-DD`). Not driven by Larry; managed inside this repo.
 
 Both can be active at the same time and neither replaces the other.
@@ -348,7 +348,7 @@ This repository uses two repo-local Claude Code sub-agents defined in `.claude/a
 
 ### FLUX — Execution Agent
 
-FLUX is the primary execution agent. FLUX reads BACKLOG items from `BACKLOG.md` (or task briefs from `agents_inbox/`, when driven by Larry), implements them, and commits the result. FLUX runs naming-convention and structural checks before editing any file. Full profile: `.claude/agents/flux.md`.
+FLUX is the primary execution agent. FLUX reads BACKLOG items from `BACKLOG.md` (or task briefs from `inbox/`, when driven by Larry), implements them, and commits the result. FLUX runs naming-convention and structural checks before editing any file. Full profile: `.claude/agents/flux.md`.
 
 ### ECHO — Consistency Reviewer
 

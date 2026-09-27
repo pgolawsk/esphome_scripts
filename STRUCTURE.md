@@ -30,7 +30,7 @@ See `AGENTS.md` for cross-tool agent definitions, `COMMUNICATION.md` for Larry �
 | `.yamllint` | YAML linting rules (line-length disabled, key-duplicates disabled) | When lint rules consciously changed | No |
 | `.gitignore` | Git ignore rules | When new artifact types or directories added | No |
 | `.antigravityignore` | Ignore rules for Antigravity IDE (similar to .gitignore for that tool) | When new directories should be hidden from Antigravity | No |
-| `agents_inbox/` | Larry → agent task briefs and agent → Larry responses. Gitignored — runtime channel, not repo content | N/A | No |
+| `inbox/` | Larry → agent task briefs and agent → Larry responses. Gitignored — runtime channel, not repo content | N/A | No |
 
 ## Directories
 
@@ -67,5 +67,5 @@ See `AGENTS.md` for cross-tool agent definitions, `COMMUNICATION.md` for Larry �
 ## Notes for agents
 
 - The **ECHO satellite** column is the canonical input for ECHO's heuristic checklist (`.claude/agents/echo.md`, H1–H6). When ECHO needs to know "what else might need updating when X changes," start here.
-- `agents_inbox/` (gitignored) and `BACKLOG.md` (committed) are **two independent work streams**. Do not conflate them.
+- `inbox/` (gitignored) and `BACKLOG.md` (committed) are **two independent work streams**. Do not conflate them.
 - `secrets.yaml` is gitignored. Always reference secrets via `!secret <name>`; the template in `secrets_example.yaml` is the source of truth for what keys must exist.

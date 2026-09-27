@@ -45,4 +45,4 @@ __pycache__
 .claude/settings.local.json
 
 # Agent communication inbox (Larry → repo agents, not repo content)
-/agents_inbox/
+/inbox/

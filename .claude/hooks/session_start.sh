@@ -1,15 +1,15 @@
 #!/usr/bin/env bash
 # SessionStart hook: surface pending work at the top of the session.
-#   - agents_inbox/  : Larry's task briefs awaiting FLUX
+#   - inbox/  : Larry's task briefs awaiting FLUX
 #   - BACKLOG.md     : top-N open items, ranked by severity then effort
 
 set -euo pipefail
 cd "$(dirname "$0")/../.."
 
-echo "## agents_inbox/ (live only, archive/ hidden)"
+echo "## inbox/ (live only, archive/ hidden)"
 inbox_empty=1
-if [ -d agents_inbox ]; then
-  for f in agents_inbox/*; do
+if [ -d inbox ]; then
+  for f in inbox/*; do
     [ -f "$f" ] || continue
     echo "- $(basename "$f")"
     inbox_empty=0
