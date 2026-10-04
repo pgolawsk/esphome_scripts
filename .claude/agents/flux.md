@@ -115,7 +115,7 @@ The ESPHome community-recommended layout is roughly: `devices/`, `common/` (or `
 7. OTA-flash in priority order; observe 2–3 min for crashes/reboots after each.
 8. Mark device `Done` in the impact file.
 
-Pin per-device with `esphome_min_version` substitution; the pin only fires if the corresponding board include has `min_version: ${esphome_min_version}`. All board includes wire it with a default of `2025.8.0` (BACKLOG #9–#11, done).
+Pin per-device with `esphome_min_version` substitution; the pin only fires if the corresponding board include has `min_version: ${esphome_min_version}`. All board includes wire it with a default of `2025.8.0` (BACKLOG #8–#11, done).
 
 PKA-side pipeline notes are kept in the user's external PKA directory (outside this repo); they are optional context and not required for in-repo execution.
 
