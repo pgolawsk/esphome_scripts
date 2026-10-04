@@ -34,6 +34,7 @@
 # FLUX, 20260513, Removed minimum_chip_revision substitution; default "1.0" now provided by board_esp32.yaml Jinja (BACKLOG #29)
 # FLUX, 20260513, Removed restore_mode substitution; default "ALWAYS_OFF" now provided by lights/led_rgb.yaml Jinja (BACKLOG #27)
 # FLUX, 20260514, Swept logger_level.yaml → logger.yaml include path; logger.yaml now accepts level/baud_rate via Jinja defaults (BACKLOG #15 + #43)
+# Pawelo, 20261004, Switched to esp-idf framework for all ESP32 variants, added sram1_as_iram: true to eliminate warnings in logs
 
 # ! run with this command to override substitutions
 # esphome -s devicename espXX -s updates 1min -s room <Room name> -s mqtt_room <room> run esp32_MMmm_SSss__PP.yaml --device 192.168.x.x
@@ -42,11 +43,11 @@
 substitutions:
 #  devices: "Temperature and Humidity via SHTx30 and Illuminance via BH1750"
   devices: "DEV Kit"
-  version: "20250221"
+  version: "20261004"
 
   # required by ../includes/board_esp32.yaml script
-  framework_type: arduino  # "arduino" or "esp-idf"
-  # framework_type: esp-idf # "arduino" or "esp-idf"
+  # framework_type: arduino  # "arduino" or "esp-idf"
+  framework_type: esp-idf # "arduino" or "esp-idf"
   # framework_version: latest # or specific version like "latest", "recommended", "4.4.4"
 
   devicename: esp32-xx
