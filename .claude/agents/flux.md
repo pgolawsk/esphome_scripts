@@ -115,7 +115,7 @@ The ESPHome community-recommended layout is roughly: `devices/`, `common/` (or `
 7. OTA-flash in priority order; observe 2–3 min for crashes/reboots after each.
 8. Mark device `Done` in the impact file.
 
-Pin per-device with `esphome_min_version` substitution; the pin only fires if the corresponding board include has `min_version: ${esphome_min_version}`. Currently only `board_esp32s3.yaml` wires it — see BACKLOG items 8–11 (the pin is silently ignored on most PROD files, fix is queued).
+Pin per-device with `esphome_min_version` substitution; the pin only fires if the corresponding board include has `min_version: ${esphome_min_version}`. All board includes wire it with a default of `2025.8.0` (BACKLOG #9–#11, done).
 
 PKA-side pipeline notes are kept in the user's external PKA directory (outside this repo); they are optional context and not required for in-repo execution.
 
@@ -123,7 +123,7 @@ PKA-side pipeline notes are kept in the user's external PKA directory (outside t
 
 1. **Case-mismatch `!include` references** — works on macOS (case-insensitive APFS), fails on Linux/CI/Docker. Always preserve exact filename case. (BACKLOG A1–A2; ~139 occurrences pending.)
 2. **Override-by-order silent breakage** — multiple `<<: !include` at root: first key wins, not last. Override include must come *before* the board include. (See `AGENTS.md` § YAML Override Mechanism.)
-3. **`esphome_min_version` set but not enforced** — substitution is inert unless the board include has `min_version: ${esphome_min_version}`. (BACKLOG item 9.)
+3. **`esphome_min_version` must be consumed by the board include** — every `includes/board_*.yaml` wires `min_version: ${esphome_min_version | default("2025.8.0")}`; a new board file must do the same or the pin is silently ignored. (BACKLOG #9, done.)
 4. **WiFi flapping on cheap APs** — set `power_save_mode: none`, `min_auth_mode: WPA2`, `fast_connect: true`, `reboot_timeout: 45min`; consider BSSID lock (`wifi__bssid.yaml`) when SSID roams.
 5. **MQTT keepalive too low** — set `keepalive: 60s`; `reboot_timeout: 0s` so a broker outage doesn't reboot the device.
 6. **Deep sleep + serial log** — they are mutually exclusive; logging holds the chip awake. Disable `logger:` or set `level: NONE` before `deep_sleep`.
