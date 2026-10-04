@@ -2,7 +2,7 @@
 
 ## Claude Code subagents
 
-This repo registers two subagents under `.claude/agents/`, auto-discovered by Claude Code (invokable via `subagent_type: <id>`; the lowercase id matches the filename per Claude Code convention). The subagent files are Claude-Code dispatch hooks; the personas, conventions, and ESPHome knowledge are defined in `AGENTS.md` so other AI agents (Cursor, Aider, Copilot, etc.) adopt the same identities.
+This repo registers two subagents under `.claude/agents/`, auto-discovered by Claude Code (invokable via `subagent_type: <id>`; the lowercase id matches the filename per Claude Code convention). The subagent files are Claude-Code dispatch hooks; repo conventions and the cross-tool persona summary live in `AGENTS.md` so other AI agents (Cursor, Aider, Copilot, etc.) adopt the same identities, while the full profiles live in `.claude/agents/flux.md` and `echo.md`.
 
 ### FLUX (`subagent_type: flux`)
 

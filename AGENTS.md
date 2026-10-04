@@ -251,7 +251,7 @@ ESPHome ships a custom YAML loader (`yaml_util.py`, function `construct_yaml_map
 
 Quoting the YAML 1.1 merge spec (cited verbatim in the source comment): *"Keys in mapping nodes earlier in the sequence override keys specified in later mapping nodes."*
 
-**Practical consequence.** To override `wifi:`, `mqtt:`, `logger:`, `time:`, etc., place the override include **before** the board include. Example: in `2_PROD/esp12f-10_Office.yaml`, `<<: !include ../includes/mqtt_with_rtttl.yaml` (line 62) wins over the `<<: !include ../includes/mqtt.yaml` that lives inside `board_esp8266.yaml` (loaded at line 74) because the rtttl include came first.
+**Practical consequence.** To override `wifi:`, `mqtt:`, `logger:`, `time:`, etc., place the override include **before** the board include. Example: in `2_PROD/esp12f-10_Office.yaml`, `<<: !include ../includes/mqtt_with_rtttl.yaml` wins over the `<<: !include ../includes/mqtt.yaml` that lives inside `board_esp8266.yaml` (included further down) because the rtttl include came first.
 
 This is documented behavior, not a quirk. It is stable across ESPHome versions; only an ESPHome refactor of the loader could change it (such a change would be a breaking change in the changelog).
 

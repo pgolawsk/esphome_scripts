@@ -145,7 +145,7 @@ PKA-side pipeline notes are kept in the user's external PKA directory (outside t
 
 ## This repo (specific) — `esphome_scripts`
 
-ESPHome ~2026.4.5. 11 PROD devices, ~28 dev variants, 80 sensor includes, 6 board files, 34 reusable includes. macOS workstation — case-sensitivity is a recurring trap.
+11 PROD devices, ~28 dev variants, 80 sensor includes, 6 board files, 34 reusable includes. Current ESPHome version: see `upgrade/COMPONENTS.md`. macOS workstation — case-sensitivity is a recurring trap.
 
 ### Boards (`includes/`)
 
@@ -168,9 +168,9 @@ ESPHome ~2026.4.5. 11 PROD devices, ~28 dev variants, 80 sensor includes, 6 boar
 | `esp11` | `esp12f-11_Entrance_Entry.yaml` | ESP12F | arduino (n/a) | BME680 + BH1750 + intercom button + gate relay. 12 V intercom-bus power. |
 | `esp14` | `esp32-14_Salon.yaml` | ESP32-S3 N16R8 | esp-idf | **Canonical `packages:` example** for I2S media player + multiple IR remote sets (Apple TV, LG, Yamaha). PSRAM enforced via `esphome_min_version: 2025.8.0`. Audio sdkconfig tuning in `board_esp32s3.yaml`. |
 | `esp15` | `esp12f-15_Upstairs.yaml` | ESP12F | arduino (n/a) | Minimal: BME280 only. |
-| `esp21` | `esp12f-21_Underfloor.yaml` | ESP12F | arduino (n/a) | SHT30 + 2× DS18B20. 12 V mains-converter power. Has commented quote-bug at line 122 (BACKLOG item 5). |
+| `esp21` | `esp12f-21_Underfloor.yaml` | ESP12F | arduino (n/a) | SHT30 + 2× DS18B20. 12 V mains-converter power. |
 | `esp25` | `esp12f-25_AquariumWindow.yaml` | ESP12F | arduino (n/a) | SHT30 + TCS3472. 12 V alarm-bus power. |
-| `esp35` | `esp32-35_Pump_Garage.yaml` | ESP32 classic + water_pump | **arduino** | Water pulse counter, FRAM total persistence, 2.90" e-paper, dual MQTT room. **`esphome_max_version: 2026.2`** (FRAM breaks beyond) — currently inert, see BACKLOG item 11. *Arduino because FRAM driver works without deprecation warnings on Arduino; esp-idf path has issues.* |
+| `esp35` | `esp32-35_Pump_Garage.yaml` | ESP32 classic + water_pump | **arduino** | Water pulse counter, FRAM total persistence, 2.90" e-paper, dual MQTT room. **`esphome_max_version: 2026.2`** (FRAM breaks beyond) — consumed by `board_esp32__water_pump.yaml` (BACKLOG #11, done). *Arduino because FRAM driver works without deprecation warnings on Arduino; esp-idf path has issues.* |
 | `esp36` | `esp32-36_Garage_Gate.yaml` | ESP32-C3 supermini (variant) | **arduino** | BME680 + BH1750 + gate relay. 230 V transformer. Uses `board_esp32_variant.yaml` (C3 drops `minimum_chip_revision`). *Arduino because esp-idf path was unstable on this device — switched back manually.* |
 | `esp39` | `esp32-39_Attic.yaml` | ESP32 classic | esp-idf | DS18B20 + BME280 + BH1750 + SHT30 waterproof probe. 230 V Hi-Link. |
 
@@ -269,7 +269,7 @@ These rules apply to **every** edit FLUX makes in this repo.
 
 ### Version-history convention (mandatory on every YAML edit)
 
-Every device script and include file has a version-history comment block near the top, after the `#*` header. **On every edit to a YAML file, prepend a new line to that block** in the format:
+Every device script and include file has a version-history comment block near the top, after the `#*` header. **On every edit to a YAML file, append a new line at the END of that block** (oldest entries at the top, newest at the bottom) in the format:
 
 ```yaml
 # <Author>, YYYYMMDD, short description of the change
@@ -278,7 +278,7 @@ Every device script and include file has a version-history comment block near th
 - Manual edits by Pawelo: `# Pawelo, YYYYMMDD, ...`.
 - Edits by an AI agent acting as FLUX (FLUX itself, Cursor / Aider / Copilot / Codex / Claude Code adopting FLUX): `# FLUX, YYYYMMDD, ...`.
 - Use compact `YYYYMMDD` (no dashes) — established convention.
-- Do not rewrite older entries; only prepend new ones. The block is the file-level change-log of record; diffing alone is not sufficient.
+- Do not rewrite older entries; only append new ones. The block is the file-level change-log of record; diffing alone is not sufficient.
 - If the block doesn't exist in a file you're editing, create it.
 
 ### BACKLOG completion convention

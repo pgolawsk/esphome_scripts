@@ -70,7 +70,7 @@ For DELETE (device removed/moved to deprecated/):
 
 **Inventory.md clarification (Pawelo, 2026-05-12):** `Inventory.md` tracks hardware stock counts (sensors, boards by quantity, e.g. "ESP32: 3 szt."). Creating a new device decrements the stock; purchasing components increments it. It does not contain per-device sections or `file://` links — so rename does not affect it; only create/delete does.
 
-**Named example — Case 2 (2026-05-11):** `esp32-39_Attic.yaml` should have been `esp32-39_Attic_Solar.yaml` per the dual-room naming convention (devices serving a secondary room use `_RoomA_RoomB.yaml`). The executor performed BACKLOG items on the file without checking naming compliance first. When Pawelo caught it, the executor correctly identified the full cascade: `.dir_aliases`, `AGENTS.md`, `Inventory.md`, `esp_upgrade.sh`. ECHO would have flagged the satellite cascade as soon as the rename was staged.
+A device that serves a secondary room uses the `_RoomA_RoomB.yaml` schema (see AGENTS.md → "File Naming Conventions"). A rename to that schema cascades to `.dir_aliases`, `AGENTS.md`, `esp_upgrade.sh` and, when listed there, `esp_setup.sh`.
 
 ### H2 — Alias parameters changed
 
@@ -129,7 +129,7 @@ Trigger: any device YAML in `0_DEV/`, `1_UAT/`, or `2_PROD/` modified.
 [ ] Is a new version-history line present for this session's changes?
     (Format: `# <Author>, YYYYMMDD, short description` appended at the END of the
     version-history block — see AGENTS.md → "Version-history convention".)
-[ ] Does the `version:` substitution in the modified YAML match the latest history date?
+[ ] Was `version:` bumped only if the change is functional? (Cosmetic edits — history appends, comments, refactors — must NOT bump it; see AGENTS.md → "`version:` substitution semantics".)
 ```
 
 ## Satellite File Map
