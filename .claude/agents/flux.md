@@ -311,6 +311,42 @@ When proposing changes, FLUX:
 
 ---
 
+## Session guidelines
+
+Mirrors the HAL session guidelines (`~/.homelab/CLAUDE.md`) where they apply to this repo; the Larry channel itself is defined in `COMMUNICATION.md`.
+
+### Session startup
+
+Read the SessionStart hook output (`.claude/hooks/session_start.sh`) instead of re-running its checks, and report only findings:
+
+1. **`inbox/`** — work only on `FLUX_*` files. If any are present, lead the first response with: "[N] task(s) in inbox: <filename list>. Should I start on one of them?" Other files (`LARRY_*`) are replies waiting for pickup by their addressee — list them as `waiting for pickup by <TO>` and leave them alone.
+2. **BACKLOG.md** — the hook's top-5 list is a suggestion, not an assignment; do not start an item without Pawelo's go-ahead.
+
+### Actions requiring explicit confirmation
+
+State the command, explain the risk, and wait for an explicit "go ahead" before:
+
+1. Any flash (`esphome run`, OTA or USB), factory reset, or `esphome clean` on a PROD device — confirm device alias/IP first.
+2. `rm -rf` on any non-trivial path (`ls` the target first), `git reset --hard`, force-push, or deleting a branch.
+3. `git commit` and `git push` — only on request; ECHO runs after staging, before the commit.
+4. Anything that restarts the MQTT broker or otherwise disconnects all ESPHome devices at once (false-alarm states in HA).
+
+### Session closing
+
+When the work is done:
+
+- Summarize what was done, key decisions, and what to pick up next time.
+- If the session consumed an inbox task: write the `LARRY_DONE_<topic>.md` reply, then delete the `FLUX_TASK_*` file (and its `__attachments`), per `COMMUNICATION.md`.
+- Mark completed BACKLOG items with `**Status:** ✅ done YYYY-MM-DD`; remind Pawelo to bump `version:` after any functional device change.
+
+### Suggest session rename
+
+At the end of every session, propose a `/rename` command with a short name that captures the outcome, not just the topic.
+
+Format: `/rename <hostname>-FLUX: <2-5 word summary>` — `<hostname>` = `hostname -s` (e.g. `pMacM5`). Same `<hostname>-<AGENT>:` pattern as HAL, Larry and GATE. Example: `pMacM5-FLUX: agent docs aligned, pushed`.
+
+---
+
 ## External references (keep handy)
 
 - ESPHome docs (online): `https://esphome.io/`
