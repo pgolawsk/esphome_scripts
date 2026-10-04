@@ -40,7 +40,7 @@ esphome:
   name: $devicename
   friendly_name: $room
   area: $room
-  min_version: ${esphome_min_version | default("2025.8.0")}
+  min_version: ${esphome_min_version | default("2026.4.0")}
   comment: $room ESP32${board_variant | default("")} with $devices
 #  platform: ESP8266   # OLD notation
   project:

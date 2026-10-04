@@ -27,6 +27,7 @@
 # FLUX, 20260512, Added Jinja default `esp32dev` to board substitution; board_variant + flash_write_interval are not consumed by this board file so device-level declarations of those are dead and can be removed without further changes (Jinja default pattern extension, mirrors BACKLOG #10)
 # FLUX, 20260512, Added Jinja defaults: project_name ("pgolawsk.esp_home"), framework_version ("recommended"), flash_size ("4MB") (Jinja default pattern extension, mirrors BACKLOG #10)
 #! FRAM via external_components github://pr#4880 breaks above ESPHome 2026.2 — devices using this board must declare `esphome_max_version` in their substitutions block
+# Pawelo, 20261004, added sram1_as_iram: true to eliminate warnings in logs
 
 globals:
   - id: global_water_total_all
@@ -58,7 +59,7 @@ esphome:
   name: $devicename
   friendly_name: $room
   area: $room
-  min_version: ${esphome_min_version | default("2025.8.0")}
+  min_version: ${esphome_min_version | default("2026.4.0")}
   comment: $room ESP32 controller with $devices (ESPHome max ${esphome_max_version} due to FRAM PR#4880)
 #  platform: ESP8266   # OLD notation
   project:
@@ -103,6 +104,9 @@ esp32:
     # ! FRAM works with Arduino framework with no deprecation warnings, while ESP-IDF shows deprecation warning till 2026.3.0
     type: ${framework_type}  # arduino or esp-idf
     version: ${framework_version | default("recommended")}  # like: latest, recommended, 4.4, ...
+    advanced:
+      minimum_chip_revision: ${minimum_chip_revision | default("1.0")}
+      sram1_as_iram: true
 
     # # only for ESP-IDF
     # sdkconfig_options:
