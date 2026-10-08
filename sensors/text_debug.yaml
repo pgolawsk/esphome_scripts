@@ -4,10 +4,11 @@
 #! also debug interface is needed
 # Pawelo, 20230130, created based on https://esphome.io/components/debug.html
 # Pawelo, 20231219, further checks
+# FLUX, 20261008, enabled reset_reason text sensor (Pump post-OTA boot loop diagnosis)
 
 platform: debug
 device:
   name: "$devicename Device Info"
-# reset_reason:
-#   name: "$devicename Reset Reason"
+reset_reason:
+  name: "$devicename Reset Reason"
 # internal: true
