@@ -4,6 +4,7 @@
 # Pawelo, 20250913, add log message when setting total water usage
 # Pawelo, 20250913, tested in real use
 # Pawelo, 20250913, adjusted log message and variable name
+# FLUX, 20261008, write global_water_total explicitly (on_value guard in water_yf-b10.yaml blocks lowering via sensor publish)
 
 service: set_total_water${ix}
 variables:
@@ -14,3 +15,4 @@ then:
   - pulse_meter.set_total_pulses:
       id: water_flow${ix}
       value: !lambda 'return static_cast<int>(liters_new_total * ${pulses_per_liter});'
+  - lambda: id(global_water_total${ix}) = liters_new_total;

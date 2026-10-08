@@ -10,6 +10,7 @@
 # Pawelo, 20251023, added on_client_connected to update totals on HA connect
 # FLUX, 20260511, Removed obsolete api_password reference (BACKLOG item 41)
 # FLUX, 20260511, Renamed global_watertotal_* to global_water_total_* for cspell-friendly canonical naming (BACKLOG item 7)
+# FLUX, 20261008, on_client_connected: set pulse_meter total via set_total_pulses (publish_state alone was overwritten by next pulse) and write global explicitly; fixed garden log variable
 
 api:
   reboot_timeout: 0s # 0s will disable reboot if no HA connected
@@ -33,16 +34,20 @@ api:
         // Read water total values from HA and if current total(s) is less than 1000L then add it to current total(s)
         if (!isnan(id(ha_water_total_all).state)) {
           if (id(water_total_all).state < 1000) { // sanity check - only update if total is less than 1000 liters
-            int new_total = (id(water_total_all).state * ${pulses_per_liter}) + (id(ha_water_total_all).state * ${pulses_per_liter});
-            id(water_total_all).publish_state(new_total);
-            ESP_LOGI("api", "on_client_connected: updated water_total_all from HA: %.2f L + current use: %.2f L", id(ha_water_total_all).state, id(water_total_all).state);
+            float current_use = id(water_total_all).state;
+            float new_total = current_use + id(ha_water_total_all).state;
+            id(water_flow_all).set_total_pulses(static_cast<uint32_t>(new_total * ${pulses_per_liter}));
+            id(global_water_total_all) = new_total;
+            ESP_LOGI("api", "on_client_connected: updated water_total_all from HA: %.2f L + current use: %.2f L", id(ha_water_total_all).state, current_use);
           }
         }
         if (!isnan(id(ha_water_total_garden).state)) {
           if (id(water_total_garden).state < 1000) { // sanity check - only update if total is less than 1000 liters
-            int new_total = (id(water_total_garden).state * ${pulses_per_liter_garden}) + (id(ha_water_total_garden).state * ${pulses_per_liter_garden});
-            id(water_total_garden).publish_state(new_total);
-            ESP_LOGI("api", "on_client_connected: updated water_total_garden from HA: %.2f L + current use: %.2f L", id(ha_water_total_garden).state, id(water_total_all).state);
+            float current_use = id(water_total_garden).state;
+            float new_total = current_use + id(ha_water_total_garden).state;
+            id(water_flow_garden).set_total_pulses(static_cast<uint32_t>(new_total * ${pulses_per_liter_garden}));
+            id(global_water_total_garden) = new_total;
+            ESP_LOGI("api", "on_client_connected: updated water_total_garden from HA: %.2f L + current use: %.2f L", id(ha_water_total_garden).state, current_use);
           }
         }
     # - lambda: id(water_total_home).publish_state(id(global_water_total_all) * ${pulses_per_liter}  - id(global_water_total_garden) * ${pulses_per_liter_garden});

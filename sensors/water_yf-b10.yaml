@@ -10,6 +10,7 @@
 # Pawelo, 20231017, added water_flow_min_delta variable for water sensors updates (to have no publish on every pulse)
 # Pawelo, 20250626, changed clamp min_value to -0.05 to allow for +/- small pressure changes to not be recorded as flow
 # Pawelo, 20250626, added throttle_average filter for 5s to prevent very frequent mqtt messages on every pulse
+# FLUX, 20261008, guard: global_water_total only grows via on_value (a 0/lower value from setup() race or isnan filter can no longer overwrite the restored total)
 
 platform: pulse_meter
 pin:
@@ -55,4 +56,7 @@ total:
         topic: "$mqtt_location/$mqtt_room/water_total${ix}"
         payload: !lambda |-
           return to_string(x);
-    - lambda: id(global_water_total${ix}) = x;
+    - lambda: |-
+        // Counter is monotonic: ignore 0/lower values (pulse_meter setup() publishes 0 before on_boot restore).
+        // Legit lowering goes through the set_total_water* services, which write the global explicitly.
+        if (x >= id(global_water_total${ix})) id(global_water_total${ix}) = x;
