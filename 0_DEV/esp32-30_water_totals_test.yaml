@@ -1,0 +1,60 @@
+---
+#* Test rig for water totals restore / zero-overwrite race (Pump esp32-35 logic, no FRAM, no YF-B10 required)
+#! Based on 2_PROD/esp32-35_Pump_Garage.yaml, stripped to the water totals path; uses the default flash preferences backend
+# NOTE: GPIO16/GPIO17 are the pulse inputs (INPUT_PULLUP); short to GND to simulate pulses
+# FLUX, 20261008, created from esp32-35_Pump_Garage.yaml to test the on_value guard (sensors/water_yf-b10.yaml) and the on_client_connected fallback (includes/api_services__water.yaml)
+
+substitutions:
+  devices: "Water totals test rig (pulse_meter + restored globals)"
+  version: "20261008"
+  esphome_min_version: 2026.3.0
+
+  framework_type: arduino
+
+  devicename: esp32-30
+  updates: "1min"
+  room: WaterTest
+  # separate MQTT topics so the real Pump topics (measures/pump) are not polluted
+  mqtt_location: test
+  mqtt_room: water_totals
+
+  pulses_per_liter: "476"
+  pulses_per_liter_garden: "450"
+  water_updates_interval: 5s
+  water_flow_min_delta: "0.01"
+
+<<: !include ../includes/api_services__water.yaml
+<<: !include ../includes/board_esp32.yaml
+
+packages:
+  fram: !include {file: ../includes/globals_water_totals_restore.yaml, vars: {restore: true}}
+
+text_sensor:
+  - !include ../sensors/text_uptime.yaml
+  - !include ../sensors/text_version.yaml
+  - !include ../sensors/text_wifi_info.yaml
+
+sensor:
+  - !include ../sensors/uptime.yaml
+  - !include ../sensors/wifi_signal.yaml
+
+  # Home Assistant sensors (read the real Pump totals - exercises the on_client_connected fallback)
+  - !include {file: ../sensors/ha_sensor.yaml, vars: {sensor_name: "water_total_all", ha_entity_id: "pump_water_total_all"}}
+  - !include {file: ../sensors/ha_sensor.yaml, vars: {sensor_name: "water_total_garden", ha_entity_id: "pump_water_total_garden"}}
+
+  # Water usage YF-B10 sensor
+  - !include {file: ../sensors/water_yf-b10.yaml, vars: {ix: "_all", gpio: "GPIO16"}}
+  - !include {file: ../sensors/water_used_yf-b10.yaml, vars: {ix: "_all"}}
+
+  - !include {file: ../sensors/water_yf-b10.yaml, vars: {ix: "_garden", gpio: "GPIO17", pulses_per_liter: "${pulses_per_liter_garden}"}}
+  - !include {file: ../sensors/water_used_yf-b10.yaml, vars: {ix: "_garden"}}
+
+  - !include {file: ../sensors/water_flow_diff_yf-b10.yaml, vars: {ix: "_home", ix_A: "_all", ix_B: "_garden", operator: "-"}}
+  - !include {file: ../sensors/water_total_diff_yf-b10.yaml, vars: {ix: "_home", ix_A: "_all", ix_B: "_garden", operator: "-"}}
+  - !include {file: ../sensors/water_used_diff_yf-b10.yaml, vars: {ix: "_home", ix_A: "_all", ix_B: "_garden", operator: "-"}}
+
+button:
+  # not internal (unlike buttons/restart_button.yaml) so the reboot test can press it via the API
+  - platform: restart
+    name: "$room Reboot Test"
+    id: reboot_test_button
