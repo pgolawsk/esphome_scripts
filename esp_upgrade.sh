@@ -24,6 +24,7 @@
 # Pawelo, 20260221, added esp32-06 Garden/Gateway device to 1_UAT for testing before PROD upgrade
 # Pawelo, 20260228, moved esp32-06 Garden/Gateway device to 2_PROD after successful testing and deployment
 # FLUX, 20260511, Slimmed PROD upgrade commands — substitution defaults live in device YAMLs per BACKLOG item 25
+# Pawelo, 20261014, added esp32-36f Salon device to 0_DEV for Flat
 
 #*###########################
 #* Check Python VENV
@@ -129,7 +130,7 @@ esphome -s devicename esp32-31 -s updates 15s -s room Test32c3 -s mqtt_location 
 esphome -s devicename esp32-32 -s updates 15s -s room Test32c3rgb -s mqtt_location measures -s mqtt_room test32c3rgb run 0_DEV/esp32c3_dev.yaml
 esphome -s devicename esp32-33 -s updates 1min -s room Test32s3rgb -s mqtt_location measures -s mqtt_room test32s3rgb run 0_DEV/esp32s3_dev.yaml
 esphome -s devicename esp32-34 -s updates 1min -s room Test32s2 -s mqtt_location measures -s mqtt_room test32s2 run 0_DEV/esp32s2_dev.yaml
-esphome -s devicename esp32-36a -s updates 1min -s room Test32c6 -s mqtt_location measures -s mqtt_room test32c6 run 0_DEV/esp32c6_dev.yaml
+esphome -s devicename esp32-36f -s updates 30s -s room Salon -s mqtt_location flat -s mqtt_room salon run 0_DEV/esp32c6_dev.yaml
 esphome -s devicename esp32-37 -s updates 1min -s room Test32s3mini -s mqtt_location measures -s mqtt_room test32s3mini run 0_DEV/esp32s3supermini_dev.yaml
 esphome -s devicename esp32-38 -s updates 1min -s room Test32ttgo -s mqtt_location measures -s mqtt_room test32ttgo run 0_DEV/esp32_display_ttgo.yaml
 
