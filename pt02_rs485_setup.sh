@@ -3,6 +3,8 @@
 # Pawelo 20221118, further experiments
 # Pawelo 20221122, further experiments with mbpoll -l (pool time) -o (timeout)
 # Pawelo 20221123, further experiments tuya-convert
+# Pawelo 20261016, OBSOLETE: these 2022 attempts never connected (wrong address/baud; possibly A/B wiring).
+#   Working setup (slave 100, 9600 8N1) and full register map: docs/devices/pt02_modbus_registers.md
 
 
 pip3 install modbus_cli

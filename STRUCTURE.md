@@ -21,7 +21,7 @@ See `AGENTS.md` for cross-tool agent definitions, `COMMUNICATION.md` for Larry �
 | `.dir_aliases` | Zsh directory-scoped aliases loaded automatically on entry. Each alias = flash command for one device | When device renamed, added, deleted, or command format changes | Yes — primary satellite trigger |
 | `check_esphome_version.sh` | Checks for new ESPHome version, prompts before upgrade. Used in monthly upgrade cycle | When version check mechanism or source URL changes | No |
 | `install_fonts.sh` | Downloads TTF font files listed in `fonts/requirements.txt`. Run after clone or when new font added | When font list changes | No |
-| `pt02_rs485_setup.sh` | One-off setup script for Air Quality Monitor PT02 via RS485. Device-specific, not general workflow | Only if PT02 hardware changes | No |
+| `pt02_rs485_setup.sh` | Obsolete 2022 PT02 RS485 attempts (never connected); kept for history. Current spec: `docs/devices/pt02_modbus_registers.md` | Only if PT02 hardware changes | No |
 | `re_codes_captured.csv` | IR remote control codes captured via ESP receiver (NEC protocol). Supplemented when new remote captured | When new IR remote codes captured | No |
 | `requirements.txt` | Python/ESPHome package dependencies | When ESPHome version pinned or new dependency added | No |
 | `secrets.yaml` | Actual credentials — gitignored, not in repo | N/A | No |
@@ -53,7 +53,7 @@ See `AGENTS.md` for cross-tool agent definitions, `COMMUNICATION.md` for Larry �
 | `i2s/` | I2S sound device configs (mic, speaker), loaded via `!include` | When I2S behavior changes | No direct satellite |
 | `fonts/` | Mixed: TTF font files (downloaded by `install_fonts.sh`) + YAML font config files loaded via `!include` | When new font added or font config changes | No direct satellite |
 | `pinouts/` | Pinout images, wiring schematics, connection diagrams, and board photos — reference material for hardware assembly and troubleshooting. Referenced by `Inventory.md` and used when wiring new devices | When new board/component added or wired up | No |
-| `docs/` | Component and feature documentation — describes components Pawelo submits PRs for. Reference knowledge for understanding what's available | When writing or updating a PR | No |
+| `docs/` | Component and feature documentation — describes components Pawelo submits PRs for. Reference knowledge for understanding what's available. `docs/devices/` holds per-device protocol specs (e.g. PT02 Modbus register map) | When writing or updating a PR | No |
 | `examples/` | Working YAML examples not used in PROD and not deprecated. Reference scripts | When example patterns are updated | No |
 | `custom_components/` | Local modifications to ESPHome components without upstream PRs. Experimental — not in PROD. No satellites | When local experiment changes | No |
 | `tests/` | Active test configs for Pawelo's own PRs submitted to ESPHome repo. Must be kept current | When PR behavior changes | No direct satellite, but must stay in sync with PR |
