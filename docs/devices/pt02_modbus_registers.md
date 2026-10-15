@@ -90,6 +90,8 @@ print('input  ', q(4, 0, 10))
 print('holding', q(3, 0, 18))
 ```
 
+A fuller read-only reader that decodes every register into values and settings, with `--raw` and `--watch` options, is `pawelo_scripts/mac/pMac_pt02_read.py`.
+
 From Claude Code, run this with the sandbox disabled, because the serial device ioctl is blocked inside it. The generic discovery runbook is `pawelo_scripts/mac/pMac_modbus_rtu_discovery.sh`.
 
 ## ESPHome notes
