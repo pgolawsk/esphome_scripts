@@ -37,6 +37,7 @@
 # FLUX, 20260513, Removed restore_mode substitution; default "ALWAYS_OFF" now provided by lights/led_rgb.yaml Jinja (BACKLOG #27)
 # FLUX, 20260514, Swept logger_level.yaml → logger.yaml include path; logger.yaml now accepts level/baud_rate via Jinja defaults (BACKLOG #15 + #43)
 # Pawelo, 202601014, added ENS160, AHT21 sensors
+# Pawelo, 202601016, adjusted offsets for AHT21 sensor
 
 # ! run with this command to override substitutions
 # esphome -s devicename espXX -s updates 1min -s room <Room name> -s mqtt_room <room> run esp32_MMmm_SSss__PP.yaml --device 192.168.x.x
@@ -148,7 +149,7 @@ sensor:
 
   # Temperature and Humidity sensor
   # - !include {file: ../sensors/temp_hum_sht3x.yaml, vars: {ix: "", bus_id: "bus_a", address: "0x44"}}
-  - !include {file: ../sensors/temp_hum_aht2x.yaml, vars: {ix: "", bus_id: "bus_a", address: "0x38", temp_offset: -5.0, hum_offset: 10.0}}
+  - !include {file: ../sensors/temp_hum_aht2x.yaml, vars: {ix: "", bus_id: "bus_a", address: "0x38", temp_offset: -3.3, hum_offset: 12.5}}
 
   # Temperature, Humidity, Pressure and Gas Resistance sensor
   # - !include {file: ../sensors/temp_hum_press_gas_bme680.yaml, vars: {ix: "", bus_id: "bus_a", address: "0x77", temp_offset: 0.0, hum_offset: 0.0, pressure_offset: 0.0}}
