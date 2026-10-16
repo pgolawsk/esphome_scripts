@@ -149,7 +149,7 @@ sensor:
 
   # Temperature and Humidity sensor
   # - !include {file: ../sensors/temp_hum_sht3x.yaml, vars: {ix: "", bus_id: "bus_a", address: "0x44"}}
-  - !include {file: ../sensors/temp_hum_aht2x.yaml, vars: {ix: "", bus_id: "bus_a", address: "0x38", temp_offset: -3.3, hum_offset: 12.5}}
+  - !include {file: ../sensors/temp_hum_aht2x.yaml, vars: {ix: "", bus_id: "bus_a", address: "0x38", temp_offset: -3.3, hum_offset: 8.5}}
 
   # Temperature, Humidity, Pressure and Gas Resistance sensor
   # - !include {file: ../sensors/temp_hum_press_gas_bme680.yaml, vars: {ix: "", bus_id: "bus_a", address: "0x77", temp_offset: 0.0, hum_offset: 0.0, pressure_offset: 0.0}}
