@@ -94,9 +94,9 @@ Rules:
 - `inbox/archive/` is part of the gitignored `inbox/` tree — it is a local trail, not repo content.
 - The session-start hook surfaces only the top-level `inbox/` (live work). Anything under `archive/` is hidden from session context by design.
 
-## Live channel — messages from Larry (DRAFT 2026-10-18)
+## Live channel — messages from Larry
 
-Larry may also reach this session directly over Remote Control as a cross-session message (`<cross-session-message from="…">`), instead of only via inbox files. Draft — tested on HAL@npct6 and HAL@ppi41.
+Larry may also reach this session directly over Remote Control as a cross-session message (`<cross-session-message from="…">`), instead of only via inbox files. Active since 2026-10-18.
 
 - **Message = doorbell, file = record.** Read-only query → answer by message only. State change finished in this session → message only — the git commit is the record. Work that spans sessions or needs a plan first → inbox: `FLUX_TASK_*` in, `LARRY_DONE_*` out, as above.
 - **Reply** with SendMessage to the message's `from=` address (Larry names his session in the message). There is no read receipt — keep the reply self-contained.
