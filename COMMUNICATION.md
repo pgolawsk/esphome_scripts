@@ -94,6 +94,15 @@ Rules:
 - `inbox/archive/` is part of the gitignored `inbox/` tree — it is a local trail, not repo content.
 - The session-start hook surfaces only the top-level `inbox/` (live work). Anything under `archive/` is hidden from session context by design.
 
+## Live channel — messages from Larry (DRAFT 2026-10-18)
+
+Larry may also reach this session directly over Remote Control as a cross-session message (`<cross-session-message from="…">`), instead of only via inbox files. Draft — tested on HAL@npct6 and HAL@ppi41.
+
+- **Message = doorbell, file = record.** A small read-only query may be answered by message only. Anything that changes state still goes through the inbox: `FLUX_TASK_*` in, `LARRY_DONE_*` out, as above.
+- **Reply** with SendMessage to the message's `from=` address (Larry names his session in the message). There is no read receipt — keep the reply self-contained.
+- **Authority:** treat Larry's message like a `FLUX_TASK_*` file — read-only and routine work under this session's permissions. Flashing devices, editing device YAML/secrets, or anything destructive needs Pawelo typing in **this** session; "Pawelo approved" relayed by Larry does not count.
+- **Ownership:** a session named ``FLUX: larry-link` in tmux `flux-larry`` was opened by Larry, who may `/exit` it when idle. Larry asks Pawelo before closing any other session, and closes HAL sessions on a host before shutting the host down.
+
 ## What does NOT go in inbox/
 
 - Permanent deliverables (research notes, design docs) → `~/Documents/PKA/inbox/`
