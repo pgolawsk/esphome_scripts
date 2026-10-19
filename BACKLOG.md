@@ -22,7 +22,7 @@ Scope walked: `2_PROD/*.yaml` (all 11), representative `0_DEV/*.yaml`, `includes
 ## Table of contents
 
 - [A. Filename casing & case-mismatch references](#a-filename-casing--case-mismatch-references) — items 1–4
-- [B. Real bugs (parse/runtime risk)](#b-real-bugs-parserruntime-risk) — items 5–7
+- [B. Real bugs (parse/runtime risk)](#b-real-bugs-parserruntime-risk) — items 5–7, 87–88
 - [C. esphome_min_version drift & central source](#c-esphome_min_version-drift--central-source) — items 8–11 (CLIO minor 5–6)
 - [D. Override-by-order / packages migration debt](#d-override-by-order--packages-migration-debt) — items 12–17
 - [E. Per-device boilerplate duplication](#e-per-device-boilerplate-duplication) — items 18–23
@@ -114,6 +114,24 @@ Scope walked: `2_PROD/*.yaml` (all 11), representative `0_DEV/*.yaml`, `includes
 **Effort:** M
 **Severity:** Notable (was actually Important — PROD esp32-35 failed `esphome config` since cspell commit `c4daa57` 2026-03-09)
 **Status:** ✅ done 2026-05-11 (variant A: canonical = `global_water_total_*` with underscore. Renamed across `includes/board_esp32__water_pump.yaml` (defs + lambdas), `interfaces/fram__water_pump.yaml` (FRAM keys + replaced hand-copied hash lambdas with `fnv1_hash("...")` calls), `buttons/reset_watertotal_button.yaml`, `buttons/save_watertotal_button.yaml`, `includes/api_services__water.yaml` (commented refs), `0_DEV/esp32_THIWdb_SBYr.yaml` (commented test sensors). `esphome config` passes on PROD and DEV esp32-35 (was failing on parent). FRAM data loss acceptable per Pawelo — migrating to own NVM/FRAM PR anyway. `esphome compile` exposes separate **pre-existing C++ error** in stale external_component `fram_pref` (PR#4880) `FRAM_PREF.cpp:282` — incompatible with current ESPHome's explicit `ESPPreferenceObject` constructor; unrelated to #7, resolved by NVM/FRAM PR migration. Note: button filenames `reset_watertotal_button.yaml`/`save_watertotal_button.yaml` not renamed — separate cosmetic task.)
+
+### 87. esp32-14 BME680 floods the log with ~736 warnings/day ("Heater unstable" / "Gas measurement unsuccessful")
+
+**Where:** `2_PROD/esp32-14_Salon.yaml:190` includes `sensors/temp_hum_press_gas_bme680.yaml` (`platform: bme680`, `address: 0x77`, `update_interval: $updates`). Seen in Loki (`logs.lan`, `mqtt_node="esp32-14"`, 24h on 2026-10-19): ~368× `[W][bme680.sensor] Heater unstable, reading invalid! (Normal for a few readings after a power cycle)` + ~368× `Gas measurement unsuccessful, reading invalid!`.
+**What:** The warnings come in pairs on nearly every update, so the gas channel is not producing valid readings continuously — not just after a power cycle. Temperature/humidity/pressure may still be fine.
+**Why fix:** Drowns real warnings in the session-start log summary; gas resistance data is probably missing or gappy in HA.
+**Suggested fix (proposal, nothing applied):** (1) check whether the gas value is actually valid in HA/Prometheus; (2) check the heater profile / `update_interval` vs `heater` duration (a 30s interval with the default heater may be too tight) and the supply/power quality on that board; (3) if gas is unused, drop the `gas_resistance` sensor or set `heater: {temperature: 0}` to disable the heater; (4) if the sensor is faulty, replace it. Consider a `logger: logs: bme680.sensor: ERROR` only as a last resort, after the root cause is known.
+**Effort:** S
+**Severity:** Minor
+
+### 88. esp32-35 `epaper_spi` logs "Display already in state POWER_OFF" errors
+
+**Where:** `2_PROD/esp32-35_Pump_Garage.yaml:372-385` (`display:` → `platform: epaper_spi`, `model: weact-2.9in-3c`, `update_interval: never`, pages switched by scripts). Seen in Loki (`mqtt_node="esp32-35"`, 24h on 2026-10-19): 6× `[E][epaper_spi:119] Display already in state POWER_OFF`.
+**What:** Something requests a power-off (or a refresh while already off) on a display that is already in `POWER_OFF`, most likely a script/lambda calling `display.page.show`/`component.update` or a sleep/power-off action twice in a row. Looks like a logic/ordering issue, not a hardware fault; display behaviour is probably unaffected.
+**Why fix:** Error-level noise on a PROD device; may hide a real display problem later.
+**Suggested fix (proposal, nothing applied):** find the call sites that trigger the power-off (grep `page.show`, `component.update`, display scripts in the Pump config), correlate the 6 timestamps from Loki with those triggers, and guard the second call (state check or merge the two calls). Compare with upstream `epaper_spi` source (`epaper_spi.cpp:119`) and check whether a newer ESPHome release already demotes or fixes it (esp32-35 is pinned on 2026.5.3, see memory).
+**Effort:** S
+**Severity:** Cosmetic
 
 ---
 
