@@ -2,6 +2,7 @@
 # SessionStart hook: surface pending work at the top of the session.
 #   - inbox/  : Larry's task briefs awaiting FLUX
 #   - BACKLOG.md     : top-N open items, ranked by severity then effort
+#   - ESP logs + ESPHome version : esp_logs.sh (Loki, both sites; informational)
 
 set -euo pipefail
 cd "$(dirname "$0")/../.."
@@ -53,3 +54,5 @@ print()
 for it in items[:5]:
     print(f"- **#{it['num']}** [{it['sev']}/{it['eff']}] {it['title']}")
 PY
+echo
+.claude/hooks/esp_logs.sh || true

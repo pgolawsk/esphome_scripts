@@ -62,7 +62,7 @@ See `AGENTS.md` for cross-tool agent definitions, `COMMUNICATION.md` for Larry â
 | `esphome-overrides/` | Local override of the upstream ESPHome Python package (used to apply pending PRs / local patches before they land upstream) + `refresh.sh` to re-sync | When the upstream patch surface changes or after refresh | No |
 | `deprecated/` | Retired configs that no longer work or are superseded. Archive only â€” these configs are not functional and are kept for historical reference | Never (archive) | No |
 | `temp/` | Temporary working files. Gitignored | N/A | No |
-| `.claude/` | Claude Code agent profiles (FLUX, ECHO) under `.claude/agents/`, plus optional CC settings | When agent profiles change | No |
+| `.claude/` | Claude Code agent profiles (FLUX, ECHO) under `.claude/agents/`, SessionStart hooks under `.claude/hooks/`, plus optional CC settings | When agent profiles or hooks change | No |
 
 ## Notes for agents
 

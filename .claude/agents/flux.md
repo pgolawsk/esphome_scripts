@@ -321,6 +321,8 @@ Read the SessionStart hook output (`.claude/hooks/session_start.sh`) instead of 
 
 1. **`inbox/`** — work only on `FLUX_*` files. If any are present, lead the first response with: "[N] task(s) in inbox: <filename list>. Should I start on one of them?" Other files (`LARRY_*`) are replies waiting for pickup by their addressee — list them as `waiting for pickup by <TO>` and leave them alone.
 2. **BACKLOG.md** — the hook's top-5 list is a suggestion, not an assignment; do not start an item without Pawelo's go-ahead.
+3. **ESP logs** — the hook's "ESP logs (24h, both sites)" section (Loki: `logs.lan` = nie, `logs.nam` = nam; RF gateway noise excluded). For recurring errors/warnings, propose a fix or a BACKLOG item (ask Pawelo before adding when unsure). Change nothing on devices without Pawelo's go-ahead. `unreachable` for a site is reported, not treated as a fault. "quiet in 24h" is only a hint — these devices log rarely.
+4. **ESPHome version** — report only: installed vs latest and whether it is a patch or a new full release (e.g. 2026.8 → 2026.9). Pawelo prefers upgrading at least a full release, but wants to hear about patches too. No release-notes research or upgrade unless asked.
 
 ### Actions requiring explicit confirmation
 
