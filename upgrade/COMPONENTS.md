@@ -18,7 +18,7 @@ Used as a baseline for tracking what the repo uses vs. what ESPHome adds or chan
 | Development devices | 28 |
 | Reusable includes | 34 |
 | Sensor definitions | 80 |
-| Snapshot date | 2026-06-13 |
+| Snapshot date | 2026-11-07 |
 
 ---
 
@@ -26,8 +26,8 @@ Used as a baseline for tracking what the repo uses vs. what ESPHome adds or chan
 
 | Item | Version |
 |------|---------|
-| Installed in `.venv` | **2026.5.3** (latest as of 2026-06-13) |
-| Last used to flash (user report) | 2026.5.0 |
+| Installed in `.venv` | **2026.10.2** (latest as of 2026-11-07) |
+| Last used to flash | ESP8266 (esp12f-15/25/21/11) and rig esp12f-29: **2026.10.2**; other ESP32 PROD: 2026.8.2; esp32-35 Pump: pinned 2026.5.3 |
 | Min version pins in configs | 2025.6.3 – 2025.8.0 |
 
 Version pins are defined via `esphome_min_version` substitution variable in select configs:
@@ -54,7 +54,7 @@ Version pins are defined via `esphome_min_version` substitution variable in sele
 
 | Framework | Usage |
 |-----------|-------|
-| `arduino` | ESP8266 devices; some ESP32 |
+| `arduino` | ESP8266 devices (native `arduino` toolchain since 2026.10.0, no PlatformIO/Rosetta); some ESP32 |
 | `esp-idf` | ESP32-S3 (Salon), ESP32-C3 |
 | Framework version | `latest`, `recommended`, or `4.4.4` |
 

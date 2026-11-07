@@ -3,9 +3,9 @@
 Covers changes from the last installed version (**2026.8.2**) to **2026.10.0** (released 2026-10-21; 2026.9.x patches are folded in). Patches **2026.10.1** (2026-10-27) and **2026.10.2** (2026-11-02, latest) reviewed 2026-11-07, see "Patch releases" below.
 Use this file as a checklist when updating configs and reflashing devices.
 
-> **Installed version:** 2026.8.2 (in `.venv`) — **not upgraded yet** (analysis only, 2026-10-23)
+> **Installed version:** 2026.10.2 (in `.venv`) — upgraded 2026-11-07 (analysis 2026-10-23). **Rollout status 2026-11-07:** rig esp12f-29 + esp12f-15, -25, -21, -11 flashed and verified; esp12f-10 Office deliberately deferred; ESP32 devices and rig esp32-32 not started.
 > **Sources:** esphome.io changelog 2026.10.0 (full page), PR descriptions #18997, #19100, #19101, #19307, #19886, upstream source at tag `2026.10.0` (`esp8266/__init__.py`, `core/config.py`, `esp32/preferences.h`).
-> **Not verified by compile** — every "No action" below is a grep/source-reading result, not a build result. The ESP8266 item needs a real compile + bench run (see below).
+> **Verification:** the ESP8266 native toolchain is now verified by compile + bench run (see "Rollout results"). The remaining "No action" items for ESP32 are still grep/source-reading results, not build results.
 
 ---
 
@@ -99,17 +99,34 @@ Order follows `feedback_flash_order_simple_first`: rigs first, simplest device w
 
 | Priority | Device | Platform | Reason / what to verify |
 |----------|--------|----------|--------------------------|
-| 0 | **esp12f-29 rig** | ESP8266 | **Mandatory smoke test** — first real native-toolchain build. Compare free heap with 2026.8.2 (MMU flags question). |
-| 0 | **esp32-32 rig** | ESP32-C3 | Mandatory smoke test (note: override farm needs rebase first if the FRAM config is flashed; plain `esp32c3_dev.yaml` does not use it). |
-| 1 | esp12f-15 Upstairs | ESP8266 | Simplest ESP8266 — validates native toolchain on a PROD node. |
-| 2 | esp12f-25 AquariumWindow, esp12f-21 Underfloor, esp12f-11 Entrance_Entry | ESP8266 | Same toolchain, more peripherals. |
-| 3 | esp12f-10 Office | ESP8266 | Most sensor-heavy, Prometheus `/metrics` heap sensitivity — last. |
+| 0 | **esp12f-29 rig** | ESP8266 | **Done 2026-11-07** — first native-toolchain build, no Rosetta needed. Gates all ESP8266 PROD. |
+| 0 | **esp32-32 rig** | ESP32-C3 | Mandatory smoke test, gates ESP32 PROD only (not ESP8266). Offline since at least mid-Oct; lives on the `.nam` site. Override farm needs rebase first if the FRAM config is flashed; plain `esp32c3_dev.yaml` does not use it. |
+| 1 | esp12f-15 Upstairs | ESP8266 | **Done 2026-11-07.** |
+| 2 | esp12f-25 AquariumWindow, esp12f-21 Underfloor, esp12f-11 Entrance_Entry | ESP8266 | **Done 2026-11-07** (all three). Doorbell input on esp12f-11 reports state 0; physical press not tested. |
+| 3 | esp12f-10 Office | ESP8266 | **Pending (deferred by Pawelo 2026-11-07).** Most sensor-heavy, Prometheus `/metrics` heap sensitivity — last. This is the real test of the MMU build-flags question. |
 | 4 | esp32-39 Attic, esp32-06 Garden_Gateway, esp32-05 Shades | ESP32 | mbedTLS trim; watch MQTT/OTA reconnect. |
 | 5 | esp32-36 Garage_Gate | ESP32-C3 (Arduino) | Arduino 3.3.12. |
 | 6 | esp32-14 Salon | ESP32-S3 | IR receiver ring + media player volume/mute behavior — verify in HA. |
 | — | **esp32-35 Pump_Garage** | ESP32 | **Stay on 2026.5.3** (override farm drift, FRAM not upstream). |
 
 MQTT `esp` account migration (anonymous list from Larry, 2026-10-19) rides along with each flash per `feedback_mqtt_esp_creds_with_upgrade`: esp12f-10/11/15/21/25, esp32-05/06/14/32/36 (esp32-39 status unknown).
+
+## Rollout results (2026-11-07, ESP8266)
+
+Built on 2026.10.2 (native `arduino` toolchain; no Rosetta needed, which 2026.8.2 required). All OTA flashes succeeded first try. "Before" = Prometheus 2-day average (long uptime); "after" = `/metrics` ~30 s after boot, so the comparison favours "after" and is only a regression screen, not a leak test.
+
+| Device | Heap free before → after | Max block before → after | RAM / Flash |
+|--------|--------------------------|--------------------------|-------------|
+| esp12f-29 rig (+BH1750 added) | 28 760 → 29 984 B (vs 2026.5.3, 1 sample) | 25 536 → 22 664 B | 50.9% / 55.7% |
+| esp12f-15 Upstairs | 31 443 → 34 080 B | 26 734 → 29 808 B | 46.5% / 48.8% |
+| esp12f-25 AquariumWindow | 30 442 → 32 448 B | 16 035 → 25 240 B | 46.7% / 52.2% |
+| esp12f-21 Underfloor | 30 192 → 32 968 B | 25 759 → 29 144 B | 46.9% / 52.4% |
+| esp12f-11 Entrance_Entry | 29 408 → 32 392 B | 24 483 → 28 632 B | 47.2% / 52.6% |
+
+- esp12f-15 followed for ~2 h in Prometheus: heap free 34 016 → 33 496 B, max block 29 808 → 29 352 B (single 456 B step at the last sample; no trend visible). Recheck after a longer uptime.
+- The only new compile warning: `esphome->platformio_options->build_flags is deprecated ... removed in 2026.12.0`. Flags are still forwarded. Migration to `esphome: build_flags` in `includes/board_esp8266.yaml` is still to do (functional change: version bump + version-history entry).
+- Rig esp12f-29 was reached at `esp12f-29.nam` (Namysłowska). Prometheus showed `up=0` because it scrapes the bare name `esp12f-29:80`; esp32-32 was not checked under `.nam`.
+- Open question unchanged: whether `PIO_FRAMEWORK_ARDUINO_MMU_*` still selects the 16 kB cache / 32 kB IRAM layout on the native path. Heap numbers do not answer it; Office (`/metrics` heap sensitivity) is the test.
 
 ## Upgrade steps still ahead (SOP)
 
