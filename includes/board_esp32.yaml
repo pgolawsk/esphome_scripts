@@ -25,6 +25,7 @@
 # FLUX, 20260513, Added Jinja `|default("1.0")` to minimum_chip_revision — eliminates per-device declaration for devices on chip rev 1.0 (BACKLOG #29)
 # FLUX, 20260514, Removed 26 lines of commented `sdkconfig_options:` drift (BACKLOG #55); platformio_options breadcrumb retained per BACKLOG #45 status
 # Pawelo, 20261004, added sram1_as_iram: true to eliminate warnings in logs
+# FLUX, 20261107, Recorded: `min_version` default is `2026.4.0` (changed 20261004 without a history entry); supersedes the `2025.8.0` default named in the 20260512 entry above
 
 # ! those values are examples, not used in this file, need to be declared outside of this file
 # substitutions:

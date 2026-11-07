@@ -9,6 +9,7 @@
 # FLUX, 20260512, Added Jinja default `"5min"` to flash_write_interval; board_variant + board are per-device (no shared default for variants) so devices keep their declarations (Jinja default pattern extension, mirrors BACKLOG #10)
 # FLUX, 20260512, Added Jinja defaults: project_name ("pgolawsk.esp_home"), framework_version ("recommended"), flash_size ("4MB") (Jinja default pattern extension, mirrors BACKLOG #10)
 # Pawelo, 20261004, added sram1_as_iram: true to eliminate warnings in logs
+# FLUX, 20261107, Recorded: `min_version` default is `2026.4.0` (changed 20261004 without a history entry); supersedes the `2025.8.0` default named in the 20260512 entry above
 
 # ! those values are examples, not used in this file, need to be declared outside of this file
 # substitutions:

@@ -26,6 +26,7 @@
 # FLUX, 20260512, Added Jinja `|default("2025.8.0")` to min_version so devices without `esphome_min_version` declaration get a sane floor (BACKLOG #10 refinement)
 # FLUX, 20260512, Added Jinja default `esp32dev` to board substitution; board_variant + flash_write_interval are not consumed by this board file so device-level declarations of those are dead and can be removed without further changes (Jinja default pattern extension, mirrors BACKLOG #10)
 # FLUX, 20260512, Added Jinja defaults: project_name ("pgolawsk.esp_home"), framework_version ("recommended"), flash_size ("4MB") (Jinja default pattern extension, mirrors BACKLOG #10)
+# FLUX, 20261107, Recorded: `min_version` default is `2026.4.0` (changed 20261004 without a history entry); supersedes the `2025.8.0` default named in the 20260512 entry above
 #! FRAM via external_components github://pr#4880 breaks above ESPHome 2026.2 — devices using this board must declare `esphome_max_version` in their substitutions block
 
 globals:

@@ -13,7 +13,7 @@ This repository contains modular ESPHome YAML configurations for ESP devices (ES
 
 # Flash a device — preferred form: shell alias (see Device Aliases table below)
 esp10            # PROD: flash esp12f-10 (Office) over OTA via esp12f-10.lan
-esp10dev         # DEV variant of the same device
+esp10dev         # DEV variant (needs 0_DEV/esp12f-10_Office.yaml)
 
 # Without aliases — explicit esphome CLI form
 esphome run 2_PROD/esp12f-10_Office.yaml --device esp12f-10.lan
@@ -49,7 +49,7 @@ Devices are flashed using shell aliases defined in `.dir_aliases` (loaded automa
 | `esp36` | esp32-36 | Garage / Gate | `2_PROD/esp32-36_Garage_Gate.yaml` |
 | `esp39` | esp32-39 | Attic | `2_PROD/esp32-39_Attic.yaml` |
 
-Each alias has a `dev` variant (e.g. `esp15dev`) that flashes the `0_DEV/` version of the same config to the same device. All aliases connect via `<devicename>.lan` hostname.
+Each alias has a `dev` name (e.g. `esp15dev`) that flashes `0_DEV/<same filename>` to the same device; it works only while that `0_DEV/` copy exists. All aliases connect via `<devicename>.lan` hostname.
 
 ## Language
 
@@ -100,7 +100,7 @@ When a dual-room script is added, the device substitutions block **must** declar
 **Device scripts** follow this order:
 
 1. Header comments with `#*` prefix
-1. Version history comments with `Pawelo, YYYYMMDD,`
+1. Version history comments with `<Author>, YYYYMMDD,`
 1. Substitutions section with default values
 1. Override includes for base components (wifi, mqtt, logger, etc.) — **order matters**: these must come **before** the board include because multiple `<<: !include` entries resolve first-key-wins. See "YAML Override Mechanism" section below for full semantics and source-code references.
 1. Board include (`!include { file: ../includes/board_*.yaml, vars: { ... } }`)
@@ -131,7 +131,7 @@ When a dual-room script is added, the device substitutions block **must** declar
 
 - `board`: PlatformIO board name (e.g., `esp12e`, `esp01_1m`)
 - `board_variant`: Board variant (e.g., `12F`, `07s`, `01m`)
-- `restore_from_flash`: Boolean `false` or `true` (unquoted). ESPHome's `cv.boolean` validator accepts native bool through the substitutions chain since type-preservation was added; the old "must be set as string" convention was historical and is no longer required (see BACKLOG #53).
+- `restore_from_flash`: Boolean `false` or `true` (unquoted); ESPHome's `cv.boolean` accepts a native bool through the substitutions chain.
 - `flash_write_interval`: e.g., `"5min"`
 
 ### Include Patterns
@@ -214,9 +214,9 @@ update_interval: $updates
 
 ### Web Server
 
-- Use `web_server.yaml` (version 3) for ESPHome 2.x+
-- Use `web_server_basic.yaml` for version 1/2
-- Sorting groups not supported in 2.x
+- `version` here is the `web_server:` UI version (1 = table, deprecated and removed in 2027.1.0; 2 = web components, the ESPHome default; 3 = Home Assistant styling), unrelated to the ESPHome release version.
+- `web_server.yaml`: for `web_server_version: 3`; adds `sorting_groups` (grouping and sorting exist only in version 3).
+- `web_server_basic.yaml`: same without `sorting_groups`, for `web_server_version` 2 (or the deprecated 1).
 
 ### Secrets Management
 
@@ -260,7 +260,7 @@ This is documented behavior, not a quirk. It is stable across ESPHome versions; 
 - **Substitutions** — every device file opens with a `substitutions:` block (`devicename`, `room`, `mqtt_room`, `board`, `flash_size`, etc.). CLI `-s key value` overrides them at flash time. Idiomatic ESPHome, used universally.
 - **`<<: !include`** for component lists — under `sensor:`, `binary_sensor:`, `output:`, `light:`, `switch:`, `button:`. Each list item is `- !include { file: ../sensors/foo.yaml, vars: { ix: "", bus_id: "bus_a", address: "0x44" } }`.
 - **`packages:`** for grouped includes (modern, deterministic merge semantics) — canonical examples: `2_PROD/esp32-06_Garden_Gateway.yaml` (door cover template extended later), `2_PROD/esp32-14_Salon.yaml` (I2S media player + per-remote IR button sets).
-- **`!extend`** for surgical merge into a package-loaded list — canonical example: `2_PROD/esp32-06_Garden_Gateway.yaml:213-215` extends the `door_cover` declared by a package include.
+- **`!extend`** for surgical merge into a package-loaded list — canonical example: `2_PROD/esp32-06_Garden_Gateway.yaml` (`- id: !extend door_cover`) extends the `door_cover` declared by a package include.
 - **Secrets** — `secrets.yaml` (gitignored, see `.gitignore:4`) holds WiFi/MQTT/API credentials; refer to them with `!secret <name>`. Three layers of pre-commit secret-detection enforce no leaks.
 - **Override-by-order** — multiple `<<: !include` at document root, first-key-wins (see "YAML Override Mechanism" section). Used to swap `wifi.yaml` → `wifi_main.yaml`/`wifi_outside.yaml`/etc., to inject `mqtt_with_rtttl.yaml` over the board's default `mqtt.yaml`, and to re-include `logger.yaml` with `vars: {level: DEBUG, baud_rate: 115200}` for runtime log-level overrides.
 - **Case-sensitivity hazard** — macOS HFS+/APFS is case-insensitive; Linux/CI/Docker is not. `!include path/to/File.yaml` and `!include path/to/file.yaml` both work locally on macOS but the second fails on Linux if the on-disk filename is `File.yaml`. Always preserve case-exact match between `!include` references and on-disk filenames.
@@ -290,7 +290,7 @@ These conventions apply to every edit in this repo regardless of which agent or 
 
 ### Mandatory reading on entry
 
-`AGENTS.md` (this file), `.claude/agents/flux.md` (FLUX persona), `COMMUNICATION.md` (Larry ↔ agent protocol), `BACKLOG.md` (cleanup state), `.yamllint`, `.pre-commit-config.yaml`, `secrets_example.yaml`.
+`AGENTS.md` (this file), `.claude/agents/flux.md` (FLUX persona), `.yamllint`, `.pre-commit-config.yaml`, `secrets_example.yaml`. Read `COMMUNICATION.md` (Larry ↔ agent protocol) when handling `inbox/` items; read `BACKLOG.md` (cleanup state) before proposing a structural change or when a task cites an item (the SessionStart hook already lists the top five).
 
 ### Version-history convention (mandatory on every YAML edit)
 
@@ -305,7 +305,7 @@ Every device script and include file has a version-history comment block near th
 
 The `version: "YYYYMMDD"` substitution in device YAMLs represents the date of the last **functional** change — a new sensor, a new option, a behavior change, a wiring change, anything that alters what the device does on the bench. It does **not** track cosmetic edits: refactors, version-history appends, substitution-block cleanups, comment fixes, formatting, or include reshuffles do **not** justify bumping `version:`. The field is what HA and the OTA UI show users; keep it meaningful.
 
-When a commit is functional, bump `version:` manually (e.g. `python3 tools/bump_yaml_version.py 2_PROD/esp12f-10_Office.yaml`). Pre-commit auto-bump was tried 2026-05-12 and reverted 2026-05-13 because automatic bumps on every commit destroyed this semantic.
+When a commit is functional, bump `version:` manually (e.g. `python3 tools/bump_yaml_version.py 2_PROD/esp12f-10_Office.yaml`). Do not auto-bump from pre-commit: automatic bumps on every commit destroy this semantic.
 
 ### BACKLOG completion convention
 
@@ -402,9 +402,6 @@ Before implementing:
 - No abstractions for single-use code.
 - No "flexibility" or "configurability" that wasn't requested.
 - No error handling for impossible scenarios.
-- If you write 200 lines and it could be 50, rewrite it.
-
-Ask yourself: "Would a senior engineer say this is overcomplicated?" If yes, simplify.
 
 ### 3. Surgical Changes
 
@@ -431,11 +428,4 @@ Transform tasks into verifiable goals:
 - "Fix the bug" → "Write a test that reproduces it, then make it pass"
 - "Refactor X" → "Ensure tests pass before and after"
 
-For multi-step tasks, state a brief plan:
-```
-1. [Step] → verify: [check]
-2. [Step] → verify: [check]
-3. [Step] → verify: [check]
-```
-
-Strong success criteria let you loop independently. Weak criteria ("make it work") require constant clarification.
+For multi-step tasks, state the verification for each step.
