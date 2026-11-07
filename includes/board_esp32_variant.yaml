@@ -10,6 +10,7 @@
 # FLUX, 20260512, Added Jinja defaults: project_name ("pgolawsk.esp_home"), framework_version ("recommended"), flash_size ("4MB") (Jinja default pattern extension, mirrors BACKLOG #10)
 # Pawelo, 20261004, added sram1_as_iram: true to eliminate warnings in logs
 # FLUX, 20261107, Recorded: `min_version` default is `2026.4.0` (changed 20261004 without a history entry); supersedes the `2025.8.0` default named in the 20260512 entry above
+# FLUX, 20261107, removed sram1_as_iram: true (added 20261004): ESPHome 2026.10.2 rejects it on C3/S2/C6 ("only supported on ESP32"); it stays in board_esp32.yaml for classic ESP32
 
 # ! those values are examples, not used in this file, need to be declared outside of this file
 # substitutions:
@@ -45,8 +46,6 @@ esp32:
   framework:
     type: ${framework_type}  # arduino or esp-idf
     version: ${framework_version | default("recommended")}  # like: latest, recommended, 4.4, ...
-    advanced:
-      sram1_as_iram: true
 
     # only for ESP-IDF
     # warn: moved to sdkconfig.defaults file
