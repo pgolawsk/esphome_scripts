@@ -123,6 +123,7 @@ Scope walked: `2_PROD/*.yaml` (all 11), representative `0_DEV/*.yaml`, `includes
 **Suggested fix (proposal, nothing applied):** (1) check whether the gas value is actually valid in HA/Prometheus; (2) check the heater profile / `update_interval` vs `heater` duration (a 30s interval with the default heater may be too tight) and the supply/power quality on that board; (3) if gas is unused, drop the `gas_resistance` sensor or set `heater: {temperature: 0}` to disable the heater; (4) if the sensor is faulty, replace it. Consider a `logger: logs: bme680.sensor: ERROR` only as a last resort, after the root cause is known.
 **Effort:** S
 **Severity:** Minor
+**Findings (2026-11-07, FLUX, Loki 30d):** not a continuous flood. One episode only: 2026-10-18 ~11:00 to ~23:00 local, 240 lines/h (a warning pair every 30 s), 2762 lines total; it ended at an MQTT reconnect at 23:08 (likely a restart) and there has been no bme680 warning since. The earlier "~736/day" figure came from a 24h window inside that episode. Looks like a heater/gas channel that hung and recovered after restart; root cause unknown. No config change made. Left open as observation only; if it recurs, check supply and I2C on esp32-14.
 
 ### 88. esp32-35 `epaper_spi` logs "Display already in state POWER_OFF" errors
 
@@ -132,6 +133,8 @@ Scope walked: `2_PROD/*.yaml` (all 11), representative `0_DEV/*.yaml`, `includes
 **Suggested fix (proposal, nothing applied):** find the call sites that trigger the power-off (grep `page.show`, `component.update`, display scripts in the Pump config), correlate the 6 timestamps from Loki with those triggers, and guard the second call (state check or merge the two calls). Compare with upstream `epaper_spi` source (`epaper_spi.cpp:119`) and check whether a newer ESPHome release already demotes or fixes it (esp32-35 is pinned on 2026.5.3, see memory).
 **Effort:** S
 **Severity:** Cosmetic
+**Findings (2026-11-07, FLUX, Loki 30d + `epaper_spi.cpp` in installed 2026.8.2):** not a double power-off. `EPaperBase::update()` logs this error when a previous update is still in progress (`POWER_OFF` is the last phase of a running refresh); the second update is skipped. Harmless: one refresh is dropped, nothing else. 22 occurrences, all 2026-10-16..19, none before or since; the config did not change in that period. Part of them fall on a 5-minute cadence (hypothesis, not verified: `display_updates_manual_cycle_delay: 5min` or the manual Next/Refresh buttons overlapping a running refresh).
+**Status:** ✅ done 2026-11-07 — explained, no fix needed.
 
 ---
 
