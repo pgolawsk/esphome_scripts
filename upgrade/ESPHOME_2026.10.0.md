@@ -1,6 +1,6 @@
 # ESPHome 2026.10.0 — Upgrade Impact for esphome_scripts
 
-Covers changes from the last installed version (**2026.8.2**) to **2026.10.0** (released 2026-10-21; 2026.9.x patches are folded in).
+Covers changes from the last installed version (**2026.8.2**) to **2026.10.0** (released 2026-10-21; 2026.9.x patches are folded in). Patches **2026.10.1** (2026-10-27) and **2026.10.2** (2026-11-02, latest) reviewed 2026-11-07, see "Patch releases" below.
 Use this file as a checklist when updating configs and reflashing devices.
 
 > **Installed version:** 2026.8.2 (in `.venv`) — **not upgraded yet** (analysis only, 2026-10-23)
@@ -64,6 +64,23 @@ Checked ahead of time against upstream `2026.10.0` (snapshot diff, per `feedback
 - Many `register_apply_action` / user-provided-constructor refactors — flash/RAM savings, no config impact.
 
 ---
+
+## Patch releases 2026.10.1 / 2026.10.2 (reviewed 2026-11-07)
+
+Source: GitHub release notes only (esphome.io has no section for patches). No change is marked breaking; "fix" below is inferred from PR titles, not verified in source. **Target version for the upgrade is 2026.10.2.**
+
+| Release | Item | Relevance |
+|---------|------|-----------|
+| 10.2 | **#22111 `ota`: workaround for LibreTiny OTA bricking RTL8710B on compressed update** | Highest-severity item, but **not applicable** — no LibreTiny RTL8710B device in the repo (BK7231N is a different chip family). Relevant to compressed OTA only on LibreTiny. |
+| 10.2 | #21786 `esp32`/`audio_http`: keep TLS 1.3 working | Not used (Salon uses I2S speaker, no `audio_http`). No action. |
+| 10.2 | #21967 core: Apple Silicon `cc1plus` wrapper started via `sh` when Python path has a space | Build-tool fix, relevant to pMacM5 only if the venv path has a space. Not our case. |
+| 10.2 | #21705 `http_request`: macOS host build + precompiled header; #22114 `host`: download in Device Builder; #22077 `bluetooth_proxy` | Not used. |
+| 10.1 | #21328 `mqtt`: resend fan state when first publish fails | We use no `fan:` over MQTT in PROD. Generic MQTT path unchanged. |
+| 10.1 | #21300 `esp32_hosted`: keep OTA watchdog timeout | Not used (no hosted coprocessor). |
+| 10.1 | #21317 core: version-less library deps resolved like PlatformIO; #21627 precompiled header off with ccache < 4.7; #21307 lambda code emitted after user includes | Build-system. **Watch in the compile sweep** (library resolution, `includes/` with C++ headers). No config action. |
+| 10.1 | #21358 `light` / #21359 `climate` StringRef overloads; #21625 / #21623 core float/Color fixes; #21397 `ledc`; #21457 `esp32_ble`; #21373 `http_request`; #21396, #21713 | Internal / not used. |
+
+Net: **nothing in 10.1 / 10.2 changes the 10.0 plan** (ESP8266 native-toolchain bench test, Salon IR + media player checks, override-farm rebase, Pump pinned). Not touched by either patch: ESP8266 toolchain, `platformio_options`, wifi, api, remote_receiver, speaker, epaper_spi, preferences/NVS, prometheus, web_server, sensors, logger, time.
 
 ## Pre-Flight Checks
 
