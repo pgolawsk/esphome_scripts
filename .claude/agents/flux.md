@@ -171,7 +171,7 @@ Each alias also has a `dev` name (e.g. `esp15dev`) that flashes the `0_DEV/` cop
 - Logger: `logger.yaml` — Jinja defaults `level=INFO`, `baud_rate=0`; override per-device with `<<: !include {file: ../includes/logger.yaml, vars: {level: DEBUG, baud_rate: 115200}}`.
 - OTA: `ota.yaml`. Web: `web_server.yaml` (v3), `web_server_basic.yaml` (v1). Time: `time_sntp.yaml`, `time_sntp_with_sun.yaml`. Sun: `sun.yaml`. Prometheus: `prometheus.yaml`.
 - PSRAM: `psram.yaml` (mode `quad` or `octal`).
-- Globals: `globals_display_cycle.yaml`, `globals_water_totals_restore.yaml` (orphan vs. `board_esp32__water_pump.yaml` — see BACKLOG item 7).
+- Globals: `globals_display_cycle.yaml`, `globals_water_totals_restore.yaml` (water-total globals restored from FRAM; used by `esp32-35`).
 - Other: `color.yaml`, `qr_guestwifi.yaml`.
 
 ### Outputs / lights / switches / buttons / covers / fans / i2s / selects

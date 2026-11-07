@@ -392,7 +392,7 @@ Before implementing:
 - State your assumptions explicitly. If uncertain, ask.
 - If multiple interpretations exist, present them - don't pick silently.
 - If a simpler approach exists, say so. Push back when warranted.
-- If something is unclear, stop. Name what's confusing. Ask.
+- If something is unclear and a wrong guess would be costly (device flash, PROD edit, destructive command), stop, name what's confusing and ask; otherwise pick the most likely reading and state it.
 
 ### 2. Simplicity First
 
