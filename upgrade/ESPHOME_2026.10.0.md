@@ -125,10 +125,28 @@ Built on 2026.10.2 (native `arduino` toolchain; no Rosetta needed, which 2026.8.
 | esp12f-11 Entrance_Entry | 29 408 → 32 392 B | 24 483 → 28 632 B | 47.2% / 52.6% |
 
 - esp12f-15 followed for ~2 h in Prometheus: heap free 34 016 → 33 496 B, max block 29 808 → 29 352 B (single 456 B step at the last sample; no trend visible). Recheck after a longer uptime.
-- The only new compile warning: `esphome->platformio_options->build_flags is deprecated ... removed in 2026.12.0`. Flags are still forwarded. Migration to `esphome: build_flags` in `includes/board_esp8266.yaml` is still to do (functional change: version bump + version-history entry).
+- Compile warning seen before the migration: `esphome->platformio_options->build_flags is deprecated ... removed in 2026.12.0`. **Migrated 2026-11-07 (`1eca4b8`):** both flags now sit under `esphome: build_flags:` in `includes/board_esp8266.yaml`; the warning is gone and the MMU/VTABLES defines in `build.ninja` plus firmware sizes are identical (compile-checked on esp12f-29 and esp12f-15). Treated as a refactor, so no `version:` bump and no reflash needed; the already flashed ESP8266 devices carry the same binary content.
 - Rig esp32-30 (ESP32, `esp32_dev.yaml`, ESP-IDF) flashed OTA on 2026.10.2 (38 s): RAM 28.9% / flash 59.5%, heap free ~219 kB, max block 110 592 B. No prior heap history exists (rigs are not scraped by Prometheus under `.nam` names), so no before/after comparison. Framework switch Arduino → ESP-IDF over OTA worked.
 - Rig esp12f-29 was reached at `esp12f-29.nam` (Namysłowska). Prometheus showed `up=0` because it scrapes the bare name `esp12f-29:80`; esp32-32 was not checked under `.nam`.
-- Open question unchanged: whether `PIO_FRAMEWORK_ARDUINO_MMU_*` still selects the 16 kB cache / 32 kB IRAM layout on the native path. Heap numbers do not answer it; Office (`/metrics` heap sensitivity) is the test.
+- The MMU question is answered, see "MMU flag test" below. What stays open: whether the flag matters for Office's `/metrics` output.
+
+### MMU flag test (esp12f-29 rig, 2026-11-07)
+
+Question: does `-DPIO_FRAMEWORK_ARDUINO_MMU_CACHE16_IRAM32_SECHEAP_NOTSHARED` still do anything on the native toolchain, and are its values just the defaults?
+
+- **It is honoured.** `esphome/build_gen/arduino8266.py` has an `_MMU_VARIANTS` table that translates the knob into `MMU_*` defines (a transliteration of `platformio-build.py`). `build.ninja` of esp12f-15 and esp12f-29 shows `MMU_ICACHE_SIZE=0x4000`, `MMU_IRAM_SIZE=0x8000`, `MMU_SEC_HEAP_SIZE=0x4000`, `MMU_SEC_HEAP=0x40108000`.
+- **It is not the default.** Without the flag the generator uses `_MMU_DEFAULT`: `MMU_ICACHE_SIZE=0x8000`, `MMU_IRAM_SIZE=0x8000`, no secondary heap. So the flag trades 16 kB of cache for a 16 kB secondary (IRAM) heap.
+- **`-DVTABLES_IN_FLASH` is redundant.** The generator falls back to `VTABLES_IN_FLASH` when no `VTABLES_IN_*` knob is given (`arduino8266.py:383`). Kept anyway; removing it changes nothing.
+- **Measurement.** Same code built twice (flag removed temporarily, then restored), flashed OTA, sampled at +60/120/180 s after a fresh boot:
+
+| | without flag | with flag |
+|---|---|---|
+| Heap free | 30 632 B | 30 632 B |
+| Heap max block | 26 688 B | 26 688 B |
+| RAM / flash | 41 704 B / 581 948 B | 41 704 B / 581 964 B |
+
+- **Conclusion.** The flag changes the CPU memory map but not main-heap numbers; the extra pool is separate and only used when code selects it explicitly. The heap gains after the upgrade are therefore not caused by this flag. Whether it helps the original problem (`/metrics` truncated on a heap-starved device) cannot be shown on the rig: test on Office (esp12f-10) with the flag removed and `/metrics` size/completeness compared. Until then the flag is kept.
+
 
 ## Upgrade steps still ahead (SOP)
 
