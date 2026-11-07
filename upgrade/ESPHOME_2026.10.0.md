@@ -3,7 +3,7 @@
 Covers changes from the last installed version (**2026.8.2**) to **2026.10.0** (released 2026-10-21; 2026.9.x patches are folded in). Patches **2026.10.1** (2026-10-27) and **2026.10.2** (2026-11-02, latest) reviewed 2026-11-07, see "Patch releases" below.
 Use this file as a checklist when updating configs and reflashing devices.
 
-> **Installed version:** 2026.10.2 (in `.venv`) — upgraded 2026-11-07 (analysis 2026-10-23). **Rollout status 2026-11-07:** rigs esp12f-29 and esp32-30 + esp12f-15, -25, -21, -11 flashed and verified; esp12f-10 Office deliberately deferred; ESP32 PROD devices not started; esp32-32 (FRAM, Pump-only) not flashed.
+> **Installed version:** 2026.10.2 (in `.venv`) — upgraded 2026-11-07 (analysis 2026-10-23). **Rollout status 2026-11-07:** rigs esp12f-29 and esp32-30 + esp12f-15, -25, -21, -11 flashed and verified; esp12f-10 Office deliberately deferred; esp32-36 flashed; esp32-06 OTA fell back to 2026.8.2 (KI-2, open); esp32-39, -05, -14 not started; esp32-32 (FRAM, Pump-only) not flashed.
 > **Sources:** esphome.io changelog 2026.10.0 (full page), PR descriptions #18997, #19100, #19101, #19307, #19886, upstream source at tag `2026.10.0` (`esp8266/__init__.py`, `core/config.py`, `esp32/preferences.h`).
 > **Verification:** the ESP8266 native toolchain is now verified by compile + bench run (see "Rollout results"). The remaining "No action" items for ESP32 are still grep/source-reading results, not build results.
 
@@ -105,8 +105,8 @@ Order follows `feedback_flash_order_simple_first`: rigs first, simplest device w
 | 1 | esp12f-15 Upstairs | ESP8266 | **Done 2026-11-07.** |
 | 2 | esp12f-25 AquariumWindow, esp12f-21 Underfloor, esp12f-11 Entrance_Entry | ESP8266 | **Done 2026-11-07** (all three). Doorbell input on esp12f-11 reports state 0; physical press not tested. |
 | 3 | esp12f-10 Office | ESP8266 | **Pending (deferred by Pawelo 2026-11-07).** Most sensor-heavy, Prometheus `/metrics` heap sensitivity — last. This is the real test of the MMU build-flags question. |
-| 4 | esp32-39 Attic, esp32-06 Garden_Gateway, esp32-05 Shades | ESP32 | mbedTLS trim; watch MQTT/OTA reconnect. |
-| 5 | esp32-36 Garage_Gate | ESP32-C3 (Arduino) | Arduino 3.3.12. |
+| 4 | esp32-39 Attic, esp32-06 Garden_Gateway, esp32-05 Shades | ESP32 | mbedTLS trim; watch MQTT/OTA reconnect. **esp32-06: OTA 2026-11-07 fell back to 2026.8.2 silently, see KI-2 in `KNOWN_ISSUES.md` (sram1_as_iram vs bootloader hypothesis). Left on 2026.8.2, working. esp32-39, esp32-05 not attempted** (-05 probably the same). |
+| 5 | esp32-36 Garage_Gate | ESP32-C3 (Arduino) | **Done 2026-11-07** (Arduino 3.3.12). First needed `sram1_as_iram` removed from `board_esp32_variant.yaml`, see KI-3. Heap free 168 963 → 169 444 B, max block unchanged 114 688 B. |
 | 6 | esp32-14 Salon | ESP32-S3 | IR receiver ring + media player volume/mute behavior — verify in HA. |
 | — | **esp32-35 Pump_Garage** | ESP32 | **Stay on 2026.5.3** (override farm drift, FRAM not upstream). |
 
