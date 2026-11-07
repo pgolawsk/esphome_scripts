@@ -3,7 +3,7 @@
 Covers changes from the last installed version (**2026.8.2**) to **2026.10.0** (released 2026-10-21; 2026.9.x patches are folded in). Patches **2026.10.1** (2026-10-27) and **2026.10.2** (2026-11-02, latest) reviewed 2026-11-07, see "Patch releases" below.
 Use this file as a checklist when updating configs and reflashing devices.
 
-> **Installed version:** 2026.10.2 (in `.venv`) — upgraded 2026-11-07 (analysis 2026-10-23). **Rollout status 2026-11-07:** rig esp12f-29 + esp12f-15, -25, -21, -11 flashed and verified; esp12f-10 Office deliberately deferred; ESP32 devices and rig esp32-32 not started.
+> **Installed version:** 2026.10.2 (in `.venv`) — upgraded 2026-11-07 (analysis 2026-10-23). **Rollout status 2026-11-07:** rigs esp12f-29 and esp32-30 + esp12f-15, -25, -21, -11 flashed and verified; esp12f-10 Office deliberately deferred; ESP32 PROD devices not started; esp32-32 (FRAM, Pump-only) not flashed.
 > **Sources:** esphome.io changelog 2026.10.0 (full page), PR descriptions #18997, #19100, #19101, #19307, #19886, upstream source at tag `2026.10.0` (`esp8266/__init__.py`, `core/config.py`, `esp32/preferences.h`).
 > **Verification:** the ESP8266 native toolchain is now verified by compile + bench run (see "Rollout results"). The remaining "No action" items for ESP32 are still grep/source-reading results, not build results.
 
@@ -100,7 +100,8 @@ Order follows `feedback_flash_order_simple_first`: rigs first, simplest device w
 | Priority | Device | Platform | Reason / what to verify |
 |----------|--------|----------|--------------------------|
 | 0 | **esp12f-29 rig** | ESP8266 | **Done 2026-11-07** — first native-toolchain build, no Rosetta needed. Gates all ESP8266 PROD. |
-| 0 | **esp32-32 rig** | ESP32-C3 | Mandatory smoke test, gates ESP32 PROD only (not ESP8266). Offline since at least mid-Oct; lives on the `.nam` site. Override farm needs rebase first if the FRAM config is flashed; plain `esp32c3_dev.yaml` does not use it. |
+| 0 | **esp32-30 rig** | ESP32 (ESP-IDF) | **Done 2026-11-07** — `0_DEV/esp32_dev.yaml` (plain dev kit, no FRAM, status LED on GPIO4), host `esp32-30.nam`. Gates ESP32 PROD (does not cover S3/C3). |
+| — | esp32-32 rig | ESP32-C3 + FRAM | Reserved for Pump / NVM tests only (not a general smoke-test rig); needs the override-farm rebase before any FRAM build. Not flashed. |
 | 1 | esp12f-15 Upstairs | ESP8266 | **Done 2026-11-07.** |
 | 2 | esp12f-25 AquariumWindow, esp12f-21 Underfloor, esp12f-11 Entrance_Entry | ESP8266 | **Done 2026-11-07** (all three). Doorbell input on esp12f-11 reports state 0; physical press not tested. |
 | 3 | esp12f-10 Office | ESP8266 | **Pending (deferred by Pawelo 2026-11-07).** Most sensor-heavy, Prometheus `/metrics` heap sensitivity — last. This is the real test of the MMU build-flags question. |
@@ -125,6 +126,7 @@ Built on 2026.10.2 (native `arduino` toolchain; no Rosetta needed, which 2026.8.
 
 - esp12f-15 followed for ~2 h in Prometheus: heap free 34 016 → 33 496 B, max block 29 808 → 29 352 B (single 456 B step at the last sample; no trend visible). Recheck after a longer uptime.
 - The only new compile warning: `esphome->platformio_options->build_flags is deprecated ... removed in 2026.12.0`. Flags are still forwarded. Migration to `esphome: build_flags` in `includes/board_esp8266.yaml` is still to do (functional change: version bump + version-history entry).
+- Rig esp32-30 (ESP32, `esp32_dev.yaml`, ESP-IDF) flashed OTA on 2026.10.2 (38 s): RAM 28.9% / flash 59.5%, heap free ~219 kB, max block 110 592 B. No prior heap history exists (rigs are not scraped by Prometheus under `.nam` names), so no before/after comparison. Framework switch Arduino → ESP-IDF over OTA worked.
 - Rig esp12f-29 was reached at `esp12f-29.nam` (Namysłowska). Prometheus showed `up=0` because it scrapes the bare name `esp12f-29:80`; esp32-32 was not checked under `.nam`.
 - Open question unchanged: whether `PIO_FRAMEWORK_ARDUINO_MMU_*` still selects the 16 kB cache / 32 kB IRAM layout on the native path. Heap numbers do not answer it; Office (`/metrics` heap sensitivity) is the test.
 
