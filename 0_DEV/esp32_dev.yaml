@@ -35,6 +35,7 @@
 # FLUX, 20260513, Removed restore_mode substitution; default "ALWAYS_OFF" now provided by lights/led_rgb.yaml Jinja (BACKLOG #27)
 # FLUX, 20260514, Swept logger_level.yaml → logger.yaml include path; logger.yaml now accepts level/baud_rate via Jinja defaults (BACKLOG #15 + #43)
 # Pawelo, 20261004, Switched to esp-idf framework for all ESP32 variants, added sram1_as_iram: true to eliminate warnings in logs
+# FLUX, 20261107, enabled status LED on GPIO4 (output inverted + binary light + LED cycle switch) in the standard section order, as on the esp32-30 rig; GPIO4 is shared with the commented passive buzzer block below
 
 # ! run with this command to override substitutions
 # esphome -s devicename espXX -s updates 1min -s room <Room name> -s mqtt_room <room> run esp32_MMmm_SSss__PP.yaml --device 192.168.x.x
@@ -43,7 +44,7 @@
 substitutions:
 #  devices: "Temperature and Humidity via SHTx30 and Illuminance via BH1750"
   devices: "DEV Kit"
-  version: "20261004"
+  version: "20261107"
 
   # required by ../includes/board_esp32.yaml script
   # framework_type: arduino  # "arduino" or "esp-idf"
@@ -174,6 +175,17 @@ sensor:
   # - !include {file: ../sensors/color_proximity_apds9960.yaml, vars: {type: "GREEN"}}
   # - !include {file: ../sensors/color_proximity_apds9960.yaml, vars: {type: "BLUE"}}
   # - !include {file: ../sensors/color_proximity_apds9960.yaml, vars: {type: "PROXIMITY"}}
+
+output:
+  # LED (esp32-30 rig: GPIO4). NOTE: shares GPIO4 with the commented passive buzzer below - enable only one
+  - !include {file: ../outputs/led.yaml, vars: {ix: "", gpio: "GPIO4", inverted: true}}
+
+light:
+  - !include {file: ../lights/led.yaml, vars: {ix: "", platform: "binary", off_delay: "5s", entity_category: "diagnostic"}}
+
+switch:
+  # LED cycle
+  - !include {file: ../switches/led_cycle.yaml, vars: {ID: "led", cycles: 3, on_delay: "1s", off_delay: "1000ms"}}
 
 button:
   # Restart, reset and shutdown buttons
