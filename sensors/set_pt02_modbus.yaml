@@ -1,0 +1,168 @@
+---
+#* GZAIR PT02 air-quality monitor over Modbus RTU (RS485), ESP as bus master. SET for package:
+#* Register map: docs/devices/pt02_modbus_registers.md
+#! READ-ONLY: FC04 sensors only. Do NOT add number/switch/select/output entities: PT02 holding registers drive mains-voltage alarm relays.
+#! This package TRANSMITS on the bus. NEVER use it on the Haba controller bus (use interfaces/uart_rs485_rx.yaml there).
+#? Works with an automatic-direction TTL to RS485 module (HW-519), so no flow_control_pin.
+# FLUX, 20261108, created for the PT02 polling test on esp32-32
+
+uart:
+  - id: ${uart_id}
+    tx_pin: ${tx_pin}
+    rx_pin: ${rx_pin}
+    baud_rate: 9600
+    data_bits: 8
+    parity: NONE
+    stop_bits: 1
+    debug:
+      direction: BOTH
+      after:
+        timeout: 20ms
+      sequence:
+        - lambda: |-
+            ESP_LOGI("rs485", "%s %u B: %s", direction == uart::UART_DIRECTION_TX ? "TX" : "RX", (unsigned) bytes.size(), format_hex_pretty(bytes).c_str());
+
+modbus:
+  - id: modbus_pt02${ix}
+    uart_id: ${uart_id}
+    turnaround_time: 200ms  # PT02 silently drops requests closer than 150 ms
+
+modbus_controller:
+  - id: pt02${ix}
+    modbus_id: modbus_pt02${ix}
+    address: ${address}
+    update_interval: ${update_interval}
+
+sensor:
+  - platform: modbus_controller
+    modbus_controller_id: pt02${ix}
+    name: "$room CO2${ix}"
+    id: co2${ix}
+    register_type: read
+    address: 0
+    value_type: U_WORD
+    device_class: carbon_dioxide
+    state_class: measurement
+    unit_of_measurement: ppm
+    icon: mdi:molecule-co2
+    accuracy_decimals: 0
+    state_topic: $devicename/co2${ix}
+    on_value:
+      - mqtt.publish:
+          topic: "$mqtt_location/$mqtt_room/co2${ix}"
+          payload: !lambda |-
+            return to_string(id(co2${ix}).state);
+  - platform: modbus_controller
+    modbus_controller_id: pt02${ix}
+    name: "$room TVOC${ix}"
+    id: tvoc${ix}
+    register_type: read
+    address: 1
+    value_type: U_WORD
+    state_class: measurement
+    unit_of_measurement: mg/m³
+    icon: mdi:air-filter
+    accuracy_decimals: 2
+    filters:
+      - multiply: 0.01
+    state_topic: $devicename/tvoc${ix}
+    on_value:
+      - mqtt.publish:
+          topic: "$mqtt_location/$mqtt_room/tvoc${ix}"
+          payload: !lambda |-
+            return to_string(id(tvoc${ix}).state);
+  - platform: modbus_controller
+    modbus_controller_id: pt02${ix}
+    name: "$room PM1.0${ix}"
+    id: pm1${ix}
+    register_type: read
+    address: 2
+    value_type: U_WORD
+    device_class: pm1
+    state_class: measurement
+    unit_of_measurement: µg/m³
+    icon: mdi:blur
+    accuracy_decimals: 0
+    state_topic: $devicename/pm1${ix}
+    on_value:
+      - mqtt.publish:
+          topic: "$mqtt_location/$mqtt_room/pm1${ix}"
+          payload: !lambda |-
+            return to_string(id(pm1${ix}).state);
+  - platform: modbus_controller
+    modbus_controller_id: pt02${ix}
+    name: "$room PM2.5${ix}"
+    id: pm25${ix}
+    register_type: read
+    address: 3
+    value_type: U_WORD
+    device_class: pm25
+    state_class: measurement
+    unit_of_measurement: µg/m³
+    icon: mdi:blur
+    accuracy_decimals: 0
+    state_topic: $devicename/pm25${ix}
+    on_value:
+      - mqtt.publish:
+          topic: "$mqtt_location/$mqtt_room/pm25${ix}"
+          payload: !lambda |-
+            return to_string(id(pm25${ix}).state);
+  #? register 4 is likely PM10 (unconfirmed: not on the display, always >= PM2.5 so far)
+  - platform: modbus_controller
+    modbus_controller_id: pt02${ix}
+    name: "$room PM10${ix}"
+    id: pm10${ix}
+    register_type: read
+    address: 4
+    value_type: U_WORD
+    device_class: pm10
+    state_class: measurement
+    unit_of_measurement: µg/m³
+    icon: mdi:blur
+    accuracy_decimals: 0
+    state_topic: $devicename/pm10${ix}
+    on_value:
+      - mqtt.publish:
+          topic: "$mqtt_location/$mqtt_room/pm10${ix}"
+          payload: !lambda |-
+            return to_string(id(pm10${ix}).state);
+  - platform: modbus_controller
+    modbus_controller_id: pt02${ix}
+    name: "$room Temperature${ix}"
+    id: temp${ix}
+    register_type: read
+    address: 5
+    value_type: S_WORD
+    device_class: temperature
+    state_class: measurement
+    unit_of_measurement: °C
+    icon: mdi:thermometer
+    accuracy_decimals: 1
+    filters:
+      - multiply: 0.1
+    state_topic: $devicename/temperature${ix}
+    on_value:
+      - mqtt.publish:
+          topic: "$mqtt_location/$mqtt_room/temperature${ix}"
+          payload: !lambda |-
+            return to_string(id(temp${ix}).state);
+  - platform: modbus_controller
+    modbus_controller_id: pt02${ix}
+    name: "$room Humidity${ix}"
+    id: hum${ix}
+    register_type: read
+    address: 6
+    value_type: U_WORD
+    device_class: humidity
+    state_class: measurement
+    unit_of_measurement: "%"
+    icon: mdi:water-percent
+    accuracy_decimals: 1
+    filters:
+      - multiply: 0.1
+    state_topic: $devicename/humidity${ix}
+    on_value:
+      - mqtt.publish:
+          topic: "$mqtt_location/$mqtt_room/humidity${ix}"
+          payload: !lambda |-
+            return to_string(id(hum${ix}).state);

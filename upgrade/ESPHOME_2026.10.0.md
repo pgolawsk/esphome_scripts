@@ -39,7 +39,7 @@ Checked ahead of time against upstream `2026.10.0` (snapshot diff, per `feedback
 - `.preferences.h.upstream` and `.preference_backend.h.upstream` **differ from 2026.10.0**: upstream added RTC-backed preference storage (`USE_ESP32_RTC_PREFERENCES`, `rtc_offset`, `in_flash`, `load_from_key`). `refresh.sh` will report `⚠ CHANGED` → a manual rebase of the two patched headers is required before any FRAM build compiles.
 - Farm is also missing two new sibling files (`atexit_stubs.cpp`, `vasprintf_stubs.cpp`) — `refresh.sh` re-symlinks them.
 - The snapshot already differs from pip 2026.8.2, i.e. the drift Pawelo declined to fix on 2026-10-08 (`esp32-35` pinned on 2026.5.3). **2026.10.0 does not change that decision**: FRAM/NVM is not in the changelog and PR#14119 is closed upstream.
-- Consequence: only `esp32-35_Pump_Garage` and the FRAM rig `esp32-32` depend on the farm. Everything else upgrades normally. Keep `esp32-35` on 2026.5.3.
+- Consequence: only `esp32-35_Pump_Garage` and the FRAM rig `esp32-31` (moved from `esp32-32` on 2026-11-08) depend on the farm. Everything else upgrades normally. Keep `esp32-35` on 2026.5.3.
 
 ---
 
@@ -101,7 +101,8 @@ Order follows `feedback_flash_order_simple_first`: rigs first, simplest device w
 |----------|--------|----------|--------------------------|
 | 0 | **esp12f-29 rig** | ESP8266 | **Done 2026-11-07** — first native-toolchain build, no Rosetta needed. Gates all ESP8266 PROD. |
 | 0 | **esp32-30 rig** | ESP32 (ESP-IDF) | **Done 2026-11-07** — `0_DEV/esp32_dev.yaml` (plain dev kit, no FRAM, status LED on GPIO4), host `esp32-30.nam`. Gates ESP32 PROD (does not cover S3/C3). |
-| — | esp32-32 rig | ESP32-C3 + FRAM | Reserved for Pump / NVM tests only (not a general smoke-test rig); needs the override-farm rebase before any FRAM build. Not flashed. |
+| — | esp32-31 rig | ESP32-C3 + FRAM + ePaper | Reserved for Pump / NVM tests only (not a general smoke-test rig). FRAM moved here from esp32-32 on 2026-11-08; stays on 2026.5.3, built from the pinned copy `~/dev/esphome_scripts_2026.5.3` (commit `1c05279`). Not on 2026.10.2. |
+| — | esp32-32 rig | ESP32-C3 + RS485 (PT02) | **Flashed 2026-11-08** on 2026.10.2: `0_DEV/esp32c3plus_dev.yaml`, Modbus master polling a PT02. No longer holds FRAM. |
 | 1 | esp12f-15 Upstairs | ESP8266 | **Done 2026-11-07.** |
 | 2 | esp12f-25 AquariumWindow, esp12f-21 Underfloor, esp12f-11 Entrance_Entry | ESP8266 | **Done 2026-11-07** (all three). Doorbell input on esp12f-11 reports state 0; physical press not tested. |
 | 3 | esp12f-10 Office | ESP8266 | **Pending (deferred by Pawelo 2026-11-07).** Most sensor-heavy, Prometheus `/metrics` heap sensitivity — last. This is the real test of the MMU build-flags question. |

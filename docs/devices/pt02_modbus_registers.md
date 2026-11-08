@@ -97,7 +97,8 @@ From Claude Code, run this with the sandbox disabled, because the serial device 
 ## ESPHome notes
 
 - Read FC04 registers 0–6 only (`register_type: read`), with `update_interval` ≥ 30 s.
-- Unverified: ESPHome docs reportedly mark `modbus_controller: command_throttle` as deprecated and put the frame gap on `modbus: turnaround_time`. Check this before writing the config.
+- Working config: `sensors/set_pt02_modbus.yaml` (verified 2026-11-08 on ESPHome 2026.10.2 with an HW-519 module).
+- `modbus_controller: command_throttle` is replaced by `modbus: turnaround_time` in 2026.10.2 (checked in the component source); the config uses 200 ms.
 - Do not add `number` / `switch` / `select` entities that write HR registers.
 
 ## History

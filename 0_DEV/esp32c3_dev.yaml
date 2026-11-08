@@ -54,6 +54,14 @@
 # FLUX, 20260512, Removed flash_write_interval substitution; default "5min" now provided by board file via Jinja (Jinja default pattern extension, mirrors BACKLOG #10)
 # FLUX, 20260512, Removed project_name/framework_version/flash_size substitution(s); defaults now provided by board file via Jinja (Jinja default pattern extension, mirrors BACKLOG #10)
 # FLUX, 20260514, Swept logger_level.yaml → logger.yaml include path; logger.yaml now accepts level/baud_rate via Jinja defaults (BACKLOG #15 + #43)
+# FLUX, 20261108, created as a copy of esp32c3_dev.yaml (working base for the RS485 receive-only sniffer on esp32-31)
+# FLUX, 20261108, adapted for plain C3 supermini (no RGB): disabled RGB light, ePaper display + fonts/script/globals/select/spi, display and Wake-on-LAN buttons; enabled blue LED on GPIO8 (output + status_led light)
+# FLUX, 20261108, disabled test_nvm package (needs FRAM hardware + patched core; fails to compile on stock ESPHome with USE_PREFERENCE_KEY_LOOKUP assertion)
+# FLUX, 20261108, added interfaces/uart_rs485_rx.yaml (GPIO3 RX only, 9600 8N1, raw hex frame log) for the Haba RS485 sniffer, step 1
+# FLUX, 20261108, switched to the PT02 polling test: ESP as Modbus master via sensors/set_pt02_modbus.yaml (read-only FC04); receive-only sniffer include commented out until the Haba step
+# FLUX, 20261108, renamed from esp32c3regular_dev.yaml: now the base script for the plain C3 supermini (blue LED)
+# FLUX, 20261108, moved RS485 / PT02 setup to esp32c3plus_dev.yaml (weak antenna on this board); re-enabled ePaper display + fonts/script/globals/select/spi, display and Wake-on-LAN buttons; test_nvm stays disabled until the PR#14119 override is refreshed for this ESPHome release
+# FLUX, 20261108, test_nvm kept disabled here so the upgrade sweep compiles on 2026.10.x; the FRAM build for esp32-31 comes from the pinned copy ~/dev/esphome_scripts_2026.5.3
 
 # ! run with this command to override substitutions
 # esphome -s devicename espXX -s updates 1min -s room <Room name> -s mqtt_room <room> run esp32_MMmm_SSss__PP.yaml --device 192.168.x.x
@@ -62,7 +70,7 @@
 substitutions:
 #  devices: "Temperature and Humidity via SHTx30 and Illuminance via BH1750"
   devices: "DEV Kit"
-  version: "20260221"
+  version: "20261108"
 
   # required by ../includes/board_esp32.yaml script
   # framework_type: arduino # "arduino" or "esp-idf"
@@ -132,10 +140,11 @@ substitutions:
 # # <<: !include {file: ../i2s/voice_assistant_mplayer.yaml, vars: {mic_id: "mic", mplayer_id: "mplayer"}}
 # <<: !include {file: ../i2s/voice_assistant_speaker.yaml, vars: {mic_id: "mic", speaker_id: "spk"}}
 
-packages:
+# packages:  # disabled: every entry below is commented out and an empty packages: is invalid
   # FRAM test - this is to test the NVM component with FRAM I2C platform and all partition types, as well as to have a simple example of how to use it in practice
   # test_fram: !include {file: ../tests/test_fram.yaml, vars: {}}
-  test_nvm: !include {file: ../tests/test_nvm_fram_i2c.yaml, vars: {}}
+  #! test_nvm needs ESPHome 2026.5.3 + the PR#14119 override: esp32-31 is built from the pinned copy ~/dev/esphome_scripts_2026.5.3 (commit 1c05279, ./build_esp32-31.sh)
+  # test_nvm: !include {file: ../tests/test_nvm_fram_i2c.yaml, vars: {}}
 
   # I2S Sound Level Meter (!cannot be used with "I2S Audio" above)
   # slm: !include {file: ../i2s/set_i2s_sound_level_meter.yaml, vars: {i2s_id: "i2s_db", din_pin: "GPIO15", ws_pin: "GPIO37", bck_pin: "GPIO38", channel: "left"}}
@@ -263,7 +272,7 @@ button:
 
 output:
   # LED blue (C3 supermini)
-  # - !include {file: ../outputs/led.yaml, vars: {ix: "", gpio: "GPIO8", inverted: true}}
+  - !include {file: ../outputs/led.yaml, vars: {ix: "", gpio: "GPIO8", inverted: true}}
 
   # LED blue (S2 mini)
   # - !include {file: ../outputs/led.yaml, vars: {ix: "", gpio: "GPIO15", inverted: false}}
@@ -292,10 +301,10 @@ light:
   # LED green (S3)
   # - !include {file: ../lights/led.yaml, vars: {ix: "green", platform: "binary", off_delay: "1days", entity_category: ""}}
   # LED blue (S3, C3 supermini/plus)
-  # - !include {file: ../lights/led.yaml, vars: {ix: "", platform: "status_led", off_delay: "1days", entity_category: "diagnostic"}}
+  - !include {file: ../lights/led.yaml, vars: {ix: "", platform: "status_led", off_delay: "1days", entity_category: "diagnostic"}}
   # LED RGB (S3, C3 supermini plus)
   # - !include {file: ../lights/led_rgb__arduino.yaml, vars: {ix: "", gpio: "GPIO8", entity_category: "", rmt_channel: 1}}
-  - !include {file: ../lights/led_rgb.yaml, vars: {ix: "", gpio: "GPIO8", entity_category: "", rmt_symbols: 48}}  # note: rmt_symbols block size is 48 symbols, for regular esp32 and S2 it's 64 symbols
+  # - !include {file: ../lights/led_rgb.yaml, vars: {ix: "", gpio: "GPIO8", entity_category: "", rmt_symbols: 48}}  # note: rmt_symbols block size is 48 symbols, for regular esp32 and S2 it's 64 symbols
   # - !include {file: ../lights/led_rgb_neopixelbus.yaml, vars: {ix: "", gpio: "GPIO8", entity_category: ""}}
 
   # Relays

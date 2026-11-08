@@ -25,6 +25,7 @@
 # Pawelo, 20260228, moved esp32-06 Garden/Gateway device to 2_PROD after successful testing and deployment
 # FLUX, 20260511, Slimmed PROD upgrade commands — substitution defaults live in device YAMLs per BACKLOG item 25
 # Pawelo, 20261014, added esp32-36f Salon device to 0_DEV for Flat
+# FLUX, 20261108, esp32-32 (RGB rig) now uses 0_DEV/esp32c3plus_dev.yaml; 0_DEV/esp32c3_dev.yaml is the plain C3 supermini used by esp32-31
 
 #*###########################
 #* Check Python VENV
@@ -126,8 +127,9 @@ esphome -s devicename esp32-30 -s updates 1min -s room Test32 -s mqtt_location m
 # esphome -s devicename esp32-30 -s updates 1min -s room Test32 -s mqtt_location measures -s mqtt_room test32 run 0_DEV/esp32_THIWdb_SBYr_display.yaml
 # esphome -s devicename esp32-30 -s updates 1min -s room Test32 -s mqtt_location measures -s mqtt_room test32 run 0_DEV/esp32_dev.yaml
 
-esphome -s devicename esp32-31 -s updates 15s -s room Test32c3 -s mqtt_location measures -s mqtt_room test32c3 run 0_DEV/esp32c3_dev.yaml
-esphome -s devicename esp32-32 -s updates 15s -s room Test32c3rgb -s mqtt_location measures -s mqtt_room test32c3rgb run 0_DEV/esp32c3_dev.yaml
+#! esp32-31 holds the FRAM: its real firmware is 2026.5.3 from ~/dev/esphome_scripts_2026.5.3 (./build_esp32-31.sh); the line below flashes it WITHOUT test_nvm
+# esphome -s devicename esp32-31 -s updates 15s -s room Test32c3 -s mqtt_location measures -s mqtt_room test32c3 run 0_DEV/esp32c3_dev.yaml
+esphome -s devicename esp32-32 -s updates 15s -s room Test32c3rgb -s mqtt_location measures -s mqtt_room test32c3rgb run 0_DEV/esp32c3plus_dev.yaml
 esphome -s devicename esp32-33 -s updates 1min -s room Test32s3rgb -s mqtt_location measures -s mqtt_room test32s3rgb run 0_DEV/esp32s3_dev.yaml
 esphome -s devicename esp32-34 -s updates 1min -s room Test32s2 -s mqtt_location measures -s mqtt_room test32s2 run 0_DEV/esp32s2_dev.yaml
 esphome -s devicename esp32-36f -s updates 30s -s room Salon -s mqtt_location flat -s mqtt_room salon run 0_DEV/esp32c6_dev.yaml

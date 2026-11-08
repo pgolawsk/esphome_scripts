@@ -132,7 +132,7 @@ If compile fails: fix the error, re-check breaking changes section.
 esphome -s devicename esp12f-29 -s updates 30s -s room Test -s mqtt_location measures -s mqtt_room test run 0_DEV/esp12f_dev.yaml
 
 # ESP32-C3 rig — esp32-32
-esphome -s devicename esp32-32 -s updates 15s -s room Test32c3rgb -s mqtt_location measures -s mqtt_room test32c3rgb run 0_DEV/esp32c3_dev.yaml
+esphome -s devicename esp32-32 -s updates 15s -s room Test32c3rgb -s mqtt_location measures -s mqtt_room test32c3rgb run 0_DEV/esp32c3plus_dev.yaml
 ```
 
 Observe on each rig: clean boot, no panic / Guru Meditation, no reset loop, sensors report. Only proceed to PROD once **both** rigs are healthy. If a rig is unreachable or busy, document the skip in the impact file (carryover note).

@@ -36,7 +36,7 @@ public PR — its history must stay clean for review. Pattern:
    git checkout -B wip/pr-refresh-<YYYY-MM-DD> pr/nvm-base
    ```
 2. Iterate freely on `wip/pr-refresh-*`: rebase on the new ESPHome tag, fix
-   compile errors, flash-test on `esp32-32`, repeat until green.
+   compile errors, flash-test on `esp32-31`, repeat until green.
 3. When verified, prepare clean commits (squash WIPs, write proper messages).
 4. Cherry-pick *only* the clean commits onto `pr/nvm-base`.
 5. Force-push `pr/nvm-base` (after `--force-with-lease` and **explicit user OK**
@@ -61,7 +61,7 @@ git status              # clean
 
 Ping test device:
 ```bash
-ping -c 2 esp32-32.lan  # MUST be reachable for OTA verify
+ping -c 2 esp32-31.lan  # MUST be reachable for OTA verify
 ```
 
 If anything is dirty — commit, stash, or abort. Don't start a refresh on a
@@ -138,16 +138,18 @@ or in `__init__.py` schema validation — resolve based on:
 - Issue B history (App.register_component): `register_component_` is protected,
   so drive `PreferencesPartition::setup()` from `NvmPlatform::setup()` instead
 
-### 3b. Compile + flash test on esp32-32
+### 3b. Compile + flash test on esp32-31
 
-The test config `0_DEV/esp32c3_dev.yaml` includes
-`tests/test_nvm_fram_i2c.yaml` which already wires `external_components` to
+The test config `0_DEV/esp32c3_dev.yaml` has the `test_nvm` package commented
+out so the upgrade sweep compiles; enable it (and its `packages:` key) for this
+test, or use the pinned 2026.5.3 copy `~/dev/esphome_scripts_2026.5.3` (commit
+`1c05279`, `./build_esp32-31.sh`). `tests/test_nvm_fram_i2c.yaml` already wires `external_components` to
 both the override (`[esp32]`) and the local clone (`[nvm, fram_i2c]`).
 
 ```bash
 cd ~/dev/esphome_scripts
-esphome -s devicename esp32-32 -s updates 15s -s room Test32c3rgb \
-  -s mqtt_location measures -s mqtt_room test32c3rgb \
+esphome -s devicename esp32-31 -s updates 15s -s room Test32c3 \
+  -s mqtt_location measures -s mqtt_room test32c3 \
   compile 0_DEV/esp32c3_dev.yaml
 ```
 
@@ -178,10 +180,10 @@ Eyeball any `.h` you touched against these two before committing. See
 
 Flash + boot verify:
 ```bash
-ping -c 2 esp32-32.lan
-esphome -s devicename esp32-32 -s updates 15s -s room Test32c3rgb \
-  -s mqtt_location measures -s mqtt_room test32c3rgb \
-  run 0_DEV/esp32c3_dev.yaml --device esp32-32.lan
+ping -c 2 esp32-31.lan
+esphome -s devicename esp32-31 -s updates 15s -s room Test32c3 \
+  -s mqtt_location measures -s mqtt_room test32c3 \
+  run 0_DEV/esp32c3_dev.yaml --device esp32-31.lan
 ```
 
 Verify in the OTA log:
@@ -360,8 +362,8 @@ Compile + flash test (same commands as Phase 3b):
 ```bash
 cd ~/dev/esphome_scripts
 esphome ... compile 0_DEV/esp32c3_dev.yaml
-ping -c 2 esp32-32.lan
-esphome ... run 0_DEV/esp32c3_dev.yaml --device esp32-32.lan
+ping -c 2 esp32-31.lan
+esphome ... run 0_DEV/esp32c3_dev.yaml --device esp32-31.lan
 ```
 
 Verify in the OTA log (in addition to Phase 3b checks — same MQTT-misses-
@@ -390,7 +392,7 @@ git push --force-with-lease origin local/preferences-virtual
 
 ## Phase 5 — Optionally flash production devices
 
-Once `local/preferences-virtual` compiles + boots cleanly on esp32-32:
+Once `local/preferences-virtual` compiles + boots cleanly on esp32-31:
 
 For each production device that uses NVM/FRAM (e.g., `esp32-35` Pump_Garage
 with water meter pulse counter):
@@ -426,13 +428,13 @@ ls -la ~/dev/esphome_scripts/esphome-overrides/esphome/components/esp32/preferen
 grep "external_components" 0_DEV/esp32c3_dev.yaml | head
 # Should reference esphome-overrides AND list 'esp32' in components.
 
-cat 0_DEV/.esphome/build/esp32-32/src/esphome/components/esp32/preferences.h | head -10
+cat 0_DEV/.esphome/build/esp32-31/src/esphome/components/esp32/preferences.h | head -10
 # Should show our patched version, not vanilla.
 ```
 
 If the build still has vanilla — clean rebuild:
 ```bash
-rm -rf 0_DEV/.esphome/build/esp32-32
+rm -rf 0_DEV/.esphome/build/esp32-31
 esphome ... compile 0_DEV/esp32c3_dev.yaml
 ```
 

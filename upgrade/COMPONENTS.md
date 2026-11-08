@@ -103,7 +103,8 @@ Flash using the alias, e.g. `esp10`, `esp11`, etc.
 | Component | Usage in repo |
 |-----------|---------------|
 | `i2c` | Primary bus for most sensors (BH1750, BME680, SHT, etc.) |
-| `uart` | UART-based sensors (LD2410, LD2420, YF-B10) |
+| `uart` | UART-based sensors (LD2410, LD2420, YF-B10); RS485 via HW-519 module (PT02 Modbus on esp32-32) |
+| `modbus`, `modbus_controller` | Read-only FC04 polling of a GZAIR PT02 (`sensors/set_pt02_modbus.yaml`) |
 | `one_wire` | DS18B20 temperature sensors |
 | `spi` | ePaper displays (Waveshare) |
 | `pcf8574` | GPIO expander via I2C; used in Office light switch (AVT5713) |
