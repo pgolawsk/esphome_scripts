@@ -87,6 +87,7 @@ When a dual-room script is added, the device substitutions block **must** declar
 **Include files**: `category_specific_name.yaml` (e.g., `sensor_sht30.yaml`, `output_relay.yaml`)
 
 - Grouped by type: `sensors/`, `outputs/`, `lights/`, `switches/`, `buttons/`, `fans/`, `interfaces/`, `includes/`
+- **`set_*` prefix** (e.g. `covers/set_door_cover.yaml`, `i2s/set_i2s_media_player.yaml`, `buttons/set_apple_tv_ir_remote.yaml`): the file is a complete package for a `packages:` block. It carries its own top-level `cover:`, `button:`, `media_player:` etc. section(s), so it is included under `packages:` (`name: !include {file: ..., vars: {...}}`), not under a component list. Customise it from the device file with `vars:` on the `!include` and/or with `!extend`.
 
 **`.yml` vs `.yaml` extension** — intentional convention:
 

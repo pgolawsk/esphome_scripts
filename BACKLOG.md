@@ -799,6 +799,7 @@ Per-device files `0_DEV/.gitignore:5` → `/secrets.yaml` and `2_PROD/.gitignore
 **Suggested fix:** If MQTT broker is on a trusted segment, fine. Otherwise enable auth.
 **Effort:** S (+ Mosquitto config)
 **Severity:** Minor (depends on threat model)
+**Progress 2026-11-08:** `secrets.yaml` now holds non-empty `mqtt_user`/`mqtt_password` (shared `esp` account); `secrets_example.yaml` intentionally keeps empty placeholders. 9 devices still connect anonymously (esp12f-10/-11/-15/-21/-25, esp32-05/-06/-14/-36) and move to `esp` on their next normal upgrade. Item closes when the broker is switched to `allow_anonymous false` (HAL, Phase 3), after the last of the nine is confirmed on `esp`.
 
 ### 74. `secrets.yaml` contains plaintext Tuya `local_key` values
 
@@ -844,6 +845,7 @@ Per-device files `0_DEV/.gitignore:5` → `/secrets.yaml` and `2_PROD/.gitignore
 **Suggested fix:** Add convention to AGENTS.md § File Naming Conventions: "Files prefixed `set_*` are designed for use in `packages:` blocks; they include their parent `cover:`, `button:`, `media_player:` etc. block at the top."
 **Effort:** S
 **Severity:** Minor
+**Status:** ✅ done 2026-11-08 (added `set_*` bullet to AGENTS.md § Include files)
 
 ### 79. `README.md` has typo "Futures" instead of "Features"
 
