@@ -128,7 +128,7 @@ Built on 2026.10.2 (native `arduino` toolchain; no Rosetta needed, which 2026.8.
 - Compile warning seen before the migration: `esphome->platformio_options->build_flags is deprecated ... removed in 2026.12.0`. **Migrated 2026-11-07 (`1eca4b8`):** both flags now sit under `esphome: build_flags:` in `includes/board_esp8266.yaml`; the warning is gone and the MMU/VTABLES defines in `build.ninja` plus firmware sizes are identical (compile-checked on esp12f-29 and esp12f-15). Treated as a refactor, so no `version:` bump and no reflash needed; the already flashed ESP8266 devices carry the same binary content.
 - Rig esp32-30 (ESP32, `esp32_dev.yaml`, ESP-IDF) flashed OTA on 2026.10.2 (38 s): RAM 28.9% / flash 59.5%, heap free ~219 kB, max block 110 592 B. No prior heap history exists (rigs are not scraped by Prometheus under `.nam` names), so no before/after comparison. Framework switch Arduino → ESP-IDF over OTA worked.
 - Rig esp12f-29 was reached at `esp12f-29.nam` (Namysłowska). Prometheus showed `up=0` because it scrapes the bare name `esp12f-29:80`; esp32-32 was not checked under `.nam`.
-- The MMU question is answered, see "MMU flag test" below. What stays open: whether the flag matters for Office's `/metrics` output.
+- The MMU question is answered, see "MMU flag test" below. The flag was disabled after the load test; confirm on Office when it is flashed.
 
 ### MMU flag test (esp12f-29 rig, 2026-11-07)
 
@@ -145,7 +145,23 @@ Question: does `-DPIO_FRAMEWORK_ARDUINO_MMU_CACHE16_IRAM32_SECHEAP_NOTSHARED` st
 | Heap max block | 26 688 B | 26 688 B |
 | RAM / flash | 41 704 B / 581 948 B | 41 704 B / 581 964 B |
 
-- **Conclusion.** The flag changes the CPU memory map but not main-heap numbers; the extra pool is separate and only used when code selects it explicitly. The heap gains after the upgrade are therefore not caused by this flag. Whether it helps the original problem (`/metrics` truncated on a heap-starved device) cannot be shown on the rig: test on Office (esp12f-10) with the flag removed and `/metrics` size/completeness compared. Until then the flag is kept.
+- **Conclusion (idle).** The flag changes the CPU memory map but not main-heap numbers. The heap gains after the upgrade are not caused by this flag.
+
+#### Load test (2026-11-07/08): flag does not help, slightly harms
+
+The core enables the IRAM heap (`UMM_HEAP_IRAM`) only for the `..._SECHEAP_SHARED` variant; with `NOTSHARED` the 16 kB pool is reserved but not used by the allocator, and the cache is halved (32 kB to 16 kB). To check the original use case (`/metrics` truncated on a heap-starved device), `esp12f_dev.yaml` plus 40 extra exported template sensors (not `internal`) was built with and without the flag, 6 restarts each, measured ~85 s after boot (temporary file, deleted afterwards):
+
+| | with flag | without flag |
+|---|---|---|
+| `/metrics` truncated at | 6743 B (5/6 boots) | 7004 B (6/6 boots) |
+| Heap max block | 14 688 B | 18 672 B (+27%) |
+| Heap free | ~21.8-22.0 kB | ~22.6 kB (later samples 19-21 kB) |
+| Loop time samples | 18-25 ms | 17-21 ms |
+
+- One boot with the flag was an outlier (2751 B, heap 12 144 B, block 6744 B), treated as a transient load spike and excluded.
+- `/metrics` truncation reproduces in both variants (same cause as before: too many exported entities, hence `internal: true` on Office). The flag does not prevent it.
+- Mechanism of the smaller block with the flag is not explained; the numbers are one build per variant but repeatable across boots.
+- **Decision (Pawelo, 2026-11-08): flag disabled** in `includes/board_esp8266.yaml` (kept as a comment; `-DVTABLES_IN_FLASH` stays, redundant but harmless). Already flashed ESP8266 devices still carry the flag until their next reflash. To confirm on Office (esp12f-10) when it is flashed: `/metrics` complete and heap not worse.
 
 
 ## Upgrade steps still ahead (SOP)

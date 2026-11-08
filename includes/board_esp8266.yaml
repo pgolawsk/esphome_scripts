@@ -23,6 +23,7 @@
 # FLUX, 20260512, Added Jinja defaults for board_variant ("12F"), board ("esp12e"), restore_from_flash (false), flash_write_interval ("5min") — eliminates per-device declaration for ESP12F devices (mirror of accuracy_decimals/min_version pattern, Jinja default pattern extension, mirrors BACKLOG #10)
 # FLUX, 20260512, Added Jinja defaults: project_name ("pgolawsk.esp_home") (Jinja default pattern extension, mirrors BACKLOG #10)
 # FLUX, 20261107, moved build_flags from esphome->platformio_options to esphome->build_flags (deprecated since 2026.10.0, removed in 2026.12.0); flag list unchanged, MMU defines verified identical in build.ninja
+# FLUX, 20261108, disabled -DPIO_FRAMEWORK_ARDUINO_MMU_CACHE16_IRAM32_SECHEAP_NOTSHARED: no gain (secondary heap not enabled), under load on esp12f-29 /metrics cut earlier and max heap block 27% smaller (see upgrade/ESPHOME_2026.10.0.md)
 
 esphome:
   name: $devicename
@@ -39,7 +40,7 @@ esphome:
     - -DVTABLES_IN_FLASH  # default PIO config value
     # - -DPIO_FRAMEWORK_ARDUINO_MMU_CACHE16_IRAM48
     # - -DPIO_FRAMEWORK_ARDUINO_MMU_CACHE16_IRAM48_SECHEAP_SHARED
-    - -DPIO_FRAMEWORK_ARDUINO_MMU_CACHE16_IRAM32_SECHEAP_NOTSHARED  # 16kB for cache, 32kB instructions, 16kB for heap/data
+    # - -DPIO_FRAMEWORK_ARDUINO_MMU_CACHE16_IRAM32_SECHEAP_NOTSHARED  # disabled 20261108: no benefit, slightly worse under load
   # includes:
   #   - ../src/esphome/components/prometheus/prometheus_handler.h
   #   - ../src/esphome/components/prometheus/prometheus_handler.cpp
