@@ -263,7 +263,7 @@ Author: Pawel Golawski, <pawel.golawski@2com.pl>
 - 5x 2ch DC level converter 5V \<> 3.3V
 - 5x DC level converter 5V \<> 3.3V (I2C, SPI, UART)
 - 10x 4ch DC level converter 5V \<> 3.3V (I2C)
-- 2x **RS485 to TTL** (3.3 - 5V)
+- 2x **RS485 to TTL** (3.3 - 5V) - **HW-519**, automatic direction control (no DE/RE pins), not isolated; TTL side VCC/GND/TXD/RXD, bus side A/B (transceiver chip to be verified on the board: MAX485 vs MAX13487)
 - 2x **D4184** MOSFET (max 40V, 50A)
 - 4x **LR7843** MOSFET (max 30V, 161A)
 
