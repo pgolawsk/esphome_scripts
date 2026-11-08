@@ -124,6 +124,8 @@ Scope walked: `2_PROD/*.yaml` (all 11), representative `0_DEV/*.yaml`, `includes
 **Effort:** S
 **Severity:** Minor
 **Findings (2026-11-07, FLUX, Loki 30d):** not a continuous flood. One episode only: 2026-10-18 ~11:00 to ~23:00 local, 240 lines/h (a warning pair every 30 s), 2762 lines total; it ended at an MQTT reconnect at 23:08 (likely a restart) and there has been no bme680 warning since. The earlier "~736/day" figure came from a 24h window inside that episode. Looks like a heater/gas channel that hung and recovered after restart; root cause unknown. No config change made. Left open as observation only; if it recurs, check supply and I2C on esp32-14.
+**Follow-up (2026-11-08, FLUX):** Loki shows 0 `bme680` lines on esp32-14 in the last 8 days, including after the 2026.10.2 reflash. Live `/metrics` on esp32-14: `salon_gas_resistance` = 151018 Ω, `esphome_sensor_failed` = 0 (temperature and pressure also fine). The 2026-10-18 episode did not recur; the only esp32-14 warnings in the last 2 days are unrelated (`Dropped N inbound MQTT events`, HA `SOCKET_READ_FAILED`). Candidate for closing as not reproducible; closed as not reproducible; reopen if the warnings return.
+**Status:** ✅ done 2026-11-08 — not reproducible, no fix needed.
 
 ### 88. esp32-35 `epaper_spi` logs "Display already in state POWER_OFF" errors
 
