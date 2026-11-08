@@ -125,17 +125,24 @@ If compile fails: fix the error, re-check breaking changes section.
 
 ## Step 7: Smoke-Test on Reference Rigs (mandatory before any PROD flash)
 
-**Always** flash the new ESPHome version onto the two reference test rigs and observe behavior **before** flashing any PROD device. The rigs cover both chip families (ESP8266 + ESP32-C3) with dense reference configs, so a regression in the new release surfaces on the bench instead of on a deployed device. Neither rig has a `.dir_aliases` alias — they are flashed via generic DEV YAMLs with `-s` overrides (commands live verbatim in `esp_upgrade.sh`).
+**Always** flash the new ESPHome version onto the reference rig of a chip family and observe behavior **before** flashing any PROD device of that family. Each rig gates only its own family:
+
+| Rig | Gates | Notes |
+|-----|-------|-------|
+| `esp12f-29` | every ESP8266 PROD device | test rig and upgrade gate in one |
+| `esp32-30` | every ESP32 PROD device | basic rig, does not cover S3/C3 |
+| `esp32-31` | `esp32-35` Pump only | holds the FRAM; built from the pinned copy `~/dev/esphome_scripts_2026.5.3` (`./build_esp32-31.sh`), like the Pump |
+| `esp32-32` | nothing | experiments only (currently RS485/PT02), not part of the upgrade path |
 
 ```bash
 # ESP8266 rig — esp12f-29
 esphome -s devicename esp12f-29 -s updates 30s -s room Test -s mqtt_location measures -s mqtt_room test run 0_DEV/esp12f_dev.yaml
 
-# ESP32-C3 rig — esp32-32
-esphome -s devicename esp32-32 -s updates 15s -s room Test32c3rgb -s mqtt_location measures -s mqtt_room test32c3rgb run 0_DEV/esp32c3plus_dev.yaml
+# ESP32 rig — esp32-30
+esphome -s devicename esp32-30 -s updates 1min -s room Test32 -s mqtt_location measures -s mqtt_room test32 -s room2 Test32b -s mqtt_location2 measures -s mqtt_room2 test32b run 0_DEV/esp32_dev.yaml
 ```
 
-Observe on each rig: clean boot, no panic / Guru Meditation, no reset loop, sensors report. Only proceed to PROD once **both** rigs are healthy. If a rig is unreachable or busy, document the skip in the impact file (carryover note).
+Observe on each rig: clean boot, no panic / Guru Meditation, no reset loop, sensors report. Only proceed to PROD devices of a chip family once its rig is healthy. If a rig is unreachable or busy, document the skip in the impact file (carryover note).
 
 If a rig surfaces an upstream behavior/quirk that is not this version's fault and may recur across versions (e.g. a web_server frontend glitch), record it in `KNOWN_ISSUES.md` rather than the per-version impact file, so future cycles don't re-investigate it.
 
