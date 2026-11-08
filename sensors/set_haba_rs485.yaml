@@ -4,8 +4,10 @@
 #! NEVER add tx_pin, modbus or modbus_controller here: the ESP must not transmit on this bus (replies can change controller settings).
 #! Wiring: module TXD to ${rx_pin}; module RXD (DI) tied to 3.3V, not to an ESP pin. Before connecting to the controller, confirm with a second RS485 adapter on A/B that the module stays silent through an ESP reset.
 #? Register meaning is measured for 2001 and 2003 only; 2000, 2002 and 2005-2006 are exposed raw to confirm later.
-#? Frame boundaries come from loop timing, so the lambda searches each block for the header and checks length and CRC.
+#? Frame boundaries come from loop timing, so the lambda walks each block and lets the CRC pick the frame length.
 # FLUX, 20261108, created for the Haba RS485 sniffer (phase 1)
+# FLUX, 20261108, log every kind of frame to Loki on first sight and on content change (raw hex), not only the status frame
+# FLUX, 20261108, added a 10 min status summary line for Loki (counters, last frame age, current registers)
 
 globals:
   - id: haba_frames_ok${ix}
@@ -17,6 +19,11 @@ globals:
   - id: haba_last_frame_ms${ix}
     type: uint32_t
     initial_value: "0"
+  - id: haba_blocks_unparsed${ix}
+    type: uint32_t
+    initial_value: "0"
+  - id: haba_regs${ix}
+    type: std::array<uint16_t, 10>
 
 uart:
   - id: ${uart_id}
@@ -34,57 +41,104 @@ uart:
       sequence:
         - lambda: |-
             static const uint8_t HEADER[7] = {0x06, 0x10, 0x07, 0xD0, 0x00, 0x0A, 0x14};
-            static const size_t FRAME_LEN = 29;
+            static const size_t STATUS_LEN = 29;
+            static const size_t MAX_KINDS = 32;
             static const uint32_t REPUBLISH_MS = 60000;
-            static uint16_t last[10];
+            static const uint32_t UNPARSED_LOG_MS = 60000;
+            static std::map<uint32_t, std::vector<uint8_t>> kinds;  // last frame seen per address + function + start register
             static bool have_last = false;
             static uint32_t last_publish = 0;
+            static uint32_t last_unparsed_log = 0;
 
+            const size_t n = bytes.size();
+            const bool mqtt_up = id(mqtt_client).is_connected();  // logs reach Loki over MQTT only
+            bool unparsed = false;
             size_t i = 0;
-            while (i + FRAME_LEN <= bytes.size()) {
-              if (memcmp(&bytes[i], HEADER, sizeof(HEADER)) != 0) {
+            while (i + 5 <= n) {
+              // Candidate Modbus RTU lengths: fixed 8 B request, FC16 write, read reply, exception reply; the CRC picks the right one
+              const size_t candidates[4] = {8, i + 6 < n ? size_t(9 + bytes[i + 6]) : 0, size_t(5 + bytes[i + 2]), 5};
+              size_t len = 0;
+              for (const size_t c : candidates) {
+                if (c >= 5 && i + c <= n && crc16(&bytes[i], c - 2) == (bytes[i + c - 2] | (bytes[i + c - 1] << 8))) {
+                  len = c;
+                  break;
+                }
+              }
+              const bool is_status_header = i + sizeof(HEADER) <= n && memcmp(&bytes[i], HEADER, sizeof(HEADER)) == 0;
+              if (len == 0) {
+                if (is_status_header && i + STATUS_LEN <= n) {
+                  id(haba_frames_crc_err${ix})++;
+                }
+                unparsed = true;
                 i++;
                 continue;
               }
-              const uint16_t received_crc = bytes[i + 27] | (bytes[i + 28] << 8);
-              if (crc16(&bytes[i], 27) != received_crc) {
-                id(haba_frames_crc_err${ix})++;
-                i++;
-                continue;
-              }
-              id(haba_frames_ok${ix})++;
-              id(haba_last_frame_ms${ix}) = millis();
 
-              uint16_t reg[10];
-              for (size_t r = 0; r < 10; r++) {
-                reg[r] = (bytes[i + 7 + 2 * r] << 8) | bytes[i + 8 + 2 * r];
+              // Log each kind of frame once and then only when its content changes; wait for MQTT so the first sighting is not lost
+              if (mqtt_up) {
+                const uint32_t kind = (uint32_t(bytes[i]) << 24) | (uint32_t(bytes[i + 1]) << 16) | (uint32_t(bytes[i + 2]) << 8) | bytes[i + 3];
+                std::vector<uint8_t> frame(bytes.begin() + i, bytes.begin() + i + len);
+                auto it = kinds.find(kind);
+                if (it != kinds.end() ? it->second != frame : kinds.size() < MAX_KINDS) {
+                  ESP_LOGI("haba", "frame %02X fc%u: %s", bytes[i], bytes[i + 1], format_hex_pretty(frame).c_str());
+                  kinds[kind] = frame;
+                }
               }
-              i += FRAME_LEN;
 
-              const bool changed = !have_last || memcmp(reg, last, sizeof(reg)) != 0;
-              if (!changed && millis() - last_publish < REPUBLISH_MS) {
-                continue;
-              }
-              if (changed) {
-                ESP_LOGI("haba", "2000-2009: %u %u %u %u %u %u %u %u %u %u", reg[0], reg[1], reg[2], reg[3], reg[4], reg[5], reg[6], reg[7], reg[8], reg[9]);
-              }
-              memcpy(last, reg, sizeof(reg));
-              have_last = true;
-              last_publish = millis();
+              if (len == STATUS_LEN && is_status_header) {
+                id(haba_frames_ok${ix})++;
+                id(haba_last_frame_ms${ix}) = millis();
 
-              const uint8_t phase = (reg[1] >> 6) & 0x03;
-              id(haba_phase${ix}).publish_state(phase == 1 ? "aeration" : phase == 2 ? "denitrification" : phase == 3 ? "sedimentation" : "unknown");
-              id(haba_blower${ix}).publish_state(reg[1] & 0x01);
-              id(haba_level_ok${ix}).publish_state((reg[1] >> 3) & 0x01);
-              id(haba_reg_2000${ix}).publish_state(reg[0]);
-              id(haba_reg_2001${ix}).publish_state(reg[1]);
-              id(haba_reg_2002${ix}).publish_state(reg[2]);
-              id(haba_blower_minutes${ix}).publish_state(reg[3]);
-              const uint32_t raw_float = (uint32_t(reg[5]) << 16) | reg[6];
-              float value;
-              memcpy(&value, &raw_float, sizeof(value));
-              id(haba_float_2005${ix}).publish_state(value);
+                uint16_t reg[10];
+                for (size_t r = 0; r < 10; r++) {
+                  reg[r] = (bytes[i + 7 + 2 * r] << 8) | bytes[i + 8 + 2 * r];
+                }
+
+                const bool changed = !have_last || memcmp(reg, id(haba_regs${ix}).data(), sizeof(reg)) != 0;
+                if (changed || millis() - last_publish >= REPUBLISH_MS) {
+                  if (changed) {
+                    ESP_LOGI("haba", "2000-2009: %u %u %u %u %u %u %u %u %u %u", reg[0], reg[1], reg[2], reg[3], reg[4], reg[5], reg[6], reg[7], reg[8], reg[9]);
+                  }
+                  memcpy(id(haba_regs${ix}).data(), reg, sizeof(reg));
+                  have_last = true;
+                  last_publish = millis();
+
+                  const uint8_t phase = (reg[1] >> 6) & 0x03;
+                  id(haba_phase${ix}).publish_state(phase == 1 ? "aeration" : phase == 2 ? "denitrification" : phase == 3 ? "sedimentation" : "unknown");
+                  id(haba_blower${ix}).publish_state(reg[1] & 0x01);
+                  id(haba_level_ok${ix}).publish_state((reg[1] >> 3) & 0x01);
+                  id(haba_reg_2000${ix}).publish_state(reg[0]);
+                  id(haba_reg_2001${ix}).publish_state(reg[1]);
+                  id(haba_reg_2002${ix}).publish_state(reg[2]);
+                  id(haba_blower_minutes${ix}).publish_state(reg[3]);
+                  const uint32_t raw_float = (uint32_t(reg[5]) << 16) | reg[6];
+                  float value;
+                  memcpy(&value, &raw_float, sizeof(value));
+                  id(haba_float_2005${ix}).publish_state(value);
+                }
+              }
+              i += len;
             }
+
+            if (unparsed) {
+              id(haba_blocks_unparsed${ix})++;
+            }
+            if (unparsed && mqtt_up && millis() - last_unparsed_log >= UNPARSED_LOG_MS) {
+              ESP_LOGI("haba", "unparsed block: %s", format_hex_pretty(bytes).c_str());
+              last_unparsed_log = millis();
+            }
+
+#? Loki is the only record of this sniffer: the summary tells "nothing changed" apart from "bus or device is dead"
+interval:
+  - interval: 10min
+    then:
+      - lambda: |-
+          const auto &r = id(haba_regs${ix});
+          const uint32_t ok = id(haba_frames_ok${ix});
+          const unsigned age = ok > 0 ? (millis() - id(haba_last_frame_ms${ix})) / 1000 : 0;
+          ESP_LOGI("haba", "status: ok=%u crc_err=%u unparsed=%u last_frame=%s%us 2000-2009: %u %u %u %u %u %u %u %u %u %u",
+                   (unsigned) ok, (unsigned) id(haba_frames_crc_err${ix}), (unsigned) id(haba_blocks_unparsed${ix}), ok > 0 ? "" : "never/", age,
+                   r[0], r[1], r[2], r[3], r[4], r[5], r[6], r[7], r[8], r[9]);
 
 text_sensor:
   - platform: template
