@@ -132,7 +132,7 @@ If compile fails: fix the error, re-check breaking changes section.
 | `esp12f-29` | every ESP8266 PROD device | test rig and upgrade gate in one |
 | `esp32-30` | every ESP32 PROD device | basic rig, does not cover S3/C3 |
 | `esp32-31` | `esp32-35` Pump only | holds the FRAM; built from the pinned copy `~/dev/esphome_scripts_2026.5.3` (`./build_esp32-31.sh`), like the Pump |
-| `esp32-32` | nothing | experiments only (currently RS485/PT02), not part of the upgrade path |
+| `esp32-32` | nothing | experiments only (currently RS485/Haba receive-only decoder), not part of the upgrade path |
 
 ```bash
 # ESP8266 rig — esp12f-29

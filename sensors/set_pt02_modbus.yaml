@@ -2,9 +2,10 @@
 #* GZAIR PT02 air-quality monitor over Modbus RTU (RS485), ESP as bus master. SET for package:
 #* Register map: docs/devices/pt02_modbus_registers.md
 #! READ-ONLY: FC04 sensors only. Do NOT add number/switch/select/output entities: PT02 holding registers drive mains-voltage alarm relays.
-#! This package TRANSMITS on the bus. NEVER use it on the Haba controller bus (use interfaces/uart_rs485_rx.yaml there).
+#! This package TRANSMITS on the bus. NEVER use it on the Haba controller bus (use sensors/set_haba_rs485.yaml there).
 #? Works with an automatic-direction TTL to RS485 module (HW-519), so no flow_control_pin.
 # FLUX, 20261108, created for the PT02 polling test on esp32-32
+# FLUX, 20261108, header pointer: Haba bus now uses sensors/set_haba_rs485.yaml (interfaces/uart_rs485_rx.yaml removed)
 
 uart:
   - id: ${uart_id}

@@ -56,6 +56,7 @@
 # FLUX, 20260514, Swept logger_level.yaml → logger.yaml include path; logger.yaml now accepts level/baud_rate via Jinja defaults (BACKLOG #15 + #43)
 # FLUX, 20261108, renamed from esp32c3_dev.yaml: this is the C3 supermini plus variant (RGB LED, external antenna)
 # FLUX, 20261108, moved the RS485 / PT02 Modbus setup here from esp32c3_dev.yaml (external antenna): enabled sensors/set_pt02_modbus.yaml; disabled ePaper display + fonts/script/globals/select/spi, display and Wake-on-LAN buttons, test_nvm package (FRAM and ePaper moved to the plain C3 board)
+# FLUX, 20261108, switched to the receive-only Haba decoder (sensors/set_haba_rs485.yaml); PT02 package commented out because it transmits
 
 # ! run with this command to override substitutions
 # esphome -s devicename espXX -s updates 1min -s room <Room name> -s mqtt_room <room> run esp32_MMmm_SSss__PP.yaml --device 192.168.x.x
@@ -110,7 +111,6 @@ substitutions:
 # Include interfaces needed
 <<: !include {file: ../interfaces/debug.yaml, vars: {update_interval: "5s"}}
 <<: !include {file: ../interfaces/i2c.yaml, vars: {bus_id: "bus_a", sda: "GPIO21", scl: "GPIO20"}}
-# <<: !include {file: ../interfaces/uart_rs485_rx.yaml, vars: {uart_id: "uart_rs485", rx_pin: "GPIO3", baud_rate: 9600, frame_gap: "20ms"}}  # RS485 receive-only sniffer, NO tx_pin (module RXD tied to 3.3V)
 # <<: !include {file: ../interfaces/i2c_bme68x_bsec2.yaml, vars: {ix: "", bus_id: "bus_a", address: "0x77", temp_offset: -1.7}}
 # <<: !include {file: ../interfaces/one_wire.yaml, vars: {wire_id: "ow_a", gpio: "GPIO10"}}
 # <<: !include {file: ../interfaces/rtttl.yaml, vars: {ix: ""}}
@@ -136,8 +136,11 @@ substitutions:
 # <<: !include {file: ../i2s/voice_assistant_speaker.yaml, vars: {mic_id: "mic", speaker_id: "spk"}}
 
 packages:
+  # Haba septic plant controller, RECEIVE-ONLY. Module TXD on GPIO3; module RXD tied to 3.3V (NOT GPIO4). Do not enable together with pt02 below
+  haba: !include {file: ../sensors/set_haba_rs485.yaml, vars: {ix: "", uart_id: "uart_rs485", rx_pin: "GPIO3"}}
+
   # PT02 air-quality monitor, ESP as Modbus master (read-only FC04); module TXD on GPIO3, RXD on GPIO4
-  pt02: !include {file: ../sensors/set_pt02_modbus.yaml, vars: {ix: "", uart_id: "uart_rs485", rx_pin: "GPIO3", tx_pin: "GPIO4", address: 100, update_interval: "30s"}}
+  # pt02: !include {file: ../sensors/set_pt02_modbus.yaml, vars: {ix: "", uart_id: "uart_rs485", rx_pin: "GPIO3", tx_pin: "GPIO4", address: 100, update_interval: "30s"}}
 
   # FRAM test - this is to test the NVM component with FRAM I2C platform and all partition types, as well as to have a simple example of how to use it in practice
   # test_fram: !include {file: ../tests/test_fram.yaml, vars: {}}
