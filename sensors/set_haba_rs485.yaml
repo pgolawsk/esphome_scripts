@@ -8,6 +8,7 @@
 # FLUX, 20261108, created for the Haba RS485 sniffer (phase 1)
 # FLUX, 20261108, log every kind of frame to Loki on first sight and on content change (raw hex), not only the status frame
 # FLUX, 20261108, added a 10 min status summary line for Loki (counters, last frame age, current registers)
+# FLUX, 20261111, re-log every frame kind (incl. FC16 settings @1-9, @14-15) at least every 10 min even when unchanged, to see setting and mode changes over time
 
 globals:
   - id: haba_frames_ok${ix}
@@ -45,7 +46,9 @@ uart:
             static const size_t MAX_KINDS = 32;
             static const uint32_t REPUBLISH_MS = 60000;
             static const uint32_t UNPARSED_LOG_MS = 60000;
+            static const uint32_t RELOG_MS = 600000;  // unchanged frame kinds are logged again after this time
             static std::map<uint32_t, std::vector<uint8_t>> kinds;  // last frame seen per address + function + start register
+            static std::map<uint32_t, uint32_t> kinds_logged_ms;  // when each kind was last written to the log
             static bool have_last = false;
             static uint32_t last_publish = 0;
             static uint32_t last_unparsed_log = 0;
@@ -74,14 +77,16 @@ uart:
                 continue;
               }
 
-              // Log each kind of frame once and then only when its content changes; wait for MQTT so the first sighting is not lost
+              // Log each kind of frame on first sight, on content change and then every RELOG_MS; wait for MQTT so the first sighting is not lost
               if (mqtt_up) {
                 const uint32_t kind = (uint32_t(bytes[i]) << 24) | (uint32_t(bytes[i + 1]) << 16) | (uint32_t(bytes[i + 2]) << 8) | bytes[i + 3];
                 std::vector<uint8_t> frame(bytes.begin() + i, bytes.begin() + i + len);
                 auto it = kinds.find(kind);
-                if (it != kinds.end() ? it->second != frame : kinds.size() < MAX_KINDS) {
+                const uint32_t now = millis();
+                if (it != kinds.end() ? (it->second != frame || now - kinds_logged_ms[kind] >= RELOG_MS) : kinds.size() < MAX_KINDS) {
                   ESP_LOGI("haba", "frame %02X fc%u: %s", bytes[i], bytes[i + 1], format_hex_pretty(frame).c_str());
                   kinds[kind] = frame;
+                  kinds_logged_ms[kind] = now;
                 }
               }
 
