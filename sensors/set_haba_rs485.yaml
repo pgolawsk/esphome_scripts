@@ -10,6 +10,20 @@
 # FLUX, 20261108, added a 10 min status summary line for Loki (counters, last frame age, current registers)
 # FLUX, 20261111, re-log every frame kind (incl. FC16 settings @1-9, @14-15) at least every 10 min even when unchanged, to see setting and mode changes over time
 # FLUX, 20261112, 10 min settings line: age and count of the last complete FC16 settings frame per block (@1-9, @14-15) plus partial count; uart debug timeout 20ms to 100ms (main-loop stalls were splitting frames)
+# FLUX, 20261112, boot log line with version, build time and config hash (once per boot, after MQTT is up) so each OTA is identifiable in Loki
+
+#? Loki build marker: after every OTA the first log shows which build runs (config version, compile time); waits for MQTT because logs reach Loki over MQTT only
+esphome:
+  on_boot:
+    priority: -100
+    then:
+      - wait_until:
+          condition: mqtt.connected
+          timeout: 5min
+      - lambda: |-
+          char built[Application::BUILD_TIME_STR_SIZE];
+          App.get_build_time_string(built);
+          ESP_LOGI("haba", "boot: version=${version} built=%s config_hash=0x%08X", built, (unsigned) App.get_config_hash());
 
 globals:
   - id: haba_frames_ok${ix}
