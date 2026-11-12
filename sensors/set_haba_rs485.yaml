@@ -9,6 +9,7 @@
 # FLUX, 20261108, log every kind of frame to Loki on first sight and on content change (raw hex), not only the status frame
 # FLUX, 20261108, added a 10 min status summary line for Loki (counters, last frame age, current registers)
 # FLUX, 20261111, re-log every frame kind (incl. FC16 settings @1-9, @14-15) at least every 10 min even when unchanged, to see setting and mode changes over time
+# FLUX, 20261112, 10 min settings line: age and count of the last complete FC16 settings frame per block (@1-9, @14-15) plus partial count; uart debug timeout 20ms to 100ms (main-loop stalls were splitting frames)
 
 globals:
   - id: haba_frames_ok${ix}
@@ -21,6 +22,21 @@ globals:
     type: uint32_t
     initial_value: "0"
   - id: haba_blocks_unparsed${ix}
+    type: uint32_t
+    initial_value: "0"
+  - id: haba_set1_ms${ix}  # last complete FC16 settings frame @1-9
+    type: uint32_t
+    initial_value: "0"
+  - id: haba_set1_n${ix}
+    type: uint32_t
+    initial_value: "0"
+  - id: haba_set14_ms${ix}  # last complete FC16 settings frame @14-15
+    type: uint32_t
+    initial_value: "0"
+  - id: haba_set14_n${ix}
+    type: uint32_t
+    initial_value: "0"
+  - id: haba_set_partial${ix}  # settings frames (@1 / @14) that start but fail the CRC: truncated or corrupted
     type: uint32_t
     initial_value: "0"
   - id: haba_regs${ix}
@@ -38,7 +54,7 @@ uart:
       direction: RX
       dummy_receiver: true
       after:
-        timeout: 20ms
+        timeout: 100ms  #! the debugger times from the last byte READ, so a main-loop stall over 20ms split frames (truncated unparsed blocks)
       sequence:
         - lambda: |-
             static const uint8_t HEADER[7] = {0x06, 0x10, 0x07, 0xD0, 0x00, 0x0A, 0x14};
@@ -72,6 +88,9 @@ uart:
                 if (is_status_header && i + STATUS_LEN <= n) {
                   id(haba_frames_crc_err${ix})++;
                 }
+                if (bytes[i] == 0x06 && bytes[i + 1] == 0x10 && bytes[i + 2] == 0x00 && (bytes[i + 3] == 0x01 || bytes[i + 3] == 0x0E)) {
+                  id(haba_set_partial${ix})++;
+                }
                 unparsed = true;
                 i++;
                 continue;
@@ -87,6 +106,16 @@ uart:
                   ESP_LOGI("haba", "frame %02X fc%u: %s", bytes[i], bytes[i + 1], format_hex_pretty(frame).c_str());
                   kinds[kind] = frame;
                   kinds_logged_ms[kind] = now;
+                }
+              }
+
+              if (bytes[i] == 0x06 && bytes[i + 1] == 0x10 && bytes[i + 2] == 0x00 && len >= 9 && len == size_t(9 + bytes[i + 6])) {
+                if (bytes[i + 3] == 0x01) {
+                  id(haba_set1_ms${ix}) = millis();
+                  id(haba_set1_n${ix})++;
+                } else if (bytes[i + 3] == 0x0E) {
+                  id(haba_set14_ms${ix}) = millis();
+                  id(haba_set14_n${ix})++;
                 }
               }
 
@@ -141,6 +170,13 @@ interval:
           const auto &r = id(haba_regs${ix});
           const uint32_t ok = id(haba_frames_ok${ix});
           const unsigned age = ok > 0 ? (millis() - id(haba_last_frame_ms${ix})) / 1000 : 0;
+          const uint32_t now = millis();
+          const uint32_t n1 = id(haba_set1_n${ix}), n14 = id(haba_set14_n${ix});
+          char set1[16] = "never", set14[16] = "never";
+          if (n1 > 0) snprintf(set1, sizeof(set1), "%us", (unsigned) ((now - id(haba_set1_ms${ix})) / 1000));
+          if (n14 > 0) snprintf(set14, sizeof(set14), "%us", (unsigned) ((now - id(haba_set14_ms${ix})) / 1000));
+          ESP_LOGI("haba", "settings: @1-9 last=%s n=%u, @14-15 last=%s n=%u, partial=%u (uptime %us)",
+                   set1, (unsigned) n1, set14, (unsigned) n14, (unsigned) id(haba_set_partial${ix}), (unsigned) (now / 1000));
           ESP_LOGI("haba", "status: ok=%u crc_err=%u unparsed=%u last_frame=%s%us 2000-2009: %u %u %u %u %u %u %u %u %u %u",
                    (unsigned) ok, (unsigned) id(haba_frames_crc_err${ix}), (unsigned) id(haba_blocks_unparsed${ix}), ok > 0 ? "" : "never/", age,
                    r[0], r[1], r[2], r[3], r[4], r[5], r[6], r[7], r[8], r[9]);

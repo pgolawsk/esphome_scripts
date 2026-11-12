@@ -57,6 +57,7 @@
 # FLUX, 20261108, renamed from esp32c3_dev.yaml: this is the C3 supermini plus variant (RGB LED, external antenna)
 # FLUX, 20261108, moved the RS485 / PT02 Modbus setup here from esp32c3_dev.yaml (external antenna): enabled sensors/set_pt02_modbus.yaml; disabled ePaper display + fonts/script/globals/select/spi, display and Wake-on-LAN buttons, test_nvm package (FRAM and ePaper moved to the plain C3 board)
 # FLUX, 20261108, switched to the receive-only Haba decoder (sensors/set_haba_rs485.yaml); PT02 package commented out because it transmits
+# FLUX, 20261112, version bump: Haba package logs settings-frame ages and uses a 100ms uart debug timeout
 
 # ! run with this command to override substitutions
 # esphome -s devicename espXX -s updates 1min -s room <Room name> -s mqtt_room <room> run esp32_MMmm_SSss__PP.yaml --device 192.168.x.x
@@ -65,7 +66,7 @@
 substitutions:
 #  devices: "Temperature and Humidity via SHTx30 and Illuminance via BH1750"
   devices: "DEV Kit"
-  version: "20261108"
+  version: "20261112"
 
   # required by ../includes/board_esp32.yaml script
   # framework_type: arduino # "arduino" or "esp-idf"
