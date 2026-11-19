@@ -59,7 +59,7 @@ Keep response files short and actionable. Larry reads `inbox/` at PKA session st
 
 ### Larry always knows (Pawelo, 2026-11-07) — all agents
 
-- Every reply to a TASK goes to Larry (`inbox/LARRY_DONE_<topic>.md` / `LARRY_QUESTION_…`), even when GATE or HAL sent the TASK; plus `SendMessage` to Larry if his session is live. The delegating agent may read it; Larry archives it.
+- Every reply to a TASK goes to Larry (`inbox/LARRY_DONE_<topic>.md` / `LARRY_QUESTION_…`), even when GATE or HAL sent the TASK; plus `SendMessage` to Larry if his session is live — to the TASK's `Reply-to` session, exact name; "not reachable" → no retry, the file is the record. The delegating agent may read it; Larry archives it.
 - If you delegate a TASK to another agent, or do work with Pawelo outside a Larry TASK (state changes, decisions), leave `inbox/LARRY_NOTE_<topic>.md` right away: who/where/what changed, what is open.
 - **Pushed commits → Larry reviews afterwards** (Pawelo, 2026-11-15): commit and push your own commits yourself — only yours (`git log origin/main..HEAD`), and check anonymization (IPs, MACs, tokens, place names) before the push: a leak can't be fixed by a later commit. List the hashes in the `DONE` or `LARRY_NOTE`. Larry reviews after the push; any fix comes as a separate commit.
 
@@ -71,6 +71,7 @@ Keep response files short and actionable. Larry reads `inbox/` at PKA session st
 **To:** LARRY
 **Date:** YYYY-MM-DD
 **Re:** <original task file, or "—">
+**Reply-to:** <Larry's exact session name — set by Larry on his TASKs>
 
 ## Summary
 <1–3 sentences: what was done, decided, or found>
