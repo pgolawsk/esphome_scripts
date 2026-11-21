@@ -50,6 +50,7 @@ No 2026.10.2 static baselines exist for ESP32 except Salon (% only, from `ESPHOM
 | 2026-11-21 | 2026.11.0 | esp32-14 Salon | — | 130 603 B (38.2% of 341 760) | 1 319 115 B (33.5% of 3 932 160) | compile only; RAM −1.4 pt vs 10.2 |
 | 2026-11-21 | **2026.11.0** | esp32-30 rig (`0_DEV/esp32_dev.yaml`) | ESP-IDF, plain build, no boot buffer | 51 896 B (28.7% of 180 736) | 1 093 339 B (59.6% of 1 835 008) | flashed OTA, boot OK (safe_mode counter reset ~25 s after boot) |
 | 2026-11-21 | 2026.11.0 | esp32-30 rig + boot log buffer 2 kB (INFO), `delay: 3s`, `uptime_ms` marker | experiment, flashed (rig currently runs this) | 53 944 B (29.8%) | 1 094 515 B (59.6%) | RAM +2 048 B, flash +1 176 B vs plain 11.0 |
+| 2026-11-21 | 2026.11.0 | esp32-30 rig + boot buffer 2 kB + `flash_chip: generic` (temp copy of board_esp32.yaml) | experiment, flashed (rig currently runs this) | 53 385 B (29.5%) | 1 092 472 B (59.5%) | vs boot-buffer build without it: RAM −559 B, flash −2 043 B; IRAM 78 659 B (45.7%); `[W][app:188] Set flash_chip` warning gone |
 | — | 2026.5.3 | esp32-35 Pump_Garage | pinned, FRAM override farm | not compiled | not compiled | stays on 5.3 |
 
 ## Runtime heap (flashed devices)
@@ -69,6 +70,7 @@ No 2026.10.2 static baselines exist for ESP32 except Salon (% only, from `ESPHOM
 | 2026-11-07 | 2026.10.2 | esp32-30 rig | — | ~219 kB | 110 592 B | ESP-IDF |
 | 2026-11-21 | **2026.11.0** | esp32-30 rig | ~5–40 s after boot, API client attached | 218 484 B | 110 592 B | vs ~219 kB / 110 592 B on 10.2: flat |
 | 2026-11-21 | 2026.11.0 | esp32-30 rig + boot buffer 2 kB | ~30–35 s after boot, API client attached | 216 376 B / 216 364 B | 110 592 B | −2 108 B vs plain, equals the buffer; max block unchanged; 0.1% of ESP32 heap |
+| 2026-11-21 | 2026.11.0 | esp32-30 rig + boot buffer 2 kB + `flash_chip: generic` | ~5–20 s after boot | 218 248 B / 218 244 B | 110 592 B | +1 868 B vs boot-buffer build without `flash_chip` (216 376 B); ≈ plain 11.0 (218 484 B) |
 | 2026-11-07 | 2026.10.2 | esp32-36 Garage_Gate | — | 169 444 B | 114 688 B | |
 | 2026-11-07 | 2026.10.2 | esp32-14 Salon | — | 151 444 B | 139 264 B | RAM 39.6% / flash 33.7% |
 
