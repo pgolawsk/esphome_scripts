@@ -31,6 +31,8 @@ ESP8266 total RAM 81 920 B, flash 1 044 464 B.
 | 2026-11-21 | **2026.11.0** | esp12f-25 AquariumWindow | — | 35 988 B (43.9%) | 548 008 B (52.5%) | compile only |
 | 2026-11-07 | 2026.10.2 | esp12f-21 Underfloor | — | 46.9% | 52.4% | % only |
 | 2026-11-21 | **2026.11.0** | esp12f-21 Underfloor | — | 35 932 B (43.9%) | 549 372 B (52.6%) | compile only |
+| 2026-11-21 | 2026.10.2 | esp12f-21 Underfloor (before flash, Prometheus) | long uptime | 31 632 B | 27 024 B | baseline right before the 11.0 flash; device carried an old stored Soft WDT crash dump (RTC, WiFi stack), no reboot loop; metrics complete |
+| 2026-11-21 | **2026.11.0** | esp12f-21 Underfloor, boot buffer 2 kB, **flashed (PROD)** | ~1.5 min after boot (Prometheus) | 32 536 B | 25 264 B | +904 B free, −1 760 B max block vs 10.2 sample (max block is fragmentation-sensitive, recheck after ≥ 2 h). Static 37 988 B (46.4%) / 550 788 B. Replay in Loki OK (714 B, 0 dropped), stale crash dump gone |
 | 2026-11-07 | 2026.10.2 | esp12f-11 Entrance_Entry | — | 47.2% | 52.6% | % only |
 | 2026-11-21 | **2026.11.0** | esp12f-11 Entrance_Entry | — | 36 428 B (44.5%) | 552 124 B (52.9%) | compile only |
 
