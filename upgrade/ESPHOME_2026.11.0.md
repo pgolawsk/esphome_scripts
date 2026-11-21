@@ -75,6 +75,20 @@ Source: [PR #17666](https://github.com/esphome/esphome/pull/17666) (read verbati
 
 **Result (2026-11-21, esp12f-29): works, with a delay.** Replay in `mqtt: on_connect:` without delay publishes nothing; with `- delay: 3s` first, 12 pre-WiFi lines (`@8742ms` … `@12638ms`) reach Loki. Cost +2 044 B RAM (Office simulation: eats the whole 11.0 RAM saving). Numbers and details in `MEMORY_LOG.md`. The plan below is superseded by that result; remaining decision is the buffer size and which boards get it.
 
+### How to read a replayed boot block (Loki)
+
+Example from esp12f-29, 2026-11-21: `Replaying boot logs (666 bytes used, 0 lines dropped)` followed by lines like `@8809ms [I][wifi:1309]: Connecting to …`.
+
+- **`@<ms>` = device uptime (millis) when the line was logged.** Nothing to add to the Loki time; read it as a boot timeline.
+- **Loki timestamps of replayed lines are meaningless.** All get the replay time (publish moment). Only `@ms` gives real order and spacing.
+- **Durations = differences of `@ms`.** Example: `setup()` 8747 → 8826 = 79 ms; WiFi 8809 → 12638 = 3.8 s; MQTT connected `@12721`.
+- **Wall-clock boot time:** pick a line that also exists live (without `@`), e.g. `mqtt Connected` live at 18:42:51.317 and replayed as `@12721ms`: boot start = 18:42:51.317 − 12.721 s ≈ 18:42:38.6 (matched `Rebooting safely` at 18:42:38.466).
+- **Duplicates are normal.** The buffer records until the replay (3 s after connect), so lines already published live (`mqtt Connecting/Connected`) appear twice.
+- **`N lines dropped` > 0 = buffer too small.** Capture keeps the earliest lines and drops the later ones (logger.cpp: a record that does not fit is counted, not stored).
+- **First `@ms` was 8742 on the first boot after OTA** (logger initialised 8.7 s after reset): probably the bootloader copying the new image; unverified, check on the next plain reboot.
+- **Level label:** until the `mqtt_logger` regex accepts the `@<ms>ms ` prefix (see `inbox` note to Larry, 2026-11-21), replayed lines have no `level` label in Loki; the level is only in the text (`[I]`, `[W]`…).
+- Queries: only replayed lines `{mqtt_node="esp12f-29"} |~ "@\\d+ms"`; with the value extracted `… | regexp "@(?P<ms>\\d+)ms"`.
+
 **Test plan (after upgrade, rigs first) — original plan.**
 1. esp12f-29 (ESP8266) and esp32-30 (ESP32): in `includes/logger.yaml` add `boot_log_buffer_size: 2kB` (temporary, per rig or via vars) and `logger.replay_boot_logs:` in `mqtt: on_connect:`. Compile.
 2. Reboot the rig; check Loki (`{mqtt_node="esp12f-29"}`) for lines with `@<ms>` stamps and for warnings logged before WiFi.
