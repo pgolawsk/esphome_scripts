@@ -24,11 +24,12 @@
 # FLUX, 20260512, Added Jinja defaults: project_name ("pgolawsk.esp_home"), framework_version ("recommended"), flash_size ("4MB") (Jinja default pattern extension, mirrors BACKLOG #10)
 # FLUX, 20260513, Renamed from board_esp32_with_psram_fix.yaml → board_esp32s3.yaml; clarified intent (S3 + PSRAM + audio sdkconfig) (BACKLOG #44)
 # FLUX, 20260906, Bumped CONFIG_LWIP_MAX_SOCKETS 16->20 and CONFIG_LWIP_MAX_ACTIVE_TCP 16->18 — 2026.8.2 compile warning said 18 sockets needed (12 TCP + 3 UDP + 3 TCP_LISTEN); 16 was causing MQTT "Software caused connection abort" (socket exhaustion) on Salon after the 2026.8.2 upgrade
+# FLUX, 20261121, Raised min_version default to 2026.11.0: shared logger/mqtt includes use the boot log buffer (boot_log_buffer_size, logger.replay_boot_logs, 2026.11.0+); device esphome_min_version still overrides
 
 esphome:
   name: $devicename
   friendly_name: $room
-  min_version: ${esphome_min_version | default("2025.8.0")}
+  min_version: ${esphome_min_version | default("2026.11.0")}
   area: $room
   comment: $room ESP32${board_variant | default("s3")} with $devices
 #  platform: ESP8266   # OLD notation

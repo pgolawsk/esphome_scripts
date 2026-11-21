@@ -88,7 +88,7 @@ PKA-side pipeline notes are kept in the user's external PKA directory (outside t
 
 1. **Case-mismatch `!include` references** — works on macOS (case-insensitive APFS), fails on Linux/CI/Docker. Always preserve exact filename case.
 2. **Override-by-order silent breakage** — multiple `<<: !include` at root: first key wins, not last. Override include must come *before* the board include. (See `AGENTS.md` § YAML Override Mechanism.)
-3. **`esphome_min_version` must be consumed by the board include** — every `includes/board_*.yaml` wires `min_version: ${esphome_min_version | default("2025.8.0")}`; a new board file must do the same or the pin is silently ignored. (BACKLOG #9, done.)
+3. **`esphome_min_version` must be consumed by the board include** — every `includes/board_*.yaml` wires `min_version: ${esphome_min_version | default(...)}` (default is 2026.11.0 since 2026-11-21 because the shared logger/mqtt includes need it; only `board_esp32__water_pump.yaml` keeps 2026.4.0 for the pinned 5.3 Pump); a new board file must do the same or the pin is silently ignored. (BACKLOG #9, done.)
 4. **WiFi flapping on cheap APs** — set `power_save_mode: none`, `min_auth_mode: WPA2`, `fast_connect: true`, `reboot_timeout: 45min`; consider BSSID lock (`wifi__bssid.yaml`) when SSID roams.
 5. **MQTT keepalive too low** — set `keepalive: 60s`; `reboot_timeout: 0s` so a broker outage doesn't reboot the device.
 6. **OOM on prometheus `/metrics`** — long entity lists or `light:` definitions can break ESP8266; merge entities, use `web_server_basic.yaml` (v1) or accept v3 with the custom prometheus PR. Don't add `friendly_name`/`area:` on ESP12F.
@@ -129,7 +129,7 @@ Current ESPHome version: see `upgrade/COMPONENTS.md`. macOS workstation — case
 | `esp06` | `esp32-06_Garden_Gateway.yaml` | ESP32 classic | esp-idf | **Canonical `packages:` + `!extend` example** (door cover via package + `!extend` of `door_cover` for endstops). BME280 calibrated linearly against reference station. |
 | `esp10` | `esp12f-10_Office.yaml` | ESP12F | arduino (n/a) | SCD40 + SGP30 + BH1750 + AVT5713 light switch. Heavy `mqtt_with_rtttl.yaml` override; canonical override-by-order example. |
 | `esp11` | `esp12f-11_Entrance_Entry.yaml` | ESP12F | arduino (n/a) | BME680 + BH1750 + intercom button + gate relay. 12 V intercom-bus power. |
-| `esp14` | `esp32-14_Salon.yaml` | ESP32-S3 N16R8 | esp-idf | **Canonical `packages:` example** for I2S media player + multiple IR remote sets (Apple TV, LG, Yamaha). PSRAM enforced via `esphome_min_version: 2025.8.0`. Audio sdkconfig tuning in `board_esp32s3.yaml`. |
+| `esp14` | `esp32-14_Salon.yaml` | ESP32-S3 N16R8 | esp-idf | **Canonical `packages:` example** for I2S media player + multiple IR remote sets (Apple TV, LG, Yamaha). Min version comes from the board default (no per-device pin). Audio sdkconfig tuning in `board_esp32s3.yaml`. |
 | `esp15` | `esp12f-15_Upstairs.yaml` | ESP12F | arduino (n/a) | Minimal: BME280 only. |
 | `esp21` | `esp12f-21_Underfloor.yaml` | ESP12F | arduino (n/a) | SHT30 + 2× DS18B20. 12 V mains-converter power. |
 | `esp25` | `esp12f-25_AquariumWindow.yaml` | ESP12F | arduino (n/a) | SHT30 + TCS3472. 12 V alarm-bus power. |

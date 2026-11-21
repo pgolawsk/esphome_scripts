@@ -9,6 +9,7 @@
 # Pawelo, 20261004, added sram1_as_iram: true to eliminate warnings in logs
 # Pawelo, 20261014, crated separate file for C6 variant, as it does not support sram1_as_iram: true, and has only 1 i2c interface, so it is not compatible with the other ESP32 variants
 # FLUX, 20261107, Recorded: `min_version` default is `2026.4.0` (inherited from board_esp32.yaml at the split, 20261014); supersedes the `2025.8.0` default named in the 20260512 entry above
+# FLUX, 20261121, Raised min_version default to 2026.11.0: shared logger/mqtt includes use the boot log buffer (boot_log_buffer_size, logger.replay_boot_logs, 2026.11.0+); device esphome_min_version still overrides
 
 # ! those values are examples, not used in this file, need to be declared outside of this file
 # substitutions:
@@ -23,7 +24,7 @@ esphome:
   name: $devicename
   friendly_name: $room
   area: $room
-  min_version: ${esphome_min_version | default("2026.4.0")}
+  min_version: ${esphome_min_version | default("2026.11.0")}
   comment: $room ESP32${board_variant} with $devices
 #  platform: ESP8266   # OLD notation
   project:

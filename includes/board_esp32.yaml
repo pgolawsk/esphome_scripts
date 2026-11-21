@@ -26,6 +26,7 @@
 # FLUX, 20260514, Removed 26 lines of commented `sdkconfig_options:` drift (BACKLOG #55); platformio_options breadcrumb retained per BACKLOG #45 status
 # Pawelo, 20261004, added sram1_as_iram: true to eliminate warnings in logs
 # FLUX, 20261107, Recorded: `min_version` default is `2026.4.0` (changed 20261004 without a history entry); supersedes the `2025.8.0` default named in the 20260512 entry above
+# FLUX, 20261121, Raised min_version default to 2026.11.0: shared logger/mqtt includes use the boot log buffer (boot_log_buffer_size, logger.replay_boot_logs, 2026.11.0+); device esphome_min_version still overrides
 
 # ! those values are examples, not used in this file, need to be declared outside of this file
 # substitutions:
@@ -41,7 +42,7 @@ esphome:
   name: $devicename
   friendly_name: $room
   area: $room
-  min_version: ${esphome_min_version | default("2026.4.0")}
+  min_version: ${esphome_min_version | default("2026.11.0")}
   comment: $room ESP32${board_variant | default("")} with $devices
 #  platform: ESP8266   # OLD notation
   project:

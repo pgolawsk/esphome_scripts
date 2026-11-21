@@ -70,7 +70,7 @@ This re-symlinks all current sibling files and re-checks the two patched headers
 Scan the repo and update `upgrade/COMPONENTS.md` to reflect the current state:
 
 1. Check platforms in use: `grep -r "^esp32:\|^esp8266:" 2_PROD/ --include="*.yaml" -l`
-2. Check min_version pins: `grep -rn "esphome_min_version" --include="*.yaml" . | grep -v ".esphome"`
+2. Check min_version pins: `grep -rn "esphome_min_version" --include="*.yaml" . | grep -v ".esphome"` (device pins) and the board-level default in `includes/board_*.yaml` (`min_version: ${esphome_min_version | default(...)}`)
 3. Update the **ESPHome Version** table in `COMPONENTS.md`:
    - Set "Installed in `.venv`" to the new version
    - Update "Last used to flash" to the previous version
