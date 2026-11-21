@@ -98,6 +98,8 @@ Example from esp12f-29, 2026-11-21: `Replaying boot logs (666 bytes used, 0 line
 3. Compare free heap vs 2026.10.2 (ESP8266 especially).
 4. If it works and heap allows: roll into the shared include for all boards (`includes/logger.yaml` is shared, so this is a multi-file change: `esphome compile` per family + ECHO). Pump (esp32-35, pinned 2026.5.3) is not in scope until it leaves 2026.5.3.
 
+**Observed behavior change (2026-11-21): I2C scan results are no longer visible at `level: INFO`.** On 2026.10.2 the ESP8266 (Arduino) I2C bus logged `Results from bus scan` / `Found device at address 0x..` with `ESP_LOGI` (`[I]`), visible at INFO (e.g. Underfloor `Found device at address 0x44`); ESP-IDF already used `ESP_LOGCONFIG`. In 2026.11.0 all platforms share `I2CBus::dump_scan_results_()` (`i2c.cpp`) using `ESP_LOGCONFIG` (`[C]`, visible only from DEBUG). Nothing is wrong with the sensors (rig 29 BH1750 reads fine, Underfloor SHT3x publishes). No config option restores it; a one-off `level: DEBUG` build shows the lines again. Pawelo accepted this as is. The same dump runs on every API client connect (`api_connection.cpp:460`), not at boot over MQTT.
+
 ## Deprecations
 
 - `ili9xxx`, `qspi_dbi`, `st7735`, `st7789v`, `rpi_dpi_rgb` scheduled for removal in **2027.5.0** *[summary]* — **not used** (grep: only `epaper_spi` displays in PROD).
