@@ -73,7 +73,9 @@ Source: [PR #17666](https://github.com/esphome/esphome/pull/17666) (read verbati
 - Fixed RAM cost (buffer size). On ESP8266 (Office + Prometheus) compare free heap before/after.
 - Replay once per boot.
 
-**Test plan (after upgrade, rigs first).**
+**Result (2026-11-21, esp12f-29): works, with a delay.** Replay in `mqtt: on_connect:` without delay publishes nothing; with `- delay: 3s` first, 12 pre-WiFi lines (`@8742ms` … `@12638ms`) reach Loki. Cost +2 044 B RAM (Office simulation: eats the whole 11.0 RAM saving). Numbers and details in `MEMORY_LOG.md`. The plan below is superseded by that result; remaining decision is the buffer size and which boards get it.
+
+**Test plan (after upgrade, rigs first) — original plan.**
 1. esp12f-29 (ESP8266) and esp32-30 (ESP32): in `includes/logger.yaml` add `boot_log_buffer_size: 2kB` (temporary, per rig or via vars) and `logger.replay_boot_logs:` in `mqtt: on_connect:`. Compile.
 2. Reboot the rig; check Loki (`{mqtt_node="esp12f-29"}`) for lines with `@<ms>` stamps and for warnings logged before WiFi.
 3. Compare free heap vs 2026.10.2 (ESP8266 especially).

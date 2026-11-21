@@ -1,0 +1,67 @@
+# Memory Log — RAM / flash / heap per device and ESPHome version
+
+Purpose: one place to compare memory use across ESPHome releases and build parameters (savings or regressions), per device. Especially watch **esp12f-10 Office** (ESP8266, many sensors, Prometheus `/metrics`, heap-starved).
+
+**Convention (every upgrade / flash, Pawelo 2026-11-21):** after a compile and after a flash, append rows here with the ESPHome version, the build parameters that matter (flags, buffer sizes, framework), static RAM/flash from the build output, and runtime heap (free + max block). Never overwrite old rows; add new ones. Static numbers come from the compile summary (`RAM: ... used N bytes`, `Flash: ... used N bytes`). Static RAM is `.data` + `.bss` only; the free heap at runtime is what is left, minus stack and runtime allocations, so **static delta ≈ heap delta** for a fixed config, but only a heap measurement proves it.
+
+How to measure runtime heap: `esphome logs <yaml> --device <host>` (the `debug` platform prints `Heap Free` / `Heap Max Block` every update), or Prometheus for long uptime. State the sample time, because heap settles after boot and an attached API client costs memory.
+
+## Static build size (compile output)
+
+ESP8266 total RAM 81 920 B, flash 1 044 464 B.
+
+| Date | ESPHome | Device (config) | Build parameters | RAM used | Flash used | Notes |
+|------|---------|-----------------|------------------|----------|------------|-------|
+| 2026-11-21 | 2026.10.2 | esp12f-10 Office (`2_PROD/esp12f-10_Office.yaml`) | current repo (MMU flag off), native toolchain | 39 748 B (48.5%) | 554 264 B (53.1%) | baseline, compiled in a separate venv |
+| 2026-11-21 | **2026.11.0** | esp12f-10 Office | same | **37 300 B (45.5%)** | 556 660 B (53.3%) | RAM −2 448 B (−6.2%), flash +2 396 B vs 10.2. Compile only, not flashed (deferred) |
+| 2026-11-21 | 2026.11.0 | esp12f-10 Office + boot log buffer 2 kB (`boot_log_level: INFO`, replay in `mqtt on_connect`) | + `logger: boot_log_buffer_size: 2kB` | 39 344 B | 558 016 B | RAM +2 044 B vs 11.0 plain: eats the whole 11.0 saving (−404 B vs 10.2). Simulation, compile only |
+| 2026-11-07 | 2026.10.2 | esp12f-29 rig (`0_DEV/esp12f_dev.yaml`, with BH1750) | MMU flag on/off gave same RAM | 41 704 B (50.9%) | 581 964 B (55.7%) | from `ESPHOME_2026.10.0.md` |
+| 2026-11-21 | **2026.11.0** | esp12f-29 rig | current repo | **39 300 B (48.0%)** | 584 288 B (55.9%) | RAM −2 404 B, flash +2 324 B vs 10.2. Flashed |
+| 2026-11-21 | 2026.11.0 | esp12f-29 rig + boot log buffer 2 kB (INFO), no delay on replay | experiment | 41 312 B (50.4%) | 585 228 B (56.0%) | replay without `delay` did not reach Loki |
+| 2026-11-21 | 2026.11.0 | esp12f-29 rig + boot log buffer 2 kB (INFO), `delay: 3s` before replay | experiment, flashed (rig currently runs this) | 41 344 B (50.5%) | 585 612 B (56.1%) | replay reached Loki |
+| 2026-11-07 | 2026.10.2 | esp12f-15 Upstairs | — | 46.5% | 48.8% | % only, from `ESPHOME_2026.10.0.md` |
+| 2026-11-21 | **2026.11.0** | esp12f-15 Upstairs | — | 36 424 B (44.5%) | 514 044 B (49.2%) | compile only |
+| 2026-11-07 | 2026.10.2 | esp12f-25 AquariumWindow | — | 46.7% | 52.2% | % only |
+| 2026-11-21 | **2026.11.0** | esp12f-25 AquariumWindow | — | 35 988 B (43.9%) | 548 008 B (52.5%) | compile only |
+| 2026-11-07 | 2026.10.2 | esp12f-21 Underfloor | — | 46.9% | 52.4% | % only |
+| 2026-11-21 | **2026.11.0** | esp12f-21 Underfloor | — | 35 932 B (43.9%) | 549 372 B (52.6%) | compile only |
+| 2026-11-07 | 2026.10.2 | esp12f-11 Entrance_Entry | — | 47.2% | 52.6% | % only |
+| 2026-11-21 | **2026.11.0** | esp12f-11 Entrance_Entry | — | 36 428 B (44.5%) | 552 124 B (52.9%) | compile only |
+
+ESP8266 pattern on 11.0: static RAM drops about 2–3 percentage points (≈ 1.6–2.4 kB) on every device; flash is flat to +0.3 pt. Consistent with the changelog's ESP8266 RAM reduction.
+
+### ESP32 family (pending)
+
+Compile sweep on 2026.11.0 was still running when this log was written: esp32-39 Attic, esp32-05 Shades_WinterGardenUpp, esp32-06 Garden_Gateway, then esp32-36 Garage_Gate and esp32-14 Salon (Salon first needs `esphome config` for the new RMT check). No 2026.10.2 static baselines exist for ESP32 (the 2026.10.0 notes recorded heap only). Fill in below.
+
+| Date | ESPHome | Device | Build parameters | RAM used | Flash used | Notes |
+|------|---------|--------|------------------|----------|------------|-------|
+| — | 2026.11.0 | esp32-39 / -05 / -06 / -36 / -14 | — | pending | pending | sweep running |
+| — | 2026.5.3 | esp32-35 Pump_Garage | pinned, FRAM override farm | not compiled | not compiled | stays on 5.3 |
+
+## Runtime heap (flashed devices)
+
+| Date | ESPHome | Device | Sample time | Heap free | Max block | Notes |
+|------|---------|--------|-------------|-----------|-----------|-------|
+| 2026-11-07 | 2026.10.2 | esp12f-29 rig | idle +60–180 s | 30 632 B | 26 688 B | MMU flag test, same either way |
+| 2026-11-07 | 2026.10.2 | esp12f-29 rig | ~30 s after boot | 29 984 B | 22 664 B | rollout sample |
+| 2026-11-21 | **2026.11.0** | esp12f-29 rig | ~25 s after boot, API client attached | 31 544 B | 25 600 B | one sample, plain build |
+| 2026-11-21 | 2026.11.0 | esp12f-29 rig + boot buffer 2 kB | ~1 s / ~16 s after API attach | 27 944 B / 29 504 B | 25 816 B | −2 040 B vs plain at comparable time, equals the buffer; max block unchanged |
+| 2026-11-07 | 2026.10.2 | esp12f-15 Upstairs | ~30 s after boot | 34 080 B | 29 808 B | from `ESPHOME_2026.10.0.md` |
+| 2026-11-07 | 2026.10.2 | esp12f-25 AquariumWindow | ~30 s | 32 448 B | 25 240 B | same source |
+| 2026-11-07 | 2026.10.2 | esp12f-21 Underfloor | ~30 s | 32 968 B | 29 144 B | same source |
+| 2026-11-07 | 2026.10.2 | esp12f-11 Entrance_Entry | ~30 s | 32 392 B | 28 632 B | same source |
+| 2026-11-07 | 2026.10.2 | esp32-30 rig | — | ~219 kB | 110 592 B | ESP-IDF |
+| 2026-11-07 | 2026.10.2 | esp32-36 Garage_Gate | — | 169 444 B | 114 688 B | |
+| 2026-11-07 | 2026.10.2 | esp32-14 Salon | — | 151 444 B | 139 264 B | RAM 39.6% / flash 33.7% |
+
+esp12f-10 Office has no heap record on 2026.10.x (flash deferred). **Before flashing Office on 11.0, record its current heap and `/metrics` completeness from Prometheus, then flash, then record again after ≥ 2 h.**
+
+## Experiment: boot log buffer (2026-11-21, esp12f-29)
+
+`logger: boot_log_buffer_size: 2kB`, `boot_log_level: INFO`, and `logger.replay_boot_logs:` in `mqtt: on_connect:` (temporary copies of the includes, removed afterwards).
+
+- Replay called directly in `on_connect` publishes nothing: the MQTT log callback publishes only when the client is `is_connected()`, which is not yet true inside the backend `on_connect` callback. With `- delay: 3s` before the action it works.
+- Result in Loki (`logs.nam`, `{mqtt_node="esp12f-29"}`): "Replaying boot logs (666 bytes used, 0 lines dropped)" followed by 12 lines stamped `@<ms>` from `Log initialized @8742ms` to `wifi Connected @12638ms`. Pre-network lines of the current boot, as intended.
+- Cost: +2 044 B static RAM (the 2 kB buffer plus bookkeeping), +1 324 B flash. Free heap −2 040 B, max block unchanged. On Office this cancels the whole 11.0 RAM saving.
+- Decision pending: consider 1 kB, or `boot_log_level: WARN` (default), or rollout to ESP32 only. 666 B used by INFO capture on the rig suggests 1 kB is enough for INFO on a small config; Office has more setup lines.
