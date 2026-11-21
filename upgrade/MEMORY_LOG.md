@@ -61,6 +61,8 @@ No 2026.10.2 static baselines exist for ESP32 except Salon (% only, from `ESPHOM
 | 2026-11-21 | **2026.11.0** | esp12f-29 rig | ~25 s after boot, API client attached | 31 544 B | 25 600 B | one sample, plain build |
 | 2026-11-21 | 2026.11.0 | esp12f-29 rig + boot buffer 2 kB | ~1 s / ~16 s after API attach | 27 944 B / 29 504 B | 25 816 B | −2 040 B vs plain at comparable time, equals the buffer; max block unchanged |
 | 2026-11-07 | 2026.10.2 | esp12f-15 Upstairs | ~30 s after boot | 34 080 B | 29 808 B | from `ESPHOME_2026.10.0.md` |
+| 2026-11-21 | 2026.10.2 | esp12f-15 Upstairs (before flash) | ~12–27 s after API attach | 32 648 B / 32 632 B | 28 712 B | baseline taken right before the 11.0 flash |
+| 2026-11-21 | **2026.11.0** | esp12f-15 Upstairs, boot buffer 2 kB, **flashed (PROD)** | ~14–44 s after boot, API client attached | 32 808 B / 32 784 B | 28 952 B | +152 B heap, +240 B max block vs 10.2: 11.0's RAM saving (~2.4 kB) cancels the 2 kB buffer. Replay in Loki (`logs.lan`) OK: 714 B used, 0 dropped, `level=info`, corrected times. Static 38 480 B / 515 476 B |
 | 2026-11-07 | 2026.10.2 | esp12f-25 AquariumWindow | ~30 s | 32 448 B | 25 240 B | same source |
 | 2026-11-07 | 2026.10.2 | esp12f-21 Underfloor | ~30 s | 32 968 B | 29 144 B | same source |
 | 2026-11-07 | 2026.10.2 | esp12f-11 Entrance_Entry | ~30 s | 32 392 B | 28 632 B | same source |

@@ -40,6 +40,7 @@
 # FLUX, 20260512, Removed board_variant/board/restore_from_flash/flash_write_interval substitutions; defaults now provided by board_esp8266.yaml via Jinja (Jinja default pattern extension, mirrors BACKLOG #10)
 # FLUX, 20260512, Removed project_name substitution(s); defaults now provided by board file via Jinja (Jinja default pattern extension, mirrors BACKLOG #10)
 # FLUX, 20260514, Swept logger_level.yaml → logger.yaml include path; logger.yaml now accepts level/baud_rate via Jinja defaults (BACKLOG #15 + #43)
+# FLUX, 20261121, Flashed on ESPHome 2026.11.0: set esphome_min_version 2026.11.0 (shared logger/mqtt includes now use the boot log buffer, 2026.11.0+); version bumped
 
 # ! run with this command to override substitutions
 # esphome -s devicename espXX -s updates 1min -s room <Room name> -s mqtt_room <room> run esp12f_MMmm_SSss__PP.yaml --device 192.168.x.x
@@ -47,7 +48,8 @@
 
 substitutions:
   devices: "Temperature, Humidity and Pressure via BME280"
-  version: "20251223"
+  version: "20261121"
+  esphome_min_version: 2026.11.0  # shared logger/mqtt includes use boot_log_buffer_size + logger.replay_boot_logs (2026.11.0+)
 
   devicename: esp12f-15
   updates: "30s"
