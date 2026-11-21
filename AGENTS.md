@@ -208,7 +208,8 @@ update_interval: $updates
 
 ### Logger Configuration
 
-- Default level: `INFO` (override per-device via `<<: !include {file: ../includes/logger.yaml, vars: {level: DEBUG, baud_rate: 115200}}` — Jinja defaults: `level=INFO`, `baud_rate=0`)
+- Default level: `INFO` (override per-device via `<<: !include {file: ../includes/logger.yaml, vars: {level: DEBUG, baud_rate: 115200}}` — Jinja defaults: `level=INFO`, `baud_rate=0`, `boot_buffer=2kB`)
+- Boot log buffer (ESPHome 2026.11.0+): `logger.yaml` sets `boot_log_buffer_size: ${boot_buffer | default("2kB")}` + `boot_log_level: INFO`; `mqtt.yaml` / `mqtt_with_rtttl.yaml` replay it in `on_connect` (`delay: 3s`, an `uptime_ms` marker line, `logger.replay_boot_logs:`) so pre-WiFi boot lines reach Loki. Costs the buffer size in static RAM (ESP8266: pass `vars: {boot_buffer: "1kB"}` in a logger override to save RAM). These includes need ESPHome 2026.11.0+; the pinned 2026.5.3 checkout (Pump) must not pull them.
 - USB logging disabled by default (`baud_rate: 0`)
 - Per-component log levels to reduce noise (e.g., `tcs34725: ERROR`)
 - Debug component available via `interfaces/debug.yaml`

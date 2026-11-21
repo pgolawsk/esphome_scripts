@@ -9,6 +9,7 @@
 # Pawelo, 20250126, set discovery to false to avoid duplicated entries on HA
 # FLUX, 20260512, Added keepalive: 60s to match mqtt.yaml fix (BACKLOG item 38)
 # FLUX, 20260512, Added reboot_timeout: 0s to match mqtt.yaml (BACKLOG item 38 follow-up)
+# FLUX, 20261121, Added on_connect: delay 3s + uptime marker + logger.replay_boot_logs (boot log buffer to Loki, ESPHome 2026.11.0)
 
 mqtt:
   id: mqtt_client
@@ -18,6 +19,13 @@ mqtt:
   password: !secret mqtt_password
   keepalive: 60s
   reboot_timeout: 0s
+  on_connect:
+    # Replay the logger boot buffer so pre-WiFi boot lines reach Loki. The delay is required: the MQTT log
+    # callback publishes only when is_connected(), which is not yet true inside on_connect. The marker line
+    # carries device uptime, so the log pipeline can put replayed (@<ms>ms) lines on the real timeline.
+    - delay: 3s
+    - lambda: ESP_LOGI("boot_replay", "uptime_ms=%u", (unsigned) millis());
+    - logger.replay_boot_logs:
 #  client_id: $devicename
   discovery: false
   # discovery_retain: false

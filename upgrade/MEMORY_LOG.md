@@ -15,6 +15,11 @@ ESP8266 total RAM 81 920 B, flash 1 044 464 B.
 | 2026-11-21 | 2026.10.2 | esp12f-10 Office (`2_PROD/esp12f-10_Office.yaml`) | current repo (MMU flag off), native toolchain | 39 748 B (48.5%) | 554 264 B (53.1%) | baseline, compiled in a separate venv |
 | 2026-11-21 | **2026.11.0** | esp12f-10 Office | same | **37 300 B (45.5%)** | 556 660 B (53.3%) | RAM −2 448 B (−6.2%), flash +2 396 B vs 10.2. Compile only, not flashed (deferred) |
 | 2026-11-21 | 2026.11.0 | esp12f-10 Office + boot log buffer 2 kB (`boot_log_level: INFO`, replay in `mqtt on_connect`) | + `logger: boot_log_buffer_size: 2kB` | 39 344 B | 558 016 B | RAM +2 044 B vs 11.0 plain: eats the whole 11.0 saving (−404 B vs 10.2). Simulation, compile only |
+| 2026-11-21 | 2026.11.0 | esp12f-10 Office, boot buffer permanent in shared includes (2 kB) | repo state after the change, compile only, **not flashed** (flash at the Nieporęt site, start with `boot_buffer: "1kB"`) | 39 356 B (48.0%) | 558 092 B (53.4%) | RAM +2 056 B vs plain 11.0 (37 300 B); −392 B vs 10.2 (39 748 B) |
+| 2026-11-21 | 2026.11.0 | esp12f-15 Upstairs, boot buffer 2 kB | same | 38 480 B (47.0%) | 515 476 B (49.4%) | RAM +2 056 B, flash +1 432 B vs plain 11.0 |
+| 2026-11-21 | 2026.11.0 | esp32-39 Attic, boot buffer 2 kB | same | 54 400 B (30.1%) | 1 071 035 B (58.4%) | RAM +2 040 B, flash +1 252 B vs plain 11.0 |
+| 2026-11-21 | 2026.11.0 | esp32-14 Salon, boot buffer 2 kB | same | 132 643 B (38.8%) | 1 320 343 B (33.6%) | RAM +2 040 B, flash +1 228 B vs plain 11.0 |
+| 2026-11-21 | 2026.11.0 | esp32-36 Garage_Gate, boot buffer 2 kB | same | 114 996 B (35.8%) | 1 227 674 B (66.9%) | RAM +2 040 B, flash +1 462 B vs plain 11.0 |
 | 2026-11-07 | 2026.10.2 | esp12f-29 rig (`0_DEV/esp12f_dev.yaml`, with BH1750) | MMU flag on/off gave same RAM | 41 704 B (50.9%) | 581 964 B (55.7%) | from `ESPHOME_2026.10.0.md` |
 | 2026-11-21 | **2026.11.0** | esp12f-29 rig | current repo | **39 300 B (48.0%)** | 584 288 B (55.9%) | RAM −2 404 B, flash +2 324 B vs 10.2. Flashed |
 | 2026-11-21 | 2026.11.0 | esp12f-29 rig + boot log buffer 2 kB (INFO), no delay on replay | experiment | 41 312 B (50.4%) | 585 228 B (56.0%) | replay without `delay` did not reach Loki |

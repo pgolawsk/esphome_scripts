@@ -91,7 +91,7 @@ Flash using the alias, e.g. `esp10`, `esp11`, etc.
 | `ota` | OTA firmware updates |
 | `wifi` | Multiple profiles (main, extended, outside, BSSID-specific) |
 | `mqtt` | MQTT broker integration; some devices use RTTTL via MQTT |
-| `logger` | Configurable log level via includes; baud_rate selectable |
+| `logger` | Configurable log level via includes; baud_rate selectable; boot log buffer (`boot_buffer`, default 2kB) replayed via mqtt `on_connect` (2026.11.0+) |
 | `time` (sntp) | SNTP time sync; with sunrise/sunset via `sun` |
 | `sun` | Solar position for automations |
 | `web_server` | Local web UI; version 1/2/3 selectable |
@@ -251,7 +251,7 @@ Include categories:
 - `includes/board_*.yaml` — 8 board templates (ESP8266, ESP32 variants, BK7231N)
 - `includes/wifi*.yaml` — 5 WiFi profiles (main, extended, outside, BSSID-specific)
 - `includes/api*.yaml`, `includes/mqtt*.yaml`, `includes/ota*.yaml` — core protocol configs
-- `includes/logger.yaml` — log config with Jinja defaults (level=INFO, baud_rate=0); override per-device via `vars: {level, baud_rate}`
+- `includes/logger.yaml` — log config with Jinja defaults (level=INFO, baud_rate=0, boot_buffer=2kB); override per-device via `vars: {level, baud_rate, boot_buffer}`
 - `includes/web_server*.yaml` — web UI version selection
 
 ### Device Naming Convention

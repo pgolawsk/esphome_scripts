@@ -7,11 +7,15 @@
 # Pawelo, 20250208, excluded INFO from weact_2.90_3c as it clutters logs too much
 # Pawelo, 20251130, excluded INFO from sgp30 as it clutters logs too much
 # FLUX, 20260514, Merged logger_level.yaml into logger.yaml via Jinja `|default(...)` for level + baud_rate; unified logs: superset; removed weact_2.90_3c entry (no longer used — replaced by epaper_spi) (BACKLOG #15 + #43)
+# FLUX, 20261121, Added boot_log_buffer_size (var `boot_buffer`, default 2kB) + boot_log_level INFO; replayed from mqtt on_connect (ESPHome 2026.11.0)
 
 logger:
   #  level: NONE, ERROR, WARN, INFO, DEBUG (default), VERBOSE, VERY_VERBOSE
   level: ${level | default("INFO")}
   baud_rate: ${baud_rate | default(0)}  # 0 = disable UART logging
+  # Boot buffer keeps pre-WiFi boot lines and replays them via mqtt on_connect (see mqtt.yaml). Costs its size in static RAM.
+  boot_log_buffer_size: ${boot_buffer | default("2kB")}  # override per device via vars: {boot_buffer: "1kB"}
+  boot_log_level: INFO
   logs:
     mqtt.component: INFO
     mqtt.client: INFO

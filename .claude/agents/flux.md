@@ -166,9 +166,9 @@ Each alias also has a `dev` name (e.g. `esp15dev`) that flashes the `0_DEV/` cop
 ### Includes (`includes/`) — base components
 
 - WiFi: `wifi.yaml` (default single SSID), `wifi_main.yaml`, `wifi_outside.yaml`, `wifi_multi.yaml`, `wifi__bssid.yaml`. Override before the board include.
-- MQTT: `mqtt.yaml` (no RTTTL), `mqtt_with_rtttl.yaml` (adds `on_message:` for `play_rtttl`).
+- MQTT: `mqtt.yaml` (no RTTTL), `mqtt_with_rtttl.yaml` (adds `on_message:` for `play_rtttl`). Both replay the logger boot buffer in `on_connect` (`delay: 3s` + `uptime_ms` marker + `logger.replay_boot_logs:`; the delay is required).
 - API: `api.yaml`, `api_services.yaml`, `api_services__water.yaml`.
-- Logger: `logger.yaml` — Jinja defaults `level=INFO`, `baud_rate=0`; override per-device with `<<: !include {file: ../includes/logger.yaml, vars: {level: DEBUG, baud_rate: 115200}}`.
+- Logger: `logger.yaml` — Jinja defaults `level=INFO`, `baud_rate=0`, `boot_buffer=2kB` (boot log buffer, replayed via mqtt `on_connect`; ESPHome 2026.11.0+); override per-device with `<<: !include {file: ../includes/logger.yaml, vars: {level: DEBUG, baud_rate: 115200}}`.
 - OTA: `ota.yaml`. Web: `web_server.yaml` (v3), `web_server_basic.yaml` (v1). Time: `time_sntp.yaml`, `time_sntp_with_sun.yaml`. Sun: `sun.yaml`. Prometheus: `prometheus.yaml`.
 - PSRAM: `psram.yaml` (mode `quad` or `octal`).
 - Globals: `globals_display_cycle.yaml`, `globals_water_totals_restore.yaml` (water-total globals restored from FRAM; used by `esp32-35`).

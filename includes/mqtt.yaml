@@ -7,6 +7,7 @@
 #! Pawelo, 20230410, prometheus randomly not working while client_id is set
 # Pawelo, 20250126, set discovery to false to avoid duplicated entries on HA
 # Pawelo, 20251218, added keepalive to 60s to avoid disconnections on some brokers
+# FLUX, 20261121, Added on_connect: delay 3s + uptime marker + logger.replay_boot_logs (boot log buffer to Loki, ESPHome 2026.11.0)
 
 mqtt:
   id: mqtt_client
@@ -16,6 +17,13 @@ mqtt:
   password: !secret mqtt_password
   keepalive: 60s
   reboot_timeout: 0s
+  on_connect:
+    # Replay the logger boot buffer so pre-WiFi boot lines reach Loki. The delay is required: the MQTT log
+    # callback publishes only when is_connected(), which is not yet true inside on_connect. The marker line
+    # carries device uptime, so the log pipeline can put replayed (@<ms>ms) lines on the real timeline.
+    - delay: 3s
+    - lambda: ESP_LOGI("boot_replay", "uptime_ms=%u", (unsigned) millis());
+    - logger.replay_boot_logs:
   # skip_cert_cn_check: true
   # client_id: $devicename
   discovery: false
