@@ -30,13 +30,18 @@ ESP8266 total RAM 81 920 B, flash 1 044 464 B.
 
 ESP8266 pattern on 11.0: static RAM drops about 2–3 percentage points (≈ 1.6–2.4 kB) on every device; flash is flat to +0.3 pt. Consistent with the changelog's ESP8266 RAM reduction.
 
-### ESP32 family (pending)
+### ESP32 family (compile sweep on 2026.11.0, 2026-11-21)
 
-Compile sweep on 2026.11.0 was still running when this log was written: esp32-39 Attic, esp32-05 Shades_WinterGardenUpp, esp32-06 Garden_Gateway, then esp32-36 Garage_Gate and esp32-14 Salon (Salon first needs `esphome config` for the new RMT check). No 2026.10.2 static baselines exist for ESP32 (the 2026.10.0 notes recorded heap only). Fill in below.
+No 2026.10.2 static baselines exist for ESP32 except Salon (% only, from `ESPHOME_2026.10.0.md`); the 2026.10.0 notes recorded heap for the rest. `esphome config` on Salon passed (new RMT fit check OK).
 
 | Date | ESPHome | Device | Build parameters | RAM used | Flash used | Notes |
 |------|---------|--------|------------------|----------|------------|-------|
-| — | 2026.11.0 | esp32-39 / -05 / -06 / -36 / -14 | — | pending | pending | sweep running |
+| 2026-11-21 | 2026.11.0 | esp32-39 Attic | ESP-IDF, recommended | 52 360 B (29.0% of 180 736) | 1 069 783 B (58.3% of 1 835 008) | compile only |
+| 2026-11-21 | 2026.11.0 | esp32-05 Shades_WinterGardenUpp | ESP-IDF, recommended | 64 584 B (35.7%) | 1 340 179 B (73.0%) | compile only; highest flash use of the set |
+| 2026-11-21 | 2026.11.0 | esp32-06 Garden_Gateway | ESP-IDF, recommended | 53 580 B (29.6%) | 1 124 451 B (61.3%) | compile only; still on 2026.8.2 on the device (KI-2) |
+| 2026-11-21 | 2026.11.0 | esp32-36 Garage_Gate (ESP32-C3) | Arduino, recommended | 112 956 B (35.2% of 321 296) | 1 226 212 B (66.8%) | compile only |
+| 2026-11-07 | 2026.10.2 | esp32-14 Salon (ESP32-S3) | — | 39.6% | 33.7% | % only |
+| 2026-11-21 | 2026.11.0 | esp32-14 Salon | — | 130 603 B (38.2% of 341 760) | 1 319 115 B (33.5% of 3 932 160) | compile only; RAM −1.4 pt vs 10.2 |
 | — | 2026.5.3 | esp32-35 Pump_Garage | pinned, FRAM override farm | not compiled | not compiled | stays on 5.3 |
 
 ## Runtime heap (flashed devices)
