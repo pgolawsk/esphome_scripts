@@ -19,6 +19,7 @@ ESP8266 total RAM 81 920 B, flash 1 044 464 B.
 | 2026-11-21 | **2026.11.0** | esp12f-29 rig | current repo | **39 300 B (48.0%)** | 584 288 B (55.9%) | RAM −2 404 B, flash +2 324 B vs 10.2. Flashed |
 | 2026-11-21 | 2026.11.0 | esp12f-29 rig + boot log buffer 2 kB (INFO), no delay on replay | experiment | 41 312 B (50.4%) | 585 228 B (56.0%) | replay without `delay` did not reach Loki |
 | 2026-11-21 | 2026.11.0 | esp12f-29 rig + boot log buffer 2 kB (INFO), `delay: 3s` before replay | experiment, flashed (rig currently runs this) | 41 344 B (50.5%) | 585 612 B (56.1%) | replay reached Loki |
+| 2026-11-21 | 2026.11.0 | esp12f-29 rig + boot log buffer 2 kB (INFO), `delay: 3s`, `uptime_ms` marker line before replay | experiment, flashed (rig currently runs this) | 41 356 B (50.5%) | 585 704 B (56.1%) | +12 B RAM, +92 B flash vs the build without marker |
 | 2026-11-07 | 2026.10.2 | esp12f-15 Upstairs | — | 46.5% | 48.8% | % only, from `ESPHOME_2026.10.0.md` |
 | 2026-11-21 | **2026.11.0** | esp12f-15 Upstairs | — | 36 424 B (44.5%) | 514 044 B (49.2%) | compile only |
 | 2026-11-07 | 2026.10.2 | esp12f-25 AquariumWindow | — | 46.7% | 52.2% | % only |
