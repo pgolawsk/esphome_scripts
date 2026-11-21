@@ -43,6 +43,7 @@ No 2026.10.2 static baselines exist for ESP32 except Salon (% only, from `ESPHOM
 | 2026-11-21 | 2026.11.0 | esp32-36 Garage_Gate (ESP32-C3) | Arduino, recommended | 112 956 B (35.2% of 321 296) | 1 226 212 B (66.8%) | compile only |
 | 2026-11-07 | 2026.10.2 | esp32-14 Salon (ESP32-S3) | — | 39.6% | 33.7% | % only |
 | 2026-11-21 | 2026.11.0 | esp32-14 Salon | — | 130 603 B (38.2% of 341 760) | 1 319 115 B (33.5% of 3 932 160) | compile only; RAM −1.4 pt vs 10.2 |
+| 2026-11-21 | **2026.11.0** | esp32-30 rig (`0_DEV/esp32_dev.yaml`) | ESP-IDF, plain build, no boot buffer | 51 896 B (28.7% of 180 736) | 1 093 339 B (59.6% of 1 835 008) | flashed OTA, boot OK (safe_mode counter reset ~25 s after boot) |
 | — | 2026.5.3 | esp32-35 Pump_Garage | pinned, FRAM override farm | not compiled | not compiled | stays on 5.3 |
 
 ## Runtime heap (flashed devices)
@@ -58,6 +59,7 @@ No 2026.10.2 static baselines exist for ESP32 except Salon (% only, from `ESPHOM
 | 2026-11-07 | 2026.10.2 | esp12f-21 Underfloor | ~30 s | 32 968 B | 29 144 B | same source |
 | 2026-11-07 | 2026.10.2 | esp12f-11 Entrance_Entry | ~30 s | 32 392 B | 28 632 B | same source |
 | 2026-11-07 | 2026.10.2 | esp32-30 rig | — | ~219 kB | 110 592 B | ESP-IDF |
+| 2026-11-21 | **2026.11.0** | esp32-30 rig | ~5–40 s after boot, API client attached | 218 484 B | 110 592 B | vs ~219 kB / 110 592 B on 10.2: flat |
 | 2026-11-07 | 2026.10.2 | esp32-36 Garage_Gate | — | 169 444 B | 114 688 B | |
 | 2026-11-07 | 2026.10.2 | esp32-14 Salon | — | 151 444 B | 139 264 B | RAM 39.6% / flash 33.7% |
 
