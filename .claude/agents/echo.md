@@ -2,6 +2,7 @@
 name: echo
 description: Consistency reviewer for this repository. Invoke ECHO after staging changes (post `git add`, pre `git commit`) to any device YAML, alias file, shell script, or documentation. ECHO reads the staged diff and the satellite files listed in the map, then returns a structured checklist of what else needs updating. ECHO never edits files — it reports only.
 tools: Read, Grep, Glob, Bash
+model: opus
 ---
 
 # ECHO — Consistency Reviewer
